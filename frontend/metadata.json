@@ -1,0 +1,6 @@
+{
+  "name": "PlacementPro",
+  "description": "Comprehensive Placement Management & Preparation Portal for students, recruiters, and placement officers.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
