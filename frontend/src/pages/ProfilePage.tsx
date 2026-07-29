@@ -3,6 +3,7 @@ import { Container, Row, Col, Card, Form, Button, Badge } from 'react-bootstrap'
 import { useAuth } from '../context/AuthContext';
 import { ResumeUploader } from '../components/student/ResumeUploader';
 import { NotificationToast } from '../components/common/NotificationToast';
+import { StreakCalendar } from '../components/dashboard/StreakCalendar';
 
 export const ProfilePage: React.FC = () => {
   const { currentUser, updateProfile } = useAuth();
@@ -159,6 +160,13 @@ export const ProfilePage: React.FC = () => {
           {currentUser.role === 'student' && (
             <div className="mb-4">
               <ResumeUploader resumeUrl={currentUser.resumeUrl} />
+            </div>
+          )}
+
+          {/* Activity Heatmap */}
+          {currentUser.role === 'student' && (
+            <div className="mb-4">
+              <StreakCalendar />
             </div>
           )}
 

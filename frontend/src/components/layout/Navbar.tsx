@@ -143,6 +143,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Profile & Role Dropdown */}
           {currentUser ? (
             <NavDropdown
+              className="no-caret"
               title={
                 <div className="d-flex align-items-center gap-2 cursor-pointer p-1 rounded-3 hover-bg-gray">
                   <img
@@ -157,7 +158,6 @@ export const Navbar: React.FC<NavbarProps> = ({
                     <span className="fw-bold text-dark fs-7 d-block">{currentUser.name}</span>
                     <span className="text-muted fs-8 text-capitalize d-block">{currentUser.role} Mode</span>
                   </div>
-                  <i className="bi bi-chevron-down text-muted fs-8 ms-1"></i>
                 </div>
               }
               id="user-profile-dropdown"

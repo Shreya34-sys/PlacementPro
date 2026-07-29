@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Card, Button, Badge, Form, InputGroup, ProgressBar } from 'react-bootstrap';
-import { StreakCalendar } from '../components/dashboard/StreakCalendar';
 
 interface PlacementPrepPageProps {
   onNavigate?: (tab: string) => void;
@@ -202,26 +201,6 @@ export const PlacementPrepPage: React.FC<PlacementPrepPageProps> = ({ onNavigate
     <Container fluid className="px-0">
       {/* 1. Breadcrumb Header */}
       <div className="mb-4 bg-white p-3.5 rounded-3 shadow-xs border">
-        <nav aria-label="breadcrumb">
-          <ol className="breadcrumb mb-1 fs-7">
-            <li className="breadcrumb-item">
-              <a
-                href="#dashboard"
-                onClick={(e) => {
-                  e.preventDefault();
-                  onNavigate && onNavigate('dashboard');
-                }}
-                className="text-decoration-none text-primary fw-medium"
-              >
-                <img src="https://img.icons8.com/?size=100&id=aVHe2jHuORcA&format=png&color=000000" alt="Dashboard" width="16" height="16" referrerPolicy="no-referrer" className="me-1 align-text-bottom" style={{ objectFit: 'contain' }} />
-                Dashboard
-              </a>
-            </li>
-            <li className="breadcrumb-item active text-secondary fw-semibold" aria-current="page">
-              📚 Placement Preparation
-            </li>
-          </ol>
-        </nav>
         <div className="d-flex justify-content-between align-items-center flex-wrap gap-2">
           <div>
             <h2 className="fw-bold text-dark mb-1">Placement Preparation Hub</h2>
@@ -231,64 +210,6 @@ export const PlacementPrepPage: React.FC<PlacementPrepPageProps> = ({ onNavigate
           </div>
         </div>
       </div>
-
-      {/* 2. Overall Progress Card & Continue Learning Banner */}
-      <Card className="shadow-sm border-0 rounded-16 overflow-hidden mb-4 bg-dark text-white">
-        <Card.Body className="p-4 p-lg-5">
-          <Row className="align-items-center g-4">
-            <Col lg={7}>
-              <div className="d-flex align-items-center gap-2 mb-2">
-                <Badge bg="warning" text="dark" className="fw-bold px-2.5 py-1 text-uppercase">
-                  <i className="bi bi-fire me-1"></i> Placement Readiness Benchmark
-                </Badge>
-                <Badge bg="success" className="px-2.5 py-1">
-                  Ready Level: 84%
-                </Badge>
-              </div>
-              <h3 className="fw-bold text-white mb-2">Your Placement Preparation Progress</h3>
-              <p className="text-white-50 fs-7 mb-4">
-                You have completed <strong className="text-white">{completedCardsCount} of {totalCards}</strong> prep modules. You are on track for upcoming campus recruitment drives!
-              </p>
-
-              <div>
-                <div className="d-flex justify-content-between fs-7 fw-bold text-white-50 mb-1">
-                  <span>Overall Curriculum Completion</span>
-                  <span className="text-warning">{averageProgress}% Overall</span>
-                </div>
-                <ProgressBar
-                  now={averageProgress}
-                  variant="warning"
-                  style={{ height: '10px', borderRadius: '5px' }}
-                  className="bg-secondary"
-                />
-              </div>
-            </Col>
-
-            <Col lg={5} className="text-lg-end">
-              <div className="bg-white bg-opacity-10 p-3.5 rounded-3 border border-white border-opacity-10 mb-3 text-start">
-                <div className="d-flex justify-content-between align-items-center mb-1">
-                  <span className="fs-8 text-white-50 fw-semibold text-uppercase">Active Module</span>
-                  <Badge bg="primary">In Progress</Badge>
-                </div>
-                <h6 className="fw-bold text-white mb-1">⚡ Coding Preparation (DSA Roadmap)</h6>
-                <small className="text-white-50 fs-8 d-block mb-0">Next Up: Graph Algorithms & SQL Practice</small>
-              </div>
-
-              <Button
-                variant="warning"
-                size="lg"
-                className="fw-bold px-4 py-2.5 shadow-sm text-dark hover-lift"
-                onClick={() => onNavigate && onNavigate('coding-round')}
-              >
-                <i className="bi bi-play-circle-fill me-2"></i> Continue Learning
-              </Button>
-            </Col>
-          </Row>
-        </Card.Body>
-      </Card>
-
-      {/* Streak Calendar Component */}
-      <StreakCalendar />
 
       {/* 3. Search Bar & Filter Options */}
       <Row className="g-3 mb-4 align-items-center">
@@ -397,9 +318,7 @@ export const PlacementPrepPage: React.FC<PlacementPrepPageProps> = ({ onNavigate
                       <i className="bi bi-check-circle-fill me-1.5"></i> Review Completed Module
                     </>
                   ) : (
-                    <>
-                      <i className="bi bi-arrow-right-circle-fill me-1.5"></i> Continue Module
-                    </>
+                    <>Continue Module</>
                   )}
                 </Button>
               </Card.Body>
