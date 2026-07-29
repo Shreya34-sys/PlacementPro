@@ -172,6 +172,11 @@ body.dark-mode .dropdown-item:hover {
   color: #ffffff !important;
 }
 
+/* Hide visual dropdown carets for no-caret navbar toggles */
+.no-caret .dropdown-toggle::after {
+  display: none !important;
+}
+
 [data-bs-theme="dark"] .hover-bg-gray:hover,
 body.dark-mode .hover-bg-gray:hover {
   background-color: #334155 !important;
