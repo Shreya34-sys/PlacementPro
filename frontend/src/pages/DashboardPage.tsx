@@ -1,6 +1,28 @@
 import React from 'react';
-import { Container, Row, Col, Card, Button, Badge, ProgressBar } from 'react-bootstrap';
+import { motion, Variants } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
+import { CompanyLogo } from '../components/common/CompanyLogo';
+import {
+  Sparkles,
+  TrendingUp,
+  CheckCircle2,
+  Award,
+  Clock,
+  ArrowRight,
+  Play,
+  Bot,
+  Code2,
+  Brain,
+  FileText,
+  Mic,
+  Building2,
+  Target,
+  Calendar,
+  Zap,
+  BookOpen,
+  ChevronRight,
+  ShieldCheck,
+} from 'lucide-react';
 
 interface DashboardPageProps {
   onNavigate: (tab: string, jobId?: string) => void;
@@ -9,6 +31,110 @@ interface DashboardPageProps {
 export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
   const { currentUser } = useAuth();
   const userName = currentUser?.name || 'Alex Johnson';
+
+  const stats = [
+    {
+      id: 'stat-1',
+      label: 'Readiness Score',
+      value: '88%',
+      change: '+4% this week',
+      changePositive: true,
+      icon: Award,
+      color: 'text-blue-600',
+      bgColor: 'bg-blue-50',
+      borderColor: 'border-blue-100',
+    },
+    {
+      id: 'stat-2',
+      label: 'Modules Completed',
+      value: '18 / 25',
+      change: '72% completed',
+      changePositive: true,
+      icon: CheckCircle2,
+      color: 'text-emerald-600',
+      bgColor: 'bg-emerald-50',
+      borderColor: 'border-emerald-100',
+    },
+    {
+      id: 'stat-3',
+      label: 'Problems Solved',
+      value: '142',
+      change: '12 solved this week',
+      changePositive: true,
+      icon: Target,
+      color: 'text-amber-600',
+      bgColor: 'bg-amber-50',
+      borderColor: 'border-amber-100',
+    },
+    {
+      id: 'stat-4',
+      label: 'Mock Interviews',
+      value: '12 Took',
+      change: 'Avg Score: 92%',
+      changePositive: true,
+      icon: Bot,
+      color: 'text-purple-600',
+      bgColor: 'bg-purple-50',
+      borderColor: 'border-purple-100',
+    },
+  ];
+
+  const quickActions = [
+    {
+      id: 'qa-1',
+      title: 'AI Mock Interview',
+      subtitle: 'Live voice & code assessment',
+      icon: Bot,
+      tab: 'ai-interview',
+      color: 'bg-blue-600',
+      lightBg: 'bg-blue-50/50 hover:bg-blue-50 border-blue-100/50',
+    },
+    {
+      id: 'qa-2',
+      title: 'LeetCode Arena',
+      subtitle: 'Top 150 DS & Algo problems',
+      icon: Code2,
+      tab: 'leetcode-practice',
+      color: 'bg-emerald-600',
+      lightBg: 'bg-emerald-50/50 hover:bg-emerald-50 border-emerald-100/50',
+    },
+    {
+      id: 'qa-3',
+      title: 'Aptitude Practice',
+      subtitle: 'Quantitative & logical speed tests',
+      icon: Brain,
+      tab: 'aptitude-test',
+      color: 'bg-amber-500',
+      lightBg: 'bg-amber-50/50 hover:bg-amber-50 border-amber-100/50',
+    },
+    {
+      id: 'qa-4',
+      title: 'Resume AI Analyzer',
+      subtitle: 'ATS keyword & match score check',
+      icon: FileText,
+      tab: 'resume-analyzer',
+      color: 'bg-indigo-600',
+      lightBg: 'bg-indigo-50/50 hover:bg-indigo-50 border-indigo-100/50',
+    },
+    {
+      id: 'qa-5',
+      title: 'Versant Speech Test',
+      subtitle: 'Fluency & voice evaluation',
+      icon: Mic,
+      tab: 'versant-prep',
+      color: 'bg-purple-600',
+      lightBg: 'bg-purple-50/50 hover:bg-purple-50 border-purple-100/50',
+    },
+    {
+      id: 'qa-6',
+      title: 'Company Question Bank',
+      subtitle: 'Target Google, Amazon, TCS',
+      icon: Building2,
+      tab: 'company-prep',
+      color: 'bg-teal-600',
+      lightBg: 'bg-teal-50/50 hover:bg-teal-50 border-teal-100/50',
+    },
+  ];
 
   const recommendedCompanies = [
     {
@@ -39,7 +165,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
       ctc: '9 - 12 LPA',
       difficulty: 'Medium',
       matchScore: '98%',
-      tags: ['Aptitude', 'SQL', 'Coding', 'English Communication'],
+      tags: ['Aptitude', 'SQL', 'Coding', 'Communication'],
     },
     {
       id: 'comp-4',
@@ -56,33 +182,33 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
   const upcomingInterviews = [
     {
       id: 'int-1',
-      company: 'Amazon Mock Interview',
-      type: 'Technical & System Design',
+      company: 'Amazon Mock Technical Interview',
+      type: 'Data Structures & System Design',
       date: 'Today',
       time: '04:00 PM',
       duration: '45 mins',
       interviewer: 'AI Interviewer (Gemini Pro)',
-      badgeVariant: 'warning',
+      badgeClass: 'bg-amber-50 text-amber-600 border border-amber-200/60',
     },
     {
       id: 'int-2',
       company: 'TCS Digital Mock Test',
-      type: 'Aptitude & Coding Round',
+      type: 'Aptitude & Speed Coding Round',
       date: 'Tomorrow',
       time: '10:00 AM',
       duration: '90 mins',
       interviewer: 'Online Assessment Engine',
-      badgeVariant: 'primary',
+      badgeClass: 'bg-blue-50 text-blue-600 border border-blue-200/60',
     },
     {
       id: 'int-3',
       company: 'Versant Voice Assessment',
-      type: 'Spoken English & Communication',
+      type: 'Spoken English & Fluency',
       date: 'Aug 18, 2026',
       time: '02:30 PM',
       duration: '20 mins',
       interviewer: 'Automated Speech Evaluator',
-      badgeVariant: 'info',
+      badgeClass: 'bg-purple-50 text-purple-600 border border-purple-200/60',
     },
   ];
 
@@ -93,7 +219,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
       category: 'Data Structures',
       title: 'Boost Dynamic Programming Speed',
       description: 'Your accuracy in DP problems is 62%. Practice 5 Memoization pattern questions to reach target threshold.',
-      actionText: 'Practice DP Questions',
+      actionText: 'Practice DP',
       tab: 'leetcode-practice',
     },
     {
@@ -102,7 +228,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
       category: 'Communication',
       title: 'Complete Versant Voice Practice',
       description: 'Amazon and TCS require strong English fluency. Take a 15-minute voice assessment to evaluate pronunciation and fluency.',
-      actionText: 'Start Versant Test',
+      actionText: 'Start Versant',
       tab: 'versant-prep',
     },
     {
@@ -116,431 +242,417 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
     },
   ];
 
+  const containerVariants: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.08 },
+    },
+  };
+
+  const itemVariants: Variants = {
+    hidden: { opacity: 0, y: 10 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' } },
+  };
+
   return (
-    <Container fluid className="px-3 px-lg-4 py-3">
-      {/* 1. Welcome Card & 2. Continue Learning Row */}
-      <Row className="g-3 mb-4">
-        {/* 1. Welcome Card */}
-        <Col lg={7} xl={8}>
-          <Card className="border-0 shadow-sm rounded-16 text-white h-100 overflow-hidden position-relative" style={{ background: 'linear-gradient(135deg, #1e3a8a 0%, #2563eb 50%, #4f46e5 100%)' }}>
-            <Card.Body className="p-4 p-xl-5 d-flex flex-column justify-content-between">
-              <div>
-                <div className="d-flex align-items-center gap-2 mb-2">
-                  <Badge bg="warning" text="dark" className="fw-bold px-2.5 py-1 text-uppercase fs-8 rounded-pill shadow-xs">
-                    🎓 Student Placement Portal
-                  </Badge>
-                  <span className="fs-8 fw-semibold" style={{ color: '#cbd5e1' }}>CS & IT Engineering &bull; Batch 2026</span>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.6, ease: 'easeOut' }}
+      className="min-h-screen bg-[#F8FAFC] text-gray-900 pb-12 font-sans"
+      style={{ fontFamily: 'Inter, sans-serif' }}
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+        
+        {/* =========================================================================
+            HEADER METRICS & WELCOME HERO
+           ========================================================================= */}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="space-y-6 mb-8"
+        >
+          {/* Top Banner Row */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            
+            {/* Welcome Banner (8 Columns) */}
+            <motion.div variants={itemVariants} className="lg:col-span-8">
+              <div className="h-full bg-gradient-to-br from-[#F8FAFC] to-blue-50/50 border border-[#E5E7EB] text-gray-900 rounded-[16px] p-6 shadow-sm flex flex-col justify-between relative overflow-hidden transition-all duration-250 ease-out hover:-translate-y-1 hover:shadow-lg hover:border-blue-600">
+                
+                <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-2 z-10">
+                  <div>
+                    <div className="flex items-center gap-2.5 mb-4 flex-wrap">
+                      <span className="px-3 py-1 rounded-full text-[12px] font-medium bg-blue-100/50 text-blue-700 border border-blue-200 flex items-center gap-1.5">
+                        <Sparkles className="w-3.5 h-3.5 text-blue-600" /> Student Placement Portal
+                      </span>
+                      <span className="text-[12px] text-gray-500 font-medium">CS & IT Engineering • Batch 2026</span>
+                    </div>
+
+                    <div className="flex items-center gap-4 mb-2">
+                      <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop&q=80" alt="Profile Avatar" className="w-12 h-12 rounded-full border border-gray-200 shadow-sm" />
+                      <h1 className="text-[32px] font-bold text-gray-900 leading-tight tracking-tight">
+                        Welcome back, {userName}
+                      </h1>
+                    </div>
+                    <p className="text-[14px] text-gray-600 max-w-xl font-normal leading-relaxed mb-6 mt-2">
+                      Your placement journey is on track. Focus today on <strong className="text-gray-900 font-semibold">Dynamic Programming</strong> and <strong className="text-gray-900 font-semibold">Mock Technical Interviews</strong> to reach your target CTC.
+                    </p>
+                  </div>
+                  
+                  {/* Circular Weekly Progress Indicator */}
+                  <div className="hidden sm:flex flex-col items-center justify-center bg-white p-3 rounded-2xl border border-gray-100 shadow-sm shrink-0">
+                    <div className="relative w-16 h-16 flex items-center justify-center">
+                      <svg className="w-full h-full transform -rotate-90">
+                        <circle cx="32" cy="32" r="28" stroke="currentColor" strokeWidth="6" fill="transparent" className="text-gray-100" />
+                        <circle cx="32" cy="32" r="28" stroke="currentColor" strokeWidth="6" fill="transparent" strokeDasharray="175" strokeDashoffset="44" className="text-blue-600" />
+                      </svg>
+                      <div className="absolute flex flex-col items-center justify-center text-center">
+                        <span className="text-[14px] font-bold text-gray-900 leading-none">75%</span>
+                      </div>
+                    </div>
+                    <span className="text-[10px] font-medium text-gray-500 mt-2 uppercase tracking-wide">Weekly Goal</span>
+                  </div>
                 </div>
-                <h2 className="fw-extrabold mb-2 tracking-tight" style={{ color: '#ffffff' }}>
-                  Welcome back, <span style={{ color: '#fef08a' }}>{userName}</span>! 👋
-                </h2>
-                <p className="fs-6 mb-4 max-w-2xl leading-relaxed" style={{ color: '#e2e8f0' }}>
-                  Your placement journey is on track. Focus today on <strong className="text-white">Dynamic Programming</strong> and <strong className="text-white">Mock Technical Interviews</strong> to boost your readiness score.
-                </p>
-              </div>
 
-              <div className="d-flex flex-wrap gap-2.5 align-items-center pt-2">
-                <Button
-                  variant="light"
-                  className="fw-bold text-primary px-3.5 py-2 rounded-3 shadow-xs d-flex align-items-center gap-2"
-                  onClick={() => onNavigate('placement-prep')}
-                >
-                  <i className="bi bi-play-circle-fill fs-6 text-primary"></i>
-                  <span>Continue Learning Journey</span>
-                </Button>
-                <Button
-                  variant="outline-light"
-                  className="fw-semibold px-3.5 py-2 rounded-3 hover-bg-white-10 d-flex align-items-center gap-2"
-                  onClick={() => onNavigate('ai-interview')}
-                >
-                  <i className="bi bi-robot fs-6"></i>
-                  <span>Launch AI Mock Interview</span>
-                </Button>
-              </div>
-            </Card.Body>
-          </Card>
-        </Col>
-
-        {/* 2. Continue Learning Card */}
-        <Col lg={5} xl={4}>
-          <Card className="border-0 shadow-sm rounded-16 bg-white h-100 p-4 d-flex flex-column justify-content-between">
-            <div>
-              <div className="d-flex justify-content-between align-items-center mb-3">
-                <span className="fw-bold text-uppercase fs-8 tracking-wider text-muted">
-                  📖 Continue Learning
-                </span>
-                <Badge bg="primary-subtle" text="primary" className="fw-bold px-2 py-1 fs-8 rounded-pill">
-                  Module 4 of 6
-                </Badge>
-              </div>
-
-              <h5 className="fw-bold text-dark mb-1">Data Structures & Algorithms</h5>
-              <p className="text-secondary fs-7 mb-3">Graph Algorithms & Breadth-First Search (BFS)</p>
-
-              <div className="mb-3 bg-light p-3 rounded-3 border">
-                <div className="d-flex justify-content-between align-items-center fs-7 fw-semibold mb-1">
-                  <span className="text-dark">Module Progress</span>
-                  <span className="text-primary fw-extrabold">72%</span>
-                </div>
-                <ProgressBar now={72} variant="primary" style={{ height: '8px' }} className="rounded-pill" />
-                <div className="d-flex justify-content-between align-items-center fs-8 text-muted mt-2">
-                  <span>18 / 25 Topics Completed</span>
-                  <span>Est. 45 mins left</span>
+                <div className="flex items-center gap-3 flex-wrap pt-2 z-10">
+                  <button
+                    onClick={() => onNavigate('placement-prep')}
+                    className="h-[44px] px-5 rounded-[12px] bg-blue-600 hover:opacity-90 text-white font-medium text-[14px] shadow-sm flex items-center gap-2 transition-all hover:shadow-md"
+                  >
+                    <Play className="w-4 h-4 fill-current text-white" />
+                    <span>Continue Learning Journey</span>
+                  </button>
+                  <button
+                    onClick={() => onNavigate('ai-interview')}
+                    className="h-[44px] px-5 rounded-[12px] bg-white hover:bg-gray-50 text-gray-700 font-medium text-[14px] border border-gray-200 shadow-sm flex items-center gap-2 transition-all hover:border-gray-300"
+                  >
+                    <Bot className="w-4 h-4 text-gray-500" />
+                    <span>Launch AI Mock Interview</span>
+                  </button>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
-            <Button
-              variant="primary"
-              className="w-100 fw-bold py-2 rounded-3 shadow-xs d-flex align-items-center justify-content-center gap-2"
-              onClick={() => onNavigate('leetcode-practice')}
-            >
-              <span>Resume Lesson</span>
-              <i className="bi bi-arrow-right"></i>
-            </Button>
-          </Card>
-        </Col>
-      </Row>
-
-      {/* 5. Overall Progress Row */}
-      <Row className="g-3 mb-4">
-        {/* Overall Progress */}
-        <Col md={12}>
-          <Card className="border-0 shadow-sm rounded-16 bg-white p-3.5 h-100 d-flex flex-column justify-content-between">
-            <div className="d-flex justify-content-between align-items-start mb-2">
-              <div className="d-flex align-items-center gap-2">
-                <span className="fs-4 leading-none">📈</span>
+            {/* Active Resume Lesson Card (4 Columns) */}
+            <motion.div variants={itemVariants} className="lg:col-span-4">
+              <div className="h-full bg-white rounded-[16px] border border-[#E5E7EB] p-6 shadow-sm flex flex-col justify-between transition-all duration-250 ease-out hover:-translate-y-1 hover:shadow-lg hover:border-blue-600 group">
                 <div>
-                  <span className="fw-bold fs-8 tracking-wider text-uppercase text-muted d-block leading-none">Overall Progress</span>
-                  <span className="fw-extrabold fs-5 text-primary leading-tight">78% Placement Ready</span>
-                </div>
-              </div>
-              <Badge bg="success-subtle" text="success" className="fw-bold px-2.5 py-1 rounded-pill fs-8">
-                Top Tier
-              </Badge>
-            </div>
-
-            <div className="space-y-2 my-2">
-              <div>
-                <div className="d-flex justify-content-between fs-8 fw-medium text-dark mb-0.5">
-                  <span>Coding & DS Algo</span>
-                  <span className="fw-bold text-success">85%</span>
-                </div>
-                <ProgressBar now={85} variant="success" style={{ height: '6px' }} className="rounded-pill" />
-              </div>
-              <div>
-                <div className="d-flex justify-content-between fs-8 fw-medium text-dark mb-0.5">
-                  <span>Quantitative Aptitude</span>
-                  <span className="fw-bold text-primary">80%</span>
-                </div>
-                <ProgressBar now={80} variant="primary" style={{ height: '6px' }} className="rounded-pill" />
-              </div>
-              <div>
-                <div className="d-flex justify-content-between fs-8 fw-medium text-dark mb-0.5">
-                  <span>Versant Communication</span>
-                  <span className="fw-bold text-warning">75%</span>
-                </div>
-                <ProgressBar now={75} variant="warning" style={{ height: '6px' }} className="rounded-pill" />
-              </div>
-            </div>
-
-            <Button
-              variant="link"
-              className="p-0 text-decoration-none fs-8 fw-bold text-primary text-start"
-              onClick={() => onNavigate('analytics')}
-            >
-              View Detailed Analytics <i className="bi bi-arrow-right"></i>
-            </Button>
-          </Card>
-        </Col>
-      </Row>
-
-      {/* Main Grid: Left Column (8 cols) & Right Column (4 cols) */}
-      <Row className="g-4">
-        {/* Left Column */}
-        <Col lg={8}>
-          {/* 11. Quick Actions Grid */}
-          <Card className="border-0 shadow-sm rounded-16 bg-white p-4 mb-4">
-            <h5 className="fw-bold text-dark mb-3 d-flex align-items-center gap-2">
-              <span className="fs-5">⚡</span>
-              <span>Quick Actions</span>
-            </h5>
-            <Row className="g-2.5">
-              <Col sm={6} md={4}>
-                <Button
-                  variant="light"
-                  className="w-100 p-3 text-start border hover-shadow-sm rounded-12 transition-all d-flex align-items-center gap-3 bg-light hover-bg-primary-subtle group"
-                  onClick={() => onNavigate('ai-interview')}
-                >
-                  <div className="bg-primary text-white rounded-3 p-2.5 d-flex align-items-center justify-content-center" style={{ width: '42px', height: '42px' }}>
-                    <i className="bi bi-robot fs-5"></i>
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-[12px] font-semibold uppercase tracking-wider text-gray-500 flex items-center gap-1.5">
+                      <BookOpen className="w-3.5 h-3.5 text-blue-600" /> Continue Learning
+                    </span>
+                    <span className="px-2.5 py-0.5 rounded-full text-[12px] font-medium bg-blue-50 text-blue-600 border border-blue-100/50">
+                      Module 4 of 6
+                    </span>
                   </div>
-                  <div>
-                    <div className="fw-bold text-dark fs-7 mb-0">AI Mock Interview</div>
-                    <small className="text-muted fs-8">Practice live audio/code</small>
-                  </div>
-                </Button>
-              </Col>
 
-              <Col sm={6} md={4}>
-                <Button
-                  variant="light"
-                  className="w-100 p-3 text-start border hover-shadow-sm rounded-12 transition-all d-flex align-items-center gap-3 bg-light hover-bg-primary-subtle group"
+                  <h3 className="text-[18px] font-semibold text-gray-900 mb-1 leading-snug">
+                    Data Structures & Algorithms
+                  </h3>
+                  <p className="text-[12px] text-gray-500 mb-4 font-medium">Graph Algorithms & Breadth-First Search (BFS)</p>
+
+                  <div className="bg-[#F8FAFC] border border-[#E5E7EB] p-3.5 rounded-xl mb-4">
+                    <div className="flex items-center justify-between text-[12px] font-semibold mb-1.5">
+                      <span className="text-gray-700">Module Progress</span>
+                      <span className="text-blue-600 font-bold">72%</span>
+                    </div>
+                    <div className="w-full h-1.5 bg-gray-200/80 rounded-full overflow-hidden mb-2">
+                      <motion.div
+                        initial={{ width: 0 }}
+                        animate={{ width: '72%' }}
+                        transition={{ duration: 0.8, ease: 'easeOut' }}
+                        className="h-full bg-blue-600 rounded-full"
+                      />
+                    </div>
+                    <div className="flex items-center justify-between text-[12px] font-medium text-gray-500">
+                      <span>18 / 25 Topics Completed</span>
+                      <span>Est. 45 mins left</span>
+                    </div>
+                  </div>
+                </div>
+
+                <button
                   onClick={() => onNavigate('leetcode-practice')}
+                  className="w-full h-[40px] rounded-[12px] bg-blue-50 hover:bg-blue-600 hover:text-white text-blue-600 font-medium text-[14px] flex items-center justify-center gap-2 transition-colors border border-blue-100"
                 >
-                  <div className="bg-success text-white rounded-3 p-2.5 d-flex align-items-center justify-content-center" style={{ width: '42px', height: '42px' }}>
-                    <i className="bi bi-code-square fs-5"></i>
-                  </div>
-                  <div>
-                    <div className="fw-bold text-dark fs-7 mb-0">LeetCode Arena</div>
-                    <small className="text-muted fs-8">Top 150 DS Algo problems</small>
-                  </div>
-                </Button>
-              </Col>
-
-              <Col sm={6} md={4}>
-                <Button
-                  variant="light"
-                  className="w-100 p-3 text-start border hover-shadow-sm rounded-12 transition-all d-flex align-items-center gap-3 bg-light hover-bg-primary-subtle group"
-                  onClick={() => onNavigate('aptitude-test')}
-                >
-                  <div className="bg-warning text-dark rounded-3 p-2.5 d-flex align-items-center justify-content-center" style={{ width: '42px', height: '42px' }}>
-                    <i className="bi bi-lightning-charge-fill fs-5"></i>
-                  </div>
-                  <div>
-                    <div className="fw-bold text-dark fs-7 mb-0">Aptitude Test</div>
-                    <small className="text-muted fs-8">Speed & logic practice</small>
-                  </div>
-                </Button>
-              </Col>
-
-              <Col sm={6} md={4}>
-                <Button
-                  variant="light"
-                  className="w-100 p-3 text-start border hover-shadow-sm rounded-12 transition-all d-flex align-items-center gap-3 bg-light hover-bg-primary-subtle group"
-                  onClick={() => onNavigate('resume-analyzer')}
-                >
-                  <div className="bg-indigo text-white rounded-3 p-2.5 d-flex align-items-center justify-content-center" style={{ width: '42px', height: '42px', backgroundColor: '#6610f2' }}>
-                    <i className="bi bi-file-earmark-person fs-5"></i>
-                  </div>
-                  <div>
-                    <div className="fw-bold text-dark fs-7 mb-0">Resume AI Analyzer</div>
-                    <small className="text-muted fs-8">Check ATS match score</small>
-                  </div>
-                </Button>
-              </Col>
-
-              <Col sm={6} md={4}>
-                <Button
-                  variant="light"
-                  className="w-100 p-3 text-start border hover-shadow-sm rounded-12 transition-all d-flex align-items-center gap-3 bg-light hover-bg-primary-subtle group"
-                  onClick={() => onNavigate('versant-prep')}
-                >
-                  <div className="bg-info text-white rounded-3 p-2.5 d-flex align-items-center justify-content-center" style={{ width: '42px', height: '42px' }}>
-                    <i className="bi bi-mic-fill fs-5"></i>
-                  </div>
-                  <div>
-                    <div className="fw-bold text-dark fs-7 mb-0">Versant Voice Test</div>
-                    <small className="text-muted fs-8">Speech & communication</small>
-                  </div>
-                </Button>
-              </Col>
-
-              <Col sm={6} md={4}>
-                <Button
-                  variant="light"
-                  className="w-100 p-3 text-start border hover-shadow-sm rounded-12 transition-all d-flex align-items-center gap-3 bg-light hover-bg-primary-subtle group"
-                  onClick={() => onNavigate('company-prep')}
-                >
-                  <div className="bg-teal text-white rounded-3 p-2.5 d-flex align-items-center justify-content-center" style={{ width: '42px', height: '42px', backgroundColor: '#20c997' }}>
-                    <i className="bi bi-building fs-5"></i>
-                  </div>
-                  <div>
-                    <div className="fw-bold text-dark fs-7 mb-0">Company Question Bank</div>
-                    <small className="text-muted fs-8">Target Amazon, TCS, Google</small>
-                  </div>
-                </Button>
-              </Col>
-            </Row>
-          </Card>
-
-          {/* 9. AI Recommendations */}
-          <Card className="border-0 shadow-sm rounded-16 bg-white p-4 mb-4">
-            <div className="d-flex justify-content-between align-items-center mb-3">
-              <h5 className="fw-bold text-dark mb-0 d-flex align-items-center gap-2">
-                <span className="fs-5">🤖</span>
-                <span>AI Recommendations for You</span>
-              </h5>
-              <Badge bg="primary-subtle" text="primary" className="fw-bold px-2.5 py-1 rounded-pill fs-8">
-                Updated Live
-              </Badge>
-            </div>
-
-            <div className="space-y-3">
-              {aiRecommendations.map((item) => (
-                <div key={item.id} className="p-3 bg-light rounded-12 border transition-all hover-border-primary">
-                  <div className="d-flex align-items-start justify-content-between gap-3">
-                    <div className="d-flex align-items-start gap-3">
-                      <span className="fs-3 leading-none p-1.5 bg-white rounded-3 border shadow-xs">{item.icon}</span>
-                      <div>
-                        <div className="d-flex align-items-center gap-2 mb-1">
-                          <Badge bg="secondary" className="fs-8 fw-semibold">{item.category}</Badge>
-                          <h6 className="fw-bold text-dark mb-0">{item.title}</h6>
-                        </div>
-                        <p className="text-secondary fs-7 mb-0 leading-relaxed">{item.description}</p>
-                      </div>
-                    </div>
-                    <Button
-                      variant="outline-primary"
-                      size="sm"
-                      className="fw-bold text-nowrap rounded-3 px-3 py-1.5 fs-8"
-                      onClick={() => onNavigate(item.tab)}
-                    >
-                      {item.actionText} &rarr;
-                    </Button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </Card>
-
-          {/* 8. Recommended Companies */}
-          <Card className="border-0 shadow-sm rounded-16 bg-white p-4">
-            <div className="d-flex justify-content-between align-items-center mb-3">
-              <div>
-                <h5 className="fw-bold text-dark mb-1 d-flex align-items-center gap-2">
-                  <span className="fs-5">🏢</span>
-                  <span>Recommended Companies for Placement</span>
-                </h5>
-                <p className="text-muted fs-7 mb-0">Curated target companies matching your skill profile and CGPA.</p>
+                  <span>Resume Lesson</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
               </div>
-              <Button variant="link" className="p-0 text-decoration-none fw-bold fs-7 text-primary" onClick={() => onNavigate('companies')}>
-                View All Companies &rarr;
-              </Button>
-            </div>
+            </motion.div>
+          </div>
 
-            <Row className="g-3">
-              {recommendedCompanies.map((comp) => (
-                <Col md={6} key={comp.id}>
-                  <Card className="border rounded-12 h-100 p-3 hover-shadow-sm transition-all bg-white">
-                    <div className="d-flex align-items-center justify-content-between mb-2">
-                      <div className="d-flex align-items-center gap-2.5">
-                        <img
-                          src={comp.logo}
-                          alt={comp.name}
-                          className="rounded-3 border"
-                          width="40"
-                          height="40"
-                          style={{ objectFit: 'cover' }}
-                        />
+          {/* Key Metrics Stats Grid (4 Cards) */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {stats.map((stat) => {
+              const StatIcon = stat.icon;
+              return (
+                <motion.div
+                  key={stat.id}
+                  variants={itemVariants}
+                  whileHover={{ scale: 1.02 }}
+                  className="group bg-white rounded-[16px] border border-[#E5E7EB] p-6 shadow-sm flex items-center justify-between transition-all duration-250 ease-out hover:-translate-y-1 hover:shadow-lg hover:border-blue-600"
+                >
+                  <div>
+                    <span className="text-[12px] font-medium text-gray-500 block mb-1">{stat.label}</span>
+                    <span className="text-[22px] font-semibold text-gray-900 block leading-none mb-1.5">{stat.value}</span>
+                    <span className="text-[12px] font-medium text-emerald-600 flex items-center gap-1">
+                      <TrendingUp className="w-3 h-3" /> {stat.change}
+                    </span>
+                  </div>
+
+                  <div className={`w-12 h-12 rounded-[12px] ${stat.bgColor} ${stat.color} flex items-center justify-center border ${stat.borderColor} group-hover:scale-110 transition-transform duration-250`}>
+                    <StatIcon className="w-6 h-6 transition-transform duration-250 group-hover:scale-105" />
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </motion.div>
+
+        {/* =========================================================================
+            QUICK ACTIONS LAUNCHPAD (6 Cards)
+           ========================================================================= */}
+        <div className="mb-8">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-[22px] font-semibold text-gray-900 flex items-center gap-2">
+              <Zap className="w-5 h-5 text-amber-500" />
+              <span>Quick Actions Launchpad</span>
+            </h2>
+            <button
+              onClick={() => onNavigate('placement-prep')}
+              className="text-[14px] font-medium text-blue-600 hover:text-blue-700 flex items-center gap-1 transition-colors"
+            >
+              View Full Syllabus <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {quickActions.map((item) => {
+              const ActionIcon = item.icon;
+              return (
+                <motion.div
+                  key={item.id}
+                  whileHover={{ scale: 1.02 }}
+                  onClick={() => onNavigate(item.tab)}
+                  className={`cursor-pointer bg-white border border-[#E5E7EB] rounded-[16px] p-6 shadow-sm flex items-center gap-4 group transition-all duration-250 ease-out hover:-translate-y-1 hover:shadow-lg hover:border-blue-600`}
+                >
+                  <div className={`w-12 h-12 rounded-[12px] ${item.color} text-white flex items-center justify-center shadow-sm shrink-0 group-hover:scale-110 transition-transform duration-250`}>
+                    <ActionIcon className="w-5.5 h-5.5 transition-transform duration-250 group-hover:scale-105" />
+                  </div>
+
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-[14px] font-semibold text-gray-900 group-hover:text-blue-600 transition-colors truncate">
+                      {item.title}
+                    </h3>
+                    <p className="text-[12px] font-medium text-gray-500 truncate">{item.subtitle}</p>
+                  </div>
+
+                  <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all duration-200 shrink-0" />
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* =========================================================================
+            MAIN DASHBOARD CONTENT: Left 8 Cols (AI Recs + Target Companies) & Right 4 Cols
+           ========================================================================= */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          
+          {/* Left Column (8 Cols) */}
+          <div className="lg:col-span-8 space-y-8">
+            
+            {/* AI Recommendations Box */}
+            <div className="bg-white rounded-[16px] border border-[#E5E7EB] p-6 shadow-sm transition-all duration-250 ease-out hover:shadow-md">
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-2">
+                  <Bot className="w-5 h-5 text-blue-600" />
+                  <h2 className="text-[22px] font-semibold text-gray-900">AI Recommendations for You</h2>
+                </div>
+                <span className="px-3 py-1 rounded-full text-[12px] font-medium bg-blue-50 text-blue-600 border border-blue-100 flex items-center gap-1.5">
+                  <ShieldCheck className="w-3.5 h-3.5 text-blue-500" /> Live Diagnostics
+                </span>
+              </div>
+
+              <div className="space-y-4">
+                {aiRecommendations.map((item) => (
+                  <div key={item.id} className="p-5 bg-[#F8FAFC] rounded-[16px] border border-[#E5E7EB] hover:border-blue-200 transition-all hover:shadow-sm">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                      <div className="flex items-start gap-4">
+                        <span className="text-2xl p-2.5 bg-white rounded-xl border border-gray-200/80 shadow-sm shrink-0">{item.icon}</span>
                         <div>
-                          <h6 className="fw-bold text-dark mb-0">{comp.name}</h6>
-                          <small className="text-muted fs-8">{comp.role}</small>
+                          <div className="flex items-center gap-2 mb-1.5">
+                            <span className="px-2 py-0.5 rounded-[6px] text-[12px] font-medium bg-gray-200/70 text-gray-700">{item.category}</span>
+                            <h3 className="text-[14px] font-semibold text-gray-900">{item.title}</h3>
+                          </div>
+                          <p className="text-[14px] text-gray-600 leading-relaxed">{item.description}</p>
                         </div>
                       </div>
-                      <Badge bg="success-subtle" text="success" className="fw-bold px-2 py-1 fs-8 rounded-pill">
+
+                      <button
+                        onClick={() => onNavigate(item.tab)}
+                        className="self-end sm:self-center h-[40px] px-4 rounded-[12px] border border-gray-200 bg-white hover:bg-gray-50 hover:border-gray-300 text-gray-900 font-medium text-[14px] transition-all shadow-sm shrink-0 flex items-center gap-1.5"
+                      >
+                        <span>{item.actionText}</span>
+                        <ArrowRight className="w-4 h-4 text-gray-500" />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Recommended Target Companies Grid */}
+            <div className="bg-white rounded-[16px] border border-[#E5E7EB] p-6 shadow-sm transition-all duration-250 ease-out hover:shadow-md">
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h2 className="text-[22px] font-semibold text-gray-900 flex items-center gap-2 mb-1">
+                    <Building2 className="w-5 h-5 text-blue-600" />
+                    <span>Recommended Target Companies</span>
+                  </h2>
+                  <p className="text-[14px] text-gray-500">Matching your skills, CGPA, and career goals.</p>
+                </div>
+                <button
+                  onClick={() => onNavigate('companies')}
+                  className="text-[14px] font-medium text-blue-600 hover:text-blue-700 flex items-center gap-1 transition-colors"
+                >
+                  View All <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {recommendedCompanies.map((comp) => (
+                  <motion.div 
+                    key={comp.id} 
+                    whileHover={{ scale: 1.02 }}
+                    className="border border-[#E5E7EB] rounded-[16px] p-5 bg-white hover:-translate-y-1 transition-all duration-250 ease-out hover:shadow-lg hover:border-blue-600"
+                  >
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center gap-3">
+                        <CompanyLogo companyName={comp.name} logoUrl={comp.logo} size={48} />
+                        <div>
+                          <h3 className="text-[18px] font-semibold text-gray-900 leading-tight">{comp.name}</h3>
+                          <p className="text-[12px] font-medium text-gray-500 mt-0.5">{comp.role}</p>
+                        </div>
+                      </div>
+                      <span className="px-2.5 py-1 rounded-full text-[12px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-100">
                         {comp.matchScore} Match
-                      </Badge>
+                      </span>
                     </div>
 
-                    <div className="d-flex align-items-center justify-content-between bg-light p-2 rounded-3 mb-2.5 fs-8">
-                      <span className="text-muted">Target CTC: <strong className="text-dark">{comp.ctc}</strong></span>
-                      <span className="text-muted">Difficulty: <strong className="text-warning">{comp.difficulty}</strong></span>
+                    <div className="flex items-center justify-between bg-[#F8FAFC] p-3 rounded-[12px] mb-4 border border-[#E5E7EB]">
+                      <span className="text-[12px] font-medium text-gray-500">Target CTC: <strong className="text-gray-900 font-semibold">{comp.ctc}</strong></span>
+                      <span className="text-[12px] font-medium text-gray-500">Difficulty: <strong className="text-amber-600 font-semibold">{comp.difficulty}</strong></span>
                     </div>
 
-                    <div className="d-flex flex-wrap gap-1 mb-3">
+                    <div className="flex flex-wrap gap-2 mb-4">
                       {comp.tags.map((tag, idx) => (
-                        <span key={idx} className="badge bg-secondary bg-opacity-10 text-secondary border fs-8">
+                        <span key={idx} className="px-2.5 py-1 rounded-[8px] text-[12px] font-medium bg-gray-100 text-gray-600 border border-gray-200/60">
                           {tag}
                         </span>
                       ))}
                     </div>
 
-                    <Button
-                      variant="outline-primary"
-                      size="sm"
-                      className="w-100 fw-bold py-1.5 rounded-3 fs-8"
+                    <button
                       onClick={() => onNavigate('company-prep')}
+                      className="w-full h-[40px] rounded-[12px] border border-blue-200 bg-blue-50/50 hover:bg-blue-600 hover:text-white text-blue-700 font-medium text-[14px] transition-colors"
                     >
                       Start {comp.name} Prep Kit
-                    </Button>
-                  </Card>
-                </Col>
-              ))}
-            </Row>
-          </Card>
-        </Col>
-
-        {/* Right Column */}
-        <Col lg={4}>
-          {/* 7. Upcoming Interviews */}
-          <Card className="border-0 shadow-sm rounded-16 bg-white p-4 mb-4">
-            <div className="d-flex justify-content-between align-items-center mb-3">
-              <h5 className="fw-bold text-dark mb-0 d-flex align-items-center gap-2">
-                <span className="fs-5">📅</span>
-                <span>Upcoming Interviews</span>
-              </h5>
-              <Badge bg="primary" className="rounded-pill fs-8">
-                {upcomingInterviews.length} Scheduled
-              </Badge>
-            </div>
-
-            <div className="space-y-3">
-              {upcomingInterviews.map((item) => (
-                <div key={item.id} className="p-3 bg-light rounded-12 border">
-                  <div className="d-flex justify-content-between align-items-start mb-2">
-                    <Badge bg={item.badgeVariant} className="fw-semibold fs-8">
-                      {item.date} &bull; {item.time}
-                    </Badge>
-                    <small className="text-muted fs-8">{item.duration}</small>
-                  </div>
-
-                  <h6 className="fw-bold text-dark mb-1">{item.company}</h6>
-                  <p className="text-secondary fs-8 mb-2">{item.type}</p>
-
-                  <div className="d-flex align-items-center justify-content-between pt-2 border-top">
-                    <small className="text-muted fs-8">
-                      <i className="bi bi-person-workspace me-1"></i> {item.interviewer}
-                    </small>
-                    <Button
-                      variant="primary"
-                      size="sm"
-                      className="fw-bold py-1 px-2.5 fs-8 rounded-3"
-                      onClick={() => onNavigate('ai-interview')}
-                    >
-                      Join Room
-                    </Button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </Card>
-
-          {/* Practice Summary Widget */}
-          <Card className="border-0 shadow-sm rounded-16 bg-dark text-white p-4">
-            <div className="d-flex align-items-center gap-2 mb-3">
-              <span className="fs-4">🎯</span>
-              <div>
-                <h6 className="fw-bold text-white mb-0">Placement Readiness Tip</h6>
-                <small className="text-white-50 fs-8">Based on 2026 hiring patterns</small>
+                    </button>
+                  </motion.div>
+                ))}
               </div>
             </div>
 
-            <p className="fs-7 text-white-50 leading-relaxed mb-3">
-              Top tech companies evaluate both problem-solving speed and clear articulation of system architecture. Take at least 2 AI mock interviews weekly to build confidence.
-            </p>
+          </div>
 
-            <Button
-              variant="outline-light"
-              size="sm"
-              className="w-100 fw-bold py-2 rounded-3"
-              onClick={() => onNavigate('placement-prep')}
-            >
-              Explore Full Placement Syllabus
-            </Button>
-          </Card>
-        </Col>
-      </Row>
-    </Container>
+          {/* Right Column (4 Cols) */}
+          <div className="lg:col-span-4 space-y-8">
+            
+            {/* Upcoming Interviews Widget */}
+            <div className="bg-white rounded-[16px] border border-[#E5E7EB] p-6 shadow-sm transition-all duration-250 ease-out hover:shadow-md">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-[22px] font-semibold text-gray-900 flex items-center gap-2">
+                  <Calendar className="w-5 h-5 text-blue-600" />
+                  <span>Upcoming Interviews</span>
+                </h2>
+                <span className="px-2.5 py-1 rounded-full text-[12px] font-medium bg-gray-100 text-gray-700 border border-gray-200">
+                  {upcomingInterviews.length} Scheduled
+                </span>
+              </div>
+
+              <div className="space-y-4">
+                {upcomingInterviews.map((item) => (
+                  <motion.div 
+                    key={item.id} 
+                    whileHover={{ scale: 1.02 }}
+                    className="p-5 bg-white rounded-[16px] border border-[#E5E7EB] hover:border-blue-300 transition-all duration-250 ease-out hover:shadow-md"
+                  >
+                    <div className="flex items-center justify-between mb-3">
+                      <span className={`text-[12px] font-medium px-2.5 py-1 rounded-full ${item.badgeClass}`}>
+                        {item.date} • {item.time}
+                      </span>
+                      <span className="text-[12px] font-medium text-gray-500 flex items-center gap-1.5">
+                        <Clock className="w-3.5 h-3.5" /> {item.duration}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-3 mb-4">
+                      <CompanyLogo companyName={item.company} size={40} />
+                      <div>
+                        <h3 className="text-[14px] font-semibold text-gray-900 mb-0.5">{item.company}</h3>
+                        <p className="text-[12px] font-medium text-gray-500 mb-0 truncate max-w-[200px]">{item.type}</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+                      <span className="text-[12px] font-medium text-gray-500 flex items-center gap-1.5">
+                        <Bot className="w-4 h-4 text-gray-400" /> {item.interviewer}
+                      </span>
+                      <button
+                        onClick={() => onNavigate('ai-interview')}
+                        className="h-[32px] px-3 rounded-[8px] bg-white border border-gray-200 hover:bg-gray-50 hover:border-gray-300 text-gray-700 font-medium text-[12px] transition-all shadow-sm"
+                      >
+                        Join Room
+                      </button>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+
+            {/* Placement Readiness Insight Box */}
+            <div className="bg-gradient-to-br from-slate-900 to-gray-900 text-white rounded-[16px] p-6 shadow-lg border border-slate-800 transition-all duration-250 ease-out hover:-translate-y-1 hover:shadow-xl">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-[12px] bg-amber-500/20 border border-amber-400/30 text-amber-300 flex items-center justify-center font-bold text-lg">
+                  🎯
+                </div>
+                <div>
+                  <h3 className="text-[18px] font-semibold text-white leading-tight">Placement Tip of the Day</h3>
+                  <p className="text-[12px] font-medium text-gray-400 mt-0.5">Based on 2026 Hiring Data</p>
+                </div>
+              </div>
+
+              <p className="text-[14px] text-gray-300 leading-relaxed mb-6 font-medium">
+                Top tech companies evaluate both problem-solving speed and clear articulation of system architecture. Take at least 2 AI mock interviews weekly to build confidence.
+              </p>
+
+              <button
+                onClick={() => onNavigate('placement-prep')}
+                className="w-full h-[40px] rounded-[12px] border border-white/20 bg-white/10 hover:bg-white/20 text-white font-medium text-[14px] transition-all"
+              >
+                Explore Placement Syllabus
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </motion.div>
   );
 };

@@ -3,6 +3,7 @@ import { Container, Row, Col, Card, Button, Badge, Form, InputGroup, Tabs, Tab }
 import { mockCompanies, CompanyDetail } from '../data/mockCompanies';
 import { usePlacement } from '../context/PlacementContext';
 import { useAuth } from '../context/AuthContext';
+import { CompanyLogo } from '../components/common/CompanyLogo';
 
 interface CompaniesPageProps {
   onNavigateToJob?: (jobId: string) => void;
@@ -87,14 +88,7 @@ export const CompaniesPage: React.FC<CompaniesPageProps> = ({ onNavigateToJob })
             className="d-flex align-items-end p-4 text-white"
           >
             <div className="d-flex flex-wrap align-items-center gap-3 w-100">
-              <img
-                src={selectedCompany.logo}
-                alt={selectedCompany.name}
-                className="rounded-3 border border-3 border-white bg-white shadow-sm"
-                width="72"
-                height="72"
-                style={{ objectFit: 'cover' }}
-              />
+              <CompanyLogo companyName={selectedCompany.name} logoUrl={selectedCompany.logo} size={56} />
               <div>
                 <div className="d-flex align-items-center gap-2 mb-1">
                   <h3 className="fw-bold mb-0 text-white">{selectedCompany.name}</h3>
@@ -366,14 +360,7 @@ export const CompaniesPage: React.FC<CompaniesPageProps> = ({ onNavigateToJob })
                     }}
                   />
                   <div className="position-absolute top-100 start-0 translate-middle-y ms-3">
-                    <img
-                      src={company.logo}
-                      alt={company.name}
-                      className="rounded-3 border border-2 border-white bg-white shadow-sm"
-                      width="52"
-                      height="52"
-                      style={{ objectFit: 'cover' }}
-                    />
+                    <CompanyLogo companyName={company.name} logoUrl={company.logo} size={56} />
                   </div>
                   <div className="position-absolute top-0 end-0 p-2.5">
                     {getTierBadge(company.tier)}

@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 # PlacementPro
+=======
+ # PlacementPro
+>>>>>>> 7775be40585142111e8798ad32c75c420934fcfc
 
 ![Build Status](https://img.shields.io/badge/status-active-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-blue)

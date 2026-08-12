@@ -34,7 +34,7 @@ export const DailyGoalCard: React.FC<DailyGoalCardProps> = () => {
       <Card className="bg-white bg-opacity-15 border border-white border-opacity-25 rounded-16 text-white p-3.5 shadow-xs backdrop-blur h-100 d-flex flex-column justify-content-between">
         <div className="d-flex justify-content-between align-items-center mb-2.5">
           <div className="d-flex align-items-center gap-2">
-            <span className="fs-5 leading-none">🎯</span>
+            <span className="fs-5 leading-none"> </span>
             <div>
               <span className="fw-bold fs-8 tracking-wider text-uppercase text-white-50 d-block leading-none">Daily Goal</span>
               <span className="fw-bold fs-7 text-white leading-tight">Solve {targetCount} {goalType}</span>
@@ -45,7 +45,7 @@ export const DailyGoalCard: React.FC<DailyGoalCardProps> = () => {
             text={isCompleted ? 'white' : 'dark'}
             className="fw-bold px-2.5 py-1.5 fs-8 rounded-pill shadow-xs"
           >
-            {isCompleted ? '🎉 Done!' : 'In Progress'}
+            {isCompleted ? ' Done!' : 'In Progress'}
           </Badge>
         </div>
 

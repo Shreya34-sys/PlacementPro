@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { InterviewSchedule } from '../types';
 import { formatDate } from '../utils/formatters';
 import { NotificationToast } from '../components/common/NotificationToast';
+import { CompanyLogo } from '../components/common/CompanyLogo';
 
 export const InterviewsPage: React.FC = () => {
   const { currentUser } = useAuth();
@@ -87,7 +88,10 @@ export const InterviewsPage: React.FC = () => {
           <Col key={sch.id} md={6} xl={4}>
             <Card className="shadow-sm border-0 h-100">
               <Card.Header className="bg-white fw-bold py-3 d-flex justify-content-between align-items-center">
-                <span className="text-primary">{sch.companyName}</span>
+                <div className="d-flex align-items-center gap-3">
+                  <CompanyLogo companyName={sch.companyName} size={48} />
+                  <span className="text-primary fw-bold">{sch.companyName}</span>
+                </div>
                 <Badge bg={sch.mode === 'Online' ? 'info' : 'secondary'}>{sch.mode}</Badge>
               </Card.Header>
               <Card.Body className="p-4 d-flex flex-column">

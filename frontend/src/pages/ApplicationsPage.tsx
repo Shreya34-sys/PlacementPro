@@ -8,6 +8,7 @@ import { StatusBadge } from '../components/common/StatusBadge';
 import { ApplicantStatusModal } from '../components/recruiter/ApplicantStatusModal';
 import { formatDate } from '../utils/formatters';
 import { NotificationToast } from '../components/common/NotificationToast';
+import { CompanyLogo } from '../components/common/CompanyLogo';
 
 export const ApplicationsPage: React.FC = () => {
   const { currentUser } = useAuth();
@@ -42,9 +43,12 @@ export const ApplicationsPage: React.FC = () => {
     {
       header: 'Company & Position',
       accessor: (app: JobApplication) => (
-        <div>
-          <div className="fw-bold text-dark">{app.jobTitle}</div>
-          <small className="text-primary fw-medium">{app.companyName}</small>
+        <div className="d-flex align-items-center gap-3">
+          <CompanyLogo companyName={app.companyName} size={48} />
+          <div>
+            <div className="fw-bold text-dark">{app.jobTitle}</div>
+            <small className="text-primary fw-medium">{app.companyName}</small>
+          </div>
         </div>
       ),
     },

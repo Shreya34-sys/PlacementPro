@@ -28,7 +28,7 @@ export const mockCompanies: CompanyDetail[] = [
   {
     id: 'comp-1',
     name: 'TechCorp Solutions',
-    logo: 'https://images.unsplash.com/photo-1549923746-c502d488b3ea?w=120',
+    logo: 'https://cdn.simpleicons.org/googlecloud',
     bannerUrl: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1000',
     tier: 'Super Dream',
     industry: 'Tech & Software',
@@ -63,7 +63,7 @@ export const mockCompanies: CompanyDetail[] = [
   {
     id: 'comp-2',
     name: 'DataPulse Analytics',
-    logo: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=120',
+    logo: 'https://cdn.simpleicons.org/databricks',
     bannerUrl: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=1000',
     tier: 'Dream',
     industry: 'Data & Analytics',
@@ -96,7 +96,7 @@ export const mockCompanies: CompanyDetail[] = [
   {
     id: 'comp-3',
     name: 'CloudScale Dynamics',
-    logo: 'https://images.unsplash.com/photo-1560179707-f14e90ef3623?w=120',
+    logo: 'https://cdn.simpleicons.org/kubernetes',
     bannerUrl: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1000',
     tier: 'Dream',
     industry: 'Cloud Infrastructure',
@@ -128,7 +128,7 @@ export const mockCompanies: CompanyDetail[] = [
   {
     id: 'comp-4',
     name: 'Quantum Financial Technologies',
-    logo: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=120',
+    logo: 'https://cdn.simpleicons.org/bloomberg',
     bannerUrl: 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=1000',
     tier: 'Super Dream',
     industry: 'Fintech & Banking',
@@ -160,7 +160,7 @@ export const mockCompanies: CompanyDetail[] = [
   {
     id: 'comp-5',
     name: 'Apex Robotics & Industrial AI',
-    logo: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=120',
+    logo: 'https://cdn.simpleicons.org/siemens',
     bannerUrl: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1000',
     tier: 'Standard',
     industry: 'Core Engineering',

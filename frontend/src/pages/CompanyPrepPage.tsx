@@ -1,351 +1,365 @@
-import React, { useState } from 'react';
-import { Container, Row, Col, Card, Button, Badge, Form, InputGroup, Nav, Tab, Accordion } from 'react-bootstrap';
+import React, { useState, useMemo } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { CompanyLogo } from '../components/common/CompanyLogo';
+import { Search, Map, Play, Briefcase, Code2, Users, Calendar, Filter } from 'lucide-react';
 
 interface CompanyPrepPageProps {
-  onNavigate?: (tab: string) => void;
+  onNavigate: (tab: string, jobId?: string) => void;
 }
 
-interface CompanyData {
+export interface CompanyPrepData {
   id: string;
   name: string;
-  logo: string;
-  category: 'Product' | 'Service' | 'FAANG/MANG' | 'Fintech';
-  hiringRounds: string[];
-  eligibility: string;
+  type: string;
+  difficulty: 'Easy' | 'Medium' | 'Hard';
   packageRange: string;
-  previousQuestions: {
-    round: string;
-    question: string;
-    type: 'Coding' | 'Aptitude' | 'Technical' | 'HR';
-    difficulty: 'Easy' | 'Medium' | 'Hard';
-  }[];
-  overview: string;
+  roles: string[];
+  progress: {
+    completed: number;
+    inProgress: number;
+    remaining: number;
+    total: number;
+  };
+  questionsCount: number;
+  experiencesCount: number;
+  lastUpdated: string;
+  tags: string[];
 }
 
-const companyDataList: CompanyData[] = [
+const mockCompanies: CompanyPrepData[] = [
   {
-    id: 'tcs',
-    name: 'TCS (Tata Consultancy Services)',
-    logo: '🏢',
-    category: 'Service',
-    packageRange: '₹3.36 LPA - ₹9.0 LPA (Ninja / Digital / Prime)',
-    eligibility: 'BE/B.Tech/ME/M.Tech/MCA/M.Sc with min 60% or 6.0 CGPA throughout academics.',
-    hiringRounds: [
-      'Round 1: TCS NQT (Numerical, Verbal, Reasoning, Advanced Coding)',
-      'Round 2: Technical Interview (Core CS, DBMS, Project Deep Dive)',
-      'Round 3: HR & Managerial Interview (Behavioral, Relocation, Shift Readiness)',
-    ],
-    overview: 'TCS is India’s largest IT services exporter. Recruitment happens through TCS NQT with three profile bands: Ninja, Digital, and Prime.',
-    previousQuestions: [
-      {
-        round: 'TCS NQT Coding',
-        question: 'Find the smallest and largest element in an array and print their sum.',
-        type: 'Coding',
-        difficulty: 'Easy',
-      },
-      {
-        round: 'TCS Technical',
-        question: 'Explain the difference between Primary Key, Unique Key, and Foreign Key in DBMS.',
-        type: 'Technical',
-        difficulty: 'Medium',
-      },
-      {
-        round: 'TCS Technical',
-        question: 'What is Method Overloading vs Method Overriding in Java?',
-        type: 'Technical',
-        difficulty: 'Easy',
-      },
-    ],
+    id: 'google',
+    name: 'Google',
+    type: 'Product Company',
+    difficulty: 'Hard',
+    packageRange: '₹28 - 45 LPA',
+    roles: ['SDE', 'Data Engineer'],
+    progress: { completed: 45, inProgress: 12, remaining: 293, total: 350 },
+    questionsCount: 350,
+    experiencesCount: 124,
+    lastUpdated: '2 days ago',
+    tags: ['Product Companies', 'Dream Companies', 'Visited Companies'],
   },
   {
-    id: 'infosys',
-    name: 'Infosys',
-    logo: '💻',
-    category: 'Service',
-    packageRange: '₹3.6 LPA - ₹9.5 LPA (System Engineer / Specialist Programmer)',
-    eligibility: 'BE/B.Tech/MCA/M.Sc graduates. Max 2 active backlogs allowed at registration time.',
-    hiringRounds: [
-      'Round 1: Infosys Online Test (Mathematical Ability, Reasoning, Verbal, Pseudo Code, Puzzle Solving)',
-      'Round 2: HackWithInfy / InfyTQ Advanced Coding Assessment',
-      'Round 3: Combined Technical + HR Interview',
-    ],
-    overview: 'Infosys hires through campus drives and competitive hackathons like HackWithInfy and InfyTQ certification.',
-    previousQuestions: [
-      {
-        round: 'Infosys Online Test',
-        question: 'Solve the pattern problem: Print N lines of pyramid with alternating numbers and stars.',
-        type: 'Coding',
-        difficulty: 'Easy',
-      },
-      {
-        round: 'Infosys Technical',
-        question: 'How does garbage collection work in Java JVM?',
-        type: 'Technical',
-        difficulty: 'Medium',
-      },
-    ],
+    id: 'microsoft',
+    name: 'Microsoft',
+    type: 'Product Company',
+    difficulty: 'Hard',
+    packageRange: '₹40 - 52 LPA',
+    roles: ['SDE', 'PM', 'QA'],
+    progress: { completed: 80, inProgress: 5, remaining: 195, total: 280 },
+    questionsCount: 280,
+    experiencesCount: 98,
+    lastUpdated: '1 week ago',
+    tags: ['Product Companies', 'Dream Companies'],
   },
   {
     id: 'amazon',
     name: 'Amazon',
-    logo: '📦',
-    category: 'FAANG/MANG',
-    packageRange: '₹28 LPA - ₹45 LPA (SDE-1)',
-    eligibility: 'B.Tech/CS/IT graduates with strong Data Structures & Algorithms proficiency.',
-    hiringRounds: [
-      'Round 1: Online Assessment (2 Coding Questions + Work Style Survey + Reasoning)',
-      'Round 2: Technical Interview 1 (DSA Data Structures & Leadership Principles)',
-      'Round 3: Technical Interview 2 (System Design / Object Oriented Design & LP)',
-      'Round 4: Bar Raiser Interview (Behavioral Leadership & Core Problem Solving)',
-    ],
-    overview: 'Amazon focuses heavily on Leadership Principles along with top-tier DSA problem-solving speed and accuracy.',
-    previousQuestions: [
-      {
-        round: 'Amazon OA',
-        question: 'Given an array of integers, find the maximum sum sub-array of size K.',
-        type: 'Coding',
-        difficulty: 'Medium',
-      },
-      {
-        round: 'Amazon Technical',
-        question: 'Serialize and Deserialize a Binary Tree with minimum memory overhead.',
-        type: 'Coding',
-        difficulty: 'Hard',
-      },
-      {
-        round: 'Amazon HR / LP',
-        question: 'Tell me about a time when you had a disagreement with a team member and how you resolved it.',
-        type: 'HR',
-        difficulty: 'Medium',
-      },
-    ],
+    type: 'Product Company',
+    difficulty: 'Hard',
+    packageRange: '₹28 - 45 LPA',
+    roles: ['SDE-1', 'Cloud Support'],
+    progress: { completed: 120, inProgress: 20, remaining: 260, total: 400 },
+    questionsCount: 400,
+    experiencesCount: 215,
+    lastUpdated: '3 days ago',
+    tags: ['Product Companies', 'Dream Companies'],
   },
   {
-    id: 'wipro',
-    name: 'Wipro (NLTH)',
-    logo: '🌐',
-    category: 'Service',
-    packageRange: '₹3.5 LPA - ₹6.5 LPA (Project Engineer / Turbo)',
-    eligibility: '60% or 6.0 CGPA in 10th, 12th, and Graduation with no active backlogs.',
-    hiringRounds: [
-      'Round 1: Wipro NLTH Assessment (Aptitude, Verbal, Coding, Written Communication Essay)',
-      'Round 2: Technical & HR Discussion',
-    ],
-    overview: 'Wipro National Level Talent Hunt (NLTH) tests aptitude, coding fundamentals, and written essay communication.',
-    previousQuestions: [
-      {
-        round: 'Wipro NLTH',
-        question: 'Write a function to check whether a string is an Anagram of another string.',
-        type: 'Coding',
-        difficulty: 'Easy',
-      },
-    ],
+    id: 'apple',
+    name: 'Apple',
+    type: 'Product Company',
+    difficulty: 'Hard',
+    packageRange: '₹35 - 50 LPA',
+    roles: ['Software Engineer', 'Hardware'],
+    progress: { completed: 10, inProgress: 5, remaining: 185, total: 200 },
+    questionsCount: 200,
+    experiencesCount: 45,
+    lastUpdated: '2 weeks ago',
+    tags: ['Product Companies', 'Dream Companies'],
+  },
+  {
+    id: 'meta',
+    name: 'Meta',
+    type: 'Product Company',
+    difficulty: 'Hard',
+    packageRange: '₹45 - 60 LPA',
+    roles: ['Frontend Engineer', 'SDE'],
+    progress: { completed: 5, inProgress: 2, remaining: 243, total: 250 },
+    questionsCount: 250,
+    experiencesCount: 65,
+    lastUpdated: '1 month ago',
+    tags: ['Product Companies', 'Dream Companies'],
+  },
+  {
+    id: 'tcs',
+    name: 'TCS',
+    type: 'Service Company',
+    difficulty: 'Easy',
+    packageRange: '₹3 - 9 LPA',
+    roles: ['System Engineer', 'Digital'],
+    progress: { completed: 150, inProgress: 0, remaining: 50, total: 200 },
+    questionsCount: 200,
+    experiencesCount: 350,
+    lastUpdated: '1 day ago',
+    tags: ['Service Companies', 'Visited Companies'],
+  },
+  {
+    id: 'infosys',
+    name: 'Infosys',
+    type: 'Service Company',
+    difficulty: 'Easy',
+    packageRange: '₹3.6 - 8 LPA',
+    roles: ['Systems Engineer', 'Specialist'],
+    progress: { completed: 40, inProgress: 10, remaining: 100, total: 150 },
+    questionsCount: 150,
+    experiencesCount: 280,
+    lastUpdated: '4 days ago',
+    tags: ['Service Companies'],
+  },
+  {
+    id: 'adobe',
+    name: 'Adobe',
+    type: 'Product Company',
+    difficulty: 'Hard',
+    packageRange: '₹30 - 40 LPA',
+    roles: ['MTS', 'Data Scientist'],
+    progress: { completed: 25, inProgress: 8, remaining: 147, total: 180 },
+    questionsCount: 180,
+    experiencesCount: 75,
+    lastUpdated: '1 week ago',
+    tags: ['Product Companies', 'Dream Companies', 'Internship'],
+  },
+  {
+    id: 'salesforce',
+    name: 'Salesforce',
+    type: 'Product Company',
+    difficulty: 'Medium',
+    packageRange: '₹25 - 35 LPA',
+    roles: ['AMTS', 'QA'],
+    progress: { completed: 0, inProgress: 0, remaining: 150, total: 150 },
+    questionsCount: 150,
+    experiencesCount: 42,
+    lastUpdated: '2 weeks ago',
+    tags: ['Product Companies', 'Internship'],
   },
 ];
 
 export const CompanyPrepPage: React.FC<CompanyPrepPageProps> = ({ onNavigate }) => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<string>('All');
-  const [selectedCompany, setSelectedCompany] = useState<CompanyData>(companyDataList[0]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [activeFilter, setActiveFilter] = useState('All');
 
-  const filteredCompanies = companyDataList.filter((c) => {
-    const matchesSearch = c.name.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCat = selectedCategory === 'All' || c.category === selectedCategory;
-    return matchesSearch && matchesCat;
-  });
+  const filteredCompanies = useMemo(() => {
+    return mockCompanies.filter((comp) => {
+      const matchesSearch = comp.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                            comp.roles.some(role => role.toLowerCase().includes(searchQuery.toLowerCase()));
+      
+      const matchesFilter = activeFilter === 'All' ? true : comp.tags.includes(activeFilter);
+      
+      return matchesSearch && matchesFilter;
+    });
+  }, [searchQuery, activeFilter]);
 
   return (
-    <Container fluid className="px-0">
-      {/* Top Breadcrumb & Navigation Header */}
-      <div className="mb-4 bg-white p-3.5 rounded-3 shadow-xs border">
-        <nav aria-label="breadcrumb">
-          <ol className="breadcrumb mb-1 fs-7">
-            <li className="breadcrumb-item">
-              <a
-                href="#dashboard"
-                onClick={(e) => {
-                  e.preventDefault();
-                  onNavigate && onNavigate('dashboard');
-                }}
-                className="text-decoration-none text-primary fw-medium"
-              >
-                <img src="https://img.icons8.com/?size=100&id=aVHe2jHuORcA&format=png&color=000000" alt="Dashboard" width="16" height="16" referrerPolicy="no-referrer" className="me-1 align-text-bottom" style={{ objectFit: 'contain' }} />
-                Dashboard
-              </a>
-            </li>
-            <li className="breadcrumb-item">
-              <a
-                href="#placement-prep"
-                onClick={(e) => {
-                  e.preventDefault();
-                  onNavigate && onNavigate('placement-prep');
-                }}
-                className="text-decoration-none text-primary fw-medium"
-              >
-                📚 Placement Preparation
-              </a>
-            </li>
-            <li className="breadcrumb-item active text-secondary" aria-current="page">
-              🏢 Company-wise Preparation
-            </li>
-          </ol>
-        </nav>
-        <div className="d-flex justify-content-between align-items-center flex-wrap gap-2">
-          <div>
-            <h3 className="fw-bold text-dark mb-1">🏢 Company-wise Preparation</h3>
-            <p className="text-muted mb-0 fs-7">
-              Master company-specific recruitment processes, eligibility requirements, round breakdowns, and past exam questions.
-            </p>
+    <div className="min-h-screen bg-[#F8FAFC] font-sans pb-16" style={{ fontFamily: 'Inter, sans-serif' }}>
+      
+      {/* Top Section */}
+      <div className="bg-white border-b border-[#E5E7EB] pt-12 pb-8 px-4 sm:px-6 lg:px-8 mb-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="max-w-3xl mb-8">
+            <motion.h1 
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-[32px] font-bold text-gray-900 mb-3"
+            >
+              Company-wise Preparation
+            </motion.h1>
+            <motion.p 
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="text-[14px] text-gray-600 leading-relaxed"
+            >
+              Prepare for top product and service-based companies with structured roadmaps, coding questions, aptitude, interview experiences, and AI guidance.
+            </motion.p>
           </div>
-          <Button
-            variant="outline-primary"
-            size="sm"
-            className="fw-bold px-3"
-            onClick={() => onNavigate && onNavigate('placement-prep')}
+
+          <motion.div 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center"
           >
-            <i className="bi bi-arrow-left me-1"></i> Back to Placement Prep
-          </Button>
+            <div className="relative w-full md:max-w-md">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <input 
+                type="text" 
+                placeholder="Search companies or roles..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full h-[48px] pl-11 pr-4 rounded-[12px] border border-gray-200 bg-[#F8FAFC] text-[14px] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all shadow-sm"
+              />
+            </div>
+            
+            <div className="flex gap-2 w-full md:w-auto overflow-x-auto pb-2 md:pb-0" style={{ scrollbarWidth: 'none' }}>
+              {['All', 'Product Companies', 'Service Companies', 'Dream Companies', 'Internship', 'Visited Companies'].map((filter) => (
+                <button
+                  key={filter}
+                  onClick={() => setActiveFilter(filter)}
+                  className={`whitespace-nowrap h-[40px] px-4 rounded-full text-[14px] font-medium transition-all ${
+                    activeFilter === filter 
+                      ? 'bg-blue-600 text-white shadow-md border-transparent' 
+                      : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50 hover:border-gray-300'
+                  }`}
+                >
+                  {filter}
+                </button>
+              ))}
+            </div>
+          </motion.div>
         </div>
       </div>
 
-      {/* Filter & Search Bar */}
-      <Row className="g-3 mb-4">
-        <Col md={8}>
-          <InputGroup className="shadow-xs">
-            <InputGroup.Text className="bg-white border-end-0">
-              <i className="bi bi-search text-muted"></i>
-            </InputGroup.Text>
-            <Form.Control
-              type="text"
-              placeholder="Search companies (TCS, Amazon, Infosys, Wipro...)..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="border-start-0 py-2.5"
-            />
-          </InputGroup>
-        </Col>
-        <Col md={4}>
-          <Form.Select
-            value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
-            className="py-2.5 shadow-xs"
-          >
-            <option value="All">All Categories</option>
-            <option value="Service">IT Services (TCS, Infy, Wipro)</option>
-            <option value="FAANG/MANG">Product / FAANG (Amazon, Google)</option>
-          </Form.Select>
-        </Col>
-      </Row>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* Results Info */}
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-[22px] font-semibold text-gray-900">
+            {activeFilter === 'All' ? 'All Companies' : activeFilter}
+            <span className="ml-3 text-[14px] font-medium text-gray-500 bg-gray-100 px-2.5 py-1 rounded-full">
+              {filteredCompanies.length}
+            </span>
+          </h2>
+          <button className="flex items-center gap-2 text-[14px] font-medium text-gray-500 hover:text-gray-700 transition-colors">
+            <Filter className="w-4 h-4" /> Sort By
+          </button>
+        </div>
 
-      {/* Main Content Layout */}
-      <Row className="g-4">
-        {/* Left Column: Company List */}
-        <Col lg={4}>
-          <div className="d-flex flex-column gap-3">
-            {filteredCompanies.map((company) => {
-              const isSelected = selectedCompany.id === company.id;
-              return (
-                <Card
-                  key={company.id}
-                  onClick={() => setSelectedCompany(company)}
-                  className={`border cursor-pointer transition-all hover-lift rounded-3 ${
-                    isSelected ? 'border-primary shadow-sm bg-primary-subtle' : 'bg-white'
-                  }`}
-                >
-                  <Card.Body className="p-3.5 d-flex align-items-center justify-content-between">
-                    <div className="d-flex align-items-center gap-3">
-                      <span className="fs-2">{company.logo}</span>
-                      <div>
-                        <h6 className="fw-bold text-dark mb-1">{company.name}</h6>
-                        <Badge bg={company.category === 'FAANG/MANG' ? 'danger' : 'primary'} className="fs-8">
-                          {company.category}
-                        </Badge>
-                      </div>
+        {/* Company Grid */}
+        <motion.div 
+          layout
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+        >
+          <AnimatePresence mode="popLayout">
+            {filteredCompanies.map((comp) => (
+              <motion.div
+                key={comp.id}
+                layout
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                whileHover={{ y: -4 }}
+                transition={{ duration: 0.25, ease: 'easeOut' }}
+                className="bg-white rounded-[16px] p-[24px] shadow-sm border border-[#E5E7EB] hover:shadow-lg hover:border-blue-600 flex flex-col group h-full"
+              >
+                <div className="flex justify-between items-start mb-5">
+                  <div className="flex items-center gap-4">
+                    <div className="w-14 h-14 rounded-[12px] bg-gray-50 border border-gray-100 flex items-center justify-center p-2 shadow-sm group-hover:scale-105 transition-transform duration-250">
+                      <CompanyLogo companyName={comp.name} size={40} />
                     </div>
-                    <i className={`bi bi-chevron-right ${isSelected ? 'text-primary fw-bold' : 'text-muted'}`}></i>
-                  </Card.Body>
-                </Card>
-              );
-            })}
-          </div>
-        </Col>
+                    <div>
+                      <h3 className="text-[18px] font-semibold text-gray-900 leading-tight mb-1">{comp.name}</h3>
+                      <span className="text-[12px] font-medium text-gray-500 flex items-center gap-1.5">
+                        <Briefcase className="w-3.5 h-3.5" /> {comp.type}
+                      </span>
+                    </div>
+                  </div>
+                  
+                  <span className={`px-2.5 py-1 rounded-[8px] text-[12px] font-medium border ${
+                    comp.difficulty === 'Hard' ? 'bg-red-50 text-red-600 border-red-100' :
+                    comp.difficulty === 'Medium' ? 'bg-orange-50 text-orange-600 border-orange-100' :
+                    'bg-green-50 text-green-600 border-green-100'
+                  }`}>
+                    {comp.difficulty}
+                  </span>
+                </div>
 
-        {/* Right Column: Selected Company Details */}
-        <Col lg={8}>
-          <Card className="shadow-xs border-0 rounded-16 overflow-hidden">
-            <Card.Header className="bg-primary text-white p-4">
-              <div className="d-flex justify-content-between align-items-start">
-                <div className="d-flex align-items-center gap-3">
-                  <span className="display-5 bg-white bg-opacity-20 p-2 rounded-3">{selectedCompany.logo}</span>
+                <div className="grid grid-cols-2 gap-3 mb-5 p-3 bg-[#F8FAFC] rounded-[12px] border border-[#E5E7EB]">
                   <div>
-                    <h3 className="fw-bold mb-1">{selectedCompany.name}</h3>
-                    <div className="d-flex gap-2 align-items-center">
-                      <Badge bg="light" text="dark" className="fw-semibold">
-                        {selectedCompany.category}
-                      </Badge>
-                      <span className="fs-7 text-white-50">• {selectedCompany.packageRange}</span>
-                    </div>
+                    <p className="text-[12px] text-gray-500 font-medium mb-0.5">Package Range</p>
+                    <p className="text-[14px] font-semibold text-gray-900">{comp.packageRange}</p>
+                  </div>
+                  <div>
+                    <p className="text-[12px] text-gray-500 font-medium mb-0.5">Hiring Roles</p>
+                    <p className="text-[14px] font-semibold text-gray-900 truncate" title={comp.roles.join(', ')}>
+                      {comp.roles.slice(0, 2).join(', ')}{comp.roles.length > 2 ? ' +' : ''}
+                    </p>
                   </div>
                 </div>
-              </div>
-            </Card.Header>
 
-            <Card.Body className="p-4">
-              <h6 className="fw-bold text-dark mb-2">📌 Company Overview</h6>
-              <p className="text-secondary fs-7 leading-relaxed mb-4">{selectedCompany.overview}</p>
-
-              <h6 className="fw-bold text-dark mb-2">🎓 Eligibility Criteria</h6>
-              <div className="p-3 bg-light rounded-3 border mb-4 fs-7 text-dark fw-medium">
-                <i className="bi bi-mortarboard text-primary me-2 fs-6"></i>
-                {selectedCompany.eligibility}
-              </div>
-
-              <h6 className="fw-bold text-dark mb-3">🔄 Interview & Hiring Rounds</h6>
-              <div className="d-flex flex-column gap-2 mb-4">
-                {selectedCompany.hiringRounds.map((round, idx) => (
-                  <div key={idx} className="p-3 bg-white rounded-3 border d-flex align-items-center gap-3 shadow-xs">
-                    <span className="badge bg-dark rounded-circle px-2.5 py-1.5">{idx + 1}</span>
-                    <span className="fw-semibold text-dark fs-7">{round}</span>
+                <div className="mb-5 flex-grow">
+                  <div className="flex justify-between items-end mb-2">
+                    <p className="text-[12px] font-medium text-gray-600">Preparation Progress</p>
+                    <span className="text-[14px] font-bold text-blue-600">{Math.round((comp.progress.completed / comp.progress.total) * 100)}%</span>
                   </div>
-                ))}
-              </div>
+                  <div className="w-full h-[6px] bg-gray-100 rounded-full overflow-hidden mb-3">
+                    <motion.div 
+                      initial={{ width: 0 }}
+                      whileInView={{ width: `${(comp.progress.completed / comp.progress.total) * 100}%` }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 1, ease: 'easeOut', delay: 0.2 }}
+                      className="h-full bg-blue-600 rounded-full"
+                    />
+                  </div>
+                  <div className="flex justify-between text-[11px] font-medium text-gray-500">
+                    <span className="text-green-600 flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-green-500"></span>{comp.progress.completed} Done</span>
+                    <span className="text-orange-500 flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-orange-400"></span>{comp.progress.inProgress} Doing</span>
+                    <span className="text-gray-400 flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-gray-300"></span>{comp.progress.remaining} Left</span>
+                  </div>
+                </div>
 
-              <h6 className="fw-bold text-dark mb-3">📝 Previous Interview Questions & Patterns</h6>
-              <Accordion defaultActiveKey="0" className="mb-4">
-                {selectedCompany.previousQuestions.map((item, idx) => (
-                  <Accordion.Item key={idx} eventKey={idx.toString()}>
-                    <Accordion.Header>
-                      <div className="d-flex align-items-center justify-content-between w-100 me-3">
-                        <span className="fw-semibold text-dark fs-7">
-                          {item.round} — <span className="text-primary">{item.type}</span>
-                        </span>
-                        <Badge bg={item.difficulty === 'Easy' ? 'success' : item.difficulty === 'Medium' ? 'warning' : 'danger'}>
-                          {item.difficulty}
-                        </Badge>
-                      </div>
-                    </Accordion.Header>
-                    <Accordion.Body className="bg-light fs-7">
-                      <p className="fw-bold text-dark mb-2">{item.question}</p>
-                      <Button
-                        variant="outline-primary"
-                        size="sm"
-                        className="fw-bold"
-                        onClick={() => {
-                          if (item.type === 'Coding') onNavigate && onNavigate('leetcode-practice');
-                          else if (item.type === 'Aptitude') onNavigate && onNavigate('aptitude-test');
-                          else onNavigate && onNavigate('hr-prep');
-                        }}
-                      >
-                        <i className="bi bi-play-circle me-1"></i> Practice This Question
-                      </Button>
-                    </Accordion.Body>
-                  </Accordion.Item>
-                ))}
-              </Accordion>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-    </Container>
+                <div className="flex flex-col gap-2.5 mb-6 text-[12px] font-medium text-gray-600">
+                  <div className="flex items-center gap-2">
+                    <Code2 className="w-4 h-4 text-blue-500" />
+                    <span>{comp.questionsCount} DSA Questions</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Users className="w-4 h-4 text-purple-500" />
+                    <span>{comp.experiencesCount} Interview Experiences</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Calendar className="w-4 h-4 text-gray-400" />
+                    <span>Updated {comp.lastUpdated}</span>
+                  </div>
+                </div>
+
+                <div className="mt-auto flex flex-col gap-3">
+                  <button
+                    onClick={() => onNavigate('company-prep-detail')}
+                    className="w-full h-[44px] rounded-full bg-blue-600 hover:bg-blue-700 text-white font-medium text-[14px] flex items-center justify-center gap-2 transition-colors shadow-sm"
+                  >
+                    <Play className="w-4 h-4 fill-current text-white" /> Start Preparation
+                  </button>
+                  <button
+                    onClick={() => onNavigate('company-prep-detail')}
+                    className="w-full h-[44px] rounded-full bg-white hover:bg-gray-50 text-blue-600 font-medium text-[14px] border border-blue-200 flex items-center justify-center gap-2 transition-colors"
+                  >
+                    <Map className="w-4 h-4" /> View Roadmap
+                  </button>
+                </div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </motion.div>
+        
+        {filteredCompanies.length === 0 && (
+          <div className="text-center py-20">
+            <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Search className="w-8 h-8 text-gray-400" />
+            </div>
+            <h3 className="text-[18px] font-semibold text-gray-900 mb-2">No companies found</h3>
+            <p className="text-[14px] text-gray-500">We couldn't find any companies matching your search criteria.</p>
+            <button 
+              onClick={() => {setSearchQuery(''); setActiveFilter('All');}}
+              className="mt-4 px-6 h-[40px] rounded-full bg-blue-50 text-blue-600 font-medium text-[14px] hover:bg-blue-100 transition-colors"
+            >
+              Clear Filters
+            </button>
+          </div>
+        )}
+
+      </div>
+    </div>
   );
 };

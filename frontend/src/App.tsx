@@ -12,6 +12,7 @@ import { InterviewsPage } from './pages/InterviewsPage';
 import { CompaniesPage } from './pages/CompaniesPage';
 import { PlacementPrepPage } from './pages/PlacementPrepPage';
 import { CompanyPrepPage } from './pages/CompanyPrepPage';
+import { CompanyPrepDetailPage } from './pages/CompanyPrepDetailPage';
 import { TechnicalPrepPage } from './pages/TechnicalPrepPage';
 import { GdPrepPage } from './pages/GdPrepPage';
 import { AptitudeTestPage } from './pages/AptitudeTestPage';
@@ -35,14 +36,20 @@ function AppContent() {
   const { isAuthenticated, logout } = useAuth();
   const [currentTab, setCurrentTab] = useState('landing');
   const [selectedJobId, setSelectedJobId] = useState<string>('job-1');
+  const [selectedCompanyId, setSelectedCompanyId] = useState<string>('amazon');
 
-  const handleNavigate = (tab: string, jobId?: string) => {
+  const handleNavigate = (tab: string, itemId?: string) => {
     if (tab === 'logout') {
       logout();
       setCurrentTab('login');
       return;
     }
-    if (jobId) setSelectedJobId(jobId);
+    if (tab === 'job-details' && itemId) {
+      setSelectedJobId(itemId);
+    }
+    if (tab === 'company-prep-detail' && itemId) {
+      setSelectedCompanyId(itemId);
+    }
     setCurrentTab(tab);
   };
 
@@ -89,6 +96,8 @@ function AppContent() {
         return <PlacementPrepPage onNavigate={handleNavigate} />;
       case 'company-prep':
         return <CompanyPrepPage onNavigate={handleNavigate} />;
+      case 'company-prep-detail':
+        return <CompanyPrepDetailPage companyId={selectedCompanyId} onBack={() => setCurrentTab('company-prep')} />;
       case 'technical-prep':
         return <TechnicalPrepPage onNavigate={handleNavigate} />;
       case 'gd-prep':

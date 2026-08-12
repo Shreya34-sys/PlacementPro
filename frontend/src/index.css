@@ -1,21 +1,58 @@
 @import "tailwindcss";
 
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #F8FAFC;
+}
+
 @layer utilities {
   .rounded-16 {
     border-radius: 16px !important;
   }
 
+  /* Premium Card Hover Lift & Soft Blue Glow */
   .hover-lift {
-    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
+    will-change: transform, box-shadow;
   }
 
   .hover-lift:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1) !important;
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 16px 36px -6px rgba(37, 99, 235, 0.14), 0 8px 16px -4px rgba(0, 0, 0, 0.04) !important;
+    border-color: #BFDBFE !important;
   }
 
   .soft-shadow {
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  }
+
+  /* Button Premium Hover Scale & Shadow */
+  .btn-premium {
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .btn-premium:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 20px -2px rgba(37, 99, 235, 0.25);
+  }
+
+  .btn-premium:active {
+    transform: scale(0.98);
+  }
+
+  /* Search Bar Focus Scale & Outline */
+  .search-expand {
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+  }
+
+  .search-expand:focus {
+    transform: scale(1.01);
   }
 
   .hover-bg-gray:hover {
@@ -32,6 +69,22 @@
 
   .fs-8 {
     font-size: 0.75rem;
+  }
+}
+
+/* Accessibility: Respect Reduced Motion Preferences */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .hover-lift:hover {
+    transform: none !important;
   }
 }
 
@@ -241,6 +294,47 @@ body.dark-mode .offcanvas {
 @media (max-width: 767.98px) {
   .main-content-scrollable {
     margin-left: 0 !important;
+  }
+}
+
+/* Custom rolling spinner animation */
+.rolling-spinner {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rolling-ring {
+  display: inline-block;
+  width: 2rem;
+  height: 2rem;
+  border: 4px solid transparent;
+  border-top-color: #2563EB;
+  border-radius: 50%;
+  animation: rolling-spin 0.85s linear infinite;
+}
+
+.rolling-spinner-sm .rolling-ring {
+  width: 1rem;
+  height: 1rem;
+  border-width: 3px;
+}
+
+.rolling-spinner-md .rolling-ring {
+  width: 1.6rem;
+  height: 1.6rem;
+  border-width: 3px;
+}
+
+.rolling-spinner-lg .rolling-ring {
+  width: 3rem;
+  height: 3rem;
+  border-width: 4px;
+}
+
+@keyframes rolling-spin {
+  100% {
+    transform: rotate(360deg);
   }
 }
 

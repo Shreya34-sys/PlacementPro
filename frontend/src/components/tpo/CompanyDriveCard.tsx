@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, Badge, Button } from 'react-bootstrap';
 import { JobDrive } from '../../types';
 import { formatDate } from '../../utils/formatters';
+import { CompanyLogo } from '../common/CompanyLogo';
 
 interface CompanyDriveCardProps {
   job: JobDrive;
@@ -20,12 +21,15 @@ export const CompanyDriveCard: React.FC<CompanyDriveCardProps> = ({
     <Card className="shadow-sm border-0 h-100 hover-shadow transition-all">
       <Card.Body className="d-flex flex-column p-4">
         <div className="d-flex justify-content-between align-items-start mb-3">
-          <div>
-            <Badge bg={job.category === 'Full Time' ? 'primary' : 'info'} className="mb-2">
-              {job.category}
-            </Badge>
-            <h5 className="fw-bold text-dark mb-1">{job.title}</h5>
-            <h6 className="text-primary fw-semibold mb-0">{job.companyName}</h6>
+          <div className="d-flex align-items-center gap-3">
+            <CompanyLogo companyName={job.companyName} size={48} />
+            <div>
+              <Badge bg={job.category === 'Full Time' ? 'primary' : 'info'} className="mb-1">
+                {job.category}
+              </Badge>
+              <h5 className="fw-bold text-dark mb-0">{job.title}</h5>
+              <h6 className="text-primary fw-semibold mb-0 fs-7">{job.companyName}</h6>
+            </div>
           </div>
           <Badge bg={job.status === 'Active' ? 'success' : 'secondary'} className="px-2 py-1">
             {job.status}

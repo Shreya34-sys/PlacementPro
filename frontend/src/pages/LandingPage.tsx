@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Container, Row, Col, Card, Button, Badge, Accordion, Nav } from 'react-bootstrap';
 import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
+import { CompanyLogo } from '../components/common/CompanyLogo';
 
 interface LandingPageProps {
   onNavigate: (tab: string) => void;
@@ -13,15 +14,19 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
   const [isAnnualBilling, setIsAnnualBilling] = useState(true);
 
   const companyLogos = [
-    { name: 'Google', icon: 'bi-google', color: '#4285F4' },
-    { name: 'Microsoft', icon: 'bi-microsoft', color: '#00A4EF' },
-    { name: 'Amazon', icon: 'bi-box-seam-fill', color: '#FF9900' },
-    { name: 'TCS', icon: 'bi-building-fill', color: '#2563EB' },
-    { name: 'Infosys', icon: 'bi-cpu-fill', color: '#0284C7' },
-    { name: 'Accenture', icon: 'bi-slash-square-fill', color: '#A855F7' },
-    { name: 'Wipro', icon: 'bi-globe2', color: '#10B981' },
-    { name: 'Deloitte', icon: 'bi-check-circle-fill', color: '#84CC16' },
-    { name: 'Cognizant', icon: 'bi-layers-fill', color: '#06B6D4' },
+    { name: 'Google' },
+    { name: 'Microsoft' },
+    { name: 'Amazon' },
+    { name: 'Apple' },
+    { name: 'Meta' },
+    { name: 'Netflix' },
+    { name: 'Adobe' },
+    { name: 'TCS' },
+    { name: 'Infosys' },
+    { name: 'Accenture' },
+    { name: 'Wipro' },
+    { name: 'Deloitte' },
+    { name: 'Cognizant' },
   ];
 
   const featuresList = [
@@ -430,8 +435,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
           </div>
           <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-between gap-4 py-2">
             {companyLogos.map((comp, idx) => (
-              <div key={idx} className="d-flex align-items-center gap-2 text-secondary opacity-75 hover-opacity-100 transition-all cursor-pointer">
-                <i className={`bi ${comp.icon} fs-4`} style={{ color: comp.color }}></i>
+              <div key={idx} className="d-flex align-items-center gap-2.5 text-secondary hover-opacity-100 transition-all cursor-pointer">
+                <CompanyLogo companyName={comp.name} size={48} />
                 <span className="fw-bold fs-6 tracking-tight text-dark">{comp.name}</span>
               </div>
             ))}

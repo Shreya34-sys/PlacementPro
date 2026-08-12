@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Card, Button, Badge, ProgressBar, Tabs, Tab, Form, Table, Alert, Accordion } from 'react-bootstrap';
 import Editor from '@monaco-editor/react';
+import { CompanyLogo } from '../components/common/CompanyLogo';
 
 interface CodingProblem {
   id: string;
@@ -266,8 +267,16 @@ export const LeetCodePracticePage: React.FC = () => {
                         {p.difficulty}
                       </Badge>
                     </div>
-                    <div className={`fs-9 ${selectedProblem.id === p.id ? 'text-white-50' : 'text-muted'}`}>
-                      Acceptance: {p.acceptanceRate} • {p.companies.join(', ')}
+                    <div className="d-flex align-items-center gap-1.5 flex-wrap mt-1">
+                      <span className={`fs-9 ${selectedProblem.id === p.id ? 'text-white-50' : 'text-muted'}`}>
+                        Acceptance: {p.acceptanceRate} •
+                      </span>
+                      {p.companies.map((c) => (
+                        <span key={c} className="d-inline-flex align-items-center gap-1">
+                          <CompanyLogo companyName={c} size={20} />
+                          <small className="fs-9">{c}</small>
+                        </span>
+                      ))}
                     </div>
                   </button>
                 ))}

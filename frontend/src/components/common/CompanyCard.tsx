@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, Badge, Button } from 'react-bootstrap';
 import { Company } from '../../types';
+import { CompanyLogo } from './CompanyLogo';
 
 interface CompanyCardProps {
   company: Company;
@@ -18,21 +19,7 @@ export const CompanyCard: React.FC<CompanyCardProps> = ({
       <Card.Body className="p-3.5 d-flex flex-column">
         <div className="d-flex align-items-center justify-content-between mb-3">
           <div className="d-flex align-items-center gap-3">
-            {company.logoUrl ? (
-              <img
-                src={company.logoUrl}
-                alt={company.name}
-                className="rounded-circle border object-fit-cover"
-                style={{ width: '48px', height: '48px' }}
-              />
-            ) : (
-              <div
-                className="rounded-circle bg-primary bg-opacity-10 text-primary fw-bold d-flex align-items-center justify-content-center border"
-                style={{ width: '48px', height: '48px', fontSize: '1.2rem' }}
-              >
-                {company.name.charAt(0)}
-              </div>
-            )}
+            <CompanyLogo companyName={company.name} logoUrl={company.logoUrl} size={48} />
             <div>
               <h6 className="fw-bold text-dark mb-0">{company.name}</h6>
               <small className="text-muted fs-8"><i className="bi bi-geo-alt me-1"></i>{company.location}</small>
