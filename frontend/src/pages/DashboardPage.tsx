@@ -2,6 +2,7 @@ import React from 'react';
 import { motion, Variants } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
 import { CompanyLogo } from '../components/common/CompanyLogo';
+import './DashboardPage.css';
 import {
   Sparkles,
   TrendingUp,
@@ -260,7 +261,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
-      className="min-h-screen bg-[#F8FAFC] text-gray-900 pb-12 font-sans"
+      className="dashboard-clean min-h-screen bg-[#F8FAFC] text-gray-900 pb-12 font-sans"
       style={{ fontFamily: 'Inter, sans-serif' }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
@@ -479,14 +480,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
 
               <div className="space-y-4">
                 {aiRecommendations.map((item) => (
-                  <div key={item.id} className="p-5 bg-[#F8FAFC] rounded-[16px] border border-[#E5E7EB] hover:border-blue-200 transition-all hover:shadow-sm">
+                  <div key={item.id} className="dashboard-recommendation-card p-5 bg-[#F8FAFC] rounded-[16px] border border-[#E5E7EB] hover:border-blue-200 transition-all hover:shadow-sm">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                       <div className="flex items-start gap-4">
                         <span className="text-2xl p-2.5 bg-white rounded-xl border border-gray-200/80 shadow-sm shrink-0">{item.icon}</span>
-                        <div>
-                          <div className="flex items-center gap-2 mb-1.5">
-                            <span className="px-2 py-0.5 rounded-[6px] text-[12px] font-medium bg-gray-200/70 text-gray-700">{item.category}</span>
-                            <h3 className="text-[14px] font-semibold text-gray-900">{item.title}</h3>
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-start gap-2 mb-2">
+                            <span className="dashboard-card-badge px-2 py-0.5 rounded-[6px] text-[12px] font-medium bg-gray-200/70 text-gray-700">{item.category}</span>
+                            <h3 className="dashboard-card-title text-[14px] font-semibold text-gray-900">{item.title}</h3>
                           </div>
                           <p className="text-[14px] text-gray-600 leading-relaxed">{item.description}</p>
                         </div>
@@ -494,7 +495,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
 
                       <button
                         onClick={() => onNavigate(item.tab)}
-                        className="self-end sm:self-center h-[40px] px-4 rounded-[12px] border border-gray-200 bg-white hover:bg-gray-50 hover:border-gray-300 text-gray-900 font-medium text-[14px] transition-all shadow-sm shrink-0 flex items-center gap-1.5"
+                        className="dashboard-card-action self-end sm:self-center h-[40px] px-4 rounded-[12px] border border-gray-200 bg-white hover:bg-gray-50 hover:border-gray-300 text-gray-900 font-medium text-[14px] transition-all shadow-sm shrink-0 flex items-center gap-1.5"
                       >
                         <span>{item.actionText}</span>
                         <ArrowRight className="w-4 h-4 text-gray-500" />
@@ -589,32 +590,32 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
                   <motion.div 
                     key={item.id} 
                     whileHover={{ scale: 1.02 }}
-                    className="p-5 bg-white rounded-[16px] border border-[#E5E7EB] hover:border-blue-300 transition-all duration-250 ease-out hover:shadow-md"
+                    className="dashboard-interview-card p-5 bg-white rounded-[16px] border border-[#E5E7EB] hover:border-blue-300 transition-all duration-250 ease-out hover:shadow-md"
                   >
                     <div className="flex items-center justify-between mb-3">
-                      <span className={`text-[12px] font-medium px-2.5 py-1 rounded-full ${item.badgeClass}`}>
+                      <span className={`dashboard-card-badge text-[12px] font-medium px-2.5 py-1 rounded-full ${item.badgeClass}`}>
                         {item.date} • {item.time}
                       </span>
-                      <span className="text-[12px] font-medium text-gray-500 flex items-center gap-1.5">
+                      <span className="dashboard-card-meta text-[12px] font-medium text-gray-500 flex items-center gap-1.5">
                         <Clock className="w-3.5 h-3.5" /> {item.duration}
                       </span>
                     </div>
 
                     <div className="flex items-center gap-3 mb-4">
                       <CompanyLogo companyName={item.company} size={40} />
-                      <div>
-                        <h3 className="text-[14px] font-semibold text-gray-900 mb-0.5">{item.company}</h3>
-                        <p className="text-[12px] font-medium text-gray-500 mb-0 truncate max-w-[200px]">{item.type}</p>
+                      <div className="min-w-0 flex-1">
+                        <h3 className="dashboard-card-title text-[14px] font-semibold text-gray-900 mb-0.5">{item.company}</h3>
+                        <p className="dashboard-card-description text-[12px] font-medium text-gray-500 mb-0 truncate max-w-[200px]">{item.type}</p>
                       </div>
                     </div>
 
                     <div className="flex items-center justify-between pt-3 border-t border-gray-100">
-                      <span className="text-[12px] font-medium text-gray-500 flex items-center gap-1.5">
+                      <span className="dashboard-card-meta min-w-0 text-[12px] font-medium text-gray-500 flex items-center gap-1.5">
                         <Bot className="w-4 h-4 text-gray-400" /> {item.interviewer}
                       </span>
                       <button
                         onClick={() => onNavigate('ai-interview')}
-                        className="h-[32px] px-3 rounded-[8px] bg-white border border-gray-200 hover:bg-gray-50 hover:border-gray-300 text-gray-700 font-medium text-[12px] transition-all shadow-sm"
+                        className="dashboard-card-action h-[32px] px-3 rounded-[8px] bg-white border border-gray-200 hover:bg-gray-50 hover:border-gray-300 text-gray-700 font-medium text-[12px] transition-all shadow-sm"
                       >
                         Join Room
                       </button>
@@ -624,27 +625,34 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
               </div>
             </div>
 
-            {/* Placement Readiness Insight Box */}
-            <div className="bg-gradient-to-br from-slate-900 to-gray-900 text-white rounded-[16px] p-6 shadow-lg border border-slate-800 transition-all duration-250 ease-out hover:-translate-y-1 hover:shadow-xl">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-[12px] bg-amber-500/20 border border-amber-400/30 text-amber-300 flex items-center justify-center font-bold text-lg">
-                  🎯
+            {/* Placement readiness overview */}
+            <div className="rounded-[18px] bg-white p-7 shadow-[0_12px_32px_rgba(15,23,42,0.08)] border border-gray-100 transition-all duration-250 ease-out hover:-translate-y-1 hover:shadow-[0_16px_40px_rgba(15,23,42,0.12)]">
+              <div className="flex items-center justify-between gap-3">
+                <h3 className="text-[16px] font-medium text-gray-900">Overview</h3>
+                <span className="rounded-full bg-emerald-50 px-2.5 py-1 text-[12px] font-medium text-emerald-700">Updated today</span>
+              </div>
+
+              <div className="mt-6">
+                <p className="text-[12px] font-semibold uppercase tracking-[0.05em] text-gray-500">Your readiness</p>
+                <h4 className="mt-2 text-[21px] font-semibold leading-tight text-gray-900">You're making progress</h4>
+              </div>
+
+              <div className="mt-6 flex items-center gap-5">
+                <div className="relative flex h-[116px] w-[116px] shrink-0 flex-col items-center justify-center rounded-full border-[8px] border-blue-600 border-r-blue-100">
+                  <div className="flex items-baseline"><span className="text-[44px] font-bold leading-none tracking-[-0.06em] text-gray-900">82</span><span className="ml-1 text-[17px] font-normal text-gray-500">/100</span></div>
+                  <span className="mt-2 text-center text-[10px] font-semibold uppercase tracking-[0.05em] text-gray-500">Readiness score</span>
                 </div>
-                <div>
-                  <h3 className="text-[18px] font-semibold text-white leading-tight">Placement Tip of the Day</h3>
-                  <p className="text-[12px] font-medium text-gray-400 mt-0.5">Based on 2026 Hiring Data</p>
+                <div className="min-w-0 flex-1">
+                  <h5 className="text-[16px] font-semibold text-gray-900">Keep going</h5>
+                  <p className="mt-2 text-[14px] leading-[1.5] text-gray-600">Complete one interview simulation to improve your score.</p>
+                  <div className="mt-4 h-2 overflow-hidden rounded-full bg-gray-100"><div className="h-full w-[82%] rounded-full bg-blue-600" /></div>
                 </div>
               </div>
 
-              <p className="text-[14px] text-gray-300 leading-relaxed mb-6 font-medium">
-                Top tech companies evaluate both problem-solving speed and clear articulation of system architecture. Take at least 2 AI mock interviews weekly to build confidence.
-              </p>
-
-              <button
-                onClick={() => onNavigate('placement-prep')}
-                className="w-full h-[40px] rounded-[12px] border border-white/20 bg-white/10 hover:bg-white/20 text-white font-medium text-[14px] transition-all"
-              >
-                Explore Placement Syllabus
+              <button onClick={() => onNavigate('ai-interview')} className="mt-6 flex w-full items-center gap-3 rounded-[12px] bg-blue-50 p-4 text-left transition-colors hover:bg-blue-100">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[9px] bg-white text-blue-600 shadow-sm"><Mic className="h-4 w-4" /></span>
+                <span className="min-w-0 flex-1"><span className="block text-[12px] font-semibold uppercase tracking-[0.05em] text-gray-500">Next up</span><span className="mt-1 block text-[15px] font-semibold text-gray-900">Technical interview practice</span><span className="mt-1 block truncate text-[13px] text-gray-600">30 minutes · tailored to your target role</span></span>
+                <ChevronRight className="h-5 w-5 shrink-0 text-blue-600" />
               </button>
             </div>
 
