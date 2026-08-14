@@ -31,10 +31,11 @@ import { SettingsPage } from './pages/SettingsPage';
 import { LoginPage } from './pages/LoginPage';
 import { RegisterPage } from './pages/RegisterPage';
 import { LandingPage } from './pages/LandingPage';
+import { TermsPage } from './pages/TermsPage';
 
 function AppContent() {
   const { isAuthenticated, logout } = useAuth();
-  const [currentTab, setCurrentTab] = useState('landing');
+  const [currentTab, setCurrentTab] = useState(() => window.location.hash === '#terms' ? 'terms' : 'landing');
   const [selectedJobId, setSelectedJobId] = useState<string>('job-1');
   const [selectedCompanyId, setSelectedCompanyId] = useState<string>('amazon');
 
@@ -54,7 +55,7 @@ function AppContent() {
   };
 
   // Route Protection: Prevent logged-out users from accessing protected student pages
-  if (!isAuthenticated && currentTab !== 'landing' && currentTab !== 'register') {
+  if (!isAuthenticated && currentTab !== 'landing' && currentTab !== 'register' && currentTab !== 'terms') {
     return (
       <div className="min-vh-100" style={{ backgroundColor: '#F8FAFC' }}>
         <LoginPage
@@ -81,8 +82,17 @@ function AppContent() {
           <RegisterPage
             onNavigateToLogin={() => setCurrentTab('login')}
             onRegisterSuccess={() => setCurrentTab('dashboard')}
+            onNavigateToTerms={() => {
+              window.location.hash = 'terms';
+              setCurrentTab('terms');
+            }}
           />
         );
+      case 'terms':
+        return <TermsPage onBack={() => {
+          window.history.replaceState(null, '', window.location.pathname);
+          setCurrentTab('register');
+        }} />;
       case 'dashboard':
         return <DashboardPage onNavigate={handleNavigate} />;
       case 'jobs':
@@ -140,7 +150,7 @@ function AppContent() {
     }
   };
 
-  if (currentTab === 'login' || currentTab === 'register' || currentTab === 'landing') {
+  if (currentTab === 'login' || currentTab === 'register' || currentTab === 'landing' || currentTab === 'terms') {
     return (
       <div className="min-vh-100 bg-light">
         {renderContent()}

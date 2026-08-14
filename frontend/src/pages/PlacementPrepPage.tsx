@@ -18,6 +18,8 @@ import {
   CheckCircle2,
   Bookmark,
   Sparkles,
+  List,
+  BarChart3,
 } from 'lucide-react';
 
 interface PlacementPrepPageProps {
@@ -277,7 +279,7 @@ export const PlacementPrepPage: React.FC<PlacementPrepPageProps> = ({ onNavigate
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
-      className="min-h-screen bg-[#0F172A] text-gray-100 pb-12 font-sans"
+      className="min-h-screen bg-[#0E0E10] text-gray-100 pb-12 font-sans"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
         
@@ -317,7 +319,7 @@ export const PlacementPrepPage: React.FC<PlacementPrepPageProps> = ({ onNavigate
                 className="w-10 h-10 rounded-full bg-[#1E293B] border border-gray-700 text-gray-400 hover:text-white hover:border-gray-500 flex items-center justify-center transition-all"
               >
                 <Bell className="w-4 h-4" />
-                <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-blue-500 ring-2 ring-[#0F172A]"></span>
+                <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-blue-500 ring-2 ring-[#0E0E10]"></span>
               </motion.button>
             </div>
           </div>
@@ -366,117 +368,60 @@ export const PlacementPrepPage: React.FC<PlacementPrepPageProps> = ({ onNavigate
         >
           {filteredModules.map((module) => {
             const IconComponent = module.icon;
+            const isCompleted = module.status === 'Completed';
+
             return (
               <motion.div key={module.id} variants={cardVariants} className="h-full">
-                <div className="bg-[#1E293B] rounded-[20px] border border-gray-700 overflow-hidden h-full flex flex-col">
-                  <div className={`${module.headerGradient} p-6 pb-12 relative`}>
-                    <div className="flex justify-between items-start">
-                      <span className="text-[11px] font-bold tracking-wider uppercase text-white/70 bg-black/20 px-3 py-1 rounded-full backdrop-blur-sm">
-                        {module.totalLessonsQuestions}
-                      </span>
-                      <button
-                        onClick={(e) => toggleBookmark(module.id, e)}
-                        className={`p-1.5 rounded-lg transition-colors ${module.isBookmarked ? 'text-amber-400' : 'text-white/50 hover:text-white'}`}
-                      >
-                        <Bookmark className="w-5 h-5 fill-current" />
-                      </button>
-                    </div>
-                    <div className={`absolute -bottom-6 left-6 w-14 h-14 rounded-[16px] ${module.iconBgColor} flex items-center justify-center border-4 border-[#1E293B] shadow-2xl`}>
-                      <IconComponent className="w-7 h-7 text-white" />
-                    </div>
+                <div className="group h-full overflow-hidden rounded-[14px] bg-[#1A1A1E] shadow-xl shadow-black/20 transition-all duration-250 hover:-translate-y-1">
+                  <div className={`${module.iconBgColor} h-[58px] px-4 py-3 flex items-start justify-between`}>
+                    <span className="max-w-[68%] truncate rounded-full bg-white/20 px-2.5 py-0.5 text-[11px] leading-4 font-medium text-white">
+                      {module.totalLessonsQuestions}
+                    </span>
+                    <span className="rounded-full bg-white/20 px-2.5 py-0.5 text-[11px] leading-4 font-semibold text-white">
+                      {module.difficulty}
+                    </span>
                   </div>
 
-                  <div className="p-6 pt-10 flex-1 flex flex-col">
-                    <div className="flex justify-between items-center mb-4">
-                      <h2 className="text-lg font-bold text-white">{module.title}</h2>
-                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider ${module.difficultyBadgeClass}`}>
-                        {module.difficulty}
-                      </span>
-                    </div>
-                    <p className="text-[14px] text-gray-400 flex-1">{module.description}</p>
-                    
-                    <div>
-                      {/* Top Row: Icon (48x48) + Bookmark Toggle */}
-                      <div className="flex items-start justify-between gap-3 mb-4">
-                        <div
-                          className={`w-[48px] h-[48px] min-w-[48px] rounded-[12px] ${module.iconBgColor} ${module.iconTextColor} flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform duration-250`}
-                        >
-                          <IconComponent className="w-6 h-6 transition-transform duration-250 group-hover:scale-105" />
-                        </div>
-
-                        <button
-                          onClick={(e) => toggleBookmark(module.id, e)}
-                          title={module.isBookmarked ? 'Remove Bookmark' : 'Bookmark Module'}
-                          className={`p-1.5 rounded-lg transition-colors ${
-                            module.isBookmarked
-                              ? 'text-amber-500 bg-amber-50 hover:bg-amber-100'
-                              : 'text-gray-300 hover:text-gray-500 hover:bg-gray-100'
-                          }`}
-                        >
-                          <Bookmark className="w-4 h-4 fill-current" />
-                        </button>
+                  <div className="flex h-[calc(100%-58px)] flex-col p-5 pt-0">
+                    <div className="flex items-start justify-between gap-3 -mt-[30px]">
+                      <div className={`flex h-[60px] w-[60px] shrink-0 items-center justify-center rounded-[14px] ${module.iconBgColor} ring-4 ring-[#1A1A1E] shadow-lg shadow-black/25 transition-transform duration-250 group-hover:scale-105`}>
+                        <IconComponent className="h-7 w-7 text-white" />
                       </div>
-
-                      {/* Middle: Module Title + Description */}
-                      <h2 className="text-[18px] font-semibold text-gray-900 leading-snug mb-1.5 group-hover:text-blue-600 transition-colors">
-                        {module.title}
-                      </h2>
-                      <p className="text-[14px] text-gray-500 font-normal leading-relaxed line-clamp-2 mb-5">
-                        {module.description}
-                      </p>
-                    </div>
-
-                    {/* Bottom Content Area: Progress Section + Button */}
-                    <div className="mt-auto">
-                      {/* Progress Section */}
-                      <div className="bg-[#F8FAFC] border border-gray-100 p-3 rounded-[12px] mb-4">
-                        <div className="flex items-center justify-between mb-1.5">
-                          <span className="text-[12px] font-medium text-gray-600">Progress</span>
-                          <span
-                            className={`text-[12px] font-semibold ${
-                              isCompleted ? 'text-emerald-600' : 'text-blue-600'
-                            }`}
-                          >
-                            {module.progressPercent}%
-                          </span>
-                        </div>
-                        {/* 6px Height Animated Progress Bar */}
-                        <div className="w-full h-[6px] bg-gray-200/80 rounded-full overflow-hidden">
-                          <motion.div
-                            initial={{ width: 0 }}
-                            animate={{ width: `${module.progressPercent}%` }}
-                            transition={{ duration: 0.8, ease: 'easeOut' }}
-                            className="h-full rounded-full"
-                            style={{ backgroundColor: module.progressColor }}
-                          />
-                        </div>
-                      </div>
-
-                      {/* Primary Action Button (Full Width, Height 42px, Rounded XL) */}
-                      <motion.button
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                        onClick={() => onNavigate && onNavigate(module.targetTab)}
-                        className={`w-full h-[42px] rounded-xl text-[14px] font-semibold flex items-center justify-center gap-1.5 transition-all duration-200 ${
-                          isCompleted
-                            ? 'bg-gray-100 hover:bg-gray-200 text-gray-700 border border-gray-200'
-                            : 'bg-[#2563EB] hover:bg-blue-700 text-white shadow-sm shadow-blue-500/20'
-                        }`}
+                      <button
+                        onClick={(event) => toggleBookmark(module.id, event)}
+                        title={module.isBookmarked ? 'Remove Bookmark' : 'Bookmark Module'}
+                        className={`mt-9 rounded-lg p-1.5 transition-colors ${module.isBookmarked ? 'bg-amber-400/10 text-amber-400 hover:bg-amber-400/20' : 'text-gray-600 hover:bg-white/10 hover:text-gray-300'}`}
                       >
-                        {isCompleted ? (
-                          <>
-                            <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                            <span>Review Material</span>
-                          </>
-                        ) : (
-                          <>
-                            <span>Continue Learning</span>
-                            <ArrowRight className="w-4 h-4" />
-                          </>
-                        )}
-                      </motion.button>
+                        <Bookmark className="h-4 w-4 fill-current" />
+                      </button>
                     </div>
 
+                    <h2 className="mt-4 text-[20px] font-bold leading-snug text-white transition-colors group-hover:text-blue-300">
+                      {module.title}
+                    </h2>
+                    <p className="mt-2 min-h-[63px] line-clamp-3 text-[14px] leading-[1.5] text-[#9CA3AF]">
+                      {module.description}
+                    </p>
+
+                    <div className="mt-4 border-t border-white/10 pt-3.5 space-y-2.5">
+                      <div className="flex items-center gap-2 text-[13px] text-gray-400">
+                        <List className="h-4 w-4 text-gray-500" />
+                        <span>{module.totalLessonsQuestions}</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-[13px] text-gray-400">
+                        <BarChart3 className="h-4 w-4 text-amber-400" />
+                        <span className="text-amber-200/85">{module.difficulty} level</span>
+                      </div>
+                    </div>
+
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => onNavigate?.(module.targetTab)}
+                      className={`mt-5 flex h-[42px] w-full items-center justify-center gap-1.5 rounded-xl text-[14px] font-semibold transition-all duration-200 ${isCompleted ? 'border border-white/10 bg-white/10 text-gray-200 hover:bg-white/15' : 'bg-[#2563EB] text-white shadow-sm shadow-blue-500/20 hover:bg-blue-700'}`}
+                    >
+                      {isCompleted ? <><CheckCircle2 className="h-4 w-4 text-emerald-400" /><span>Review Material</span></> : <><span>Continue Learning</span><ArrowRight className="h-4 w-4" /></>}
+                    </motion.button>
                   </div>
                 </div>
               </motion.div>
@@ -489,13 +434,13 @@ export const PlacementPrepPage: React.FC<PlacementPrepPageProps> = ({ onNavigate
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-center py-16 bg-white rounded-[16px] border border-gray-200 p-8 max-w-md mx-auto my-8 shadow-sm"
+            className="text-center py-16 bg-[#1A1A1E] rounded-[14px] border border-white/10 p-8 max-w-md mx-auto my-8 shadow-sm"
           >
             <div className="w-12 h-12 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center mx-auto mb-4">
               <Search className="w-6 h-6" />
             </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-1">No preparation modules found</h3>
-            <p className="text-sm text-gray-500 mb-6">
+            <h3 className="text-lg font-semibold text-white mb-1">No preparation modules found</h3>
+            <p className="text-sm text-gray-400 mb-6">
               We couldn't find any modules matching "{searchTerm}" under "{activeFilter}".
             </p>
             <button
