@@ -368,8 +368,7 @@ export const PlacementPrepPage: React.FC<PlacementPrepPageProps> = ({ onNavigate
         >
           {filteredModules.map((module) => {
             const IconComponent = module.icon;
-            const isCompleted = module.status === 'Completed';
-
+            const isCompleted = module.progressPercent >= 100;
             return (
               <motion.div key={module.id} variants={cardVariants} className="h-full">
                 <div className="group h-full overflow-hidden rounded-[14px] bg-[#1A1A1E] shadow-xl shadow-black/20 transition-all duration-250 hover:-translate-y-1">
