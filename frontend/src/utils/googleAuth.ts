@@ -1,6 +1,6 @@
 import { signInWithPopup } from 'firebase/auth';
 import { UserProfile } from '../types';
-import { firebaseAuth, googleProvider, saveUserToFirestore } from './firebase';
+import { firebaseAuth, googleProvider, isFirebaseConfigured, saveUserToFirestore } from './firebase';
 
 export interface GoogleProfile {
   name: string;
@@ -24,6 +24,10 @@ const getGoogleUserProfile = (email: string | null, displayName: string | null, 
 };
 
 export const signInWithGoogle = async (): Promise<GoogleProfile> => {
+  if (!isFirebaseConfigured || !firebaseAuth) {
+    throw new Error('Google sign-in is not configured yet. Add the VITE_FIREBASE_* values to .env.local.');
+  }
+
   try {
     const result = await signInWithPopup(firebaseAuth, googleProvider);
     const profile = getGoogleUserProfile(result.user.email, result.user.displayName, result.user.photoURL);

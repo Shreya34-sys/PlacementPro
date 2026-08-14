@@ -11,10 +11,11 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
-export const firebaseApp = initializeApp(firebaseConfig);
-export const firebaseAuth = getAuth(firebaseApp);
+export const isFirebaseConfigured = Object.values(firebaseConfig).every(Boolean);
+export const firebaseApp = isFirebaseConfigured ? initializeApp(firebaseConfig) : undefined;
+export const firebaseAuth = firebaseApp ? getAuth(firebaseApp) : undefined;
 export const googleProvider = new GoogleAuthProvider();
-export const firestoreDb = getFirestore(firebaseApp);
+export const firestoreDb = firebaseApp ? getFirestore(firebaseApp) : undefined;
 
 export const saveUserToFirestore = async (user: {
   uid: string;
@@ -22,6 +23,10 @@ export const saveUserToFirestore = async (user: {
   email: string;
   avatarUrl?: string;
 }) => {
+  if (!firestoreDb) {
+    throw new Error('Firebase is not configured. Add the VITE_FIREBASE_* values to .env.local.');
+  }
+
   await setDoc(
     doc(firestoreDb, 'users', user.uid),
     {
