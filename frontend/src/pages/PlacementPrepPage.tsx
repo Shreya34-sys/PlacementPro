@@ -366,6 +366,7 @@ export const PlacementPrepPage: React.FC<PlacementPrepPageProps> = ({ onNavigate
         >
           {filteredModules.map((module) => {
             const IconComponent = module.icon;
+            const isCompleted = module.progressPercent >= 100;
             return (
               <motion.div key={module.id} variants={cardVariants} className="h-full">
                 <div className="bg-[#1E293B] rounded-[20px] border border-gray-700 overflow-hidden h-full flex flex-col">

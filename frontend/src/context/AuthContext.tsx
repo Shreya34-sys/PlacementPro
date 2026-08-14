@@ -10,6 +10,7 @@ interface AuthContextType {
   updateProfile: (updated: Partial<UserProfile>) => void;
   login: (email: string, role?: UserRole) => boolean;
   register: (user: Partial<UserProfile>) => void;
+  continueWithGoogle: (user: Partial<UserProfile>) => void;
   logout: () => void;
 }
 
@@ -106,6 +107,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       name: newUser.name || 'Student Candidate',
       email: newUser.email || 'student@placementpro.edu',
       role: newUser.role || 'student',
+      avatarUrl: newUser.avatarUrl,
       department: newUser.department || 'Computer Science & Engineering',
       cgpa: newUser.cgpa || 8.5,
       batchYear: newUser.batchYear || '2026',
@@ -113,6 +115,36 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       companyName: newUser.companyName || '',
     };
     mockUsers.push(user);
+    const jwt = generateJwtToken(user);
+    setToken(jwt);
+    setCurrentUser(user);
+    localStorage.setItem('placementpro_user', JSON.stringify(user));
+    localStorage.setItem('placementpro_token', jwt);
+  };
+
+  const continueWithGoogle = (googleUser: Partial<UserProfile>) => {
+    const email = googleUser.email || 'student.google@placementpro.edu';
+    const existing = mockUsers.find((u) => u.email.toLowerCase() === email.toLowerCase());
+    const user: UserProfile = {
+      ...(existing || {
+        id: `usr-${Date.now()}`,
+        role: 'student',
+        department: 'Computer Science & Engineering',
+        cgpa: 8.5,
+        batchYear: '2026',
+        phone: '',
+        companyName: '',
+      }),
+      ...googleUser,
+      email,
+      name: googleUser.name || existing?.name || email.split('@')[0].replace('.', ' '),
+      role: googleUser.role || existing?.role || 'student',
+    };
+
+    if (!existing) {
+      mockUsers.push(user);
+    }
+
     const jwt = generateJwtToken(user);
     setToken(jwt);
     setCurrentUser(user);
@@ -147,6 +179,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         updateProfile,
         login,
         register,
+        continueWithGoogle,
         logout,
       }}
     >

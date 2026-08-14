@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Card, Form, Button, InputGroup, Alert, Modal } from 'react-bootstrap';
 import { useAuth } from '../context/AuthContext';
+import { createGoogleUserProfile, signInWithGoogle } from '../utils/googleAuth';
 
 interface LoginPageProps {
   onNavigateToRegister: () => void;
@@ -8,7 +9,7 @@ interface LoginPageProps {
 }
 
 export const LoginPage: React.FC<LoginPageProps> = ({ onNavigateToRegister, onLoginSuccess }) => {
-  const { login } = useAuth();
+  const { login, continueWithGoogle } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -58,13 +59,24 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigateToRegister, onLo
     }, 600);
   };
 
-  const handleGoogleLogin = () => {
+  const handleGoogleLogin = async () => {
     setLoading(true);
-    setTimeout(() => {
-      login('student.google@placementpro.edu', 'student');
-      setLoading(false);
+    setErrors({});
+
+    try {
+      const googleProfile = await signInWithGoogle();
+      continueWithGoogle(createGoogleUserProfile(googleProfile));
       onLoginSuccess();
-    }, 600);
+    } catch (error) {
+      setErrors({
+        general:
+          error instanceof Error
+            ? error.message
+            : 'Google authentication failed. Please try again or sign in with email.',
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleForgotSubmit = (e: React.FormEvent) => {

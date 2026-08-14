@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Card, Form, Button, InputGroup, Alert } from 'react-bootstrap';
 import { useAuth } from '../context/AuthContext';
+import { createGoogleUserProfile, signInWithGoogle } from '../utils/googleAuth';
 
 interface RegisterPageProps {
   onNavigateToLogin: () => void;
@@ -8,7 +9,7 @@ interface RegisterPageProps {
 }
 
 export const RegisterPage: React.FC<RegisterPageProps> = ({ onNavigateToLogin, onRegisterSuccess }) => {
-  const { register } = useAuth();
+  const { register, continueWithGoogle } = useAuth();
 
   // Form Fields as explicitly requested
   const [fullName, setFullName] = useState('');
@@ -28,6 +29,7 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onNavigateToLogin, o
   // Error handling & loading state
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
 
   const validate = () => {
     const newErrors: Record<string, string> = {};
@@ -94,6 +96,31 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onNavigateToLogin, o
     }, 700);
   };
 
+  const handleGoogleRegister = async () => {
+    setGoogleLoading(true);
+    setErrors({});
+
+    try {
+      const googleProfile = await signInWithGoogle();
+      continueWithGoogle(
+        createGoogleUserProfile(googleProfile, {
+          department,
+          batchYear: academicYear.includes('2026') ? '2026' : academicYear.includes('2027') ? '2027' : '2028',
+        })
+      );
+      onRegisterSuccess();
+    } catch (error) {
+      setErrors({
+        google:
+          error instanceof Error
+            ? error.message
+            : 'Google authentication failed. Please try again or create an account with email.',
+      });
+    } finally {
+      setGoogleLoading(false);
+    }
+  };
+
   return (
     <div style={{ backgroundColor: '#F8FAFC', minHeight: '100vh', fontFamily: "'Inter', sans-serif" }} className="py-4 py-lg-5 d-flex align-items-center">
       <Container>
@@ -130,7 +157,57 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onNavigateToLogin, o
                 </Alert>
               )}
 
+              {errors.google && (
+                <Alert variant="danger" dismissible onClose={() => setErrors({ ...errors, google: undefined })} className="py-2.5 fs-7 rounded-3 mb-4">
+                  <i className="bi bi-google me-2"></i>
+                  {errors.google}
+                </Alert>
+              )}
+
               <Form onSubmit={handleRegister} noValidate>
+                <Button
+                  variant="outline-secondary"
+                  type="button"
+                  onClick={handleGoogleRegister}
+                  disabled={loading || googleLoading}
+                  className="w-100 fw-semibold py-2.5 rounded-3 bg-white border hover-bg-light text-dark d-flex align-items-center justify-content-center gap-2.5 fs-7 mb-3 shadow-xs"
+                >
+                  {googleLoading ? (
+                    <>
+                      <span className="spinner-border spinner-border-sm" role="status"></span>
+                      <span>Connecting to Google...</span>
+                    </>
+                  ) : (
+                    <>
+                      <svg width="18" height="18" viewBox="0 0 24 24">
+                        <path
+                          fill="#4285F4"
+                          d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"
+                        />
+                        <path
+                          fill="#34A853"
+                          d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.11-6.72-4.96H1.29v3.15C3.26 21.3 7.31 24 12 24z"
+                        />
+                        <path
+                          fill="#FBBC05"
+                          d="M5.28 14.24c-.25-.72-.38-1.49-.38-2.24s.13-1.52.38-2.24V6.61H1.29C.47 8.24 0 10.06 0 12s.47 3.76 1.29 5.39l3.99-3.15z"
+                        />
+                        <path
+                          fill="#EA4335"
+                          d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.31 0 3.26 2.7 1.29 6.61l3.99 3.15c.95-2.85 3.6-4.96 6.72-4.96z"
+                        />
+                      </svg>
+                      <span>Sign up with Google</span>
+                    </>
+                  )}
+                </Button>
+
+                <div className="d-flex align-items-center my-3">
+                  <hr className="flex-grow-1 my-0 text-muted opacity-25" />
+                  <span className="px-3 fs-8 text-muted fw-bold text-uppercase">Or</span>
+                  <hr className="flex-grow-1 my-0 text-muted opacity-25" />
+                </div>
+
                 {/* Row 1: Full Name & College Email */}
                 <Row className="g-3 mb-3">
                   <Col md={6}>
