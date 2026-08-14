@@ -129,8 +129,20 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
                 {section.links.map((link) => (
                   <li key={link}>
                     <a
-                      href="#"
-                      onClick={(event) => event.preventDefault()}
+                      href={link === 'Terms & Conditions' ? '#terms' : link === 'Privacy Policy' ? '#privacy' : '#'}
+                      onClick={(event) => {
+                        if (link === 'Terms & Conditions') {
+                          event.preventDefault();
+                          onNavigate('terms');
+                          return;
+                        }
+                        if (link === 'Privacy Policy') {
+                          event.preventDefault();
+                          onNavigate('privacy');
+                          return;
+                        }
+                        event.preventDefault();
+                      }}
                       className="text-decoration-none fs-7"
                       style={{ color: '#CBD5E1' }}
                     >

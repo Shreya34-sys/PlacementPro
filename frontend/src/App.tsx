@@ -41,6 +41,7 @@ function AppContent() {
     if (window.location.hash === '#privacy') return 'privacy';
     return 'landing';
   });
+  const [policyBackTab, setPolicyBackTab] = useState('register');
   const [selectedJobId, setSelectedJobId] = useState<string>('job-1');
   const [selectedCompanyId, setSelectedCompanyId] = useState<string>('amazon');
 
@@ -56,6 +57,12 @@ function AppContent() {
     if (tab === 'company-prep-detail' && itemId) {
       setSelectedCompanyId(itemId);
     }
+    if (tab === 'terms' || tab === 'privacy') {
+      setPolicyBackTab(currentTab);
+      window.location.hash = tab;
+    } else {
+      window.history.replaceState(null, '', window.location.pathname);
+    }
     setCurrentTab(tab);
   };
 
@@ -66,6 +73,7 @@ function AppContent() {
         <LoginPage
           onNavigateToRegister={() => setCurrentTab('register')}
           onLoginSuccess={() => setCurrentTab('dashboard')}
+          onNavigate={handleNavigate}
         />
       </div>
     );
@@ -80,6 +88,7 @@ function AppContent() {
           <LoginPage
             onNavigateToRegister={() => setCurrentTab('register')}
             onLoginSuccess={() => setCurrentTab('dashboard')}
+            onNavigate={handleNavigate}
           />
         );
       case 'register':
@@ -87,25 +96,19 @@ function AppContent() {
           <RegisterPage
             onNavigateToLogin={() => setCurrentTab('login')}
             onRegisterSuccess={() => setCurrentTab('dashboard')}
-            onNavigateToTerms={() => {
-              window.location.hash = 'terms';
-              setCurrentTab('terms');
-            }}
-            onNavigateToPrivacy={() => {
-              window.location.hash = 'privacy';
-              setCurrentTab('privacy');
-            }}
+            onNavigateToTerms={() => handleNavigate('terms')}
+            onNavigateToPrivacy={() => handleNavigate('privacy')}
           />
         );
       case 'terms':
         return <TermsPage onBack={() => {
           window.history.replaceState(null, '', window.location.pathname);
-          setCurrentTab('register');
+          setCurrentTab(policyBackTab);
         }} />;
       case 'privacy':
         return <PrivacyPage onBack={() => {
           window.history.replaceState(null, '', window.location.pathname);
-          setCurrentTab('register');
+          setCurrentTab(policyBackTab);
         }} />;
       case 'dashboard':
         return <DashboardPage onNavigate={handleNavigate} />;

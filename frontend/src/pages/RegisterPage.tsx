@@ -482,8 +482,14 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({
                   {section.links.map((link) => (
                     <li key={link}>
                       <a
-                        href={link === 'Terms & Conditions' ? '#terms' : '#'}
-                        onClick={link === 'Terms & Conditions' ? navigateToTerms : (event) => event.preventDefault()}
+                        href={link === 'Terms & Conditions' ? '#terms' : link === 'Privacy Policy' ? '#privacy' : '#'}
+                        onClick={
+                          link === 'Terms & Conditions'
+                            ? navigateToTerms
+                            : link === 'Privacy Policy'
+                              ? navigateToPrivacy
+                              : (event) => event.preventDefault()
+                        }
                         className="text-decoration-none fs-7"
                         style={{ color: '#CBD5E1' }}
                       >

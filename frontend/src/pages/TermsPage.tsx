@@ -1,41 +1,483 @@
 import React from 'react';
-import { Container, Card, Button } from 'react-bootstrap';
+import { Button, Card, Container } from 'react-bootstrap';
+import { Footer } from '../components/layout/Footer';
 
 interface TermsPageProps {
   onBack: () => void;
 }
 
-export const TermsPage: React.FC<TermsPageProps> = ({ onBack }) => (
-  <div className="py-4 py-lg-5" style={{ backgroundColor: '#F8FAFC', minHeight: '100vh', fontFamily: "'Inter', sans-serif" }}>
-    <Container>
-      <Card className="border-0 shadow-sm mx-auto p-4 p-md-5" style={{ borderRadius: '16px', maxWidth: '850px' }}>
-        <Button variant="link" className="p-0 mb-4 text-decoration-none fw-semibold" onClick={onBack}>
-          <i className="bi bi-arrow-left me-2" /> Back to registration
-        </Button>
-        <h1 className="h2 fw-bold mb-2">Terms &amp; Conditions</h1>
-        <p className="text-secondary mb-4">Last updated: August 15, 2026</p>
+type PolicySection = {
+  title: string;
+  paragraphs?: string[];
+  bullets?: string[];
+};
 
-        <section className="mb-4">
-          <h2 className="h5 fw-bold">1. Acceptance of terms</h2>
-          <p className="text-secondary mb-0">By creating a PlacementPro account, you agree to these Terms &amp; Conditions and to use the platform responsibly.</p>
-        </section>
-        <section className="mb-4">
-          <h2 className="h5 fw-bold">2. Your account</h2>
-          <p className="text-secondary mb-0">Keep your account information accurate and protect your password. You are responsible for activity performed through your account.</p>
-        </section>
-        <section className="mb-4">
-          <h2 className="h5 fw-bold">3. Appropriate use</h2>
-          <p className="text-secondary mb-0">Use PlacementPro for placement preparation, career development, and related activities. Do not misuse the service, interfere with other users, or submit false information.</p>
-        </section>
-        <section className="mb-4">
-          <h2 className="h5 fw-bold">4. Content and opportunities</h2>
-          <p className="text-secondary mb-0">Placement information and preparation content are provided for guidance. Eligibility, hiring decisions, and job offers remain with the relevant institutions and employers.</p>
-        </section>
-        <section>
-          <h2 className="h5 fw-bold">5. Changes to these terms</h2>
-          <p className="text-secondary mb-0">We may update these terms as PlacementPro evolves. Continued use after an update means you accept the revised terms.</p>
-        </section>
+const featureBullets = [
+  'Registration and eligibility checking',
+  'Resume and ATS analysis',
+  'Aptitude tests',
+  'Coding assessments',
+  'Technical MCQs',
+  'Spoken-English and Versant-style assessments',
+  'Email and business-writing assessments',
+  'Gamified cognitive assessments',
+  'Group discussion simulations',
+  'Phone and video interview simulations',
+  'Technical, HR, and managerial interview simulations',
+  'System-design and machine-coding preparation',
+  'Company-wise preparation',
+  'AI-powered preparation assistance',
+  'RAG-based company preparation assistance',
+  'Personalized study planning',
+  'AI-powered analytics',
+  'Placement readiness scoring',
+  'Recruiter and administrator functionality',
+];
+
+const termsSections: PolicySection[] = [
+  {
+    title: '1. About PlacementPro',
+    paragraphs: [
+      'PlacementPro is designed to help students simulate and prepare for campus placement processes.',
+      'The Platform may provide features including:',
+    ],
+    bullets: featureBullets,
+  },
+  {
+    title: '2. Eligibility',
+    paragraphs: [
+      'PlacementPro is primarily intended for students preparing for internships, campus placements, recruitment assessments, and related career opportunities.',
+      'By using PlacementPro, you confirm that:',
+    ],
+    bullets: [
+      'The information you provide is accurate and complete.',
+      'You are authorized to use the account you create.',
+      'You will use the Platform for legitimate educational and career-preparation purposes.',
+      'You will comply with these Terms.',
+      'You will comply with applicable laws and regulations.',
+      'If PlacementPro is provided through a college or educational institution, additional institutional rules may apply.',
+    ],
+  },
+  {
+    title: '3. User Registration',
+    paragraphs: [
+      'Certain PlacementPro features require an account.',
+      'During registration, you may be asked to provide:',
+    ],
+    bullets: [
+      'Full name',
+      'College email address',
+      'Email address',
+      'Password',
+      'College information',
+      'Academic information',
+      'Branch or course',
+      'Year of study',
+      'Other information required for eligibility or placement preparation',
+      'You agree to provide accurate, current, and complete information.',
+      'Providing false academic, personal, or eligibility information may result in inaccurate eligibility results, assessment issues, or account restrictions.',
+    ],
+  },
+  {
+    title: '4. Account Security',
+    paragraphs: ['You are responsible for maintaining the security of your PlacementPro account.', 'You must:'],
+    bullets: [
+      'Keep your password confidential.',
+      'Avoid sharing your account with others.',
+      'Use your own account during assessments.',
+      'Log out from shared computers when appropriate.',
+      'Notify PlacementPro if you believe your account has been compromised.',
+      'You must not knowingly allow another person to complete an assessment using your account.',
+    ],
+  },
+  {
+    title: '5. Google Sign-In',
+    paragraphs: ['PlacementPro may provide a "Continue with Google" authentication option.', 'When you use Google authentication:'],
+    bullets: [
+      'Authentication is handled through Google.',
+      'PlacementPro may receive information made available through the authentication process.',
+      'This may include your name, email address, and permitted profile information.',
+      'PlacementPro does not receive your Google account password.',
+      "Your use of Google authentication is also subject to Google's applicable terms and policies.",
+    ],
+  },
+  {
+    title: '6. Eligibility and Registration Engine',
+    paragraphs: [
+      'PlacementPro may provide an automated eligibility engine that evaluates criteria such as CGPA, backlogs, branch, academic information, and other configured recruitment criteria.',
+      'Eligibility results are provided for preparation and informational purposes.',
+      'An automated result does not guarantee that a company will consider or reject a candidate.',
+      'Actual eligibility is determined by the relevant company, college, recruiter, or recruitment process.',
+    ],
+  },
+  {
+    title: '7. Resume and ATS Analysis',
+    paragraphs: [
+      'PlacementPro may provide resume-screening and ATS-analysis features.',
+      'These features may evaluate:',
+    ],
+    bullets: [
+      'Keywords',
+      'Formatting',
+      'Resume structure',
+      'Skills',
+      'Projects',
+      'Job-description relevance',
+      'AI-generated suggestions are intended to assist users in improving their resumes.',
+      'An ATS score generated by PlacementPro is not an official score issued by a company or recruitment system.',
+      'PlacementPro does not guarantee that improving an ATS score will result in an interview or job offer.',
+    ],
+  },
+  {
+    title: '8. Assessments and Simulated Placement Rounds',
+    paragraphs: [
+      'PlacementPro may provide simulated versions of common placement rounds, including:',
+    ],
+    bullets: [
+      'Aptitude',
+      'Coding',
+      'Technical MCQs',
+      'Spoken English',
+      'Email writing',
+      'Cognitive assessments',
+      'Group discussions',
+      'Interviews',
+      'System-design exercises',
+      'These simulations are designed for practice and preparation.',
+      'They do not necessarily reproduce the exact recruitment process, difficulty, scoring methodology, or technology used by any particular company.',
+    ],
+  },
+  {
+    title: '9. Coding Assessments',
+    paragraphs: [
+      'PlacementPro may provide coding assessments using an online code editor and automated evaluation.',
+      'Coding submissions may be evaluated using test cases, hidden test cases, execution results, runtime, complexity, code quality, and other assessment criteria.',
+      'Users must not attempt to exploit the code execution environment, bypass test cases, interfere with the execution system, or submit malicious code intended to compromise the Platform.',
+    ],
+  },
+  {
+    title: '10. AI Proctoring',
+    paragraphs: ['Certain assessments may use AI-powered proctoring features.', 'Depending on the assessment, the Platform may detect or monitor events such as:'],
+    bullets: [
+      'Presence or absence of a face',
+      'Multiple faces appearing in the camera view',
+      'Facial movement or gaze-related signals',
+      'Tab switching',
+      'Browser or window focus changes',
+      'Fullscreen exit',
+      'Other configured assessment-integrity events',
+      'The purpose of these features is to help maintain assessment integrity.',
+      'The specific proctoring rules may vary between assessments.',
+    ],
+  },
+  {
+    title: '11. Proctoring Warnings and Violations',
+    paragraphs: ['PlacementPro may apply an assessment-specific violation policy.', 'The Platform may:'],
+    bullets: [
+      'Issue warnings after violations.',
+      'Record repeated violations.',
+      'Terminate an assessment after repeated or serious violations.',
+      'Mark an assessment as an integrity violation.',
+      'The exact violation thresholds may vary depending on the assessment configuration.',
+    ],
+  },
+  {
+    title: '12. Proctoring and Privacy',
+    paragraphs: [
+      "Where technically feasible, PlacementPro's proctoring system may perform face detection directly in the user's browser.",
+      'The Platform may record proctoring events rather than continuously transmitting raw video to the backend.',
+      'Proctoring records may include:',
+    ],
+    bullets: [
+      'Student ID',
+      'Exam ID',
+      'Violation type',
+      'Timestamp',
+      'Severity',
+      'Action taken',
+      'Actual data processing may depend on the final implementation and assessment configuration.',
+    ],
+  },
+  {
+    title: '13. Assessment Integrity',
+    paragraphs: ['You must complete assessments honestly.', 'You must not:'],
+    bullets: [
+      "Use another person's account.",
+      'Ask another person to complete an assessment.',
+      'Share restricted assessment questions or answers.',
+      'Manipulate assessment results.',
+      'Circumvent proctoring.',
+      'Bypass fullscreen restrictions.',
+      'Deliberately interfere with monitoring mechanisms.',
+      'Exploit technical vulnerabilities to obtain answers.',
+      'Use unauthorized assistance where an assessment prohibits it.',
+      'PlacementPro may invalidate results or terminate an assessment where there is evidence of serious misuse.',
+    ],
+  },
+  {
+    title: '14. AI-Powered Features',
+    paragraphs: ['PlacementPro may use AI systems to provide:'],
+    bullets: [
+      'Interview simulations',
+      'Resume analysis',
+      'Communication feedback',
+      'Coding feedback',
+      'Preparation recommendations',
+      'Study planning',
+      'Company-specific assistance',
+      'Performance analysis',
+      'Readiness scoring',
+      'AI-generated results are intended to assist learning and preparation.',
+      'AI outputs may occasionally be incorrect, incomplete, outdated, or inconsistent.',
+      'Users should independently verify important information.',
+    ],
+  },
+  {
+    title: '15. AI Interview Simulator',
+    paragraphs: [
+      'The AI Interview Simulator may conduct conversational interviews and adapt questions based on previous responses.',
+      'It may provide feedback relating to:',
+    ],
+    bullets: [
+      'Technical knowledge',
+      'Answer quality',
+      'Communication',
+      'Interview structure',
+      'Areas for improvement',
+      'AI interview feedback should be considered practice feedback rather than an official recruitment evaluation.',
+      "An AI-generated interview score does not represent a company's actual hiring decision.",
+    ],
+  },
+  {
+    title: '16. RAG-Based Company Assistant',
+    paragraphs: ['PlacementPro may provide an AI assistant that retrieves information from a curated company-preparation knowledge base.', 'The assistant may provide information relating to:'],
+    bullets: [
+      'Company preparation',
+      'Recruitment rounds',
+      'Syllabus',
+      'Interview experiences',
+      'Practice questions',
+      'Preparation resources',
+      'AI responses may not perfectly represent the current recruitment process of a company.',
+    ],
+  },
+  {
+    title: '17. Personalized Study Planner',
+    paragraphs: ['PlacementPro may analyze assessment performance to identify weak areas.', 'The Platform may recommend:'],
+    bullets: [
+      'Study resources',
+      'Practice questions',
+      'Topics to revise',
+      'Mock assessments',
+      'Company-specific preparation',
+      'Additional learning activities',
+      'These recommendations are intended to support preparation and do not guarantee any career outcome.',
+    ],
+  },
+  {
+    title: '18. Placement Readiness Score',
+    paragraphs: [
+      'PlacementPro may generate a Placement Readiness Score based on available preparation and assessment information.',
+      'The score may consider:',
+    ],
+    bullets: [
+      'Aptitude performance',
+      'Coding performance',
+      'Technical performance',
+      'Communication performance',
+      'Interview performance',
+      'Other available learning metrics',
+      'The readiness score is an internal preparation metric.',
+      'It is not an official company score and does not guarantee employment, placement, or interview selection.',
+    ],
+  },
+  {
+    title: '19. Company Information',
+    paragraphs: ['PlacementPro may provide company-wise preparation resources, including:'],
+    bullets: [
+      'Company overview',
+      'Hiring patterns',
+      'Round structure',
+      'Preparation topics',
+      'Practice questions',
+      'Interview experiences',
+      'Estimated round weightage',
+      'Learning resources',
+      'Company recruitment processes may change without notice.',
+      'PlacementPro does not guarantee that company information will always reflect the latest recruitment process.',
+      'PlacementPro should not be interpreted as being officially affiliated with a company unless explicitly stated.',
+    ],
+  },
+  {
+    title: '20. User-Submitted Content',
+    paragraphs: ['Users may be allowed to submit feedback, interview experiences, questions, suggestions, comments, and other educational content.', 'You must not submit:'],
+    bullets: [
+      'Confidential company information',
+      "Another person's private information",
+      'Copyrighted material without authorization',
+      'Malicious content',
+      'False or misleading information',
+      'You remain responsible for content you submit.',
+    ],
+  },
+  {
+    title: '21. Intellectual Property',
+    paragraphs: ['PlacementPro and its original materials may contain intellectual property belonging to PlacementPro or its licensors.', 'This may include:'],
+    bullets: [
+      'PlacementPro name',
+      'Logo',
+      'Website design',
+      'User interface',
+      'Software',
+      'Source code',
+      'Original educational content',
+      'Questions',
+      'Graphics',
+      'Platform features',
+      'Database structures',
+      'You may not reproduce, distribute, sell, modify, or commercially exploit protected PlacementPro content without authorization.',
+    ],
+  },
+  {
+    title: '22. Third-Party Services',
+    paragraphs: [
+      'PlacementPro may integrate with third-party technologies and services, including authentication providers, AI services, cloud services, speech-to-text services, communication services, and external learning resources.',
+      'Third-party services may have their own terms and privacy policies.',
+      'PlacementPro is not responsible for the policies, content, security, or availability of third-party services.',
+    ],
+  },
+  {
+    title: '23. Platform Availability',
+    paragraphs: ['We aim to keep PlacementPro available, but continuous availability cannot be guaranteed.', 'The Platform may experience downtime because of:'],
+    bullets: [
+      'Maintenance',
+      'Updates',
+      'Technical problems',
+      'Infrastructure failures',
+      'Security incidents',
+      'Third-party service failures',
+      'Network problems',
+      'We may modify, suspend, or discontinue features when necessary.',
+    ],
+  },
+  {
+    title: '24. No Guarantee of Placement',
+    paragraphs: ['PlacementPro is a preparation and simulation platform.', 'Using PlacementPro does not guarantee:'],
+    bullets: [
+      'Placement',
+      'Employment',
+      'Internship',
+      'Interview selection',
+      'Company selection',
+      'Salary',
+      'Salary package',
+      'Recruitment success',
+      'Examination success',
+      'Actual outcomes depend on your skills, qualifications, preparation, competition, company requirements, and recruiter decisions.',
+    ],
+  },
+  {
+    title: '25. Account Suspension',
+    paragraphs: ['PlacementPro may suspend or terminate an account if a user:'],
+    bullets: [
+      'Violates these Terms.',
+      'Attempts unauthorized access.',
+      'Cheats in assessments.',
+      'Misuses the Platform.',
+      'Uploads malicious content.',
+      'Abuses other users.',
+      'Attempts to bypass security.',
+      'Engages in fraudulent activity.',
+    ],
+  },
+  {
+    title: '26. Changes to the Platform',
+    paragraphs: [
+      'PlacementPro may add, modify, remove, or replace features.',
+      'This may include assessment modules, AI features, preparation resources, proctoring functionality, analytics, company information, and user-interface features.',
+    ],
+  },
+  {
+    title: '27. Disclaimer',
+    paragraphs: ['PlacementPro is provided on an "as is" and "as available" basis to the maximum extent permitted by applicable law.', 'We do not guarantee that:'],
+    bullets: [
+      'All information is error-free.',
+      'AI responses are always accurate.',
+      'Company information is always current.',
+      'Assessment scores perfectly represent ability.',
+      'Proctoring detection is always accurate.',
+      'The Platform will always be available.',
+      'The Platform will produce a particular career outcome.',
+    ],
+  },
+  {
+    title: '28. Limitation of Liability',
+    paragraphs: ['To the maximum extent permitted by applicable law, PlacementPro and its operators will not be responsible for indirect or consequential losses arising from use of the Platform.', 'This may include losses related to:'],
+    bullets: [
+      'Placement opportunities',
+      'Employment decisions',
+      'Recruitment results',
+      'Incorrect AI recommendations',
+      'Platform downtime',
+      'Assessment interruptions',
+      'Third-party services',
+      'Nothing in these Terms excludes liability that cannot legally be excluded.',
+    ],
+  },
+  {
+    title: '29. Changes to These Terms',
+    paragraphs: [
+      'We may update these Terms from time to time.',
+      'The updated version will display a revised Last Updated date.',
+      'Continued use of PlacementPro after changes become effective indicates acceptance of the updated Terms, subject to applicable law.',
+    ],
+  },
+  {
+    title: '30. Contact Us',
+    paragraphs: ['For questions regarding these Terms & Conditions:', 'PlacementPro', 'Email: placementpro01@gmail.com'],
+  },
+];
+
+export const TermsPage: React.FC<TermsPageProps> = ({ onBack }) => (
+  <div className="d-flex flex-column" style={{ backgroundColor: '#F8FAFC', minHeight: '100vh', fontFamily: "'Inter', sans-serif" }}>
+    <Container className="py-4 py-lg-5 flex-grow-1">
+      <Card className="border-0 shadow-sm mx-auto p-4 p-md-5" style={{ borderRadius: '16px', maxWidth: '900px' }}>
+        <Button variant="link" className="p-0 mb-4 text-decoration-none fw-semibold align-self-start" onClick={onBack}>
+          <i className="bi bi-arrow-left me-2" /> Back
+        </Button>
+
+        <h1 className="h2 fw-bold mb-2">Terms &amp; Conditions</h1>
+        <p className="text-secondary mb-4">Last Updated: August 15, 2026</p>
+        <p className="text-secondary">
+          Welcome to <strong>PlacementPro</strong>, an AI-powered campus placement simulation and preparation platform.
+        </p>
+        <p className="text-secondary">
+          These Terms &amp; Conditions (&quot;Terms&quot;) govern your access to and use of the PlacementPro website, web application, assessments,
+          AI-powered features, placement-preparation resources, simulations, dashboards, and related services (collectively referred to as the
+          &quot;Platform&quot;).
+        </p>
+        <p className="text-secondary mb-5">
+          By creating an account, accessing, or using PlacementPro, you agree to these Terms &amp; Conditions and our Privacy Policy. If you do
+          not agree with these Terms, please do not use the Platform.
+        </p>
+
+        {termsSections.map((section) => (
+          <section className="mb-4" key={section.title}>
+            <h2 className="h5 fw-bold">{section.title}</h2>
+            {section.paragraphs?.map((paragraph) => (
+              <p className="text-secondary mb-2" key={paragraph}>{paragraph}</p>
+            ))}
+            {section.bullets && (
+              <ul className="text-secondary ps-4 mb-0">
+                {section.bullets.map((bullet) => (
+                  <li className="mb-1" key={bullet}>{bullet}</li>
+                ))}
+              </ul>
+            )}
+          </section>
+        ))}
       </Card>
     </Container>
+    <Footer />
   </div>
 );

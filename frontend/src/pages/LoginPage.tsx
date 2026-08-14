@@ -6,6 +6,7 @@ import { createGoogleUserProfile, signInWithGoogle } from '../utils/googleAuth';
 interface LoginPageProps {
   onNavigateToRegister: () => void;
   onLoginSuccess: () => void;
+  onNavigate: (tab: string) => void;
 }
 
 const footerSections = [
@@ -35,7 +36,7 @@ const footerSections = [
   },
 ];
 
-export const LoginPage: React.FC<LoginPageProps> = ({ onNavigateToRegister, onLoginSuccess }) => {
+export const LoginPage: React.FC<LoginPageProps> = ({ onNavigateToRegister, onLoginSuccess, onNavigate }) => {
   const { login, continueWithGoogle } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -116,6 +117,11 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigateToRegister, onLo
         setResetEmail('');
       }, 2500);
     }
+  };
+
+  const navigateToPolicy = (event: React.MouseEvent<HTMLAnchorElement>, tab: 'terms' | 'privacy') => {
+    event.preventDefault();
+    onNavigate(tab);
   };
 
   return (
@@ -400,8 +406,18 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigateToRegister, onLo
                   {section.links.map((link) => (
                     <li key={link}>
                       <a
-                        href="#"
-                        onClick={(event) => event.preventDefault()}
+                        href={link === 'Terms & Conditions' ? '#terms' : link === 'Privacy Policy' ? '#privacy' : '#'}
+                        onClick={(event) => {
+                          if (link === 'Terms & Conditions') {
+                            navigateToPolicy(event, 'terms');
+                            return;
+                          }
+                          if (link === 'Privacy Policy') {
+                            navigateToPolicy(event, 'privacy');
+                            return;
+                          }
+                          event.preventDefault();
+                        }}
                         className="text-decoration-none fs-7"
                         style={{ color: '#CBD5E1' }}
                       >
