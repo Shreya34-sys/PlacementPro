@@ -32,10 +32,15 @@ import { LoginPage } from './pages/LoginPage';
 import { RegisterPage } from './pages/RegisterPage';
 import { LandingPage } from './pages/LandingPage';
 import { TermsPage } from './pages/TermsPage';
+import { PrivacyPage } from './pages/PrivacyPage';
 
 function AppContent() {
   const { isAuthenticated, logout } = useAuth();
-  const [currentTab, setCurrentTab] = useState(() => window.location.hash === '#terms' ? 'terms' : 'landing');
+  const [currentTab, setCurrentTab] = useState(() => {
+    if (window.location.hash === '#terms') return 'terms';
+    if (window.location.hash === '#privacy') return 'privacy';
+    return 'landing';
+  });
   const [selectedJobId, setSelectedJobId] = useState<string>('job-1');
   const [selectedCompanyId, setSelectedCompanyId] = useState<string>('amazon');
 
@@ -55,7 +60,7 @@ function AppContent() {
   };
 
   // Route Protection: Prevent logged-out users from accessing protected student pages
-  if (!isAuthenticated && currentTab !== 'landing' && currentTab !== 'register' && currentTab !== 'terms') {
+  if (!isAuthenticated && currentTab !== 'landing' && currentTab !== 'register' && currentTab !== 'terms' && currentTab !== 'privacy') {
     return (
       <div className="min-vh-100" style={{ backgroundColor: '#F8FAFC' }}>
         <LoginPage
@@ -86,10 +91,19 @@ function AppContent() {
               window.location.hash = 'terms';
               setCurrentTab('terms');
             }}
+            onNavigateToPrivacy={() => {
+              window.location.hash = 'privacy';
+              setCurrentTab('privacy');
+            }}
           />
         );
       case 'terms':
         return <TermsPage onBack={() => {
+          window.history.replaceState(null, '', window.location.pathname);
+          setCurrentTab('register');
+        }} />;
+      case 'privacy':
+        return <PrivacyPage onBack={() => {
           window.history.replaceState(null, '', window.location.pathname);
           setCurrentTab('register');
         }} />;
@@ -150,7 +164,7 @@ function AppContent() {
     }
   };
 
-  if (currentTab === 'login' || currentTab === 'register' || currentTab === 'landing' || currentTab === 'terms') {
+  if (currentTab === 'login' || currentTab === 'register' || currentTab === 'landing' || currentTab === 'terms' || currentTab === 'privacy') {
     return (
       <div className="min-vh-100 bg-light">
         {renderContent()}

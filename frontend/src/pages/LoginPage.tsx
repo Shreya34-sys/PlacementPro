@@ -8,6 +8,33 @@ interface LoginPageProps {
   onLoginSuccess: () => void;
 }
 
+const footerSections = [
+  {
+    title: 'Contact Us',
+    links: ['College Support', 'placementpro01@gmail.com', 'Find us online'],
+  },
+  {
+    title: 'Learning',
+    links: ['DSA Preparation', 'Aptitude & Reasoning', 'Programming', 'Core CS Subjects', 'Web Development'],
+  },
+  {
+    title: 'Career',
+    links: ['Placement Preparation', 'Interview Preparation', 'Resume Building', 'Mock Interviews', 'Company Preparation'],
+  },
+  {
+    title: 'Company',
+    links: ['About Us', 'For Students', 'For Colleges', 'Contact Us', 'Privacy Policy', 'Terms & Conditions'],
+  },
+  {
+    title: 'Resources',
+    links: ['Placement Roadmaps', 'Practice Tests', 'Coding Resources', 'Interview Questions', 'Placement Blogs', 'FAQs'],
+  },
+  {
+    title: 'Social Links',
+    links: ['LinkedIn', 'GitHub', 'Instagram'],
+  },
+];
+
 export const LoginPage: React.FC<LoginPageProps> = ({ onNavigateToRegister, onLoginSuccess }) => {
   const { login, continueWithGoogle } = useAuth();
   const [email, setEmail] = useState('');
@@ -92,12 +119,13 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigateToRegister, onLo
   };
 
   return (
-    <div style={{ backgroundColor: '#F8FAFC', minHeight: '100vh', fontFamily: "'Inter', sans-serif" }} className="d-flex align-items-center py-4 py-lg-5">
-      <Container>
-        <Row className="justify-content-center">
-          <Col lg={10} xl={9}>
-            <Card className="border-0 shadow-sm overflow-hidden" style={{ borderRadius: '16px' }}>
-              <Row className="g-0">
+    <div style={{ backgroundColor: '#F8FAFC', minHeight: '100vh', fontFamily: "'Inter', sans-serif" }} className="d-flex flex-column">
+      <main className="d-flex flex-grow-1 align-items-center py-4 py-lg-5">
+        <Container>
+          <Row className="justify-content-center">
+            <Col lg={10} xl={9}>
+              <Card className="border-0 shadow-sm overflow-hidden" style={{ borderRadius: '16px' }}>
+                <Row className="g-0">
                 {/* Left Side Visual Banner */}
                 <Col lg={5} className="d-none d-lg-flex flex-column justify-content-between p-4 p-xl-5 text-white" style={{ backgroundColor: '#2563EB' }}>
                   <div>
@@ -301,50 +329,96 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigateToRegister, onLo
                     </Form>
                   </div>
                 </Col>
-              </Row>
-            </Card>
-          </Col>
-        </Row>
+                </Row>
+              </Card>
+            </Col>
+          </Row>
 
-        {/* Forgot Password Modal */}
-        <Modal show={showForgotModal} onHide={() => setShowForgotModal(false)} centered className="rounded-16">
-          <Modal.Header closeButton className="border-0 pb-0">
-            <Modal.Title className="fw-bold fs-5">Reset Password</Modal.Title>
-          </Modal.Header>
-          <Modal.Body className="p-4">
-            {resetSent ? (
-              <Alert variant="success" className="mb-0 fs-7 py-3">
-                <i className="bi bi-check-circle-fill me-2 fs-6"></i>
-                Password reset link has been sent to <strong>{resetEmail}</strong>. Please check your college inbox.
-              </Alert>
-            ) : (
-              <Form onSubmit={handleForgotSubmit}>
-                <p className="text-secondary fs-7 mb-3">
-                  Enter your registered college email address and we'll send you instructions to reset your password.
-                </p>
-                <Form.Group className="mb-3">
-                  <Form.Label className="fw-semibold fs-7">College Email Address</Form.Label>
-                  <Form.Control
-                    type="email"
-                    placeholder="student@college.edu"
-                    value={resetEmail}
-                    onChange={(e) => setResetEmail(e.target.value)}
-                    required
-                  />
-                </Form.Group>
-                <div className="d-flex justify-content-end gap-2 pt-2">
-                  <Button variant="light" size="sm" onClick={() => setShowForgotModal(false)} className="fw-semibold">
-                    Cancel
-                  </Button>
-                  <Button type="submit" size="sm" className="fw-bold text-white" style={{ backgroundColor: '#2563EB' }}>
-                    Send Reset Link
-                  </Button>
+          {/* Forgot Password Modal */}
+          <Modal show={showForgotModal} onHide={() => setShowForgotModal(false)} centered className="rounded-16">
+            <Modal.Header closeButton className="border-0 pb-0">
+              <Modal.Title className="fw-bold fs-5">Reset Password</Modal.Title>
+            </Modal.Header>
+            <Modal.Body className="p-4">
+              {resetSent ? (
+                <Alert variant="success" className="mb-0 fs-7 py-3">
+                  <i className="bi bi-check-circle-fill me-2 fs-6"></i>
+                  Password reset link has been sent to <strong>{resetEmail}</strong>. Please check your college inbox.
+                </Alert>
+              ) : (
+                <Form onSubmit={handleForgotSubmit}>
+                  <p className="text-secondary fs-7 mb-3">
+                    Enter your registered college email address and we'll send you instructions to reset your password.
+                  </p>
+                  <Form.Group className="mb-3">
+                    <Form.Label className="fw-semibold fs-7">College Email Address</Form.Label>
+                    <Form.Control
+                      type="email"
+                      placeholder="student@college.edu"
+                      value={resetEmail}
+                      onChange={(e) => setResetEmail(e.target.value)}
+                      required
+                    />
+                  </Form.Group>
+                  <div className="d-flex justify-content-end gap-2 pt-2">
+                    <Button variant="light" size="sm" onClick={() => setShowForgotModal(false)} className="fw-semibold">
+                      Cancel
+                    </Button>
+                    <Button type="submit" size="sm" className="fw-bold text-white" style={{ backgroundColor: '#2563EB' }}>
+                      Send Reset Link
+                    </Button>
+                  </div>
+                </Form>
+              )}
+            </Modal.Body>
+          </Modal>
+        </Container>
+      </main>
+
+      <footer style={{ backgroundColor: '#0B1220' }} className="text-white pt-5 pb-4">
+        <Container>
+          <Row className="g-4 g-lg-5">
+            <Col lg={3} md={6}>
+              <div className="d-flex align-items-center gap-2 mb-3">
+                <div
+                  className="bg-white rounded-3 d-flex align-items-center justify-content-center"
+                  style={{ width: '38px', height: '38px' }}
+                >
+                  <i className="bi bi-briefcase-fill fs-5" style={{ color: '#2563EB' }}></i>
                 </div>
-              </Form>
-            )}
-          </Modal.Body>
-        </Modal>
-      </Container>
+                <span className="fw-extrabold fs-4 tracking-tight">Placement<span className="fw-light">Pro</span></span>
+              </div>
+              <p className="mb-0 fs-7" style={{ color: '#CBD5E1', maxWidth: '260px' }}>
+                Your complete platform for placement preparation.
+              </p>
+            </Col>
+
+            {footerSections.map((section) => (
+              <Col key={section.title} lg={section.title === 'Social Links' ? 2 : 3} md={4} sm={6}>
+                <h6 className="fw-bold text-white mb-3">{section.title}</h6>
+                <ul className="list-unstyled d-grid gap-2 mb-0">
+                  {section.links.map((link) => (
+                    <li key={link}>
+                      <a
+                        href="#"
+                        onClick={(event) => event.preventDefault()}
+                        className="text-decoration-none fs-7"
+                        style={{ color: '#CBD5E1' }}
+                      >
+                        {link}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </Col>
+            ))}
+          </Row>
+
+          <div className="border-top mt-5 pt-4 text-center fs-7" style={{ borderColor: 'rgba(203, 213, 225, 0.18)' }}>
+            <span style={{ color: '#CBD5E1' }}>&copy; 2026 PlacementPro. All rights reserved.</span>
+          </div>
+        </Container>
+      </footer>
     </div>
   );
 };

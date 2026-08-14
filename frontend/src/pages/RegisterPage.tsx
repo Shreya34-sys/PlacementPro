@@ -7,6 +7,7 @@ interface RegisterPageProps {
   onNavigateToLogin: () => void;
   onRegisterSuccess: () => void;
   onNavigateToTerms: () => void;
+  onNavigateToPrivacy: () => void;
 }
 
 type RegisterErrors = {
@@ -70,6 +71,7 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({
   onNavigateToLogin,
   onRegisterSuccess,
   onNavigateToTerms,
+  onNavigateToPrivacy,
 }) => {
   const { register, continueWithGoogle } = useAuth();
   const [fullName, setFullName] = useState('');
@@ -167,11 +169,10 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({
     onNavigateToTerms();
   };
 
-  const navigateToPrivacyPlaceholder = (event: React.MouseEvent<HTMLAnchorElement>) => {
-    // Privacy has no dedicated route in the current app, so keep the link
-    // keyboard/click accessible without leaving the signup flow.
+  const navigateToPrivacy = (event: React.MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
     event.stopPropagation();
+    onNavigateToPrivacy();
   };
 
   return (
@@ -339,7 +340,6 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({
                               className="border-start-0 bg-light text-muted"
                               onClick={() => setShowPassword(!showPassword)}
                               type="button"
-                              tabIndex={-1}
                               aria-label={showPassword ? 'Hide password' : 'Show password'}
                             >
                               <i className={`bi bi-${showPassword ? 'eye-slash' : 'eye'}`}></i>
@@ -374,7 +374,6 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({
                               className="border-start-0 bg-light text-muted"
                               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                               type="button"
-                              tabIndex={-1}
                               aria-label={showConfirmPassword ? 'Hide confirm password' : 'Show confirm password'}
                             >
                               <i className={`bi bi-${showConfirmPassword ? 'eye-slash' : 'eye'}`}></i>
@@ -408,7 +407,7 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({
                               and{' '}
                               <a
                                 href="#privacy"
-                                onClick={navigateToPrivacyPlaceholder}
+                                onClick={navigateToPrivacy}
                                 className="fw-semibold text-decoration-none"
                                 style={{ color: '#2563EB' }}
                               >
@@ -460,8 +459,8 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({
 
       <footer style={{ backgroundColor: '#0B1220' }} className="text-white pt-5 pb-4">
         <Container>
-          <div className="d-flex flex-column flex-md-row flex-wrap gap-4 gap-lg-5">
-            <div style={{ flex: '1.4 1 220px' }}>
+          <Row className="g-4 g-lg-5">
+            <Col lg={3} md={6}>
               <div className="d-flex align-items-center gap-2 mb-3">
                 <div
                   className="bg-white rounded-3 d-flex align-items-center justify-content-center"
@@ -474,10 +473,10 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({
               <p className="mb-0 fs-7" style={{ color: '#CBD5E1', maxWidth: '260px' }}>
                 Your complete platform for placement preparation.
               </p>
-            </div>
+            </Col>
 
             {footerSections.map((section) => (
-              <div key={section.title} style={{ flex: '1 1 120px' }}>
+              <Col key={section.title} lg={section.title === 'Social Links' ? 2 : 3} md={4} sm={6}>
                 <h6 className="fw-bold text-white mb-3">{section.title}</h6>
                 <ul className="list-unstyled d-grid gap-2 mb-0">
                   {section.links.map((link) => (
@@ -493,9 +492,9 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({
                     </li>
                   ))}
                 </ul>
-              </div>
+              </Col>
             ))}
-          </div>
+          </Row>
 
           <div className="border-top mt-5 pt-4 text-center fs-7" style={{ borderColor: 'rgba(203, 213, 225, 0.18)' }}>
             <span style={{ color: '#CBD5E1' }}>&copy; 2026 PlacementPro. All rights reserved.</span>

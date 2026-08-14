@@ -15,6 +15,33 @@ const features = [
 
 const steps = ['Set your goal', 'Practice your skills', 'Take a simulation', 'Review your insights'];
 
+const footerSections = [
+  {
+    title: 'Contact Us',
+    links: ['College Support', 'placementpro01@gmail.com', 'Find us online'],
+  },
+  {
+    title: 'Learning',
+    links: ['DSA Preparation', 'Aptitude & Reasoning', 'Programming', 'Core CS Subjects', 'Web Development'],
+  },
+  {
+    title: 'Career',
+    links: ['Placement Preparation', 'Interview Preparation', 'Resume Building', 'Mock Interviews', 'Company Preparation'],
+  },
+  {
+    title: 'Company',
+    links: ['About Us', 'For Students', 'For Colleges', 'Contact Us', 'Privacy Policy', 'Terms & Conditions'],
+  },
+  {
+    title: 'Resources',
+    links: ['Placement Roadmaps', 'Practice Tests', 'Coding Resources', 'Interview Questions', 'Placement Blogs', 'FAQs'],
+  },
+  {
+    title: 'Social Links',
+    links: ['LinkedIn', 'GitHub', 'Instagram'],
+  },
+];
+
 export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
   const reduceMotion = useReducedMotion();
   const heroItem = (delay: number) => ({
@@ -77,7 +104,50 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
 
     <motion.section className="minimal-cta" {...reveal()}><Container><motion.div {...reveal()}><p className="minimal-kicker">Start today</p><h2>Ready to prepare with purpose?</h2><p>Take your next placement round with a clearer plan and more confidence.</p><button className="minimal-button minimal-button-primary" onClick={() => onNavigate('register')}>Create your free account <i className="bi bi-arrow-right" /></button></motion.div></Container></motion.section>
 
-    <footer className="minimal-footer"><Container className="d-flex flex-column flex-sm-row justify-content-between gap-2"><span>PlacementPro</span><small>© 2026 PlacementPro. Built for campus placements.</small></Container></footer>
+    <footer style={{ backgroundColor: '#0B1220' }} className="text-white pt-5 pb-4">
+      <Container>
+        <Row className="g-4 g-lg-5">
+          <Col lg={3} md={6}>
+            <div className="d-flex align-items-center gap-2 mb-3">
+              <div
+                className="bg-white rounded-3 d-flex align-items-center justify-content-center"
+                style={{ width: '38px', height: '38px' }}
+              >
+                <i className="bi bi-briefcase-fill fs-5" style={{ color: '#2563EB' }}></i>
+              </div>
+              <span className="fw-extrabold fs-4 tracking-tight">Placement<span className="fw-light">Pro</span></span>
+            </div>
+            <p className="mb-0 fs-7" style={{ color: '#CBD5E1', maxWidth: '260px' }}>
+              Your complete platform for placement preparation.
+            </p>
+          </Col>
+
+          {footerSections.map((section) => (
+            <Col key={section.title} lg={section.title === 'Social Links' ? 2 : 3} md={4} sm={6}>
+              <h6 className="fw-bold text-white mb-3">{section.title}</h6>
+              <ul className="list-unstyled d-grid gap-2 mb-0">
+                {section.links.map((link) => (
+                  <li key={link}>
+                    <a
+                      href="#"
+                      onClick={(event) => event.preventDefault()}
+                      className="text-decoration-none fs-7"
+                      style={{ color: '#CBD5E1' }}
+                    >
+                      {link}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </Col>
+          ))}
+        </Row>
+
+        <div className="border-top mt-5 pt-4 text-center fs-7" style={{ borderColor: 'rgba(203, 213, 225, 0.18)' }}>
+          <span style={{ color: '#CBD5E1' }}>&copy; 2026 PlacementPro. All rights reserved.</span>
+        </div>
+      </Container>
+    </footer>
   </main>
   );
 };
