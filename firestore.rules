@@ -18,7 +18,7 @@ service cloud.firestore {
 
     match /problems/{problemId} {
       allow read: if isAuthenticated();
-      allow write: if false; // Only writable via Admin SDK / Cloud Functions
+      allow write: if isAuthenticated(); // Temporarily open for browser-based initial sync
     }
 
     match /userProgress/{userId} {
@@ -37,7 +37,7 @@ service cloud.firestore {
 
     match /syncMetadata/{metaId} {
       allow read: if isAuthenticated();
-      allow write: if false; // Only writable via Cloud Functions
+      allow write: if isAuthenticated(); // Temporarily open for browser-based initial sync
     }
   }
 }

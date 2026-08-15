@@ -38,6 +38,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.syncProblemsLogic = exports.mapRatingToDifficulty = void 0;
 const admin = __importStar(require("firebase-admin"));
+const firestore_1 = require("firebase-admin/firestore");
 const axios_1 = __importDefault(require("axios"));
 const mapRatingToDifficulty = (rating) => {
     if (!rating)
@@ -71,20 +72,19 @@ const syncProblemsLogic = async () => {
                 statsMap.set(`${stat.contestId}_${stat.index}`, stat.solvedCount || 0);
             }
         }
-        // 3. Batch write to Firestore (limit to PROGRAMMING problems and ratings 800-3000 to keep it relevant)
+        // 3. Batch write to Firestore
         let totalSynced = 0;
         let batch = db.batch();
         let operationCount = 0;
         for (const problem of problems) {
             if (problem.contestId === undefined || problem.index === undefined)
                 continue;
-            // Filter out non-programming tasks or tasks without rating (often old/uncategorized)
             if (problem.type !== 'PROGRAMMING')
                 continue;
             const problemId = `codeforces_${problem.contestId}_${problem.index}`;
             const solvedCount = statsMap.get(`${problem.contestId}_${problem.index}`) || 0;
             const docRef = db.collection('problems').doc(problemId);
-            const payload = {
+            batch.set(docRef, {
                 source: 'codeforces',
                 contestId: problem.contestId,
                 problemIndex: problem.index,
@@ -95,12 +95,8 @@ const syncProblemsLogic = async () => {
                 solvedCount: solvedCount,
                 sourceUrl: `https://codeforces.com/problemset/problem/${problem.contestId}/${problem.index}`,
                 isActive: true,
-                updatedAt: admin.firestore.FieldValue.serverTimestamp(),
-            };
-            // Use merge to keep custom fields we might add on the frontend/admin later
-            batch.set(docRef, {
-                ...payload,
-                createdAt: admin.firestore.FieldValue.serverTimestamp() // Will set on creation, ignored on subsequent merges if it matches
+                updatedAt: firestore_1.FieldValue.serverTimestamp(),
+                createdAt: firestore_1.FieldValue.serverTimestamp(),
             }, { merge: true });
             operationCount++;
             totalSynced++;
@@ -114,14 +110,13 @@ const syncProblemsLogic = async () => {
         if (operationCount > 0) {
             await batch.commit();
         }
-        // 4. Update config sync metadata
-        const syncData = {
-            lastSyncAt: admin.firestore.FieldValue.serverTimestamp(),
+        // 4. Update sync metadata
+        await syncMetaRef.set({
+            lastSyncAt: firestore_1.FieldValue.serverTimestamp(),
             status: 'success',
             totalProblems: totalSynced,
             lastError: null
-        };
-        await syncMetaRef.set(syncData, { merge: true });
+        }, { merge: true });
         return { success: true, totalSynced, error: null };
     }
     catch (error) {
@@ -129,7 +124,7 @@ const syncProblemsLogic = async () => {
         console.error('Error syncing Codeforces problems:', errorMsg);
         // Log failure in metadata
         await syncMetaRef.set({
-            lastSyncAt: admin.firestore.FieldValue.serverTimestamp(),
+            lastSyncAt: firestore_1.FieldValue.serverTimestamp(),
             status: 'failed',
             lastError: errorMsg
         }, { merge: true });

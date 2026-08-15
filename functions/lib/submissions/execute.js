@@ -35,6 +35,7 @@ var __importStar = (this && this.__importStar) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.submitSolutionLogic = void 0;
 const admin = __importStar(require("firebase-admin"));
+const firestore_1 = require("firebase-admin/firestore");
 const submitSolutionLogic = async (req, res) => {
     const db = admin.firestore();
     const { userId, problemId, language, code } = req.body;
@@ -51,28 +52,23 @@ const submitSolutionLogic = async (req, res) => {
             return;
         }
         // 2. Perform mock code compilation and evaluation
-        // Simple verification check to make it realistic
         let status = 'Accepted';
         let errorMessage;
-        let runtime = Math.floor(Math.random() * 80) + 10; // 10ms - 90ms
-        let memory = Math.floor(Math.random() * 2000) + 1000; // 1000KB - 3000KB
+        let runtime = Math.floor(Math.random() * 80) + 10;
+        let memory = Math.floor(Math.random() * 2000) + 1000;
         const lowerCode = code.toLowerCase();
-        // Simulation of compile error
         if (lowerCode.includes('syntaxerror') || lowerCode.includes('compile_error')) {
             status = 'Compilation Error';
             errorMessage = 'Compilation Failed: line 5: expected ";" before token "return"';
         }
-        // Simulation of runtime error
         else if (lowerCode.includes('runtimeerror') || lowerCode.includes('nullpointer')) {
             status = 'Runtime Error';
             errorMessage = 'Runtime Exception: Segment Fault / Core Dumped (std::out_of_range)';
         }
-        // Simulation of Wrong Answer
         else if (lowerCode.includes('wronganswer') || code.length < 30) {
             status = 'Wrong Answer';
             errorMessage = 'Wrong Answer on Test Case #4: Output mismatch. Expected: YES, Got: NO';
         }
-        // Watermelon problem check logic simulation
         else if (problemId === 'codeforces_4_A') {
             const isWatermelonCorrect = (lowerCode.includes('% 2') || lowerCode.includes('modulo')) &&
                 (lowerCode.includes('> 2') || lowerCode.includes('>2') || lowerCode.includes('!= 2') || lowerCode.includes('!=2'));
@@ -114,7 +110,7 @@ const submitSolutionLogic = async (req, res) => {
             bestRuntime: status === 'Accepted'
                 ? Math.min(runtime, progressSnap.data()?.bestRuntime || 999999)
                 : (progressSnap.data()?.bestRuntime || null),
-            lastSubmittedAt: admin.firestore.FieldValue.serverTimestamp(),
+            lastSubmittedAt: firestore_1.FieldValue.serverTimestamp(),
             language,
         };
         await progressRef.set(progressData, { merge: true });
@@ -129,20 +125,19 @@ const submitSolutionLogic = async (req, res) => {
                     const currentSolved = userData?.problemsSolved || 0;
                     const currentStreak = userData?.streak || 0;
                     transaction.update(userRef, {
-                        codingXp: currentXp + 100, // +100 XP per solved problem
+                        codingXp: currentXp + 100,
                         problemsSolved: currentSolved + 1,
-                        streak: currentStreak === 0 ? 1 : currentStreak, // Init streak if 0
-                        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+                        streak: currentStreak === 0 ? 1 : currentStreak,
+                        updatedAt: firestore_1.FieldValue.serverTimestamp(),
                     });
                 }
                 else {
-                    // If profile doc doesn't exist, create it
                     transaction.set(userRef, {
                         codingXp: 100,
                         problemsSolved: 1,
                         streak: 1,
-                        createdAt: admin.firestore.FieldValue.serverTimestamp(),
-                        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+                        createdAt: firestore_1.FieldValue.serverTimestamp(),
+                        updatedAt: firestore_1.FieldValue.serverTimestamp(),
                     }, { merge: true });
                 }
             });

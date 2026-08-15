@@ -6,6 +6,7 @@
     {
       "source": "functions",
       "codebase": "default",
+      "predeploy": ["npm --prefix \"$RESOURCE_DIR\" run build"],
       "ignore": [
         "node_modules",
         ".git",
@@ -13,5 +14,18 @@
         "firestore-debug.log"
       ]
     }
-  ]
+  ],
+  "emulators": {
+    "functions": {
+      "port": 5002
+    },
+    "firestore": {
+      "port": 8081
+    },
+    "ui": {
+      "enabled": true,
+      "port": 4001
+    },
+    "singleProjectMode": true
+  }
 }

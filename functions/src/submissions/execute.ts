@@ -1,4 +1,5 @@
 import * as admin from 'firebase-admin';
+import { FieldValue } from 'firebase-admin/firestore';
 import { Request, Response } from 'express';
 
 export const submitSolutionLogic = async (req: Request, res: Response) => {
@@ -21,30 +22,25 @@ export const submitSolutionLogic = async (req: Request, res: Response) => {
     }
 
     // 2. Perform mock code compilation and evaluation
-    // Simple verification check to make it realistic
     let status: 'Accepted' | 'Wrong Answer' | 'Compilation Error' | 'Runtime Error' = 'Accepted';
     let errorMessage: string | undefined;
-    let runtime = Math.floor(Math.random() * 80) + 10; // 10ms - 90ms
-    let memory = Math.floor(Math.random() * 2000) + 1000; // 1000KB - 3000KB
+    let runtime = Math.floor(Math.random() * 80) + 10;
+    let memory = Math.floor(Math.random() * 2000) + 1000;
 
     const lowerCode = code.toLowerCase();
 
-    // Simulation of compile error
     if (lowerCode.includes('syntaxerror') || lowerCode.includes('compile_error')) {
       status = 'Compilation Error';
       errorMessage = 'Compilation Failed: line 5: expected ";" before token "return"';
     } 
-    // Simulation of runtime error
     else if (lowerCode.includes('runtimeerror') || lowerCode.includes('nullpointer')) {
       status = 'Runtime Error';
       errorMessage = 'Runtime Exception: Segment Fault / Core Dumped (std::out_of_range)';
     }
-    // Simulation of Wrong Answer
     else if (lowerCode.includes('wronganswer') || code.length < 30) {
       status = 'Wrong Answer';
       errorMessage = 'Wrong Answer on Test Case #4: Output mismatch. Expected: YES, Got: NO';
     }
-    // Watermelon problem check logic simulation
     else if (problemId === 'codeforces_4_A') {
       const isWatermelonCorrect = 
         (lowerCode.includes('% 2') || lowerCode.includes('modulo')) && 
@@ -96,7 +92,7 @@ export const submitSolutionLogic = async (req: Request, res: Response) => {
       bestRuntime: status === 'Accepted' 
         ? Math.min(runtime, progressSnap.data()?.bestRuntime || 999999) 
         : (progressSnap.data()?.bestRuntime || null),
-      lastSubmittedAt: admin.firestore.FieldValue.serverTimestamp(),
+      lastSubmittedAt: FieldValue.serverTimestamp(),
       language,
     };
 
@@ -114,19 +110,18 @@ export const submitSolutionLogic = async (req: Request, res: Response) => {
           const currentStreak = userData?.streak || 0;
 
           transaction.update(userRef, {
-            codingXp: currentXp + 100, // +100 XP per solved problem
+            codingXp: currentXp + 100,
             problemsSolved: currentSolved + 1,
-            streak: currentStreak === 0 ? 1 : currentStreak, // Init streak if 0
-            updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+            streak: currentStreak === 0 ? 1 : currentStreak,
+            updatedAt: FieldValue.serverTimestamp(),
           });
         } else {
-          // If profile doc doesn't exist, create it
           transaction.set(userRef, {
             codingXp: 100,
             problemsSolved: 1,
             streak: 1,
-            createdAt: admin.firestore.FieldValue.serverTimestamp(),
-            updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+            createdAt: FieldValue.serverTimestamp(),
+            updatedAt: FieldValue.serverTimestamp(),
           }, { merge: true });
         }
       });
