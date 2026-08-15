@@ -8,11 +8,13 @@ interface AuthContextType {
   token: string | null;
   setRole: (role: UserRole) => void;
   updateProfile: (updated: Partial<UserProfile>) => void;
-  login: (email: string, role?: UserRole) => boolean;
-  register: (user: Partial<UserProfile>) => void;
+  login: (email: string, password?: string, role?: UserRole) => Promise<boolean>;
+  register: (user: Partial<UserProfile>, password?: string) => Promise<void>;
   continueWithGoogle: (user: Partial<UserProfile>) => void;
   logout: () => void;
 }
+
+import { registerWithEmail, loginWithEmail } from '../utils/emailAuth';
 
 const generateJwtToken = (user: UserProfile): string => {
   const header = btoa(JSON.stringify({ alg: 'HS256', typ: 'JWT' }));
@@ -76,50 +78,83 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.setItem('placementpro_token', jwt);
   };
 
-  const login = (email: string, role?: UserRole) => {
-    let found = mockUsers.find((u) => u.email.toLowerCase() === email.toLowerCase());
-    if (!found && role) {
-      found = mockUsers.find((u) => u.role === role);
+  const login = async (email: string, password?: string, role?: UserRole) => {
+    if (password) {
+      // Use Firebase Email/Password Auth
+      try {
+        const userProfile = await loginWithEmail(email, password);
+        const jwt = generateJwtToken(userProfile as UserProfile);
+        setToken(jwt);
+        setCurrentUser(userProfile as UserProfile);
+        localStorage.setItem('placementpro_user', JSON.stringify(userProfile));
+        localStorage.setItem('placementpro_token', jwt);
+        return true;
+      } catch (error) {
+        console.error('Login failed:', error);
+        throw error; // Rethrow to handle in UI
+      }
+    } else {
+      // Fallback for mock/legacy login
+      let found = mockUsers.find((u) => u.email.toLowerCase() === email.toLowerCase());
+      if (!found && role) {
+        found = mockUsers.find((u) => u.role === role);
+      }
+      if (!found) {
+        found = {
+          id: `usr-${Date.now()}`,
+          name: email.split('@')[0].replace('.', ' ') || 'Student Candidate',
+          email,
+          role: role || 'student',
+          department: 'Computer Science & Engineering',
+          cgpa: 8.8,
+          batchYear: '2026',
+          phone: '+91 98765 43210',
+        };
+      }
+      const jwt = generateJwtToken(found);
+      setToken(jwt);
+      setCurrentUser(found);
+      localStorage.setItem('placementpro_user', JSON.stringify(found));
+      localStorage.setItem('placementpro_token', jwt);
+      return true;
     }
-    if (!found) {
-      found = {
-        id: `usr-${Date.now()}`,
-        name: email.split('@')[0].replace('.', ' ') || 'Student Candidate',
-        email,
-        role: role || 'student',
-        department: 'Computer Science & Engineering',
-        cgpa: 8.8,
-        batchYear: '2026',
-        phone: '+91 98765 43210',
-      };
-    }
-    const jwt = generateJwtToken(found);
-    setToken(jwt);
-    setCurrentUser(found);
-    localStorage.setItem('placementpro_user', JSON.stringify(found));
-    localStorage.setItem('placementpro_token', jwt);
-    return true;
   };
 
-  const register = (newUser: Partial<UserProfile>) => {
-    const user: UserProfile = {
-      id: `usr-${Date.now()}`,
-      name: newUser.name || 'Student Candidate',
-      email: newUser.email || 'student@placementpro.edu',
-      role: newUser.role || 'student',
-      avatarUrl: newUser.avatarUrl,
-      department: newUser.department || 'Computer Science & Engineering',
-      cgpa: newUser.cgpa || 8.5,
-      batchYear: newUser.batchYear || '2026',
-      phone: newUser.phone || '',
-      companyName: newUser.companyName || '',
-    };
-    mockUsers.push(user);
-    const jwt = generateJwtToken(user);
-    setToken(jwt);
-    setCurrentUser(user);
-    localStorage.setItem('placementpro_user', JSON.stringify(user));
-    localStorage.setItem('placementpro_token', jwt);
+  const register = async (newUser: Partial<UserProfile>, password?: string) => {
+    if (password && newUser.name && newUser.email) {
+      // Use Firebase Email/Password Auth
+      try {
+        const userProfile = await registerWithEmail(newUser.name, newUser.email, password);
+        const jwt = generateJwtToken(userProfile as UserProfile);
+        setToken(jwt);
+        setCurrentUser(userProfile as UserProfile);
+        localStorage.setItem('placementpro_user', JSON.stringify(userProfile));
+        localStorage.setItem('placementpro_token', jwt);
+      } catch (error) {
+        console.error('Registration failed:', error);
+        throw error;
+      }
+    } else {
+      // Fallback for mock/legacy register
+      const user: UserProfile = {
+        id: `usr-${Date.now()}`,
+        name: newUser.name || 'Student Candidate',
+        email: newUser.email || 'student@placementpro.edu',
+        role: newUser.role || 'student',
+        avatarUrl: newUser.avatarUrl,
+        department: newUser.department || 'Computer Science & Engineering',
+        cgpa: newUser.cgpa || 8.5,
+        batchYear: newUser.batchYear || '2026',
+        phone: newUser.phone || '',
+        companyName: newUser.companyName || '',
+      };
+      mockUsers.push(user);
+      const jwt = generateJwtToken(user);
+      setToken(jwt);
+      setCurrentUser(user);
+      localStorage.setItem('placementpro_user', JSON.stringify(user));
+      localStorage.setItem('placementpro_token', jwt);
+    }
   };
 
   const continueWithGoogle = (googleUser: Partial<UserProfile>) => {

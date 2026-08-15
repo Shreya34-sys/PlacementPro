@@ -6,6 +6,7 @@ export const saveUserToFirestore = async (user: {
   name: string;
   email: string;
   avatarUrl?: string;
+  provider?: string;
 }) => {
   await setDoc(
     doc(firestoreDb, 'users', user.uid),
@@ -14,7 +15,7 @@ export const saveUserToFirestore = async (user: {
       email: user.email,
       avatarUrl: user.avatarUrl || '',
       role: 'student',
-      provider: 'google',
+      provider: user.provider || 'google',
       updatedAt: serverTimestamp(),
       createdAt: serverTimestamp(),
     },

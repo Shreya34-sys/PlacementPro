@@ -72,19 +72,23 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigateToRegister, onLo
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
 
     setLoading(true);
     setErrors({});
 
-    // Simulate JWT authentication flow
-    setTimeout(() => {
-      login(email, 'student');
+    try {
+      await login(email, password, 'student');
       setLoading(false);
       onLoginSuccess();
-    }, 600);
+    } catch (error) {
+      setLoading(false);
+      setErrors({
+        general: error instanceof Error ? error.message : 'Invalid login credentials. Please try again.',
+      });
+    }
   };
 
   const handleGoogleLogin = async () => {

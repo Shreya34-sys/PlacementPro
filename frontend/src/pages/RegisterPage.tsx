@@ -124,18 +124,23 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleRegister = (event: React.FormEvent) => {
+  const handleRegister = async (event: React.FormEvent) => {
     event.preventDefault();
     if (!validate()) return;
 
     setLoading(true);
     setErrors({});
 
-    setTimeout(() => {
-      register({ name: fullName.trim(), email: email.trim(), role: 'student' });
+    try {
+      await register({ name: fullName.trim(), email: email.trim(), role: 'student' }, password);
       setLoading(false);
       onRegisterSuccess();
-    }, 700);
+    } catch (error) {
+      setLoading(false);
+      setErrors({
+        general: error instanceof Error ? error.message : 'Registration failed. Please try again.',
+      });
+    }
   };
 
   const handleGoogleContinue = async () => {
