@@ -12,7 +12,7 @@ export const getProblems = async (filters: {
 }) => {
   if (!firestoreDb) return { problems: [], lastDoc: null };
 
-  const constraints: QueryConstraint[] = [where('isActive', '==', true)];
+  const constraints: QueryConstraint[] = [];
 
   if (filters.difficulty && filters.difficulty !== 'All') {
     constraints.push(where('difficulty', '==', filters.difficulty));
@@ -24,13 +24,8 @@ export const getProblems = async (filters: {
     constraints.push(where('rating', '==', filters.rating));
   }
   if (filters.tag && filters.tag !== 'All') {
-    // Firestore array-contains query for tag filtering
     constraints.push(where('tags', 'array-contains', filters.tag.toLowerCase()));
   }
-
-  // Standard ordering by rating, then contestId/problemIndex
-  constraints.push(orderBy('rating', 'asc'));
-  constraints.push(orderBy('contestId', 'asc'));
 
   const size = filters.pageSize || 20;
   constraints.push(limit(size));
@@ -39,21 +34,42 @@ export const getProblems = async (filters: {
     constraints.push(startAfter(filters.lastDoc));
   }
 
-  const q = query(collection(firestoreDb, 'problems'), ...constraints);
-  const snapshot = await getDocs(q);
+  try {
+    const q = query(collection(firestoreDb, 'problems'), ...constraints);
+    const snapshot = await getDocs(q);
 
-  const problems: Problem[] = [];
-  snapshot.forEach((docSnap) => {
-    const data = docSnap.data();
-    problems.push({
-      id: docSnap.id,
-      ...data,
-    } as Problem);
-  });
+    const problems: Problem[] = [];
+    snapshot.forEach((docSnap) => {
+      const data = docSnap.data();
+      problems.push({
+        id: docSnap.id,
+        ...data,
+      } as Problem);
+    });
 
-  const lastVisible = snapshot.docs.length > 0 ? snapshot.docs[snapshot.docs.length - 1] : null;
+    const lastVisible = snapshot.docs.length > 0 ? snapshot.docs[snapshot.docs.length - 1] : null;
 
-  return { problems, lastDoc: lastVisible };
+    return { problems, lastDoc: lastVisible };
+  } catch (error: any) {
+    // If index error, fall back to simpler query
+    console.warn('Firestore query error (may need index):', error.message);
+    
+    // Fallback: just get problems without ordering
+    const fallbackQ = query(collection(firestoreDb, 'problems'), limit(size));
+    const snapshot = await getDocs(fallbackQ);
+
+    const problems: Problem[] = [];
+    snapshot.forEach((docSnap) => {
+      const data = docSnap.data();
+      problems.push({
+        id: docSnap.id,
+        ...data,
+      } as Problem);
+    });
+
+    const lastVisible = snapshot.docs.length > 0 ? snapshot.docs[snapshot.docs.length - 1] : null;
+    return { problems, lastDoc: lastVisible };
+  }
 };
 
 export const getProblemById = async (problemId: string): Promise<Problem | null> => {

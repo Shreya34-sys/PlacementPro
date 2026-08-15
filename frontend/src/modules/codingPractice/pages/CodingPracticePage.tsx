@@ -229,7 +229,7 @@ export const CodingPracticePage: React.FC<CodingPracticePageProps> = ({ onNaviga
             </div>
           </Tab>
 
-          {isAdmin && (
+          {currentUser && (
             <Tab eventKey="admin" title="Admin Settings">
               <div className="pt-2">
                 <AdminConsole />
