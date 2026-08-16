@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Container, Row, Col, Card, Button, Form, Badge, ProgressBar, Spinner, Alert } from 'react-bootstrap';
 import { useAuth } from '../context/AuthContext';
+import { updateUserLeaderboardStats } from '../services/leaderboardService';
 
 interface ChatMessage {
   id: string;
@@ -182,6 +183,12 @@ export const AiInterviewPage: React.FC = () => {
     setMessages((prev) => [...prev, userMsg]);
     setSelectedFeedback(feedbackObj);
     setIsProcessing(true);
+
+    if (currentUser) {
+      updateUserLeaderboardStats(currentUser.uid, {
+        interviewScore: overall
+      }).catch(e => console.error("Failed to update interview score", e));
+    }
 
     // AI Next Question response delay
     setTimeout(() => {

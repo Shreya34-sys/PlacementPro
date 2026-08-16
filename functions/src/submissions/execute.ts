@@ -108,11 +108,18 @@ export const submitSolutionLogic = async (req: Request, res: Response) => {
           const currentXp = userData?.codingXp || 0;
           const currentSolved = userData?.problemsSolved || 0;
           const currentStreak = userData?.streak || 0;
+          const aptitudeScore = userData?.aptitudeScore || 0;
+          const interviewScore = userData?.interviewScore || 0;
+
+          const newCodingXp = currentXp + 100;
+          const newProblemsSolved = currentSolved + 1;
+          const newTotalPoints = newCodingXp + (aptitudeScore * 10) + (interviewScore * 10);
 
           transaction.update(userRef, {
-            codingXp: currentXp + 100,
-            problemsSolved: currentSolved + 1,
+            codingXp: newCodingXp,
+            problemsSolved: newProblemsSolved,
             streak: currentStreak === 0 ? 1 : currentStreak,
+            totalPoints: newTotalPoints,
             updatedAt: FieldValue.serverTimestamp(),
           });
         } else {
@@ -120,6 +127,9 @@ export const submitSolutionLogic = async (req: Request, res: Response) => {
             codingXp: 100,
             problemsSolved: 1,
             streak: 1,
+            aptitudeScore: 0,
+            interviewScore: 0,
+            totalPoints: 100,
             createdAt: FieldValue.serverTimestamp(),
             updatedAt: FieldValue.serverTimestamp(),
           }, { merge: true });

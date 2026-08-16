@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Button, Badge, Modal, ProgressBar } from 'react-bootstrap';
 import { mockAptitudeTest, AptitudeQuestion } from '../data/mockAptitudeQuestions';
+import { useAuth } from '../context/AuthContext';
+import { updateUserLeaderboardStats } from '../services/leaderboardService';
 
 type QuestionStatus = 'not-visited' | 'unanswered' | 'answered' | 'marked';
 
@@ -124,10 +126,37 @@ export const AptitudeTestPage: React.FC = () => {
     setCurrentQIndex(index);
   };
 
-  const handleFinalSubmit = () => {
+  const { currentUser } = useAuth();
+
+  const handleFinalSubmit = async () => {
     setIsTimerRunning(false);
     setTestState('submitted');
     setShowSubmitModal(false);
+
+    if (currentUser) {
+      let score = 0;
+      let totalMaxMarks = mockAptitudeTest.questions.length * 4;
+
+      mockAptitudeTest.questions.forEach((q) => {
+        const ans = userAnswers[q.id];
+        if (ans !== undefined) {
+          if (ans === q.correctAnswer) {
+            score += q.marks;
+          } else {
+            score -= 1; // negative marking -1
+          }
+        }
+      });
+      const scorePercentage = Math.max(0, Math.round((score / totalMaxMarks) * 100));
+
+      try {
+        await updateUserLeaderboardStats(currentUser.uid, {
+          aptitudeScore: scorePercentage
+        });
+      } catch (e) {
+        console.error("Failed to update aptitude score", e);
+      }
+    }
   };
 
   // Score calculation

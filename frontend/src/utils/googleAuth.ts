@@ -1,7 +1,7 @@
 import { signInWithPopup } from 'firebase/auth';
 import { UserProfile } from '../types';
-import { firebaseAuth, googleProvider, isFirebaseConfigured, saveUserToFirestore } from './firebase';
-
+import { firebaseAuth, googleProvider, isFirebaseConfigured } from './firebase';
+import { saveUserToFirestore } from './saveUserToFirestore';
 export interface GoogleProfile {
   name: string;
   email: string;
