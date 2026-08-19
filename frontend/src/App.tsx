@@ -33,6 +33,7 @@ import { RegisterPage } from './pages/RegisterPage';
 import { LandingPage } from './pages/LandingPage';
 import { TermsPage } from './pages/TermsPage';
 import { PrivacyPage } from './pages/PrivacyPage';
+import { CodingPracticePage } from './modules/codingPractice/pages/CodingPracticePage';
 
 function AppContent() {
   const { isAuthenticated, logout } = useAuth();
@@ -134,7 +135,8 @@ function AppContent() {
       case 'coding-round':
         return <CodingRoundPage />;
       case 'leetcode-practice':
-        return <LeetCodePracticePage />;
+      case 'coding-practice':
+        return <CodingPracticePage onNavigate={handleNavigate} />;
       case 'versant-prep':
         return <VersantPrepPage />;
       case 'hr-prep':

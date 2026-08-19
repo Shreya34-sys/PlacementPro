@@ -50,7 +50,7 @@ const placementSections: MegaMenuSection[] = [
       { label: 'HR Interview', description: 'Behavioral, situational and HR questions', tab: 'hr-prep' },
       { label: 'AI Interview', description: 'Practice realistic AI-powered interviews', tab: 'ai-interview' },
       { label: 'System Design', description: 'Learn system design concepts and interview patterns', tab: 'technical-prep' },
-      { label: 'Machine Coding', description: 'Practice real-world coding and implementation tasks', tab: 'coding-round' },
+      { label: 'Coding Practice', description: 'Solve topic-wise DSA problems on a LeetCode-style editor', tab: 'coding-practice' },
       { label: 'Resume & ATS', description: 'Improve your resume and ATS readiness', tab: 'resume-analyzer' },
     ],
   },
@@ -69,7 +69,7 @@ const placementSections: MegaMenuSection[] = [
 
 const trendingItems: TrendingItem[] = [
   { label: 'Aptitude', title: 'Crack Aptitude Tests', action: 'Practice', tab: 'aptitude-test' },
-  { label: 'DSA', title: 'Master Coding Rounds', action: 'Practice', tab: 'leetcode-practice' },
+  { label: 'DSA', title: 'Master Coding Rounds', action: 'Practice', tab: 'coding-practice' },
   { label: 'Technical', title: 'Ace Technical Interviews', action: 'Prepare', tab: 'technical-prep' },
   { label: 'AI Interview', title: 'Practice AI Interviews', action: 'Start', tab: 'ai-interview' },
   { label: 'Resume', title: 'Improve Your ATS Score', action: 'Analyze', tab: 'resume-analyzer' },
@@ -84,7 +84,11 @@ const placementTabs = new Set([
   'gd-prep',
   'coding-round',
   'leetcode-practice',
+<<<<<<< HEAD
   'versant-prep',
+=======
+  'coding-practice',
+>>>>>>> f35f65e7471178cc974be6a62d680a909935fbe8
   'hr-prep',
   'gamified-prep',
   'resume-analyzer',

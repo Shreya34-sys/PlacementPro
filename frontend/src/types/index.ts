@@ -12,6 +12,13 @@ export interface UserProfile {
   phone?: string;
   resumeUrl?: string;
   companyName?: string;
+  
+  // Leaderboard statistics
+  problemsSolved?: number;
+  codingXp?: number;
+  aptitudeScore?: number;
+  interviewScore?: number;
+  totalPoints?: number;
 }
 
 export type ApplicationStatus = 
