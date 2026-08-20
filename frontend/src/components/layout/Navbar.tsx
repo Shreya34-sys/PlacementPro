@@ -84,11 +84,8 @@ const placementTabs = new Set([
   'gd-prep',
   'coding-round',
   'leetcode-practice',
-<<<<<<< HEAD
   'versant-prep',
-=======
   'coding-practice',
->>>>>>> f35f65e7471178cc974be6a62d680a909935fbe8
   'hr-prep',
   'gamified-prep',
   'resume-analyzer',

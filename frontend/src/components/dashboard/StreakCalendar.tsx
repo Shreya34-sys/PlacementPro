@@ -1,293 +1,362 @@
-import React, { useState, useMemo } from 'react';
-import { Card, Row, Col, Badge, Button, OverlayTrigger, Tooltip, Alert } from 'react-bootstrap';
+import React, { useMemo, useState } from 'react';
+import { Card, Button, OverlayTrigger, Tooltip, Alert } from 'react-bootstrap';
 
-interface DayData {
-  dateStr: string;
+interface ActivityDay {
+  date: Date;
+  dateKey: string;
   count: number;
   activities: string[];
-  dayOfWeek: number; // 0=Sun, 1=Mon, ..., 6=Sat
-  weekIndex: number;
-  monthName: string;
 }
 
+const MONTH_FORMATTER = new Intl.DateTimeFormat('en-US', {
+  month: 'long',
+  year: 'numeric',
+});
+
+const DATE_FORMATTER = new Intl.DateTimeFormat('en-US', {
+  month: 'long',
+  day: 'numeric',
+  year: 'numeric',
+});
+
+const WEEKDAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
+const ACTIVITY_BANK = [
+  'Quantitative aptitude drills',
+  'Coding round practice',
+  'Technical interview revision',
+  'Company-wise preparation',
+  'Resume improvement task',
+  'Mock interview reflection',
+  'Communication practice',
+  'System design notes',
+  'Logical reasoning sprint',
+  'DBMS and SQL practice',
+];
+
+const getDateKey = (date: Date) => {
+  const year = date.getFullYear();
+  const month = `${date.getMonth() + 1}`.padStart(2, '0');
+  const day = `${date.getDate()}`.padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
+const getMonthStart = (date: Date) => new Date(date.getFullYear(), date.getMonth(), 1);
+
+const isSameMonth = (a: Date, b: Date) =>
+  a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth();
+
+const getMondayFirstOffset = (date: Date) => (date.getDay() + 6) % 7;
+
+const getActivityCount = (date: Date) => {
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
+  const seed = (year * 31 + month * 17 + day * 13) % 29;
+
+  if (seed % 11 === 0) return 0;
+  if (day % 10 === 0) return 9 + (seed % 3);
+  if (seed % 7 === 0) return 6 + (seed % 3);
+  if (seed % 5 === 0) return 3 + (seed % 3);
+  if (seed % 3 === 0) return 1 + (seed % 2);
+  return day % 4 === 0 ? 2 : 0;
+};
+
+const buildActivityDay = (date: Date): ActivityDay => {
+  const count = getActivityCount(date);
+  const activities = Array.from({ length: count }, (_, index) => {
+    const activityIndex = (date.getDate() + date.getMonth() + index) % ACTIVITY_BANK.length;
+    return ACTIVITY_BANK[activityIndex];
+  });
+
+  return {
+    date,
+    dateKey: getDateKey(date),
+    count,
+    activities,
+  };
+};
+
+const getIntensityColor = (count: number) => {
+  if (count === 0) return '#1d2530';
+  if (count <= 2) return '#1f6f43';
+  if (count <= 5) return '#2ea95f';
+  if (count <= 8) return '#3fd66d';
+  return '#6ff58f';
+};
+
+const getIntensityShadow = (count: number) => {
+  if (count === 0) return 'none';
+  if (count <= 5) return '0 0 0 1px rgba(79, 209, 124, 0.16)';
+  return '0 0 18px rgba(63, 214, 109, 0.18), 0 0 0 1px rgba(111, 245, 143, 0.22)';
+};
+
 export const StreakCalendar: React.FC = () => {
-  const [selectedYear, setSelectedYear] = useState<number>(2026);
-  const [currentStreak, setCurrentStreak] = useState(14);
-  const [longestStreak] = useState(28);
-  const [showToast, setShowToast] = useState(false);
-  const [extraTodayLogs, setExtraTodayLogs] = useState<number>(0);
+  const today = useMemo(() => new Date(), []);
+  const currentMonthStart = useMemo(() => getMonthStart(today), [today]);
+  const [visibleMonth, setVisibleMonth] = useState<Date>(currentMonthStart);
+  const [selectedDay, setSelectedDay] = useState<ActivityDay | null>(() => buildActivityDay(today));
 
-  // Generate 52 weeks (364/365 days) grid data for selected year
-  const { weeksData, monthLabels, totalYearActivities, activeDaysCount } = useMemo(() => {
-    const is2026 = selectedYear === 2026;
-    
-    // We construct 52 weeks starting from Aug 1 of previous year to July 31 of selected year
-    // Or full Jan 1 to Dec 31 of selected year.
-    // In GitHub/LeetCode, selecting a year displays full year (Jan 1 to Dec 31).
-    const startDate = new Date(selectedYear, 0, 1); // Jan 1
-    const endDate = new Date(selectedYear, 11, 31); // Dec 31
+  const selectedYear = visibleMonth.getFullYear();
 
-    // Find day of week for Jan 1
-    const days: DayData[] = [];
-    const months: { name: string; weekIndex: number }[] = [];
-    
-    let currentDate = new Date(startDate);
-    let currentWeek = 0;
-    let lastMonth = -1;
+  const yearActivityTotal = useMemo(() => {
+    const endMonth = selectedYear === today.getFullYear() ? today.getMonth() : 11;
+    let total = 0;
 
-    // Seeded pseudo-random activity counts for rich heatmap visual matching screenshot
-    const getActivityCount = (dayOfYear: number, month: number, day: number) => {
-      if (!is2026 && month > 10) return 0; // future in 2025
-      
-      // Clusters in Jan, Apr, May, Jun, Jul like user's screenshot
-      if (month === 0 && (day === 12 || day === 13 || day === 14 || day === 28)) return Math.floor((day % 3) + 2);
-      if (month === 3 && (day === 18 || day === 24)) return 2;
-      if (month === 4 && (day === 10 || day === 11 || day === 15 || day === 16 || day === 22)) return Math.floor((day % 4) + 1);
-      if (month === 5 && (day === 2 || day === 3 || day === 8 || day === 9 || day === 10 || day === 15 || day === 16 || day === 17 || day === 24 || day === 25)) return Math.floor((day % 4) + 1);
-      if (month === 6) { // July (current month)
-        if (day <= 26) {
-          if (day === 26) return 2 + extraTodayLogs;
-          return (day * 7) % 5 > 1 ? Math.floor((day % 4) + 1) : 0;
-        }
-      }
-      if (dayOfYear % 7 === 2 || dayOfYear % 13 === 0) return Math.floor((dayOfYear % 3) + 1);
-      return 0;
-    };
-
-    let dayIndex = 0;
-    while (currentDate <= endDate) {
-      const month = currentDate.getMonth();
-      const day = currentDate.getDate();
-      const dayOfWeek = currentDate.getDay(); // 0=Sun, 1=Mon...
-
-      if (month !== lastMonth && dayOfWeek < 3) {
-        const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        months.push({ name: monthNames[month], weekIndex: currentWeek });
-        lastMonth = month;
-      }
-
-      const count = getActivityCount(dayIndex, month, day);
-      const dateStr = currentDate.toLocaleDateString('en-US', {
-        month: 'short',
-        day: 'numeric',
-        year: 'numeric',
-      });
-
-      const sampleActivities = [
-        'Quantitative Aptitude Quiz',
-        'LeetCode Medium Solution',
-        'TCS Digital Mock Test',
-        'DBMS SQL Joins Practice',
-        'Versant Voice Test',
-        'System Design Basics',
-      ];
-
-      const activities: string[] = [];
-      for (let k = 0; k < count; k++) {
-        activities.push(sampleActivities[(day + k) % sampleActivities.length]);
-      }
-
-      days.push({
-        dateStr,
-        count,
-        activities,
-        dayOfWeek,
-        weekIndex: currentWeek,
-        monthName: currentDate.toLocaleString('default', { month: 'short' }),
-      });
-
-      // Advance to next day
-      currentDate.setDate(currentDate.getDate() + 1);
-      dayIndex++;
-      if (dayOfWeek === 6) {
-        currentWeek++;
+    for (let month = 0; month <= endMonth; month += 1) {
+      const daysInMonth = new Date(selectedYear, month + 1, 0).getDate();
+      for (let day = 1; day <= daysInMonth; day += 1) {
+        const date = new Date(selectedYear, month, day);
+        if (date > today) continue;
+        total += getActivityCount(date);
       }
     }
 
-    // Group days by week (0 to 52)
-    const weeks: DayData[][] = [];
-    days.forEach((d) => {
-      if (!weeks[d.weekIndex]) weeks[d.weekIndex] = [];
-      weeks[d.weekIndex].push(d);
-    });
+    return total;
+  }, [selectedYear, today]);
 
-    let totalActivities = 0;
-    let activeDays = 0;
-    days.forEach((d) => {
-      totalActivities += d.count;
-      if (d.count > 0) activeDays++;
-    });
+  const monthDays = useMemo(() => {
+    const daysInMonth = new Date(visibleMonth.getFullYear(), visibleMonth.getMonth() + 1, 0).getDate();
+    return Array.from({ length: daysInMonth }, (_, index) =>
+      buildActivityDay(new Date(visibleMonth.getFullYear(), visibleMonth.getMonth(), index + 1))
+    );
+  }, [visibleMonth]);
 
-    return {
-      weeksData: weeks,
-      monthLabels: months,
-      totalYearActivities: totalActivities,
-      activeDaysCount: activeDays,
-    };
-  }, [selectedYear, extraTodayLogs]);
+  const leadingEmptyCells = getMondayFirstOffset(visibleMonth);
+  const canGoNext = !isSameMonth(visibleMonth, currentMonthStart);
 
-  const handleLogTodayActivity = () => {
-    setExtraTodayLogs((prev) => prev + 1);
-    setCurrentStreak((prev) => prev + 1);
-    setShowToast(true);
-    setTimeout(() => setShowToast(false), 4000);
+  const goToPreviousMonth = () => {
+    setVisibleMonth((current) => new Date(current.getFullYear(), current.getMonth() - 1, 1));
+    setSelectedDay(null);
   };
 
-  // Color intensity logic for GitHub/LeetCode green theme
-  const getCellColor = (count: number) => {
-    if (count === 0) return '#161b22'; // Dark subtle cell
-    if (count === 1) return '#0e4429'; // Low green
-    if (count === 2) return '#006d32'; // Medium green
-    if (count === 3) return '#26a641'; // High green
-    return '#39d353';                  // Vibrant green
+  const goToNextMonth = () => {
+    if (!canGoNext) return;
+    setVisibleMonth((current) => {
+      const next = new Date(current.getFullYear(), current.getMonth() + 1, 1);
+      return next > currentMonthStart ? currentMonthStart : next;
+    });
+    setSelectedDay(null);
   };
-
-  const dayRowLabels = ['', 'Mon', '', 'Wed', '', 'Fri', ''];
 
   return (
-    <Card className="shadow-xs border-0 rounded-16 overflow-hidden mb-4 bg-dark text-white">
-      <Card.Header className="bg-dark border-bottom border-secondary p-3.5 d-flex justify-content-between align-items-center flex-wrap gap-2">
+    <Card className="shadow-xs border border-secondary rounded-16 overflow-hidden mb-4 bg-dark text-white">
+      <Card.Header className="bg-dark border-bottom border-secondary p-3.5">
         <div className="d-flex align-items-center gap-2">
-          <span className="fs-4">🔥</span>
+          <span className="fs-4" aria-hidden="true">🔥</span>
           <div>
-            <h5 className="fw-bold text-white mb-0">Preparation Activity Heatmap</h5>
+            <h5 className="fw-bold text-white mb-0">Preparation Activity</h5>
             <small className="text-white-50 fs-8">
-              {totalYearActivities} preparation activities in {selectedYear}
+              {yearActivityTotal} activities in {selectedYear}
             </small>
           </div>
         </div>
       </Card.Header>
 
-      <Card.Body className="p-4 bg-dark">
-        {/* Heatmap Section */}
-        <div className="p-3 rounded-3 border border-secondary bg-black bg-opacity-40">
-          <div className="d-flex justify-content-between align-items-start mb-3">
-            <span className="fw-semibold text-white-50 fs-8">
-              Activity frequency graph — {selectedYear}
-            </span>
+      <Card.Body className="p-3 p-sm-4 bg-dark">
+        <div
+          className="rounded-3 border border-secondary p-3 p-sm-4"
+          style={{
+            background: 'linear-gradient(180deg, rgba(8, 13, 24, 0.86), rgba(6, 10, 18, 0.72))',
+          }}
+        >
+          <div className="d-flex justify-content-center align-items-center gap-2 gap-sm-3 mb-4 text-center">
+            <Button
+              type="button"
+              variant="link"
+              size="sm"
+              onClick={goToPreviousMonth}
+              className="text-white-50 text-decoration-none fw-semibold px-1 px-sm-2"
+            >
+              ← <span className="d-none d-sm-inline">Previous Month</span>
+            </Button>
 
-            {/* Year Toggle Buttons (Matching User Image) */}
-            <div className="d-flex flex-column align-items-end gap-1">
-              {[2026, 2025].map((yr) => (
-                <Button
-                  key={yr}
-                  variant={selectedYear === yr ? 'primary' : 'link'}
-                  size="sm"
-                  onClick={() => setSelectedYear(yr)}
-                  className={`py-1 px-3 fs-8 fw-bold rounded-2 text-decoration-none ${
-                    selectedYear === yr
-                      ? 'bg-primary text-white shadow-xs'
-                      : 'text-white-50 hover-text-white'
-                  }`}
-                >
-                  {yr}
-                </Button>
+            <div
+              className="fw-bold text-white px-3 py-2 rounded-3 border border-secondary"
+              style={{ minWidth: '168px', backgroundColor: 'rgba(15, 23, 42, 0.78)' }}
+            >
+              {MONTH_FORMATTER.format(visibleMonth)}
+            </div>
+
+            <Button
+              type="button"
+              variant="link"
+              size="sm"
+              onClick={goToNextMonth}
+              disabled={!canGoNext}
+              className={`text-decoration-none fw-semibold px-1 px-sm-2 ${
+                canGoNext ? 'text-white-50' : 'text-secondary opacity-50'
+              }`}
+            >
+              <span className="d-none d-sm-inline">Next Month</span> →
+            </Button>
+          </div>
+
+          <div className="activity-month-calendar mx-auto">
+            <div className="activity-weekday-grid mb-2">
+              {WEEKDAYS.map((weekday) => (
+                <div key={weekday} className="text-white-50 fw-semibold fs-8 text-center">
+                  {weekday}
+                </div>
               ))}
             </div>
-          </div>
 
-          {/* Heatmap Canvas Grid Container */}
-          <div className="overflow-auto pb-2">
-            <div style={{ minWidth: '720px' }}>
-              {/* Month Labels Header */}
-              <div className="d-flex mb-1 ps-4 ms-2" style={{ position: 'relative', height: '20px' }}>
-                {monthLabels.map((m, idx) => (
-                  <span
-                    key={idx}
-                    className="fs-8 text-white-50 position-absolute fw-medium"
-                    style={{ left: `${m.weekIndex * 15 + 32}px` }}
+            <div className="activity-date-grid">
+              {Array.from({ length: leadingEmptyCells }).map((_, index) => (
+                <div key={`empty-${index}`} aria-hidden="true" />
+              ))}
+
+              {monthDays.map((day) => {
+                const fullDate = DATE_FORMATTER.format(day.date);
+                const activityLabel = `${day.count} preparation ${day.count === 1 ? 'activity' : 'activities'}`;
+
+                return (
+                  <OverlayTrigger
+                    key={day.dateKey}
+                    placement="top"
+                    overlay={
+                      <Tooltip id={`activity-${day.dateKey}`}>
+                        <div className="text-start">
+                          <strong className="d-block">{fullDate}</strong>
+                          <span>{activityLabel}</span>
+                        </div>
+                      </Tooltip>
+                    }
                   >
-                    {m.name}
-                  </span>
-                ))}
-              </div>
-
-              {/* Grid with Day Labels on Left */}
-              <div className="d-flex">
-                {/* Day of Week Labels (Mon, Wed, Fri) */}
-                <div className="d-flex flex-column justify-content-between me-2 pe-1 text-end" style={{ width: '32px', height: '105px' }}>
-                  {dayRowLabels.map((lbl, idx) => (
-                    <span key={idx} className="fs-8 text-white-50 leading-none" style={{ height: '13px' }}>
-                      {lbl}
-                    </span>
-                  ))}
-                </div>
-
-                {/* 52 Week Columns */}
-                <div className="d-flex gap-1">
-                  {weeksData.map((week, weekIdx) => (
-                    <div key={weekIdx} className="d-flex flex-column gap-1">
-                      {Array.from({ length: 7 }).map((_, dayIdx) => {
-                        const dayObj = week?.find((d) => d.dayOfWeek === dayIdx);
-                        const count = dayObj ? dayObj.count : 0;
-                        const cellBg = getCellColor(count);
-
-                        const tooltipContent = dayObj ? (
-                          <Tooltip id={`tooltip-${weekIdx}-${dayIdx}`}>
-                            <div className="p-1 text-start fs-8">
-                              <strong className="d-block mb-1 border-bottom border-secondary pb-1">
-                                {dayObj.dateStr}
-                              </strong>
-                              {count > 0 ? (
-                                <div>
-                                  <span className="text-success fw-bold d-block mb-1">
-                                    {count} {count === 1 ? 'activity' : 'activities'} completed
-                                  </span>
-                                  <ul className="mb-0 ps-3">
-                                    {dayObj.activities.map((act, aIdx) => (
-                                      <li key={aIdx}>{act}</li>
-                                    ))}
-                                  </ul>
-                                </div>
-                              ) : (
-                                <span className="text-white-50">No activities on this date</span>
-                              )}
-                            </div>
-                          </Tooltip>
-                        ) : (
-                          <Tooltip id={`tooltip-empty-${weekIdx}-${dayIdx}`}>No data</Tooltip>
-                        );
-
-                        return (
-                          <OverlayTrigger key={dayIdx} placement="top" overlay={tooltipContent}>
-                            <div
-                              className="rounded-1 cursor-pointer transition-all hover-glow"
-                              style={{
-                                width: '11px',
-                                height: '11px',
-                                backgroundColor: cellBg,
-                                border: '1px solid rgba(255,255,255,0.05)',
-                              }}
-                            />
-                          </OverlayTrigger>
-                        );
-                      })}
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Heatmap Legend (Bottom Right) */}
-              <div className="d-flex justify-content-end align-items-center gap-1 mt-3 me-2 fs-8 text-white-50">
-                <span className="me-1">Less</span>
-                {[0, 1, 2, 3, 4].map((lvl) => (
-                  <div
-                    key={lvl}
-                    className="rounded-1"
-                    style={{
-                      width: '11px',
-                      height: '11px',
-                      backgroundColor: getCellColor(lvl),
-                      border: '1px solid rgba(255,255,255,0.05)',
-                    }}
-                  />
-                ))}
-                <span className="ms-1">More</span>
-              </div>
+                    <button
+                      type="button"
+                      className="activity-date-cell"
+                      onClick={() => setSelectedDay(day)}
+                      aria-label={`${fullDate}: ${activityLabel}`}
+                      style={{
+                        backgroundColor: getIntensityColor(day.count),
+                        boxShadow: getIntensityShadow(day.count),
+                      }}
+                    >
+                      <span>{day.date.getDate()}</span>
+                    </button>
+                  </OverlayTrigger>
+                );
+              })}
             </div>
           </div>
+
+          <div className="d-flex justify-content-center align-items-center gap-1 mt-4 fs-8 text-white-50">
+            <span className="me-1">Less</span>
+            {[0, 1, 4, 7, 10].map((count) => (
+              <span
+                key={count}
+                className="activity-legend-cell"
+                style={{
+                  backgroundColor: getIntensityColor(count),
+                  boxShadow: getIntensityShadow(count),
+                }}
+              />
+            ))}
+            <span className="ms-1">More</span>
+          </div>
+
+          {selectedDay && (
+            <Alert
+              variant="dark"
+              className="mt-4 mb-0 border border-secondary text-white"
+              style={{ backgroundColor: 'rgba(15, 23, 42, 0.82)' }}
+            >
+              <div className="d-flex justify-content-between align-items-start gap-3 flex-wrap">
+                <div>
+                  <div className="fw-bold">{DATE_FORMATTER.format(selectedDay.date)}</div>
+                  <div className="text-white-50 fs-8">
+                    {selectedDay.count} preparation {selectedDay.count === 1 ? 'activity' : 'activities'}
+                  </div>
+                </div>
+                {selectedDay.count > 0 && (
+                  <span className="badge bg-success-subtle text-success border border-success-subtle">
+                    Active day
+                  </span>
+                )}
+              </div>
+
+              {selectedDay.activities.length > 0 ? (
+                <ul className="mt-3 mb-0 ps-3 fs-8">
+                  {selectedDay.activities.map((activity, index) => (
+                    <li key={`${selectedDay.dateKey}-${index}`}>{activity}</li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-white-50 fs-8 mb-0 mt-3">
+                  No preparation activities were logged on this date.
+                </p>
+              )}
+            </Alert>
+          )}
         </div>
       </Card.Body>
+
+      <style>{`
+        .activity-month-calendar {
+          max-width: 430px;
+          width: 100%;
+        }
+
+        .activity-weekday-grid,
+        .activity-date-grid {
+          display: grid;
+          grid-template-columns: repeat(7, minmax(0, 1fr));
+          gap: 0.42rem;
+        }
+
+        .activity-date-cell {
+          align-items: center;
+          aspect-ratio: 1;
+          border: 1px solid rgba(148, 163, 184, 0.15);
+          border-radius: 8px;
+          color: rgba(255, 255, 255, 0.78);
+          cursor: pointer;
+          display: inline-flex;
+          font-size: 0.72rem;
+          font-weight: 700;
+          justify-content: center;
+          line-height: 1;
+          min-height: 34px;
+          padding: 0;
+          transition: transform 0.18s ease, border-color 0.18s ease, filter 0.18s ease, box-shadow 0.18s ease;
+          width: 100%;
+        }
+
+        .activity-date-cell:hover,
+        .activity-date-cell:focus-visible {
+          border-color: rgba(190, 242, 100, 0.52);
+          filter: brightness(1.12);
+          outline: none;
+          transform: translateY(-2px) scale(1.04);
+        }
+
+        .activity-date-cell span {
+          opacity: 0.82;
+          text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+        }
+
+        .activity-legend-cell {
+          border: 1px solid rgba(148, 163, 184, 0.15);
+          border-radius: 4px;
+          display: inline-block;
+          height: 12px;
+          width: 12px;
+        }
+
+        @media (max-width: 575.98px) {
+          .activity-weekday-grid,
+          .activity-date-grid {
+            gap: 0.28rem;
+          }
+
+          .activity-date-cell {
+            border-radius: 6px;
+            font-size: 0.64rem;
+            min-height: 28px;
+          }
+        }
+      `}</style>
     </Card>
   );
 };
