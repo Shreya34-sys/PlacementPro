@@ -71,17 +71,21 @@ export const ProblemDetails: React.FC<ProblemDetailsProps> = ({
 
               <div className="border-bottom pb-3 mb-3 fs-8 text-muted">
                 <span>{(problem.solvedCount / 1000).toFixed(1)}k Solved on platform</span>
-                <span className="mx-2">•</span>
-                <a href={problem.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-decoration-none">
-                  View Official Codeforces Statement <i className="bi bi-box-arrow-up-right ms-0.5"></i>
-                </a>
+                {problem.sourceUrl && (
+                  <>
+                    <span className="mx-2">•</span>
+                    <a href={problem.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-decoration-none">
+                      View Official Codeforces Statement <i className="bi bi-box-arrow-up-right ms-0.5"></i>
+                    </a>
+                  </>
+                )}
               </div>
 
               <h6 className="fw-bold text-dark fs-7 mb-2">Problem Statement</h6>
               <p className="text-secondary fs-8 whitespace-pre-line leading-relaxed mb-4">
-                Since full statement text copyright limits may apply, you can reference the basic problem details and specifications here. For full problems, tests, and constraints, please view the official external problem link above.
-                
-                {problem.contestId && problem.problemIndex ? (
+                {problem.description || 'Since full statement text copyright limits may apply, you can reference the basic problem details and specifications here. For full external problems, tests, and constraints, please view the official problem link above.'}
+
+                {!problem.description && problem.contestId && problem.problemIndex ? (
                   <>
                     <br /><br />
                     <strong>Problem Reference:</strong> Contest {problem.contestId}, Index {problem.problemIndex}.
@@ -89,9 +93,47 @@ export const ProblemDetails: React.FC<ProblemDetailsProps> = ({
                 ) : null}
               </p>
 
+              {problem.inputFormat && (
+                <>
+                  <h6 className="fw-bold text-dark fs-7 mb-2">Input Format</h6>
+                  <p className="text-secondary fs-8 whitespace-pre-line">{problem.inputFormat}</p>
+                </>
+              )}
+
+              {problem.outputFormat && (
+                <>
+                  <h6 className="fw-bold text-dark fs-7 mb-2">Output Format</h6>
+                  <p className="text-secondary fs-8 whitespace-pre-line">{problem.outputFormat}</p>
+                </>
+              )}
+
+              {problem.examples && problem.examples.length > 0 && (
+                <>
+                  <h6 className="fw-bold text-dark fs-7 mb-2">Examples</h6>
+                  <div className="d-grid gap-2 mb-4">
+                    {problem.examples.map((example, index) => (
+                      <div key={`${problem.id}-example-${index}`} className="bg-light p-3 rounded border font-monospace fs-9">
+                        <div className="mb-1"><strong>Input:</strong><pre className="mb-1 text-wrap">{example.input}</pre></div>
+                        <div className="mb-1"><strong>Output:</strong><pre className="mb-1 text-wrap">{example.output}</pre></div>
+                        {example.explanation && (
+                          <div className="text-muted font-sans"><strong>Explanation:</strong> {example.explanation}</div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {problem.constraints && (
+                <>
+                  <h6 className="fw-bold text-dark fs-7 mb-2">Constraints</h6>
+                  <p className="text-secondary fs-8 whitespace-pre-line">{problem.constraints}</p>
+                </>
+              )}
+
               <h6 className="fw-bold text-dark fs-7 mb-2">Tags</h6>
               <div className="d-flex flex-wrap gap-1.5">
-                {problem.tags.map((tag) => (
+                {(problem.source === 'placementpro' ? problem.topics : problem.tags).map((tag) => (
                   <Badge key={tag} bg="primary-subtle" text="primary" className="border border-primary-subtle fs-8 px-2.5 py-1.5">
                     {tag}
                   </Badge>

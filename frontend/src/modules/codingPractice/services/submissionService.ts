@@ -1,6 +1,6 @@
 import { collection, query, where, getDocs, orderBy, limit, doc, setDoc, serverTimestamp, getDoc } from 'firebase/firestore';
 import { firestoreDb } from '../../../utils/firebase';
-import { Submission, LeaderboardEntry } from '../types/problem';
+import { JudgeLanguage, RunCodeRequest, RunCodeResult, Submission, LeaderboardEntry } from '../types/problem';
 import axios from 'axios';
 
 // Get base URL for Firebase Cloud Functions
@@ -81,8 +81,21 @@ export interface SubmitCodeRequest {
   userId: string;
   problemId: string;
   language: string;
+  languageId?: number;
   code: string;
 }
+
+export const getJudgeLanguages = async (): Promise<JudgeLanguage[]> => {
+  const url = `${getFunctionsUrl()}/getJudgeLanguages`;
+  const response = await axios.get(url);
+  return response.data.languages as JudgeLanguage[];
+};
+
+export const runCode = async (req: RunCodeRequest): Promise<RunCodeResult> => {
+  const url = `${getFunctionsUrl()}/runCode`;
+  const response = await axios.post(url, req);
+  return response.data.result as RunCodeResult;
+};
 
 export const submitCode = async (req: SubmitCodeRequest): Promise<Submission> => {
   const url = `${getFunctionsUrl()}/submitSolution`;

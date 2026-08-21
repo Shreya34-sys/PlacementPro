@@ -15,11 +15,20 @@ service cloud.firestore {
     match /users/{userId} {
       allow read: if isAuthenticated();
       allow write: if isOwner(userId);
+
+      match /bookmarks/{problemId} {
+        allow read, write: if isOwner(userId);
+      }
     }
 
     match /problems/{problemId} {
       allow read: if isAuthenticated();
       allow write: if isAuthenticated(); // Temporarily open for browser-based initial sync
+    }
+
+    match /testCases/{problemId} {
+      allow read: if false; // Hidden tests are server-side only.
+      allow write: if isAuthenticated(); // Temporarily open for admin browser seeding.
     }
 
     match /userProgress/{userId} {

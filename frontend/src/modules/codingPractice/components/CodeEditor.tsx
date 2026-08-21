@@ -1,20 +1,41 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Button, Form, Spinner, Tab, Tabs, Alert } from 'react-bootstrap';
 import MonacoEditor from '@monaco-editor/react';
-import { Problem, Submission } from '../types/problem';
+import { JudgeLanguage, Problem, RunCodeResult, Submission } from '../types/problem';
+import { getJudgeLanguages } from '../services/submissionService';
 
 interface CodeEditorProps {
   problem: Problem;
-  onRunCode: (code: string, language: string) => Promise<any>;
-  onSubmit: (code: string, language: string) => Promise<Submission>;
+  onRunCode: (code: string, language: string, languageId?: number) => Promise<any>;
+  onSubmit: (code: string, language: string, languageId?: number) => Promise<Submission>;
   submissions: Submission[];
 }
 
 const DEFAULT_STARTER_CODE: Record<string, string> = {
+  c: `#include <stdio.h>\n\nint main(void) {\n    // Read input using scanf\n    // Write output using printf\n    return 0;\n}`,
   cpp: `#include <iostream>\nusing namespace std;\n\nint main() {\n    // Read input using cin\n    // Write output using cout\n    return 0;\n}`,
+  java: `import java.util.*;\n\nclass Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // Write your solution here\n    }\n}`,
   python: `# Write your python solution here\nimport sys\n\ndef solve():\n    # Read from sys.stdin and print to stdout\n    pass\n\nif __name__ == '__main__':\n    solve()`,
-  javascript: `// Write your javascript solution here\nconst fs = require('fs');\n\nfunction solve() {\n    // Read input and print output\n}\n\nsolve();`
+  javascript: `// Write your javascript solution here\nconst fs = require('fs');\n\nfunction solve() {\n    // Read input and print output\n}\n\nsolve();`,
+  typescript: `// Write your TypeScript solution here\nconst fs = require('fs');\nconst input = fs.readFileSync(0, 'utf8').trim();\nconsole.log(input);`,
+  csharp: `using System;\n\nclass Program {\n    static void Main() {\n        // Write your solution here\n    }\n}`,
+  go: `package main\n\nimport "fmt"\n\nfunc main() {\n    // Write your solution here\n    fmt.Println()\n}`,
+  rust: `use std::io::{self, Read};\n\nfn main() {\n    let mut input = String::new();\n    io::stdin().read_to_string(&mut input).unwrap();\n    // Write your solution here\n}`,
+  kotlin: `fun main() {\n    // Write your solution here\n}`,
 };
+
+const FALLBACK_LANGUAGES: JudgeLanguage[] = [
+  { id: 50, name: 'C', key: 'c', monacoLanguage: 'c' },
+  { id: 54, name: 'C++ 17', key: 'cpp', monacoLanguage: 'cpp' },
+  { id: 62, name: 'Java', key: 'java', monacoLanguage: 'java' },
+  { id: 71, name: 'Python 3', key: 'python', monacoLanguage: 'python' },
+  { id: 63, name: 'JavaScript', key: 'javascript', monacoLanguage: 'javascript' },
+  { id: 74, name: 'TypeScript', key: 'typescript', monacoLanguage: 'typescript' },
+  { id: 51, name: 'C#', key: 'csharp', monacoLanguage: 'csharp' },
+  { id: 60, name: 'Go', key: 'go', monacoLanguage: 'go' },
+  { id: 73, name: 'Rust', key: 'rust', monacoLanguage: 'rust' },
+  { id: 78, name: 'Kotlin', key: 'kotlin', monacoLanguage: 'kotlin' },
+];
 
 export const CodeEditor: React.FC<CodeEditorProps> = ({
   problem,
@@ -22,14 +43,23 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
   onSubmit,
   submissions,
 }) => {
-  const [language, setLanguage] = useState<'cpp' | 'python' | 'javascript'>('cpp');
+  const [language, setLanguage] = useState('cpp');
+  const [languages, setLanguages] = useState<JudgeLanguage[]>(FALLBACK_LANGUAGES);
   const [code, setCode] = useState('');
   const [theme, setTheme] = useState<'vs-dark' | 'light'>('vs-dark');
   const [isRunning, setIsRunning] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [activePanelTab, setActivePanelTab] = useState('testcases');
-  const [runResult, setRunResult] = useState<any>(null);
+  const [runResult, setRunResult] = useState<RunCodeResult | null>(null);
   const [submitResult, setSubmitResult] = useState<Submission | null>(null);
+
+  useEffect(() => {
+    getJudgeLanguages()
+      .then((items) => {
+        if (items.length > 0) setLanguages(items);
+      })
+      .catch(() => setLanguages(FALLBACK_LANGUAGES));
+  }, []);
 
   // Load code from localstorage or set default starter code
   useEffect(() => {
@@ -37,7 +67,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
     if (savedCode) {
       setCode(savedCode);
     } else {
-      setCode(DEFAULT_STARTER_CODE[language] || '');
+      setCode(problem.starterCode?.[language] || DEFAULT_STARTER_CODE[language] || '');
     }
   }, [problem.id, language]);
 
@@ -49,7 +79,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
 
   const handleResetCode = () => {
     if (window.confirm('Reset code to default template?')) {
-      const defaultCode = DEFAULT_STARTER_CODE[language] || '';
+      const defaultCode = problem.starterCode?.[language] || DEFAULT_STARTER_CODE[language] || '';
       setCode(defaultCode);
       localStorage.setItem(`code_${problem.id}_${language}`, defaultCode);
     }
@@ -60,21 +90,31 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
     setActivePanelTab('testcases');
     setRunResult(null);
     try {
-      const res = await onRunCode(code, language);
+      const res = await onRunCode(code, language, selectedLanguage.id);
       setRunResult(res);
     } catch (e) {
-      setRunResult({ error: e instanceof Error ? e.message : 'Execution failed' });
+      setRunResult({
+        status: 'Internal Error',
+        passedTests: 0,
+        totalTests: 0,
+        runtime: 0,
+        memory: 0,
+        results: [],
+        errorMessage: e instanceof Error ? e.message : 'Execution failed',
+      });
     } finally {
       setIsRunning(false);
     }
   };
+
+  const selectedLanguage = languages.find((item) => item.key === language) || FALLBACK_LANGUAGES[1];
 
   const handleSubmit = async () => {
     setIsSubmitting(true);
     setActivePanelTab('submissions');
     setSubmitResult(null);
     try {
-      const res = await onSubmit(code, language);
+      const res = await onSubmit(code, language, selectedLanguage.id);
       setSubmitResult(res);
     } catch (e) {
       console.error(e);
@@ -92,12 +132,14 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
             size="sm"
             style={{ width: '130px' }}
             value={language}
-            onChange={(e) => setLanguage(e.target.value as any)}
+            onChange={(e) => setLanguage(e.target.value)}
             className="fw-semibold"
           >
-            <option value="cpp">C++ 17</option>
-            <option value="python">Python 3</option>
-            <option value="javascript">JavaScript</option>
+            {languages.map((item) => (
+              <option key={`${item.id}-${item.key}`} value={item.key}>
+                {item.name}
+              </option>
+            ))}
           </Form.Select>
 
           <Button
@@ -162,7 +204,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
       <div className="flex-grow-1 bg-dark p-0" style={{ minHeight: '380px' }}>
         <MonacoEditor
           height="380px"
-          language={language === 'cpp' ? 'cpp' : language}
+          language={selectedLanguage.monacoLanguage}
           theme={theme}
           value={code}
           onChange={handleCodeChange}
@@ -194,25 +236,33 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
                   <Spinner size="sm" animation="border" className="me-2" /> Running code against sample test cases...
                 </div>
               ) : runResult ? (
-                runResult.error ? (
+                runResult.errorMessage ? (
                   <Alert variant="danger" className="py-2 mb-0 font-monospace">
                     <strong>Compilation/Execution Error:</strong>
-                    <pre className="mb-0 mt-1 fs-9 text-wrap">{runResult.error}</pre>
+                    <pre className="mb-0 mt-1 fs-9 text-wrap">{runResult.errorMessage}</pre>
                   </Alert>
                 ) : (
                   <div>
-                    <Alert variant={runResult.pass ? 'success' : 'danger'} className="py-2 mb-2 fw-bold">
-                      {runResult.pass ? '✓ Test Cases Passed!' : '✗ Test Cases Failed!'}
+                    <Alert variant={runResult.status === 'Accepted' ? 'success' : 'danger'} className="py-2 mb-2 fw-bold">
+                      {runResult.status === 'Accepted' ? '✓ Sample Test Cases Passed!' : `✗ ${runResult.status}`}
                     </Alert>
-                    <div className="bg-light p-2.5 rounded border font-monospace">
-                      <div className="text-muted">Output:</div>
-                      <pre className="mb-1 text-dark fs-9">{runResult.output}</pre>
-                      {runResult.expected && (
-                        <>
+                    <div className="d-grid gap-2">
+                      {runResult.results.map((result, index) => (
+                        <div key={`${problem.id}-run-${index}`} className="bg-light p-2.5 rounded border font-monospace">
+                          <div className={result.passed ? 'text-success fw-bold' : 'text-danger fw-bold'}>
+                            Case {index + 1}: {result.passed ? 'Passed' : 'Failed'}
+                          </div>
+                          <div className="text-muted">Input:</div>
+                          <pre className="mb-1 text-dark fs-9 text-wrap">{result.input}</pre>
+                          <div className="text-muted">Output:</div>
+                          <pre className="mb-1 text-dark fs-9 text-wrap">{result.output}</pre>
                           <div className="text-muted border-top pt-1 mt-1">Expected:</div>
-                          <pre className="mb-0 text-secondary fs-9">{runResult.expected}</pre>
-                        </>
-                      )}
+                          <pre className="mb-0 text-secondary fs-9 text-wrap">{result.expected}</pre>
+                        </div>
+                      ))}
+                      <small className="text-muted">
+                        Passed {runResult.passedTests}/{runResult.totalTests} tests • Runtime: {runResult.runtime} ms • Memory: {runResult.memory} KB
+                      </small>
                     </div>
                   </div>
                 )
@@ -243,7 +293,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
                     <pre className="bg-light p-2 rounded text-danger border fs-9 font-monospace text-wrap">{submitResult.errorMessage}</pre>
                   )}
                   <small className="text-muted">
-                    Runtime: {submitResult.runtime} ms • Memory: {submitResult.memory} KB
+                    Passed {submitResult.passedTests || 0}/{submitResult.totalTests || 0} tests • Runtime: {submitResult.runtime} ms • Memory: {submitResult.memory} KB
                   </small>
                 </div>
               ) : null}
