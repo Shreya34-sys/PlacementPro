@@ -50,19 +50,19 @@ const TOPIC_ALIASES: Record<string, string[]> = {
   'Prefix Sum': ['prefix sum', 'prefix sums'],
 };
 
-const HACKERRANK_API_URL = process.env.HACKERRANK_API_URL || 'https://www.hackerrank.com/x/api/v3';
-const HACKERRANK_API_KEY = process.env.HACKERRANK_API_KEY;
+const QUESTION_BANK_API_URL = process.env.QUESTION_BANK_API_URL || 'https://www.hackerrank.com/x/api/v3';
+const QUESTION_BANK_API_KEY = process.env.QUESTION_BANK_API_KEY;
 
-export const syncHackerRankQuestionsLogic = async (): Promise<{
+export const syncQuestionBankQuestionsLogic = async (): Promise<{
   success: boolean;
   totalSynced: number;
   error: string | null;
 }> => {
   const db = admin.firestore();
-  const syncMetaRef = db.collection('syncMetadata').doc('hackerrank');
+  const syncMetaRef = db.collection('syncMetadata').doc('placementproQuestionBank');
 
-  if (!HACKERRANK_API_KEY) {
-    const message = 'HACKERRANK_API_KEY is not configured for Firebase Functions.';
+  if (!QUESTION_BANK_API_KEY) {
+    const message = 'The server-side question bank credential is not configured.';
     await syncMetaRef.set({
       lastSyncAt: FieldValue.serverTimestamp(),
       status: 'failed',
@@ -91,12 +91,12 @@ export const syncHackerRankQuestionsLogic = async (): Promise<{
       const topics = inferDsaTopics(question);
       if (topics.length === 0) continue;
 
-      const problemId = `hackerrank_${externalId}`;
+      const problemId = `placementpro_bank_${externalId}`;
       const docRef = db.collection('problems').doc(problemId);
 
       batch.set(docRef, {
         source: 'placementpro',
-        provider: 'hackerrank',
+        provider: 'authorized-external',
         externalId,
         title: question.name,
         slug: slugify(question.name),
@@ -105,7 +105,7 @@ export const syncHackerRankQuestionsLogic = async (): Promise<{
         topics,
         tags: normalizeTags([...(question.tags || []), ...(question.skills || [])]),
         solvedCount: 0,
-        sourceUrl: `https://www.hackerrank.com/challenges/${slugify(question.name)}`,
+        sourceUrl: null,
         isActive: true,
         updatedAt: FieldValue.serverTimestamp(),
         createdAt: FieldValue.serverTimestamp(),
@@ -149,8 +149,8 @@ export const syncHackerRankQuestionsLogic = async (): Promise<{
 };
 
 const fetchAllQuestions = async (): Promise<HackerRankQuestion[]> => {
-  const limit = Number(process.env.HACKERRANK_SYNC_LIMIT || 100);
-  const maxPages = Number(process.env.HACKERRANK_SYNC_MAX_PAGES || 10);
+  const limit = Number(process.env.QUESTION_BANK_SYNC_LIMIT || 100);
+  const maxPages = Number(process.env.QUESTION_BANK_SYNC_MAX_PAGES || 10);
   const questions: HackerRankQuestion[] = [];
 
   for (let page = 0; page < maxPages; page++) {
@@ -174,25 +174,16 @@ const fetchQuestionsPage = async (limit: number, offset: number) => {
     status: 'active',
   };
 
-  try {
-    const response = await axios.get(`${HACKERRANK_API_URL}/questions`, {
-      params,
-      headers: buildHeaders(),
-      timeout: 30000,
-    });
-    return response.data;
-  } catch (error) {
-    const response = await axios.get(`${HACKERRANK_API_URL}/question`, {
-      params,
-      headers: buildHeaders(),
-      timeout: 30000,
-    });
-    return response.data;
-  }
+  const response = await axios.get(`${QUESTION_BANK_API_URL}/questions`, {
+    params,
+    headers: buildHeaders(),
+    timeout: 30000,
+  });
+  return response.data;
 };
 
 const buildHeaders = () => ({
-  Authorization: `Bearer ${HACKERRANK_API_KEY}`,
+  Authorization: `Bearer ${QUESTION_BANK_API_KEY}`,
   Accept: 'application/json',
 });
 
@@ -208,7 +199,7 @@ const inferDsaTopics = (question: HackerRankQuestion) => {
     TOPIC_ALIASES[topic]?.some((alias) => searchable.includes(alias))
   ));
 
-  return topics.length > 0 ? topics : ['Arrays'];
+  return topics;
 };
 
 const inferDifficulty = (question: HackerRankQuestion): Difficulty => {

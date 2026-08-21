@@ -9,11 +9,9 @@ import {
 import { firestoreDb } from '../../../utils/firebase';
 import { getSyncMetadata } from '../services/problemService';
 
-const CF_API_URL = 'https://codeforces.com/api/problemset.problems';
-
 const getFunctionsUrl = () => {
   if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-    return 'http://127.0.0.1:5001/placementpro-22829/us-central1';
+    return 'http://127.0.0.1:5002/placementpro-22829/us-central1';
   }
   return 'https://us-central1-placementpro-22829.cloudfunctions.net';
 };
@@ -101,14 +99,6 @@ const PLACEMENTPRO_SEED_PROBLEMS = [
   },
 ];
 
-const mapRatingToDifficulty = (rating?: number): string => {
-  if (!rating) return 'Easy';
-  if (rating <= 1000) return 'Easy';
-  if (rating <= 1400) return 'Medium';
-  if (rating <= 1900) return 'Hard';
-  return 'Expert';
-};
-
 export const AdminConsole: React.FC = () => {
   const [meta, setMeta] = useState<any>(null);
   const [questionBankMeta, setQuestionBankMeta] = useState<any>(null);
@@ -124,7 +114,7 @@ export const AdminConsole: React.FC = () => {
     try {
       const [codeforcesData, questionBankData] = await Promise.all([
         getSyncMetadata('codeforces'),
-        getSyncMetadata('hackerrank'),
+        getSyncMetadata('placementproQuestionBank'),
       ]);
       setMeta(codeforcesData);
       setQuestionBankMeta(questionBankData);
@@ -140,13 +130,13 @@ export const AdminConsole: React.FC = () => {
     setSyncResult(null);
 
     try {
-      const response = await fetch(`${getFunctionsUrl()}/manualHackerRankSync`, {
+      const response = await fetch(`${getFunctionsUrl()}/manualPlacementProQuestionBankSync`, {
         method: 'POST',
       });
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || data.message || 'HackerRank sync failed.');
+        throw new Error(data.error || data.message || 'Question bank refresh failed.');
       }
 
       setSyncResult({
@@ -220,84 +210,20 @@ export const AdminConsole: React.FC = () => {
     setSyncProgress(0);
 
     try {
-      // 1. Fetch from Codeforces API (public, no key needed)
       setSyncProgress(5);
-      const response = await fetch(CF_API_URL);
-      if (!response.ok) throw new Error(`Codeforces API error: ${response.status}`);
+      const response = await fetch(`${getFunctionsUrl()}/manualCodeforcesSync`, {
+        method: 'POST',
+      });
       const data = await response.json();
 
-      if (data.status !== 'OK') throw new Error(`Codeforces returned: ${data.status}`);
-
-      const { problems, problemStatistics } = data.result;
-      setSyncProgress(20);
-
-      // 2. Build stats lookup map
-      const statsMap = new Map<string, number>();
-      for (const stat of problemStatistics) {
-        if (stat.contestId !== undefined && stat.index !== undefined) {
-          statsMap.set(`${stat.contestId}_${stat.index}`, stat.solvedCount || 0);
-        }
+      if (!response.ok) {
+        throw new Error(data.error || data.message || `Codeforces sync failed (${response.status}).`);
       }
-
-      // 3. Filter only PROGRAMMING problems with a rating
-      const validProblems = problems.filter(
-        (p: any) => p.type === 'PROGRAMMING' && p.contestId !== undefined && p.index !== undefined
-      );
-
-      setSyncProgress(30);
-
-      // 4. Batch write in chunks of 500
-      const BATCH_SIZE = 500;
-      let written = 0;
-
-      for (let i = 0; i < validProblems.length; i += BATCH_SIZE) {
-        const chunk = validProblems.slice(i, i + BATCH_SIZE);
-        const batch = writeBatch(firestoreDb);
-
-        for (const problem of chunk) {
-          const problemId = `codeforces_${problem.contestId}_${problem.index}`;
-          const solvedCount = statsMap.get(`${problem.contestId}_${problem.index}`) || 0;
-          const docRef = doc(firestoreDb, 'problems', problemId);
-
-          batch.set(
-            docRef,
-            {
-              source: 'codeforces',
-              contestId: problem.contestId,
-              problemIndex: problem.index,
-              title: problem.name,
-              rating: problem.rating || null,
-              difficulty: mapRatingToDifficulty(problem.rating),
-              tags: Array.isArray(problem.tags) ? problem.tags : [],
-              solvedCount,
-              sourceUrl: `https://codeforces.com/problemset/problem/${problem.contestId}/${problem.index}`,
-              isActive: true,
-              updatedAt: serverTimestamp(),
-            },
-            { merge: true }
-          );
-        }
-
-        await batch.commit();
-        written += chunk.length;
-
-        const progress = 30 + Math.round((written / validProblems.length) * 65);
-        setSyncProgress(progress);
-      }
-
-      // 5. Write sync metadata
-      const metaRef = doc(firestoreDb, 'syncMetadata', 'codeforces');
-      await setDoc(metaRef, {
-        lastSyncAt: serverTimestamp(),
-        status: 'success',
-        totalProblems: written,
-        lastError: null,
-      }, { merge: true });
 
       setSyncProgress(100);
       setSyncResult({
         success: true,
-        message: `✓ Synced ${written.toLocaleString()} problems from Codeforces to Firestore!`
+        message: `✓ Synced ${Number(data.totalSynced || 0).toLocaleString()} problems from Codeforces to Firestore!`
       });
       fetchMeta();
     } catch (e) {

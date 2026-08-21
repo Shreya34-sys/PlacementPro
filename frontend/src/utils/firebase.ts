@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider } from 'firebase/auth';
-import { doc, getFirestore, serverTimestamp, setDoc } from 'firebase/firestore';
+import { connectFirestoreEmulator, doc, getFirestore, serverTimestamp, setDoc } from 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -16,6 +16,12 @@ export const firebaseApp = isFirebaseConfigured ? initializeApp(firebaseConfig) 
 export const firebaseAuth = firebaseApp ? getAuth(firebaseApp) : undefined;
 export const googleProvider = new GoogleAuthProvider();
 export const firestoreDb = firebaseApp ? getFirestore(firebaseApp) : undefined;
+
+const useFirebaseEmulators = import.meta.env.VITE_USE_FIREBASE_EMULATORS === 'true';
+
+if (firestoreDb && import.meta.env.DEV && useFirebaseEmulators) {
+  connectFirestoreEmulator(firestoreDb, '127.0.0.1', 8081);
+}
 
 export const saveUserToFirestore = async (user: {
   uid: string;

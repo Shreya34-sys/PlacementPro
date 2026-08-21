@@ -71,7 +71,7 @@ export const ProblemDetails: React.FC<ProblemDetailsProps> = ({
 
               <div className="border-bottom pb-3 mb-3 fs-8 text-muted">
                 <span>{(problem.solvedCount / 1000).toFixed(1)}k Solved on platform</span>
-                {problem.sourceUrl && (
+                {problem.source === 'codeforces' && problem.sourceUrl && (
                   <>
                     <span className="mx-2">•</span>
                     <a href={problem.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-decoration-none">

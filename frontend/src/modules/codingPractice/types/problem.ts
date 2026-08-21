@@ -57,7 +57,7 @@ export interface Problem {
   memoryLimitMb?: number;
 
   // Provider abstraction (internal)
-  provider?: 'placementpro' | 'codeforces' | 'hackerrank' | 'authorized-external';
+  provider?: 'placementpro' | 'codeforces' | 'authorized-external';
   externalId?: string;
 }
 
