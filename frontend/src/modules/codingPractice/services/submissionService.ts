@@ -91,10 +91,73 @@ export const getJudgeLanguages = async (): Promise<JudgeLanguage[]> => {
   return response.data.languages as JudgeLanguage[];
 };
 
+export interface RunCustomStdinRequest {
+  language: string;
+  languageId?: number;
+  code: string;
+  customStdin: string;
+}
+
+export interface CustomStdinResult {
+  status: string;
+  stdout: string;
+  stderr: string;
+  compileOutput: string;
+  runtime: number;
+  memory: number;
+}
+
 export const runCode = async (req: RunCodeRequest): Promise<RunCodeResult> => {
   const url = `${getFunctionsUrl()}/runCode`;
-  const response = await axios.post(url, req);
-  return response.data.result as RunCodeResult;
+  try {
+    const response = await axios.post(url, req);
+    const data = response.data;
+
+    // compile_run mode: no test cases (Codeforces problem) — wrap into RunCodeResult shape
+    if (data.mode === 'compile_run') {
+      const r = data.result as CustomStdinResult;
+      const isError = r.status === 'Compilation Error' || r.status === 'Runtime Error';
+      return {
+        status:       r.status as RunCodeResult['status'],
+        passedTests:  0,
+        totalTests:   0,
+        runtime:      r.runtime,
+        memory:       r.memory,
+        results:      [],
+        errorMessage: isError
+          ? (r.compileOutput || r.stderr || r.status)
+          : undefined,
+        // Attach stdout so the UI can show it even with 0 test cases
+        stdout:  r.stdout,
+        stderr:  r.stderr,
+        compileOutput: r.compileOutput,
+      } as RunCodeResult & { stdout?: string; stderr?: string; compileOutput?: string };
+    }
+
+    return data.result as RunCodeResult;
+  } catch (err: unknown) {
+    if (axios.isAxiosError(err)) {
+      const msg = (err.response?.data as { error?: string })?.error
+        || 'Unable to execute code right now. Please try again in a moment.';
+      throw new Error(msg);
+    }
+    throw err;
+  }
+};
+
+export const runCodeWithStdin = async (req: RunCustomStdinRequest): Promise<CustomStdinResult> => {
+  const url = `${getFunctionsUrl()}/runCode`;
+  try {
+    const response = await axios.post(url, req);
+    return response.data.result as CustomStdinResult;
+  } catch (err: unknown) {
+    if (axios.isAxiosError(err)) {
+      const msg = (err.response?.data as { error?: string })?.error
+        || 'Unable to execute code right now. Please try again in a moment.';
+      throw new Error(msg);
+    }
+    throw err;
+  }
 };
 
 export const submitCode = async (req: SubmitCodeRequest): Promise<Submission> => {
@@ -108,7 +171,12 @@ export const submitCode = async (req: SubmitCodeRequest): Promise<Submission> =>
   });
 
   if (!response.ok) {
-    throw new Error(`Code submission failed with status ${response.status}`);
+    let msg = 'Unable to submit code right now. Please try again in a moment.';
+    try {
+      const body = await response.json() as { error?: string };
+      if (body?.error) msg = body.error;
+    } catch { /* ignore parse errors */ }
+    throw new Error(msg);
   }
 
   const data = await response.json();

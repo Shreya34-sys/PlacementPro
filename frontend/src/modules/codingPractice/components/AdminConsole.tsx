@@ -11,7 +11,7 @@ import { getSyncMetadata } from '../services/problemService';
 
 const getFunctionsUrl = () => {
   if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-    return 'http://127.0.0.1:5002/placementpro-22829/us-central1';
+    return 'http://127.0.0.1:5001/placementpro-22829/us-central1';
   }
   return 'https://us-central1-placementpro-22829.cloudfunctions.net';
 };

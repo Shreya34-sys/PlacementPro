@@ -17,14 +17,13 @@
   ],
   "emulators": {
     "functions": {
-      "port": 5002
+      "port": 5001
     },
     "firestore": {
-      "port": 8081
+      "port": 8082
     },
     "ui": {
-      "enabled": true,
-      "port": 4001
+      "enabled": false
     },
     "singleProjectMode": true
   }

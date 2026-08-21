@@ -20,7 +20,7 @@ export const firestoreDb = firebaseApp ? getFirestore(firebaseApp) : undefined;
 const useFirebaseEmulators = import.meta.env.VITE_USE_FIREBASE_EMULATORS === 'true';
 
 if (firestoreDb && import.meta.env.DEV && useFirebaseEmulators) {
-  connectFirestoreEmulator(firestoreDb, '127.0.0.1', 8081);
+  connectFirestoreEmulator(firestoreDb, '127.0.0.1', 8082);
 }
 
 export const saveUserToFirestore = async (user: {
