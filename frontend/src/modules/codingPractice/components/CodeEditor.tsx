@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Button, Form, Spinner, Tab, Tabs, Alert } from 'react-bootstrap';
+import { Card, Button, Form, Spinner, Tab, Tabs, Alert, Badge } from 'react-bootstrap';
 import MonacoEditor from '@monaco-editor/react';
 import { JudgeLanguage, Problem, RunCodeResult, Submission } from '../types/problem';
 import { getJudgeLanguages } from '../services/submissionService';

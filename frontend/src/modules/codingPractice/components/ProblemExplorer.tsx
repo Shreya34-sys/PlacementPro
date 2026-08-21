@@ -213,7 +213,7 @@ export const ProblemExplorer: React.FC<ProblemExplorerProps> = ({
 
         {/* Problem List Table */}
         <div className="table-responsive">
-          <Table hover align="middle" className="mb-0 border-top">
+          <Table hover align="center" className="mb-0 border-top">
             <thead>
               <tr className="text-muted fs-8 fw-semibold bg-light-subtle">
                 <th style={{ width: '40px' }}>Status</th>

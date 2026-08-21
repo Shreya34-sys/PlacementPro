@@ -97,6 +97,7 @@ export const CodingPracticePage: React.FC<CodingPracticePageProps> = ({ onNaviga
   };
 
   const solvedProblemsCount = Object.values(progressMap).filter((p) => p.solved).length;
+  const currentStreak = 'streak' in (currentUser ?? {}) ? (currentUser as { streak?: number }).streak || 0 : 0;
 
   return (
     <Container fluid className="px-0">
@@ -113,7 +114,7 @@ export const CodingPracticePage: React.FC<CodingPracticePageProps> = ({ onNaviga
 
         <div className="d-flex align-items-center gap-2">
           <Badge bg="danger" className="px-3 py-2 fs-7 fw-bold shadow-sm">
-            <i className="bi bi-fire me-1"></i> Streak: {currentUser?.streak || 0} Days 🔥
+            <i className="bi bi-fire me-1"></i> Streak: {currentStreak} Days 🔥
           </Badge>
           <Badge bg="primary-subtle" text="primary" className="px-3 py-2 fs-7 fw-bold border border-primary-subtle">
             Problems Solved: {solvedProblemsCount}

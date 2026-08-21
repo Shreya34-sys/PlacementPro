@@ -185,7 +185,7 @@ export const AiInterviewPage: React.FC = () => {
     setIsProcessing(true);
 
     if (currentUser) {
-      updateUserLeaderboardStats(currentUser.uid, {
+      updateUserLeaderboardStats(currentUser.id, {
         interviewScore: overall
       }).catch(e => console.error("Failed to update interview score", e));
     }

@@ -1,4 +1,4 @@
-import { collection, query, where, getDocs, orderBy, limit, doc, setDoc, serverTimestamp, getDoc } from 'firebase/firestore';
+import { collection, query, where, getDocs, orderBy, limit, QueryConstraint } from 'firebase/firestore';
 import { firestoreDb } from '../../../utils/firebase';
 import { JudgeLanguage, RunCodeRequest, RunCodeResult, Submission, LeaderboardEntry } from '../types/problem';
 import axios from 'axios';
@@ -15,7 +15,7 @@ const getFunctionsUrl = () => {
 export const getSubmissions = async (userId: string, problemId?: string): Promise<Submission[]> => {
   if (!firestoreDb) return [];
   
-  const constraints = [where('userId', '==', userId)];
+  const constraints: QueryConstraint[] = [where('userId', '==', userId)];
   if (problemId) {
     constraints.push(where('problemId', '==', problemId));
   }
@@ -99,6 +99,18 @@ export const runCode = async (req: RunCodeRequest): Promise<RunCodeResult> => {
 
 export const submitCode = async (req: SubmitCodeRequest): Promise<Submission> => {
   const url = `${getFunctionsUrl()}/submitSolution`;
-  const response = await axios.post(url, req);
-  return response.data.submission as Submission;
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(req),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Code submission failed with status ${response.status}`);
+  }
+
+  const data = await response.json();
+  return data.submission as Submission;
 };
