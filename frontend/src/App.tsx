@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
+
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { PlacementProvider } from './context/PlacementContext';
 import { ThemeProvider } from './context/ThemeContext';
+
 import { AppLayout } from './components/layout/AppLayout';
+
 import { DashboardPage } from './pages/DashboardPage';
 import { JobsPage } from './pages/JobsPage';
 import { JobDetailsPage } from './pages/JobDetailsPage';
@@ -28,148 +31,384 @@ import { LeaderboardPage } from './pages/LeaderboardPage';
 import { AnalyticsPage } from './pages/AnalyticsPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { SettingsPage } from './pages/SettingsPage';
+
 import { LoginPage } from './pages/LoginPage';
 import { RegisterPage } from './pages/RegisterPage';
 import { LandingPage } from './pages/LandingPage';
 import { TermsPage } from './pages/TermsPage';
 import { PrivacyPage } from './pages/PrivacyPage';
+
 import { CodingPracticePage } from './modules/codingPractice/pages/CodingPracticePage';
+
+import {
+  AdminAuthProvider,
+  useAdminAuth,
+} from './context/AdminAuthContext';
+
+import { AdminLoginPage } from './pages/admin/AdminLoginPage';
+import { AdminDashboardPage } from './pages/admin/AdminDashboardPage';
+
 
 function AppContent() {
   const { isAuthenticated, logout } = useAuth();
+
+  const {
+    isAdminAuthenticated,
+    logout: adminLogout,
+  } = useAdminAuth();
+
+
   const [currentTab, setCurrentTab] = useState(() => {
     if (window.location.hash === '#terms') return 'terms';
     if (window.location.hash === '#privacy') return 'privacy';
+    if (window.location.hash === '#admin') return 'admin-login';
+
     return 'landing';
   });
+
+
   const [policyBackTab, setPolicyBackTab] = useState('register');
-  const [selectedJobId, setSelectedJobId] = useState<string>('job-1');
-  const [selectedCompanyId, setSelectedCompanyId] = useState<string>('amazon');
+
+  const [selectedJobId, setSelectedJobId] =
+    useState<string>('job-1');
+
+  const [selectedCompanyId, setSelectedCompanyId] =
+    useState<string>('amazon');
+
 
   const handleNavigate = (tab: string, itemId?: string) => {
+
     if (tab === 'logout') {
       logout();
       setCurrentTab('login');
       return;
     }
+
     if (tab === 'job-details' && itemId) {
       setSelectedJobId(itemId);
     }
+
     if (tab === 'company-prep-detail' && itemId) {
       setSelectedCompanyId(itemId);
     }
+
     if (tab === 'terms' || tab === 'privacy') {
       setPolicyBackTab(currentTab);
       window.location.hash = tab;
     } else {
-      window.history.replaceState(null, '', window.location.pathname);
+      window.history.replaceState(
+        null,
+        '',
+        window.location.pathname
+      );
     }
+
     setCurrentTab(tab);
   };
 
-  // Route Protection: Prevent logged-out users from accessing protected student pages
-  if (!isAuthenticated && currentTab !== 'landing' && currentTab !== 'register' && currentTab !== 'terms' && currentTab !== 'privacy') {
+
+  /*
+   * STUDENT ROUTE PROTECTION
+   *
+   * Admin pages are deliberately excluded here.
+   */
+  if (
+    !isAuthenticated &&
+    currentTab !== 'landing' &&
+    currentTab !== 'register' &&
+    currentTab !== 'terms' &&
+    currentTab !== 'privacy' &&
+    currentTab !== 'admin-login' &&
+    currentTab !== 'admin-dashboard'
+  ) {
     return (
-      <div className="min-vh-100" style={{ backgroundColor: '#F8FAFC' }}>
+      <div
+        className="min-vh-100"
+        style={{ backgroundColor: '#F8FAFC' }}
+      >
         <LoginPage
-          onNavigateToRegister={() => setCurrentTab('register')}
-          onLoginSuccess={() => setCurrentTab('dashboard')}
+          onNavigateToRegister={() =>
+            setCurrentTab('register')
+          }
+          onLoginSuccess={() =>
+            setCurrentTab('dashboard')
+          }
           onNavigate={handleNavigate}
         />
       </div>
     );
   }
 
+
   const renderContent = () => {
+
     switch (currentTab) {
+
+      /* ================= STUDENT ================= */
+
       case 'landing':
-        return <LandingPage onNavigate={handleNavigate} />;
-      case 'login':
         return (
-          <LoginPage
-            onNavigateToRegister={() => setCurrentTab('register')}
-            onLoginSuccess={() => setCurrentTab('dashboard')}
+          <LandingPage
             onNavigate={handleNavigate}
           />
         );
+
+
+      case 'login':
+        return (
+          <LoginPage
+            onNavigateToRegister={() =>
+              setCurrentTab('register')
+            }
+            onLoginSuccess={() =>
+              setCurrentTab('dashboard')
+            }
+            onNavigate={handleNavigate}
+          />
+        );
+
+
       case 'register':
         return (
           <RegisterPage
-            onNavigateToLogin={() => setCurrentTab('login')}
-            onRegisterSuccess={() => setCurrentTab('dashboard')}
-            onNavigateToTerms={() => handleNavigate('terms')}
-            onNavigateToPrivacy={() => handleNavigate('privacy')}
+            onNavigateToLogin={() =>
+              setCurrentTab('login')
+            }
+            onRegisterSuccess={() =>
+              setCurrentTab('dashboard')
+            }
+            onNavigateToTerms={() =>
+              handleNavigate('terms')
+            }
+            onNavigateToPrivacy={() =>
+              handleNavigate('privacy')
+            }
           />
         );
+
+
       case 'terms':
-        return <TermsPage onBack={() => {
-          window.history.replaceState(null, '', window.location.pathname);
-          setCurrentTab(policyBackTab);
-        }} />;
+        return (
+          <TermsPage
+            onBack={() => {
+              window.history.replaceState(
+                null,
+                '',
+                window.location.pathname
+              );
+
+              setCurrentTab(policyBackTab);
+            }}
+          />
+        );
+
+
       case 'privacy':
-        return <PrivacyPage onBack={() => {
-          window.history.replaceState(null, '', window.location.pathname);
-          setCurrentTab(policyBackTab);
-        }} />;
+        return (
+          <PrivacyPage
+            onBack={() => {
+              window.history.replaceState(
+                null,
+                '',
+                window.location.pathname
+              );
+
+              setCurrentTab(policyBackTab);
+            }}
+          />
+        );
+
+
       case 'dashboard':
-        return <DashboardPage onNavigate={handleNavigate} />;
+        return (
+          <DashboardPage
+            onNavigate={handleNavigate}
+          />
+        );
+
+
       case 'jobs':
-        return <JobsPage onSelectJob={(id) => handleNavigate('job-details', id)} />;
+        return (
+          <JobsPage
+            onSelectJob={(id) =>
+              handleNavigate('job-details', id)
+            }
+          />
+        );
+
+
       case 'job-details':
-        return <JobDetailsPage jobId={selectedJobId} onBack={() => setCurrentTab('jobs')} />;
+        return (
+          <JobDetailsPage
+            jobId={selectedJobId}
+            onBack={() =>
+              setCurrentTab('jobs')
+            }
+          />
+        );
+
+
       case 'companies':
-        return <CompaniesPage onNavigateToJob={(id) => handleNavigate('job-details', id)} />;
+        return (
+          <CompaniesPage
+            onNavigateToJob={(id) =>
+              handleNavigate('job-details', id)
+            }
+          />
+        );
+
+
       case 'placement-prep':
       case 'practice':
-        return <PlacementPrepPage onNavigate={handleNavigate} />;
+        return (
+          <PlacementPrepPage
+            onNavigate={handleNavigate}
+          />
+        );
+
+
       case 'company-prep':
-        return <CompanyPrepPage onNavigate={handleNavigate} />;
+        return (
+          <CompanyPrepPage
+            onNavigate={handleNavigate}
+          />
+        );
+
+
       case 'company-prep-detail':
-        return <CompanyPrepDetailPage companyId={selectedCompanyId} onBack={() => setCurrentTab('company-prep')} />;
+        return (
+          <CompanyPrepDetailPage
+            companyId={selectedCompanyId}
+            onBack={() =>
+              setCurrentTab('company-prep')
+            }
+          />
+        );
+
+
       case 'technical-prep':
         return <TechnicalPrepPage onNavigate={handleNavigate} />;
+
       case 'gd-prep':
         return <GdPrepPage onNavigate={handleNavigate} />;
+
       case 'aptitude-test':
         return <AptitudeTestPage />;
+
       case 'coding-round':
         return <CodingRoundPage />;
+
       case 'leetcode-practice':
       case 'coding-practice':
-        return <CodingPracticePage onNavigate={handleNavigate} />;
+        return (
+          <CodingPracticePage
+            onNavigate={handleNavigate}
+          />
+        );
+
       case 'versant-prep':
         return <VersantPrepPage />;
+
       case 'hr-prep':
         return <HrInterviewPage />;
+
       case 'gamified-prep':
         return <GamifiedAssessmentPage />;
+
       case 'ai-interview':
         return <AiInterviewPage />;
+
       case 'resume-analyzer':
       case 'resume-prep':
         return <ResumeAnalyzerPage />;
+
       case 'study-planner':
         return <StudyPlannerPage />;
+
       case 'leaderboard':
         return <LeaderboardPage />;
+
       case 'applications':
         return <ApplicationsPage />;
+
       case 'students':
         return <StudentsPage />;
+
       case 'interviews':
         return <InterviewsPage />;
+
       case 'profile':
         return <ProfilePage />;
+
       case 'analytics':
         return <AnalyticsPage />;
+
       case 'settings':
         return <SettingsPage />;
+
+
+      /* ================= ADMIN ================= */
+
+      case 'admin-login':
+        return (
+          <AdminLoginPage
+            onLoginSuccess={() =>
+              setCurrentTab('admin-dashboard')
+            }
+            onBackToStudentLogin={() =>
+              setCurrentTab('login')
+            }
+          />
+        );
+
+
+      case 'admin-dashboard':
+
+        if (!isAdminAuthenticated) {
+          return (
+            <AdminLoginPage
+              onLoginSuccess={() =>
+                setCurrentTab('admin-dashboard')
+              }
+              onBackToStudentLogin={() =>
+                setCurrentTab('login')
+              }
+            />
+          );
+        }
+
+        return (
+          <AdminDashboardPage
+            onLogout={async () => {
+              await adminLogout();
+              setCurrentTab('admin-login');
+            }}
+          />
+        );
+
+
       default:
-        return <DashboardPage onNavigate={handleNavigate} />;
+        return (
+          <DashboardPage
+            onNavigate={handleNavigate}
+          />
+        );
     }
   };
 
-  if (currentTab === 'login' || currentTab === 'register' || currentTab === 'landing' || currentTab === 'terms' || currentTab === 'privacy') {
+
+  /*
+   * Pages that should NOT use AppLayout
+   */
+  if (
+    currentTab === 'login' ||
+    currentTab === 'register' ||
+    currentTab === 'landing' ||
+    currentTab === 'terms' ||
+    currentTab === 'privacy' ||
+    currentTab === 'admin-login' ||
+    currentTab === 'admin-dashboard'
+  ) {
     return (
       <div className="min-vh-100 bg-light">
         {renderContent()}
@@ -177,20 +416,29 @@ function AppContent() {
     );
   }
 
+
   return (
-    <AppLayout currentTab={currentTab} onTabChange={setCurrentTab}>
+    <AppLayout
+      currentTab={currentTab}
+      onTabChange={setCurrentTab}
+    >
       {renderContent()}
     </AppLayout>
   );
 }
 
+
+/* ================= APP PROVIDERS ================= */
+
 export default function App() {
   return (
     <ThemeProvider>
       <AuthProvider>
-        <PlacementProvider>
-          <AppContent />
-        </PlacementProvider>
+        <AdminAuthProvider>
+          <PlacementProvider>
+            <AppContent />
+          </PlacementProvider>
+        </AdminAuthProvider>
       </AuthProvider>
     </ThemeProvider>
   );
