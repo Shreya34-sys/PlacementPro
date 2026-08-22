@@ -52,14 +52,14 @@ const getActivityCount = (date: Date) => {
   const day = date.getDate();
   const month = date.getMonth() + 1;
   const year = date.getFullYear();
-  const seed = (year * 31 + month * 17 + day * 13) % 29;
+  const seed = (year * 7 + month * 17 + day * 26) % 39;
 
-  if (seed % 11 === 0) return 0;
-  if (day % 10 === 0) return 9 + (seed % 3);
-  if (seed % 7 === 0) return 6 + (seed % 3);
-  if (seed % 5 === 0) return 3 + (seed % 3);
-  if (seed % 3 === 0) return 1 + (seed % 2);
-  return day % 4 === 0 ? 2 : 0;
+  if (seed % 17 === 0) return 9;
+  if (seed % 13 === 0) return 7;
+  if (seed % 7 === 0) return 4;
+  if (seed % 5 === 0) return 2;
+  if (seed % 8 === 0) return 1;
+  return 0;
 };
 
 const buildActivityDay = (date: Date): ActivityDay => {
@@ -143,7 +143,7 @@ export const StreakCalendar: React.FC = () => {
     <Card className="shadow-xs border border-secondary rounded-16 overflow-hidden mb-4 bg-dark text-white">
       <Card.Header className="bg-dark border-bottom border-secondary p-3.5">
         <div className="d-flex align-items-center gap-2">
-          <span className="fs-4" aria-hidden="true">🔥</span>
+          <i className="bi bi-fire fs-4 text-danger" aria-hidden="true"></i>
           <div>
             <h5 className="fw-bold text-white mb-0">Preparation Activity</h5>
             <small className="text-white-50 fs-8">
@@ -168,7 +168,8 @@ export const StreakCalendar: React.FC = () => {
               onClick={goToPreviousMonth}
               className="text-white-50 text-decoration-none fw-semibold px-1 px-sm-2"
             >
-              ← <span className="d-none d-sm-inline">Previous Month</span>
+              <i className="bi bi-arrow-left-short me-1" aria-hidden="true"></i>
+              <span className="d-none d-sm-inline">Previous Month</span>
             </Button>
 
             <div
@@ -188,7 +189,8 @@ export const StreakCalendar: React.FC = () => {
                 canGoNext ? 'text-white-50' : 'text-secondary opacity-50'
               }`}
             >
-              <span className="d-none d-sm-inline">Next Month</span> →
+              <span className="d-none d-sm-inline">Next Month</span>
+              <i className="bi bi-arrow-right-short ms-1" aria-hidden="true"></i>
             </Button>
           </div>
 
