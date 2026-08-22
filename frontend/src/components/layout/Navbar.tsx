@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Container, Navbar as BsNavbar, Nav, NavDropdown, Button, Badge } from 'react-bootstrap';
-import { BellRing, ChevronDown } from 'lucide-react';
+import { BellRing, ChevronDown, Menu, X } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
 
@@ -84,21 +84,25 @@ const placementTabs = new Set([
   'gd-prep',
   'coding-round',
   'leetcode-practice',
+  'versant-prep',
   'coding-practice',
   'hr-prep',
+  'gamified-prep',
   'resume-analyzer',
   'ai-interview',
-  'analytics',
-  'leaderboard',
+  'resume-prep',
+  'study-planner',
 ]);
 
 const desktopNavItems = [
   { label: 'Home', tab: 'dashboard' },
-  { label: 'Practice', tab: 'placement-prep' },
+  { label: 'Practice', tab: 'practice' },
   { label: 'Companies', tab: 'companies' },
   { label: 'Analytics', tab: 'analytics' },
   { label: 'Leaderboard', tab: 'leaderboard' },
 ];
+
+const getNavHref = (tab: string) => `#${tab}`;
 
 export const Navbar: React.FC<NavbarProps> = ({
   currentTab,
@@ -108,6 +112,9 @@ export const Navbar: React.FC<NavbarProps> = ({
   const { theme, toggleTheme } = useTheme();
   const isDarkMode = theme === 'dark';
   const [isMegaMenuOpen, setIsMegaMenuOpen] = useState(false);
+  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+  const [isMobilePrepOpen, setIsMobilePrepOpen] = useState(false);
+  const navbarRef = useRef<HTMLDivElement>(null);
   const megaMenuRef = useRef<HTMLDivElement>(null);
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isPlacementActive = placementTabs.has(currentTab);
@@ -116,6 +123,10 @@ export const Navbar: React.FC<NavbarProps> = ({
     const handlePointerDown = (event: PointerEvent) => {
       if (megaMenuRef.current && !megaMenuRef.current.contains(event.target as Node)) {
         setIsMegaMenuOpen(false);
+      }
+
+      if (navbarRef.current && !navbarRef.current.contains(event.target as Node)) {
+        setIsMobileNavOpen(false);
       }
     };
 
@@ -136,6 +147,13 @@ export const Navbar: React.FC<NavbarProps> = ({
   const navigateTo = (tab: string) => {
     onTabChange(tab);
     setIsMegaMenuOpen(false);
+    setIsMobileNavOpen(false);
+    setIsMobilePrepOpen(false);
+  };
+
+  const handleLinkNavigation = (event: React.MouseEvent<HTMLAnchorElement>, tab: string) => {
+    event.preventDefault();
+    navigateTo(tab);
   };
 
   const openMegaMenu = () => {
@@ -161,6 +179,7 @@ export const Navbar: React.FC<NavbarProps> = ({
       style={{ zIndex: 1030, minHeight: '60px' }}
     >
       <Container fluid className="px-3 px-lg-4">
+        <div ref={navbarRef} className="placement-navbar-inner d-flex align-items-center w-100">
         <div className="d-flex align-items-center gap-3">
           <BsNavbar.Brand
             href="#home"
@@ -215,11 +234,11 @@ export const Navbar: React.FC<NavbarProps> = ({
                       <p>{section.description}</p>
                       <div className="placement-mega-list">
                         {section.items.map((item) => (
-                          <button
-                            type="button"
+                          <a
+                            href={getNavHref(item.tab)}
                             className="placement-mega-item"
                             key={item.label}
-                            onClick={() => navigateTo(item.tab)}
+                            onClick={(event) => handleLinkNavigation(event, item.tab)}
                             role="menuitem"
                           >
                             <span>
@@ -227,13 +246,17 @@ export const Navbar: React.FC<NavbarProps> = ({
                               <small>{item.description}</small>
                             </span>
                             <i className="bi bi-arrow-right-short"></i>
-                          </button>
+                          </a>
                         ))}
                       </div>
                       {section.heading === 'Company Preparation' && (
-                        <button type="button" className="placement-company-link" onClick={() => navigateTo('company-prep')}>
+                        <a
+                          href={getNavHref('companies')}
+                          className="placement-company-link"
+                          onClick={(event) => handleLinkNavigation(event, 'companies')}
+                        >
                           Explore All Companies <i className="bi bi-arrow-right"></i>
-                        </button>
+                        </a>
                       )}
                     </section>
                   ))}
@@ -243,11 +266,16 @@ export const Navbar: React.FC<NavbarProps> = ({
                   <div className="placement-trending-title">Trending Placement Prep</div>
                   <div className="placement-trending-list">
                     {trendingItems.map((item) => (
-                      <button type="button" className="placement-trending-card" key={item.label} onClick={() => navigateTo(item.tab)}>
+                      <a
+                        href={getNavHref(item.tab)}
+                        className="placement-trending-card"
+                        key={item.label}
+                        onClick={(event) => handleLinkNavigation(event, item.tab)}
+                      >
                         <span className="placement-trending-tag">{item.label}</span>
                         <strong>{item.title}</strong>
                         <span>{item.action} <i className="bi bi-arrow-right-short"></i></span>
-                      </button>
+                      </a>
                     ))}
                   </div>
                 </div>
@@ -256,7 +284,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             {desktopNavItems.slice(1).map((item) => (
               <Nav.Link
-                href={`#${item.tab}`}
+                href={getNavHref(item.tab)}
                 key={item.label}
                 className={`placement-nav-link ${currentTab === item.tab ? 'active' : ''}`}
                 onClick={(e) => {
@@ -269,6 +297,18 @@ export const Navbar: React.FC<NavbarProps> = ({
             ))}
           </Nav>
         </div>
+
+        <Button
+          variant="light"
+          size="sm"
+          className="placement-navbar-toggle d-lg-none border shadow-xs d-inline-flex align-items-center justify-content-center text-secondary"
+          style={{ width: '36px', height: '36px' }}
+          aria-label={isMobileNavOpen ? 'Close navigation menu' : 'Open navigation menu'}
+          aria-expanded={isMobileNavOpen}
+          onClick={() => setIsMobileNavOpen((open) => !open)}
+        >
+          {isMobileNavOpen ? <X size={19} /> : <Menu size={19} />}
+        </Button>
 
         <Nav className="placement-actions align-items-center gap-2 ms-auto">
           <NavDropdown
@@ -370,6 +410,82 @@ export const Navbar: React.FC<NavbarProps> = ({
           )}
         </Nav>
 
+        <div className={`placement-mobile-collapse d-lg-none ${isMobileNavOpen ? 'show' : ''}`}>
+          <div className="placement-mobile-nav">
+            <button
+              type="button"
+              className={`placement-mobile-link ${currentTab === 'dashboard' ? 'active' : ''}`}
+              onClick={() => navigateTo('dashboard')}
+            >
+              <span>Home</span>
+            </button>
+
+            <button
+              type="button"
+              className={`placement-mobile-link placement-mobile-prep-toggle ${isPlacementActive || isMobilePrepOpen ? 'active' : ''}`}
+              aria-expanded={isMobilePrepOpen}
+              onClick={() => setIsMobilePrepOpen((open) => !open)}
+            >
+              <span>Placement Prep</span>
+              <ChevronDown size={16} className={isMobilePrepOpen ? 'rotate' : ''} />
+            </button>
+
+            {isMobilePrepOpen && (
+              <div className="placement-mobile-prep-panel">
+                {placementSections.map((section) => (
+                  <section className="placement-mobile-section" key={section.heading}>
+                    <div>{section.heading}</div>
+                    {section.items.map((item) => (
+                      <a
+                        href={getNavHref(item.tab)}
+                        key={item.label}
+                        onClick={(event) => handleLinkNavigation(event, item.tab)}
+                      >
+                        <span>{item.label}</span>
+                        <small>{item.description}</small>
+                      </a>
+                    ))}
+                    {section.heading === 'Company Preparation' && (
+                      <a
+                        href={getNavHref('companies')}
+                        className="placement-mobile-all-companies"
+                        onClick={(event) => handleLinkNavigation(event, 'companies')}
+                      >
+                        Explore All Companies <i className="bi bi-arrow-right"></i>
+                      </a>
+                    )}
+                  </section>
+                ))}
+
+                <section className="placement-mobile-section placement-mobile-trending-section">
+                  <div>Trending Placement Prep</div>
+                  {trendingItems.map((item) => (
+                    <a
+                      href={getNavHref(item.tab)}
+                      key={item.label}
+                      onClick={(event) => handleLinkNavigation(event, item.tab)}
+                    >
+                      <span>{item.label}</span>
+                      <small>{item.title} - {item.action} <i className="bi bi-arrow-right-short"></i></small>
+                    </a>
+                  ))}
+                </section>
+              </div>
+            )}
+
+            {desktopNavItems.slice(1).map((item) => (
+              <button
+                type="button"
+                key={item.label}
+                className={`placement-mobile-link ${currentTab === item.tab ? 'active' : ''}`}
+                onClick={() => navigateTo(item.tab)}
+              >
+                <span>{item.label}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+        </div>
       </Container>
     </BsNavbar>
   );

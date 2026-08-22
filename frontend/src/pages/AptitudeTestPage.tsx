@@ -150,7 +150,7 @@ export const AptitudeTestPage: React.FC = () => {
       const scorePercentage = Math.max(0, Math.round((score / totalMaxMarks) * 100));
 
       try {
-        await updateUserLeaderboardStats(currentUser.uid, {
+        await updateUserLeaderboardStats(currentUser.id, {
           aptitudeScore: scorePercentage
         });
       } catch (e) {

@@ -78,7 +78,7 @@ export const Leaderboard: React.FC = () => {
               </div>
             ) : (
               <div className="table-responsive">
-                <Table hover align="middle" className="mb-0">
+                <Table hover align="center" className="mb-0">
                   <thead>
                     <tr className="text-muted fs-8 fw-semibold bg-light-subtle">
                       <th style={{ width: '80px' }} className="ps-4">Rank</th>

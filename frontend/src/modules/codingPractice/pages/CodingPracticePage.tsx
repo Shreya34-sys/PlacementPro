@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Tabs, Tab, Row, Col, Card, Badge, Alert, Spinner } from 'react-bootstrap';
+import { Container, Tabs, Tab, Row, Col, Card, Badge, Alert, Button } from 'react-bootstrap';
 import { useAuth } from '../../../context/AuthContext';
 import { Problem, UserProgress, Submission } from '../types/problem';
 import { ProblemExplorer } from '../components/ProblemExplorer';
@@ -104,6 +104,7 @@ export const CodingPracticePage: React.FC<CodingPracticePageProps> = ({ onNaviga
   };
 
   const solvedProblemsCount = Object.values(progressMap).filter((p) => p.solved).length;
+  const currentStreak = 'streak' in (currentUser ?? {}) ? (currentUser as { streak?: number }).streak || 0 : 0;
 
   return (
     <Container fluid className="px-0">
@@ -120,7 +121,7 @@ export const CodingPracticePage: React.FC<CodingPracticePageProps> = ({ onNaviga
 
         <div className="d-flex align-items-center gap-2">
           <Badge bg="danger" className="px-3 py-2 fs-7 fw-bold shadow-sm">
-            <i className="bi bi-fire me-1"></i> Streak: {currentUser?.streak || 0} Days 🔥
+            <i className="bi bi-fire me-1"></i> Streak: {currentStreak} Days 🔥
           </Badge>
           <Badge bg="primary-subtle" text="primary" className="px-3 py-2 fs-7 fw-bold border border-primary-subtle">
             Problems Solved: {solvedProblemsCount}
