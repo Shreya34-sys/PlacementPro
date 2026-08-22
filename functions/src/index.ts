@@ -3,6 +3,8 @@ import { onSchedule } from 'firebase-functions/v2/scheduler';
 import * as admin from 'firebase-admin';
 import { syncProblemsLogic } from './codeforces/syncProblems';
 import { submitSolutionLogic } from './submissions/execute';
+import { setAdminClaim } from './admin/setAdminClaim';
+export { setAdminClaim };
 
 admin.initializeApp();
 
