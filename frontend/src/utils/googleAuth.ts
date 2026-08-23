@@ -1,4 +1,4 @@
-import { signInWithPopup } from 'firebase/auth';
+import { browserLocalPersistence, setPersistence, signInWithPopup } from 'firebase/auth';
 import { FirebaseError } from 'firebase/app';
 import { UserProfile } from '../types';
 import { firebaseAuth, googleProvider, isFirebaseConfigured } from './firebase';
@@ -30,6 +30,8 @@ export const signInWithGoogle = async (): Promise<GoogleProfile> => { //used for
   }
 
   try {
+    await setPersistence(firebaseAuth, browserLocalPersistence);
+    googleProvider.setCustomParameters({ prompt: 'select_account' });
     const result = await signInWithPopup(firebaseAuth, googleProvider); //used for initiating the Google sign-in process using a popup window, allowing the user to authenticate with their Google account
     const profile = getGoogleUserProfile(result.user.email, result.user.displayName, result.user.photoURL); //used for extracting the user's profile information from the Google authentication response and creating a GoogleProfile object
 
