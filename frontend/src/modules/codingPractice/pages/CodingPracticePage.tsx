@@ -63,9 +63,8 @@ export const CodingPracticePage: React.FC<CodingPracticePageProps> = ({ onNaviga
     }
   };
 
-  const handleRunCode = async (code: string, language: string, languageId?: number) => {
+  const handleRunCode = async (code: string, language: string, languageId: number) => {
     if (!selectedProblem) throw new Error('No problem selected');
-
     return runCode({
       problemId: selectedProblem.id,
       language,
@@ -74,19 +73,16 @@ export const CodingPracticePage: React.FC<CodingPracticePageProps> = ({ onNaviga
     });
   };
 
-  const handleSubmitCode = async (code: string, language: string, languageId?: number): Promise<Submission> => {
+  const handleSubmitCode = async (code: string, language: string, languageId: number): Promise<Submission> => {
     if (!selectedProblem) throw new Error('No problem selected');
-    
     try {
       const submission = await submitCode({
         userId,
         problemId: selectedProblem.id,
         language,
         languageId,
-        code
+        code,
       });
-      
-      // Update submissions history and progress data
       setSubmissions((prev) => [submission, ...prev]);
       fetchUserData();
       return submission;
@@ -97,7 +93,7 @@ export const CodingPracticePage: React.FC<CodingPracticePageProps> = ({ onNaviga
   };
 
   const solvedProblemsCount = Object.values(progressMap).filter((p) => p.solved).length;
-  const currentStreak = 'streak' in (currentUser ?? {}) ? (currentUser as { streak?: number }).streak || 0 : 0;
+  const currentStreak = currentUser?.streak ?? 0;
 
   return (
     <Container fluid className="px-0">
@@ -223,7 +219,7 @@ export const CodingPracticePage: React.FC<CodingPracticePageProps> = ({ onNaviga
             </div>
           </Tab>
 
-          {currentUser && (
+          {isAdmin && (
             <Tab eventKey="admin" title="Admin Settings">
               <div className="pt-2">
                 <AdminConsole />

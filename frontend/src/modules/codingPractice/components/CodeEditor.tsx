@@ -9,99 +9,100 @@ import {
 } from '../services/submissionService';
 
 // ---------------------------------------------------------------------------
-// Default starter code per language
+// Default starter code per language key
 // ---------------------------------------------------------------------------
-
 const DEFAULT_STARTER_CODE: Record<string, string> = {
-  c: `#include <stdio.h>\n\nint main(void) {\n    // Read input using scanf\n    // Write output using printf\n    return 0;\n}`,
-  cpp: `#include <iostream>\nusing namespace std;\n\nint main() {\n    // Read input using cin\n    // Write output using cout\n    return 0;\n}`,
-  java: `import java.util.*;\n\nclass Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // Write your solution here\n    }\n}`,
-  python: `# Write your python solution here\nimport sys\n\ndef solve():\n    # Read from sys.stdin and print to stdout\n    pass\n\nif __name__ == '__main__':\n    solve()`,
-  javascript: `// Write your javascript solution here\nconst fs = require('fs');\n\nfunction solve() {\n    // Read input and print output\n}\n\nsolve();`,
-  typescript: `// Write your TypeScript solution here\nconst fs = require('fs');\nconst input = fs.readFileSync(0, 'utf8').trim();\nconsole.log(input);`,
-  csharp: `using System;\n\nclass Program {\n    static void Main() {\n        // Write your solution here\n    }\n}`,
-  go: `package main\n\nimport "fmt"\n\nfunc main() {\n    // Write your solution here\n    fmt.Println()\n}`,
-  rust: `use std::io::{self, Read};\n\nfn main() {\n    let mut input = String::new();\n    io::stdin().read_to_string(&mut input).unwrap();\n    // Write your solution here\n}`,
-  kotlin: `fun main() {\n    // Write your solution here\n}`,
+  c:          `#include <stdio.h>\n\nint main(void) {\n    // Read input using scanf\n    // Write output using printf\n    return 0;\n}`,
+  cpp:        `#include <iostream>\nusing namespace std;\n\nint main() {\n    // Read input using cin\n    // Write output using cout\n    return 0;\n}`,
+  java:       `import java.util.*;\n\nclass Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // Write your solution here\n    }\n}`,
+  python:     `# Write your solution here\nimport sys\ninput = sys.stdin.readline\n\ndef solve():\n    pass\n\nif __name__ == '__main__':\n    solve()`,
+  javascript: `process.stdin.resume();\nprocess.stdin.setEncoding('utf8');\nlet input = '';\nprocess.stdin.on('data', d => input += d);\nprocess.stdin.on('end', () => {\n    const lines = input.trim().split('\\n');\n    // Write your solution here\n    console.log(lines[0]);\n});`,
+  typescript: `process.stdin.resume();\nprocess.stdin.setEncoding('utf8');\nlet input = '';\nprocess.stdin.on('data', (d: string) => input += d);\nprocess.stdin.on('end', () => {\n    const lines = input.trim().split('\\n');\n    console.log(lines[0]);\n});`,
+  csharp:     `using System;\nusing System.IO;\n\nclass Program {\n    static void Main() {\n        // Write your solution here\n        string? line = Console.ReadLine();\n        Console.WriteLine(line);\n    }\n}`,
+  go:         `package main\n\nimport (\n    "bufio"\n    "fmt"\n    "os"\n)\n\nfunc main() {\n    reader := bufio.NewReader(os.Stdin)\n    // Write your solution here\n    fmt.Fscan(reader)\n}`,
+  rust:       `use std::io::{self, BufRead};\n\nfn main() {\n    let stdin = io::stdin();\n    for line in stdin.lock().lines() {\n        let line = line.unwrap();\n        println!("{}", line);\n    }\n}`,
+  kotlin:     `import java.util.Scanner\n\nfun main() {\n    val sc = Scanner(System.\`in\`)\n    // Write your solution here\n}`,
 };
 
+// Fallback list — uses IDs from ce.judge0.com
 const FALLBACK_LANGUAGES: JudgeLanguage[] = [
-  { id: 104, name: 'C (Clang 18.1.8)',      key: 'c',          monacoLanguage: 'c' },
-  { id: 105, name: 'C++ 23 (Clang 18.1.8)', key: 'cpp',        monacoLanguage: 'cpp' },
-  { id: 91,  name: 'Java (OpenJDK 17)',      key: 'java',       monacoLanguage: 'java' },
-  { id: 92,  name: 'Python 3 (3.11.2)',      key: 'python',     monacoLanguage: 'python' },
-  { id: 93,  name: 'JavaScript (Node.js 18)',key: 'javascript', monacoLanguage: 'javascript' },
-  { id: 94,  name: 'TypeScript (5.0.3)',     key: 'typescript', monacoLanguage: 'typescript' },
-  { id: 51,  name: 'C# (Mono 6.6.0)',       key: 'csharp',     monacoLanguage: 'csharp' },
-  { id: 60,  name: 'Go (1.13.5)',            key: 'go',         monacoLanguage: 'go' },
-  { id: 73,  name: 'Rust (1.40.0)',          key: 'rust',       monacoLanguage: 'rust' },
-  { id: 78,  name: 'Kotlin (1.3.70)',        key: 'kotlin',     monacoLanguage: 'kotlin' },
+  { id: 104, name: 'C (Clang 18.1.8)',       key: 'c',          monacoLanguage: 'c' },
+  { id: 105, name: 'C++ 23 (Clang 18.1.8)',  key: 'cpp',        monacoLanguage: 'cpp' },
+  { id: 91,  name: 'Java (OpenJDK 17)',       key: 'java',       monacoLanguage: 'java' },
+  { id: 92,  name: 'Python 3 (3.11.2)',       key: 'python',     monacoLanguage: 'python' },
+  { id: 93,  name: 'JavaScript (Node.js 18)', key: 'javascript', monacoLanguage: 'javascript' },
+  { id: 94,  name: 'TypeScript (5.0.3)',      key: 'typescript', monacoLanguage: 'typescript' },
+  { id: 51,  name: 'C# (Mono 6.6.0)',        key: 'csharp',     monacoLanguage: 'csharp' },
+  { id: 60,  name: 'Go (1.13.5)',             key: 'go',         monacoLanguage: 'go' },
+  { id: 73,  name: 'Rust (1.40.0)',           key: 'rust',       monacoLanguage: 'rust' },
+  { id: 78,  name: 'Kotlin (1.3.70)',         key: 'kotlin',     monacoLanguage: 'kotlin' },
 ];
 
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
-
 interface CodeEditorProps {
-  problem: Problem;
-  onRunCode:  (code: string, language: string, languageId?: number) => Promise<RunCodeResult>;
-  onSubmit:   (code: string, language: string, languageId?: number) => Promise<Submission>;
+  problem:     Problem;
+  onRunCode:   (code: string, language: string, languageId: number) => Promise<RunCodeResult>;
+  onSubmit:    (code: string, language: string, languageId: number) => Promise<Submission>;
   submissions: Submission[];
 }
 
 type PanelTab = 'testcases' | 'custom' | 'submissions';
 
 // ---------------------------------------------------------------------------
-// Status helpers
+// Status → display helpers
 // ---------------------------------------------------------------------------
-
-type OutputKind = 'accepted' | 'wrong' | 'compile' | 'runtime' | 'tle' | 'mle' | 'system' | 'idle';
+type OutputKind = 'accepted' | 'pending' | 'wrong' | 'compile' | 'runtime' | 'tle' | 'mle' | 'system';
 
 const getOutputKind = (status: string): OutputKind => {
   switch (status) {
-    case 'Accepted':             return 'accepted';
-    case 'Wrong Answer':         return 'wrong';
-    case 'Compilation Error':    return 'compile';
-    case 'Runtime Error':        return 'runtime';
-    case 'Time Limit Exceeded':  return 'tle';
-    case 'Memory Limit Exceeded':return 'mle';
-    default:                     return 'system';
+    case 'Accepted':              return 'accepted';
+    case 'Pending':               return 'pending';
+    case 'Wrong Answer':          return 'wrong';
+    case 'Compilation Error':     return 'compile';
+    case 'Runtime Error':         return 'runtime';
+    case 'Time Limit Exceeded':   return 'tle';
+    case 'Memory Limit Exceeded': return 'mle';
+    default:                      return 'system';
   }
 };
 
 const KIND_VARIANT: Record<OutputKind, string> = {
   accepted: 'success',
+  pending:  'info',
   wrong:    'danger',
   compile:  'warning',
   runtime:  'danger',
   tle:      'warning',
   mle:      'warning',
   system:   'secondary',
-  idle:     'light',
 };
 
 const KIND_ICON: Record<OutputKind, string> = {
   accepted: 'bi-check-circle-fill',
+  pending:  'bi-hourglass-split',
   wrong:    'bi-x-circle-fill',
   compile:  'bi-exclamation-triangle-fill',
   runtime:  'bi-bug-fill',
   tle:      'bi-clock-fill',
   mle:      'bi-memory',
   system:   'bi-wifi-off',
-  idle:     'bi-terminal',
 };
 
 // ---------------------------------------------------------------------------
-// Component
+// CodeEditor component
 // ---------------------------------------------------------------------------
-
 export const CodeEditor: React.FC<CodeEditorProps> = ({
   problem,
   onRunCode,
   onSubmit,
   submissions,
 }) => {
-  const [language,      setLanguage]      = useState('cpp');
+  // FIX #1 — store selected language by numeric ID (not key string) so that
+  // multiple variants of the same language (e.g. C GCC vs C Clang) are
+  // unambiguously identified. The dropdown value = String(id).
+  const [selectedId,    setSelectedId]    = useState<number>(FALLBACK_LANGUAGES[0].id); // 104 = C Clang
   const [languages,     setLanguages]     = useState<JudgeLanguage[]>(FALLBACK_LANGUAGES);
   const [code,          setCode]          = useState('');
   const [theme,         setTheme]         = useState<'vs-dark' | 'light'>('vs-dark');
@@ -111,47 +112,70 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
   const [runResult,     setRunResult]     = useState<RunCodeResult | null>(null);
   const [submitResult,  setSubmitResult]  = useState<Submission | null>(null);
 
-  // Custom stdin state
-  const [customInput,     setCustomInput]     = useState('');
-  const [customResult,    setCustomResult]    = useState<CustomStdinResult | null>(null);
-  const [isRunningCustom, setIsRunningCustom] = useState(false);
-  const [customError,     setCustomError]     = useState<string | null>(null);
+  const [customInput,      setCustomInput]      = useState('');
+  const [customResult,     setCustomResult]     = useState<CustomStdinResult | null>(null);
+  const [isRunningCustom,  setIsRunningCustom]  = useState(false);
+  const [customError,      setCustomError]      = useState<string | null>(null);
 
-  // Load available languages once
+  // Derive the currently-selected JudgeLanguage object
+  const selectedLang: JudgeLanguage =
+    languages.find((l) => l.id === selectedId) ?? FALLBACK_LANGUAGES[0];
+
+  // Fetch real language list from the backend on mount
   useEffect(() => {
     getJudgeLanguages()
-      .then((items) => { if (items.length > 0) setLanguages(items); })
-      .catch(() => setLanguages(FALLBACK_LANGUAGES));
+      .then((items) => {
+        if (items.length > 0) {
+          setLanguages(items);
+          // Default to cpp (prefer C++ 17 GCC or first cpp variant found)
+          const defaultLang =
+            items.find((l) => l.key === 'cpp' && l.name.includes('17')) ??
+            items.find((l) => l.key === 'cpp') ??
+            items[0];
+          setSelectedId(defaultLang.id);
+        }
+      })
+      .catch(() => {
+        setLanguages(FALLBACK_LANGUAGES);
+        const defaultLang = FALLBACK_LANGUAGES.find((l) => l.key === 'cpp') ?? FALLBACK_LANGUAGES[0];
+        setSelectedId(defaultLang.id);
+      });
   }, []);
 
-  // Restore code from localStorage or fall back to starter
+  // Restore code from localStorage when problem or language changes
   useEffect(() => {
-    const saved = localStorage.getItem(`code_${problem.id}_${language}`);
-    setCode(saved ?? (problem.starterCode?.[language] ?? DEFAULT_STARTER_CODE[language] ?? ''));
-  }, [problem.id, language]);
-
-  const selectedLanguage = languages.find((l) => l.key === language) ?? FALLBACK_LANGUAGES[1];
+    const storageKey = `code_${problem.id}_${selectedId}`;
+    const saved = localStorage.getItem(storageKey);
+    const starter =
+      problem.starterCode?.[selectedLang.key] ??
+      DEFAULT_STARTER_CODE[selectedLang.key] ??
+      '';
+    setCode(saved ?? starter);
+  }, [problem.id, selectedId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleCodeChange = (value?: string) => {
     const v = value ?? '';
     setCode(v);
-    localStorage.setItem(`code_${problem.id}_${language}`, v);
+    localStorage.setItem(`code_${problem.id}_${selectedId}`, v);
   };
 
   const handleResetCode = () => {
     if (!window.confirm('Reset code to default template?')) return;
-    const defaultCode = problem.starterCode?.[language] ?? DEFAULT_STARTER_CODE[language] ?? '';
+    const defaultCode =
+      problem.starterCode?.[selectedLang.key] ??
+      DEFAULT_STARTER_CODE[selectedLang.key] ??
+      '';
     setCode(defaultCode);
-    localStorage.setItem(`code_${problem.id}_${language}`, defaultCode);
+    localStorage.setItem(`code_${problem.id}_${selectedId}`, defaultCode);
   };
 
-  // ── Run against problem test cases ──────────────────────────────────────
+  // Run against problem test cases (or compile+run for Codeforces)
   const handleRun = async () => {
     setIsRunning(true);
     setPanelTab('testcases');
     setRunResult(null);
     try {
-      const res = await onRunCode(code, language, selectedLanguage.id);
+      const res = await onRunCode(code, selectedLang.key, selectedId);
       setRunResult(res);
     } catch (e) {
       setRunResult({
@@ -168,15 +192,15 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
     }
   };
 
-  // ── Run with custom stdin ────────────────────────────────────────────────
+  // Run with custom stdin
   const handleRunCustom = async () => {
     setIsRunningCustom(true);
     setCustomResult(null);
     setCustomError(null);
     try {
       const res = await runCodeWithStdin({
-        language,
-        languageId: selectedLanguage.id,
+        language:    selectedLang.key,
+        languageId:  selectedId,
         code,
         customStdin: customInput,
       });
@@ -188,16 +212,16 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
     }
   };
 
-  // ── Submit ───────────────────────────────────────────────────────────────
+  // Submit solution
   const handleSubmit = async () => {
     setIsSubmitting(true);
     setPanelTab('submissions');
     setSubmitResult(null);
     try {
-      const res = await onSubmit(code, language, selectedLanguage.id);
+      const res = await onSubmit(code, selectedLang.key, selectedId);
       setSubmitResult(res);
     } catch (e) {
-      console.error(e);
+      console.error('Submit failed:', e);
     } finally {
       setIsSubmitting(false);
     }
@@ -208,19 +232,22 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
   return (
     <Card className="border-0 shadow-sm overflow-hidden" style={{ borderRadius: '12px', height: '100%' }}>
 
-      {/* ── Header: language selector + action buttons ── */}
+      {/* ── Header ── */}
       <Card.Header className="bg-white py-2 px-3 d-flex align-items-center justify-content-between border-bottom">
         <div className="d-flex align-items-center gap-2">
+          {/* FIX #1 — value is String(id), not key */}
           <Form.Select
             size="sm"
-            style={{ width: '145px' }}
-            value={language}
-            onChange={(e) => setLanguage(e.target.value)}
+            style={{ width: '200px' }}
+            value={String(selectedId)}
+            onChange={(e) => setSelectedId(Number(e.target.value))}
             className="fw-semibold"
             disabled={isBusy}
           >
             {languages.map((l) => (
-              <option key={`${l.id}-${l.key}`} value={l.key}>{l.name}</option>
+              <option key={l.id} value={String(l.id)}>
+                {l.name}
+              </option>
             ))}
           </Form.Select>
 
@@ -250,7 +277,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
             disabled={isBusy}
           >
             {isRunning
-              ? <><Spinner size="sm" animation="border" className="me-1" />Running</>
+              ? <><Spinner size="sm" animation="border" className="me-1" />Running…</>
               : <><i className="bi bi-play-fill me-1" />Run</>}
           </Button>
 
@@ -261,7 +288,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
             disabled={isBusy}
           >
             {isSubmitting
-              ? <><Spinner size="sm" animation="border" className="me-1" />Submitting</>
+              ? <><Spinner size="sm" animation="border" className="me-1" />Submitting…</>
               : <><i className="bi bi-cloud-arrow-up-fill me-1" />Submit</>}
           </Button>
         </div>
@@ -271,7 +298,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
       <div className="bg-dark p-0" style={{ minHeight: '360px' }}>
         <MonacoEditor
           height="360px"
-          language={selectedLanguage.monacoLanguage}
+          language={selectedLang.monacoLanguage}
           theme={theme}
           value={code}
           onChange={handleCodeChange}
@@ -284,30 +311,22 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
         />
       </div>
 
-      {/* ── Bottom panel: tabs ── */}
+      {/* ── Bottom Panel ── */}
       <Card.Footer className="bg-white p-0 border-top">
         <Tabs
           activeKey={panelTab}
           onSelect={(k) => setPanelTab((k as PanelTab) ?? 'testcases')}
           className="px-3 border-bottom nav-tabs-sm"
         >
-          <Tab eventKey="testcases" title="Run Outputs" />
-          <Tab eventKey="custom"    title={<><i className="bi bi-terminal me-1" />Custom Input</>} />
+          <Tab eventKey="testcases"   title="Run Output" />
+          <Tab eventKey="custom"      title={<><i className="bi bi-terminal me-1" />Custom Input</>} />
           <Tab eventKey="submissions" title="Submissions" />
         </Tabs>
 
-        <div className="p-3 fs-8" style={{ minHeight: '140px', maxHeight: '220px', overflowY: 'auto' }}>
-
-          {/* ── Run Outputs tab ── */}
+        <div className="p-3 fs-8" style={{ minHeight: '150px', maxHeight: '260px', overflowY: 'auto' }}>
           {panelTab === 'testcases' && (
-            <RunOutputsPanel
-              isRunning={isRunning}
-              result={runResult}
-              problemId={problem.id}
-            />
+            <RunOutputsPanel isRunning={isRunning} result={runResult} problemId={problem.id} />
           )}
-
-          {/* ── Custom Input tab ── */}
           {panelTab === 'custom' && (
             <CustomInputPanel
               customInput={customInput}
@@ -319,8 +338,6 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
               error={customError}
             />
           )}
-
-          {/* ── Submissions tab ── */}
           {panelTab === 'submissions' && (
             <SubmissionsPanel
               isSubmitting={isSubmitting}
@@ -337,63 +354,75 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
 // ---------------------------------------------------------------------------
 // Run Outputs panel
 // ---------------------------------------------------------------------------
-
 const RunOutputsPanel: React.FC<{
   isRunning: boolean;
-  result: RunCodeResult | null;
+  result:    RunCodeResult | null;
   problemId: string;
 }> = ({ isRunning, result, problemId }) => {
-  if (isRunning) {
-    return (
-      <div className="text-muted text-center py-3">
-        <Spinner size="sm" animation="border" className="me-2" />
-        Running code against sample test cases…
-      </div>
-    );
-  }
 
-  if (!result) {
-    return (
-      <div className="text-muted text-center py-3">
-        <i className="bi bi-play-circle me-2" />
-        Click <strong>Run</strong> to compile and execute your code.
-      </div>
-    );
-  }
+  if (isRunning) return (
+    <div className="text-muted text-center py-3">
+      <Spinner size="sm" animation="border" className="me-2" />
+      Compiling and running your code…
+    </div>
+  );
+
+  if (!result) return (
+    <div className="text-muted text-center py-3">
+      <i className="bi bi-play-circle me-2" />
+      Click <strong>Run</strong> to compile and execute your code.
+    </div>
+  );
 
   const kind = getOutputKind(result.status);
-  // Extend type to include optional raw fields from compile_run mode
-  const ext = result as RunCodeResult & { stdout?: string; stderr?: string; compileOutput?: string };
 
-  // ── compile_run mode: no test cases, show raw execution output ──────────
+  // ── Compile-run mode (Codeforces / no test cases) ──────────────────────
   if (result.totalTests === 0) {
+    const hasCompileError = result.status === 'Compilation Error';
+    const hasRuntimeError = result.status === 'Runtime Error';
+    const succeeded       = !hasCompileError && !hasRuntimeError && result.status !== 'Internal Error';
+
     return (
       <div>
-        <Alert variant={KIND_VARIANT[kind]} className="py-2 mb-2 d-flex align-items-center gap-2 fw-bold">
+        <Alert variant={KIND_VARIANT[kind]} className="py-2 mb-2 d-flex flex-wrap align-items-center gap-2 fw-bold">
           <i className={`bi ${KIND_ICON[kind]}`} />
-          {result.status === 'Accepted' || result.status === 'Pending'
-            ? '✓ Code compiled and executed successfully'
-            : `✗ ${result.status}`}
-          <span className="fw-normal fs-9 ms-1 text-muted">
-            — No test cases configured for this problem.
-            Use <strong>Custom Input</strong> tab to test with your own input.
-          </span>
+          {succeeded ? '✓ Compiled and executed successfully' : `✗ ${result.status}`}
+          {succeeded && (
+            <span className="fw-normal fs-9 text-muted ms-1">
+              — No test cases for this problem. Use <strong>Custom Input</strong> to test with your own input.
+            </span>
+          )}
         </Alert>
 
-        {result.status === 'Compilation Error' && (ext.compileOutput || result.errorMessage) && (
-          <OutputSection label="Compilation Error" value={ext.compileOutput || result.errorMessage || ''} variant="warning" />
+        {/* Compilation error output */}
+        {hasCompileError && (result.compileOutput || result.errorMessage) && (
+          <OutputSection
+            label="Compiler Output"
+            value={result.compileOutput || result.errorMessage || ''}
+            variant="warning"
+          />
         )}
 
-        {result.status === 'Runtime Error' && (ext.stderr || result.errorMessage) && (
-          <OutputSection label="Runtime Error" value={ext.stderr || result.errorMessage || ''} variant="danger" />
+        {/* Runtime error output */}
+        {hasRuntimeError && (result.stderr || result.errorMessage) && (
+          <OutputSection
+            label="Runtime Error"
+            value={result.stderr || result.errorMessage || ''}
+            variant="danger"
+          />
         )}
 
-        {ext.stdout && result.status !== 'Compilation Error' && (
-          <OutputSection label="Output" value={ext.stdout} variant="success" />
+        {/* Successful stdout */}
+        {succeeded && result.stdout && (
+          <OutputSection label="Output" value={result.stdout} variant="success" />
+        )}
+        {succeeded && !result.stdout && (
+          <p className="text-muted font-monospace fs-9 mb-1">(program produced no output)</p>
         )}
 
-        {!ext.stdout && result.status === 'Accepted' && (
-          <p className="text-muted font-monospace fs-9 mb-0">(no output)</p>
+        {/* Stderr even on success (warnings etc.) */}
+        {succeeded && result.stderr && (
+          <OutputSection label="Stderr" value={result.stderr} variant="warning" />
         )}
 
         <small className="text-muted mt-1 d-block">
@@ -405,9 +434,7 @@ const RunOutputsPanel: React.FC<{
     );
   }
 
-  // ── Test-case evaluation mode ────────────────────────────────────────────
-
-  // Pure error before any test ran
+  // ── Test-case evaluation mode ───────────────────────────────────────────
   if (result.errorMessage && result.results.length === 0) {
     return <OutputErrorBlock kind={kind} status={result.status} message={result.errorMessage} />;
   }
@@ -417,7 +444,7 @@ const RunOutputsPanel: React.FC<{
       <Alert variant={KIND_VARIANT[kind]} className="py-2 mb-2 d-flex align-items-center gap-2 fw-bold">
         <i className={`bi ${KIND_ICON[kind]}`} />
         {result.status === 'Accepted'
-          ? '✓ All sample test cases passed!'
+          ? `✓ All ${result.totalTests} sample test cases passed!`
           : `✗ ${result.status}`}
       </Alert>
 
@@ -445,9 +472,7 @@ const RunOutputsPanel: React.FC<{
             <LabeledPre label="Input"    value={r.input} />
             <LabeledPre label="Output"   value={r.output || '(empty)'} highlight={!r.passed ? 'danger' : undefined} />
             <LabeledPre label="Expected" value={r.expected} />
-            {r.errorMessage && (
-              <LabeledPre label="Error" value={r.errorMessage} highlight="danger" />
-            )}
+            {r.errorMessage && <LabeledPre label="Error" value={r.errorMessage} highlight="danger" />}
           </div>
         ))}
       </div>
@@ -464,7 +489,6 @@ const RunOutputsPanel: React.FC<{
 // ---------------------------------------------------------------------------
 // Custom Input panel
 // ---------------------------------------------------------------------------
-
 const CustomInputPanel: React.FC<{
   customInput:   string;
   onInputChange: (v: string) => void;
@@ -473,96 +497,76 @@ const CustomInputPanel: React.FC<{
   isBusy:        boolean;
   result:        CustomStdinResult | null;
   error:         string | null;
-}> = ({ customInput, onInputChange, onRun, isRunning, isBusy, result, error }) => {
-  return (
-    <div className="d-flex flex-column gap-2">
-      {/* stdin textarea */}
-      <div>
-        <label className="fw-semibold text-muted mb-1 fs-8">
-          <i className="bi bi-input-cursor-text me-1" />
-          Standard Input (stdin)
-        </label>
-        <Form.Control
-          as="textarea"
-          rows={3}
-          className="font-monospace fs-9"
-          placeholder={"Enter custom input here…\nExample:\n5\n10 20 30 40 50"}
-          value={customInput}
-          onChange={(e) => onInputChange(e.target.value)}
-          disabled={isBusy}
-          style={{ resize: 'vertical' }}
-        />
-      </div>
-
-      <div>
-        <Button
-          variant="outline-primary"
-          size="sm"
-          className="fw-bold px-3"
-          onClick={onRun}
-          disabled={isBusy}
-        >
-          {isRunning
-            ? <><Spinner size="sm" animation="border" className="me-1" />Running…</>
-            : <><i className="bi bi-play-fill me-1" />Run with Input</>}
-        </Button>
-      </div>
-
-      {/* Result */}
-      {isRunning && (
-        <div className="text-muted text-center py-2">
-          <Spinner size="sm" animation="border" className="me-2" />
-          Executing your code…
-        </div>
-      )}
-
-      {error && !isRunning && (
-        <Alert variant="danger" className="py-2 mb-0">
-          <i className="bi bi-wifi-off me-2" />
-          <strong>Error:</strong> {error}
-        </Alert>
-      )}
-
-      {result && !isRunning && !error && (
-        <CustomResultBlock result={result} />
-      )}
+}> = ({ customInput, onInputChange, onRun, isRunning, isBusy, result, error }) => (
+  <div className="d-flex flex-column gap-2">
+    <div>
+      <label className="fw-semibold text-muted mb-1 fs-8">
+        <i className="bi bi-input-cursor-text me-1" />
+        Standard Input (stdin)
+      </label>
+      <Form.Control
+        as="textarea"
+        rows={3}
+        className="font-monospace fs-9"
+        placeholder={"Enter input here…\nExample:\n5\n10 20 30 40 50"}
+        value={customInput}
+        onChange={(e) => onInputChange(e.target.value)}
+        disabled={isBusy}
+        style={{ resize: 'vertical' }}
+      />
     </div>
-  );
-};
+
+    <div>
+      <Button
+        variant="outline-primary" size="sm"
+        className="fw-bold px-3"
+        onClick={onRun}
+        disabled={isBusy}
+      >
+        {isRunning
+          ? <><Spinner size="sm" animation="border" className="me-1" />Running…</>
+          : <><i className="bi bi-play-fill me-1" />Run with Input</>}
+      </Button>
+    </div>
+
+    {isRunning && (
+      <div className="text-muted text-center py-2">
+        <Spinner size="sm" animation="border" className="me-2" />Executing…
+      </div>
+    )}
+
+    {error && !isRunning && (
+      <Alert variant="danger" className="py-2 mb-0">
+        <i className="bi bi-wifi-off me-2" />
+        <strong>Error:</strong> {error}
+      </Alert>
+    )}
+
+    {result && !isRunning && !error && <CustomResultBlock result={result} />}
+  </div>
+);
 
 const CustomResultBlock: React.FC<{ result: CustomStdinResult }> = ({ result }) => {
   const kind = getOutputKind(result.status);
-
   return (
     <div>
-      <Alert
-        variant={KIND_VARIANT[kind]}
-        className="py-2 mb-2 d-flex align-items-center gap-2 fw-bold"
-      >
+      <Alert variant={KIND_VARIANT[kind]} className="py-2 mb-2 d-flex align-items-center gap-2 fw-bold">
         <i className={`bi ${KIND_ICON[kind]}`} />
-        {result.status}
+        {result.status === 'Accepted' ? '✓ Executed successfully' : `✗ ${result.status}`}
       </Alert>
 
       {result.status === 'Compilation Error' && result.compileOutput && (
-        <OutputSection label="Compilation Error" value={result.compileOutput} variant="warning" />
+        <OutputSection label="Compiler Output" value={result.compileOutput} variant="warning" />
       )}
-
       {result.status === 'Runtime Error' && (result.stderr || result.compileOutput) && (
-        <OutputSection
-          label="Runtime Error"
-          value={result.stderr || result.compileOutput}
-          variant="danger"
-        />
+        <OutputSection label="Runtime Error"   value={result.stderr || result.compileOutput} variant="danger" />
       )}
-
-      {result.stdout !== undefined && result.stdout !== '' && result.status !== 'Compilation Error' && (
+      {result.stdout && result.status !== 'Compilation Error' && (
         <OutputSection label="Output" value={result.stdout} variant="success" />
       )}
-
-      {result.stdout === '' && result.status === 'Accepted' && (
+      {!result.stdout && result.status === 'Accepted' && (
         <p className="text-muted font-monospace fs-9 mb-1">(no output)</p>
       )}
-
       <small className="text-muted">
         {result.runtime > 0 && `Runtime: ${result.runtime} ms`}
         {result.runtime > 0 && result.memory > 0 && ' · '}
@@ -573,57 +577,72 @@ const CustomResultBlock: React.FC<{ result: CustomStdinResult }> = ({ result }) 
 };
 
 // ---------------------------------------------------------------------------
-// Submissions panel
+// Submissions panel  — FIX #4: show stdout/compile output for Codeforces
 // ---------------------------------------------------------------------------
-
 const SubmissionsPanel: React.FC<{
   isSubmitting: boolean;
   submitResult: Submission | null;
   submissions:  Submission[];
 }> = ({ isSubmitting, submitResult, submissions }) => {
-  if (isSubmitting) {
-    return (
-      <div className="text-muted text-center py-3">
-        <Spinner size="sm" animation="border" className="me-2" />
-        Submitting solution to judge…
-      </div>
-    );
-  }
+
+  if (isSubmitting) return (
+    <div className="text-muted text-center py-3">
+      <Spinner size="sm" animation="border" className="me-2" />
+      Submitting solution to judge…
+    </div>
+  );
 
   return (
     <div>
-      {submitResult && (
-        <div className="mb-3">
-          <Alert
-            variant={submitResult.status === 'Accepted' ? 'success' : KIND_VARIANT[getOutputKind(submitResult.status)]}
-            className="py-2 mb-2 d-flex align-items-center gap-2 fw-bold"
-          >
-            <i className={`bi ${KIND_ICON[getOutputKind(submitResult.status)]}`} />
-            {submitResult.status === 'Accepted'
-              ? '✓ Solution Accepted! (+XP earned)'
-              : `✗ ${submitResult.status}`}
-          </Alert>
+      {submitResult && (() => {
+        const kind = getOutputKind(submitResult.status);
+        const isPending = submitResult.status === 'Pending';
+        return (
+          <div className="mb-3">
+            <Alert variant={KIND_VARIANT[kind]} className="py-2 mb-2 d-flex flex-wrap align-items-center gap-2 fw-bold">
+              <i className={`bi ${KIND_ICON[kind]}`} />
+              {submitResult.status === 'Accepted'
+                ? '✓ Solution Accepted! (+XP earned)'
+                : isPending
+                  ? '⏳ Submission saved — no test cases configured for this problem'
+                  : `✗ ${submitResult.status}`}
+            </Alert>
 
-          {submitResult.errorMessage && (
-            <pre className="bg-light p-2 rounded border fs-9 font-monospace text-wrap mb-2 text-danger">
-              {submitResult.errorMessage}
-            </pre>
-          )}
+            {/* Show compile error */}
+            {submitResult.status === 'Compilation Error' && submitResult.errorMessage && (
+              <OutputSection label="Compiler Output" value={submitResult.errorMessage} variant="warning" />
+            )}
 
-          <small className="text-muted">
-            Passed {submitResult.passedTests ?? 0}/{submitResult.totalTests ?? 0} tests
-            {(submitResult.runtime ?? 0) > 0 && ` · Runtime: ${submitResult.runtime} ms`}
-            {(submitResult.memory  ?? 0) > 0 && ` · Memory: ${Math.round((submitResult.memory ?? 0) / 1024)} MB`}
-          </small>
-        </div>
-      )}
+            {/* Show runtime error */}
+            {submitResult.status === 'Runtime Error' && submitResult.errorMessage && (
+              <OutputSection label="Runtime Error" value={submitResult.errorMessage} variant="danger" />
+            )}
+
+            {/* For Codeforces (Pending) — show the stdout so user knows code ran */}
+            {isPending && (submitResult as Submission & { stdout?: string }).stdout && (
+              <OutputSection
+                label="Program Output (compile run)"
+                value={(submitResult as Submission & { stdout?: string }).stdout!}
+                variant="info"
+              />
+            )}
+
+            {/* For Accepted with test cases */}
+            {submitResult.status === 'Accepted' && (submitResult.totalTests ?? 0) > 0 && (
+              <small className="text-muted d-block">
+                Passed {submitResult.passedTests ?? 0}/{submitResult.totalTests ?? 0} tests
+                {(submitResult.runtime ?? 0) > 0 && ` · Runtime: ${submitResult.runtime} ms`}
+                {(submitResult.memory  ?? 0) > 0 && ` · Memory: ${Math.round((submitResult.memory ?? 0) / 1024)} MB`}
+              </small>
+            )}
+          </div>
+        );
+      })()}
 
       {submissions.length === 0 && !submitResult ? (
-        <div className="text-muted text-center py-2">
-          No submissions yet for this problem.
-        </div>
+        <div className="text-muted text-center py-2">No submissions yet for this problem.</div>
       ) : (
-        <div className="d-grid gap-1 mt-2">
+        <div className="d-grid gap-1 mt-1">
           {submissions.map((sub) => {
             const kind = getOutputKind(sub.status);
             return (
@@ -635,9 +654,16 @@ const SubmissionsPanel: React.FC<{
                   <i className={`bi ${KIND_ICON[kind]} text-${KIND_VARIANT[kind]}`} />
                   <Badge bg={KIND_VARIANT[kind]}>{sub.status}</Badge>
                   <span className="text-muted fs-9">{sub.language}</span>
+                  {(sub.passedTests ?? 0) > 0 && (
+                    <span className="text-muted fs-9">
+                      {sub.passedTests}/{sub.totalTests} tests
+                    </span>
+                  )}
                 </div>
                 <small className="text-muted fs-9">
-                  {new Date(sub.submittedAt).toLocaleString()}
+                  {typeof sub.submittedAt === 'string'
+                    ? new Date(sub.submittedAt).toLocaleString()
+                    : sub.submittedAt?.toDate?.()?.toLocaleString?.() ?? ''}
                 </small>
               </div>
             );
@@ -651,48 +677,26 @@ const SubmissionsPanel: React.FC<{
 // ---------------------------------------------------------------------------
 // Shared sub-components
 // ---------------------------------------------------------------------------
-
-const LabeledPre: React.FC<{
-  label: string;
-  value: string;
-  highlight?: string;
-}> = ({ label, value, highlight }) => (
+const LabeledPre: React.FC<{ label: string; value: string; highlight?: string }> = ({ label, value, highlight }) => (
   <div className="mb-1">
     <span className="text-muted fs-9">{label}:</span>
-    <pre className={`mb-0 fs-9 text-wrap ${highlight ? `text-${highlight}` : 'text-dark'}`}>
-      {value}
-    </pre>
+    <pre className={`mb-0 fs-9 text-wrap ${highlight ? `text-${highlight}` : 'text-dark'}`}>{value}</pre>
   </div>
 );
 
-const OutputSection: React.FC<{
-  label:   string;
-  value:   string;
-  variant: string;
-}> = ({ label, value, variant }) => (
+const OutputSection: React.FC<{ label: string; value: string; variant: string }> = ({ label, value, variant }) => (
   <div className="mb-2">
     <div className={`fw-semibold fs-8 text-${variant} mb-1`}>{label}:</div>
-    <pre className="bg-light rounded border p-2 font-monospace fs-9 text-wrap mb-0">
-      {value}
-    </pre>
+    <pre className="bg-light rounded border p-2 font-monospace fs-9 text-wrap mb-0">{value}</pre>
   </div>
 );
 
-const OutputErrorBlock: React.FC<{
-  kind:    OutputKind;
-  status:  string;
-  message: string;
-}> = ({ kind, status, message }) => (
+const OutputErrorBlock: React.FC<{ kind: OutputKind; status: string; message: string }> = ({ kind, status, message }) => (
   <div>
-    <Alert
-      variant={KIND_VARIANT[kind]}
-      className="py-2 mb-2 d-flex align-items-center gap-2 fw-bold"
-    >
+    <Alert variant={KIND_VARIANT[kind]} className="py-2 mb-2 d-flex align-items-center gap-2 fw-bold">
       <i className={`bi ${KIND_ICON[kind]}`} />
       {status}
     </Alert>
-    <pre className="bg-light rounded border p-2 font-monospace fs-9 text-wrap text-danger mb-0">
-      {message}
-    </pre>
+    <pre className="bg-light rounded border p-2 font-monospace fs-9 text-wrap text-danger mb-0">{message}</pre>
   </div>
 );

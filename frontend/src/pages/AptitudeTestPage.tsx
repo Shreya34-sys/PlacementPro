@@ -3,6 +3,8 @@ import { Container, Row, Col, Card, Button, Badge, Modal, ProgressBar } from 're
 import { mockAptitudeTest, AptitudeQuestion } from '../data/mockAptitudeQuestions';
 import { useAuth } from '../context/AuthContext';
 import { updateUserLeaderboardStats } from '../services/leaderboardService';
+import { doc, getDoc } from 'firebase/firestore';
+import { firestoreDb } from '../utils/firebase';
 
 type QuestionStatus = 'not-visited' | 'unanswered' | 'answered' | 'marked';
 
@@ -37,25 +39,25 @@ export const AptitudeTestPage: React.FC = () => {
     setTestState('in-progress');
   };
 
-  // Timer countdown effect
+  // Timer countdown — only depends on running/state flags, not on timeLeftSeconds value
   useEffect(() => {
-    let interval: any = null;
-    if (isTimerRunning && testState === 'in-progress' && timeLeftSeconds > 0) {
-      interval = setInterval(() => {
-        setTimeLeftSeconds((prev) => {
-          if (prev <= 1) {
-            clearInterval(interval);
-            setIsTimerRunning(false);
-            setTestState('submitted');
-            setShowSubmitModal(false);
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
-    }
+    if (!isTimerRunning || testState !== 'in-progress') return;
+
+    const interval = setInterval(() => {
+      setTimeLeftSeconds((prev) => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          setIsTimerRunning(false);
+          setTestState('submitted');
+          setShowSubmitModal(false);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
     return () => clearInterval(interval);
-  }, [isTimerRunning, testState, timeLeftSeconds]);
+  }, [isTimerRunning, testState]); // ← removed timeLeftSeconds from deps to avoid re-creating every tick
 
   // Format seconds to MM:SS
   const formatTime = (secs: number) => {
@@ -150,8 +152,16 @@ export const AptitudeTestPage: React.FC = () => {
       const scorePercentage = Math.max(0, Math.round((score / totalMaxMarks) * 100));
 
       try {
+        // Preserve best score — don't overwrite a higher score with a lower one
+        let existingScore = 0;
+        if (firestoreDb) {
+          const snap = await getDoc(doc(firestoreDb, 'users', currentUser.id));
+          if (snap.exists()) {
+            existingScore = (snap.data().aptitudeScore as number) ?? 0;
+          }
+        }
         await updateUserLeaderboardStats(currentUser.id, {
-          aptitudeScore: scorePercentage
+          aptitudeScore: Math.max(scorePercentage, existingScore),
         });
       } catch (e) {
         console.error("Failed to update aptitude score", e);

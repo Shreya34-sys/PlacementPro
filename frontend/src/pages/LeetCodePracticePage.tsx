@@ -141,6 +141,15 @@ export const LeetCodePracticePage: React.FC = () => {
     }, 1200);
   };
 
+  // Submit is separate from Run — shows an informational message directing
+  // users to the real coding practice module for evaluated submissions.
+  const handleSubmitCode = () => {
+    setActiveTab('testcases');
+    setRunResults([
+      { pass: false, timeMs: 0, output: '⚠ Real submission is available in the Coding Practice module. Navigate to Practice → Coding Practice to submit and get a Judge0-evaluated result.' }
+    ]);
+  };
+
   const handleAiCodeReview = () => {
     setAiReview("AI Review:\n✓ Time Complexity is optimal O(N) using Hash Map.\n✓ Code is clean and handles edge cases properly.\n💡 Tip: Consider validating empty array input at function start for defensive programming.");
     setActiveTab('ai-review');
@@ -347,7 +356,7 @@ export const LeetCodePracticePage: React.FC = () => {
                   <i className="bi bi-play-fill me-1"></i> Run Code
                 </Button>
 
-                <Button variant="success" size="sm" className="fw-bold fs-8 px-3" onClick={handleRunCode} disabled={isRunning}>
+                <Button variant="success" size="sm" className="fw-bold fs-8 px-3" onClick={handleSubmitCode} disabled={isRunning}>
                   {isRunning ? 'Submitting...' : 'Submit Solution'}
                 </Button>
               </div>

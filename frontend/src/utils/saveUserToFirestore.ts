@@ -8,9 +8,15 @@ export const saveUserToFirestore = async (user: {
   avatarUrl?: string;
   provider?: string;
 }) => {
+  // Guard: Firestore may be undefined when Firebase is not configured
+  if (!firestoreDb) {
+    console.warn('[saveUserToFirestore] Firestore not configured — skipping user save.');
+    return;
+  }
+
   const userRef = doc(firestoreDb, 'users', user.uid);
   const userSnap = await getDoc(userRef);
-  
+
   const baseData = {
     name: user.name,
     email: user.email,
@@ -21,7 +27,6 @@ export const saveUserToFirestore = async (user: {
   };
 
   if (!userSnap.exists()) {
-    // New user, set defaults
     await setDoc(userRef, {
       ...baseData,
       createdAt: serverTimestamp(),
@@ -30,10 +35,10 @@ export const saveUserToFirestore = async (user: {
       aptitudeScore: 0,
       interviewScore: 0,
       totalPoints: 0,
-      department: 'Computer Science', // default department for now
+      streak: 0,
+      department: 'Computer Science',
     });
   } else {
-    // Existing user, merge updates
     await setDoc(userRef, baseData, { merge: true });
   }
 };

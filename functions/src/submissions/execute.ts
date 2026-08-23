@@ -468,14 +468,27 @@ const updateUserStats = async (
       const aptitudeScore       = (d.aptitudeScore    as number) ?? 0;
       const interviewScore      = (d.interviewScore   as number) ?? 0;
       const lastActivity        = d.lastCodingActivityDate as string | undefined;
-      const streakIncrement     = lastActivity === today ? 0 : 1;
+      // If last activity was yesterday → increment streak
+      // If last activity was today → keep same (already counted)
+      // If last activity was 2+ days ago → reset to 1 (streak broken)
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      const yesterdayStr = yesterday.toISOString().slice(0, 10);
+      let newStreak: number;
+      if (lastActivity === today) {
+        newStreak = (d.streak as number) ?? 1; // already solved today, no change
+      } else if (lastActivity === yesterdayStr) {
+        newStreak = ((d.streak as number) ?? 0) + 1; // consecutive day
+      } else {
+        newStreak = 1; // streak broken or first solve — reset to 1
+      }
       const newCodingXp         = currentXp + xpEarned;
 
       tx.update(userRef, {
         codingXp:               newCodingXp,
         xp:                     FieldValue.increment(xpEarned),
         problemsSolved:         currentSolved + 1,
-        streak:                 FieldValue.increment(streakIncrement),
+        streak:                 newStreak,
         lastCodingActivityDate: today,
         totalPoints:            newCodingXp + aptitudeScore * 10 + interviewScore * 10,
         updatedAt:              FieldValue.serverTimestamp(),

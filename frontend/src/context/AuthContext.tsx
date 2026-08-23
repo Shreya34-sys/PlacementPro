@@ -16,8 +16,11 @@ interface AuthContextType {
 
 import { registerWithEmail, loginWithEmail } from '../utils/emailAuth';
 
+// NOTE: This produces a client-side session token for development/demo use only.
+// It is NOT cryptographically signed — do not use it for any server-side
+// authentication decisions. Replace with Firebase ID tokens for production security.
 const generateJwtToken = (user: UserProfile): string => {
-  const header = btoa(JSON.stringify({ alg: 'HS256', typ: 'JWT' }));
+  const header = btoa(JSON.stringify({ alg: 'none', typ: 'JWT' }));
   const payload = btoa(JSON.stringify({
     sub: user.id,
     name: user.name,
@@ -26,29 +29,50 @@ const generateJwtToken = (user: UserProfile): string => {
     iat: Math.floor(Date.now() / 1000),
     exp: Math.floor(Date.now() / 1000) + 86400 * 7,
   }));
-  const signature = 'placementpro_jwt_signature_secure_key';
-  return `${header}.${payload}.${signature}`;
+  // UNSIGNED — for local session storage only, not for server verification
+  return `${header}.${payload}.unsigned`;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+// A minimal guest profile used as a placeholder when no session exists.
+// isAuthenticated is false when this placeholder is active, so all protected
+// routes still redirect to login. This prevents null-pointer crashes in
+// components that were built assuming currentUser is always non-null.
+const GUEST_USER: UserProfile = {
+  id: 'guest',
+  name: 'Guest',
+  email: '',
+  role: 'student',
+};
+
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  // Track whether the current session is genuinely authenticated (i.e. the user
+  // explicitly logged in), separate from currentUser which may be a guest stub.
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
+    try {
+      const savedUser = localStorage.getItem('placementpro_user');
+      const savedToken = localStorage.getItem('placementpro_token');
+      return !!(savedUser && savedToken);
+    } catch {
+      return false;
+    }
+  });
+
   const [currentUser, setCurrentUser] = useState<UserProfile | null>(() => {
     try {
       const savedUser = localStorage.getItem('placementpro_user');
       const savedToken = localStorage.getItem('placementpro_token');
       if (savedUser && savedToken) {
-        return JSON.parse(savedUser);
+        return JSON.parse(savedUser) as UserProfile;
       }
     } catch (e) {
       console.error('Error parsing stored auth session:', e);
+      localStorage.removeItem('placementpro_user');
+      localStorage.removeItem('placementpro_token');
     }
-    // Default student user for active session preview
-    const initial = mockUsers[0];
-    const initialToken = generateJwtToken(initial);
-    localStorage.setItem('placementpro_user', JSON.stringify(initial));
-    localStorage.setItem('placementpro_token', initialToken);
-    return initial;
+    // No session — return a guest stub so components don't null-crash
+    return GUEST_USER;
   });
 
   const [token, setToken] = useState<string | null>(() => {
@@ -56,13 +80,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   });
 
   useEffect(() => {
-    if (currentUser) {
+    if (currentUser && currentUser.id !== 'guest') {
       const jwt = generateJwtToken(currentUser);
       setToken(jwt);
       localStorage.setItem('placementpro_user', JSON.stringify(currentUser));
       localStorage.setItem('placementpro_token', jwt);
     }
   }, [currentUser]);
+
+  // Helper to fully sign in a user
+  const signIn = (user: UserProfile) => {
+    const jwt = generateJwtToken(user);
+    setToken(jwt);
+    setCurrentUser(user);
+    setIsAuthenticated(true);
+    localStorage.setItem('placementpro_user', JSON.stringify(user));
+    localStorage.setItem('placementpro_token', jwt);
+  };
 
   const setRole = (role: UserRole) => {
     const found = mockUsers.find((u) => u.role === role) || {
@@ -71,34 +105,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       email: `${role}@placementpro.edu`,
       role,
     };
-    const jwt = generateJwtToken(found);
-    setToken(jwt);
-    setCurrentUser(found);
-    localStorage.setItem('placementpro_user', JSON.stringify(found));
-    localStorage.setItem('placementpro_token', jwt);
+    signIn(found);
   };
 
   const login = async (email: string, password?: string, role?: UserRole) => {
     if (password) {
-      // Use Firebase Email/Password Auth
       try {
         const userProfile = await loginWithEmail(email, password);
-        const jwt = generateJwtToken(userProfile as UserProfile);
-        setToken(jwt);
-        setCurrentUser(userProfile as UserProfile);
-        localStorage.setItem('placementpro_user', JSON.stringify(userProfile));
-        localStorage.setItem('placementpro_token', jwt);
+        signIn(userProfile as UserProfile);
         return true;
       } catch (error) {
         console.error('Login failed:', error);
-        throw error; // Rethrow to handle in UI
+        throw error;
       }
     } else {
-      // Fallback for mock/legacy login
       let found = mockUsers.find((u) => u.email.toLowerCase() === email.toLowerCase());
-      if (!found && role) {
-        found = mockUsers.find((u) => u.role === role);
-      }
+      if (!found && role) found = mockUsers.find((u) => u.role === role);
       if (!found) {
         found = {
           id: `usr-${Date.now()}`,
@@ -111,31 +133,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           phone: '+91 98765 43210',
         };
       }
-      const jwt = generateJwtToken(found);
-      setToken(jwt);
-      setCurrentUser(found);
-      localStorage.setItem('placementpro_user', JSON.stringify(found));
-      localStorage.setItem('placementpro_token', jwt);
+      signIn(found);
       return true;
     }
   };
 
   const register = async (newUser: Partial<UserProfile>, password?: string) => {
     if (password && newUser.name && newUser.email) {
-      // Use Firebase Email/Password Auth
       try {
         const userProfile = await registerWithEmail(newUser.name, newUser.email, password);
-        const jwt = generateJwtToken(userProfile as UserProfile);
-        setToken(jwt);
-        setCurrentUser(userProfile as UserProfile);
-        localStorage.setItem('placementpro_user', JSON.stringify(userProfile));
-        localStorage.setItem('placementpro_token', jwt);
+        signIn(userProfile as UserProfile);
       } catch (error) {
         console.error('Registration failed:', error);
         throw error;
       }
     } else {
-      // Fallback for mock/legacy register
       const user: UserProfile = {
         id: `usr-${Date.now()}`,
         name: newUser.name || 'Student Candidate',
@@ -149,11 +161,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         companyName: newUser.companyName || '',
       };
       mockUsers.push(user);
-      const jwt = generateJwtToken(user);
-      setToken(jwt);
-      setCurrentUser(user);
-      localStorage.setItem('placementpro_user', JSON.stringify(user));
-      localStorage.setItem('placementpro_token', jwt);
+      signIn(user);
     }
   };
 
@@ -163,7 +171,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const user: UserProfile = {
       ...(existing || {
         id: `usr-${Date.now()}`,
-        role: 'student',
+        role: 'student' as UserRole,
         department: 'Computer Science & Engineering',
         cgpa: 8.5,
         batchYear: '2026',
@@ -175,27 +183,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       name: googleUser.name || existing?.name || email.split('@')[0].replace('.', ' '),
       role: googleUser.role || existing?.role || 'student',
     };
-
-    if (!existing) {
-      mockUsers.push(user);
-    }
-
-    const jwt = generateJwtToken(user);
-    setToken(jwt);
-    setCurrentUser(user);
-    localStorage.setItem('placementpro_user', JSON.stringify(user));
-    localStorage.setItem('placementpro_token', jwt);
+    if (!existing) mockUsers.push(user);
+    signIn(user);
   };
 
   const logout = () => {
     setToken(null);
-    setCurrentUser(null);
+    setCurrentUser(GUEST_USER);
+    setIsAuthenticated(false);
     localStorage.removeItem('placementpro_user');
     localStorage.removeItem('placementpro_token');
   };
 
   const updateProfile = (updated: Partial<UserProfile>) => {
-    if (!currentUser) return;
+    if (!currentUser || currentUser.id === 'guest') return;
     const updatedUser = { ...currentUser, ...updated };
     const jwt = generateJwtToken(updatedUser);
     setCurrentUser(updatedUser);
@@ -208,7 +209,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     <AuthContext.Provider
       value={{
         currentUser,
-        isAuthenticated: currentUser !== null,
+        isAuthenticated,
         token,
         setRole,
         updateProfile,

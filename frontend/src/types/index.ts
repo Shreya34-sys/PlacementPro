@@ -19,6 +19,7 @@ export interface UserProfile {
   aptitudeScore?: number;
   interviewScore?: number;
   totalPoints?: number;
+  streak?: number;
 }
 
 export type ApplicationStatus = 

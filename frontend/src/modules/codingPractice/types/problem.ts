@@ -134,6 +134,10 @@ export interface RunCodeResult {
   memory: number;
   results: TestCaseResult[];
   errorMessage?: string;
+  // Populated in compile_run mode (Codeforces / no test-cases)
+  stdout?: string;
+  stderr?: string;
+  compileOutput?: string;
 }
 
 export interface LeaderboardEntry {

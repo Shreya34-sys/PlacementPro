@@ -71,8 +71,8 @@ export const SUPPORTED_LANGUAGES: JudgeLanguage[] = [
 // ---------------------------------------------------------------------------
 
 const JUDGE0_STATUS_MAP: Record<number, JudgeStatus> = {
-  1:  'Internal Error',        // In Queue
-  2:  'Internal Error',        // Processing
+  1:  'Pending',               // In Queue
+  2:  'Pending',               // Processing
   3:  'Accepted',
   4:  'Wrong Answer',
   5:  'Time Limit Exceeded',
@@ -84,7 +84,7 @@ const JUDGE0_STATUS_MAP: Record<number, JudgeStatus> = {
   11: 'Runtime Error',         // NZEC
   12: 'Runtime Error',         // Other
   13: 'Internal Error',        // Internal Error
-  14: 'Memory Limit Exceeded', // Exec Format Error (used for memory in some hosts)
+  14: 'Memory Limit Exceeded', // Exec Format Error
 };
 
 // Statuses 1 and 2 mean the submission is still running
@@ -295,12 +295,15 @@ const simulateExecution = (
     };
   }
 
-  // Produce the expected output so "Run" appears to work in dev without credentials
+  // No real execution — indicate clearly this is dev-only simulation
+  // We cannot know what the code produces without a compiler, so we return
+  // a neutral result indicating the simulation mode is active.
   return {
-    status: normalizeOutput(expectedOutput) === normalizeOutput(expectedOutput) ? 'Accepted' : 'Wrong Answer',
-    stdout: expectedOutput,
-    runtime: Math.floor(Math.random() * 80) + 10,
-    memory: Math.floor(Math.random() * 2_000) + 1_000,
+    status: 'Internal Error' as JudgeStatus,
+    stdout: '',
+    stderr: '[Dev simulation] Set JUDGE0_API_URL in functions/.env to enable real code execution.',
+    runtime: 0,
+    memory: 0,
   };
 };
 

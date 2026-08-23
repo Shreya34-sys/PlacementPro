@@ -10,10 +10,11 @@ import { firestoreDb } from '../../../utils/firebase';
 import { getSyncMetadata } from '../services/problemService';
 
 const getFunctionsUrl = () => {
+  const projectId = (import.meta.env.VITE_FIREBASE_PROJECT_ID as string | undefined) || 'placementpro-22829';
   if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-    return 'http://127.0.0.1:5001/placementpro-22829/us-central1';
+    return `http://127.0.0.1:5001/${projectId}/us-central1`;
   }
-  return 'https://us-central1-placementpro-22829.cloudfunctions.net';
+  return `https://us-central1-${projectId}.cloudfunctions.net`;
 };
 
 const PLACEMENTPRO_SEED_PROBLEMS = [
@@ -311,7 +312,17 @@ export const AdminConsole: React.FC = () => {
               )}
             </Button>
             <span className="text-muted fs-8">
-              Last refreshed: {questionBankMeta?.lastSyncAt ? new Date(questionBankMeta.lastSyncAt.seconds * 1000).toLocaleString() : 'Never'}
+              Last refreshed: {questionBankMeta?.lastSyncAt
+              ? (() => {
+                  const ts = questionBankMeta.lastSyncAt;
+                  const date = ts?.seconds
+                    ? new Date(ts.seconds * 1000)
+                    : ts?.toDate?.()
+                    ? ts.toDate()
+                    : new Date(ts);
+                  return date.toLocaleString();
+                })()
+              : 'Never'}
               {questionBankMeta?.totalProblems !== undefined ? ` · ${questionBankMeta.totalProblems.toLocaleString()} questions` : ''}
             </span>
           </div>
@@ -347,7 +358,15 @@ export const AdminConsole: React.FC = () => {
                   <td className="fw-semibold text-dark" style={{ width: '200px' }}>Last Synchronization:</td>
                   <td>
                     {meta?.lastSyncAt
-                      ? new Date(meta.lastSyncAt.seconds * 1000).toLocaleString()
+                      ? (() => {
+                          const ts = meta.lastSyncAt;
+                          const date = ts?.seconds
+                            ? new Date(ts.seconds * 1000)
+                            : ts?.toDate?.()
+                            ? ts.toDate()
+                            : new Date(ts);
+                          return date.toLocaleString();
+                        })()
                       : <span className="text-muted fst-italic">Never synced yet</span>}
                   </td>
                 </tr>

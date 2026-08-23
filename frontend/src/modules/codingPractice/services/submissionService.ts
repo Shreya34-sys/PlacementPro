@@ -4,12 +4,14 @@ import { JudgeLanguage, RunCodeRequest, RunCodeResult, Submission, LeaderboardEn
 import axios from 'axios';
 
 // Get base URL for Firebase Cloud Functions
+const FIREBASE_PROJECT_ID = import.meta.env.VITE_FIREBASE_PROJECT_ID as string | undefined;
+
 const getFunctionsUrl = () => {
-  // If we are in development, use emulator URL
+  const projectId = FIREBASE_PROJECT_ID || 'placementpro-22829';
   if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-    return 'http://127.0.0.1:5001/placementpro-22829/us-central1';
+    return `http://127.0.0.1:5001/${projectId}/us-central1`;
   }
-  return `https://us-central1-placementpro-22829.cloudfunctions.net`;
+  return `https://us-central1-${projectId}.cloudfunctions.net`;
 };
 
 export const getSubmissions = async (userId: string, problemId?: string): Promise<Submission[]> => {
@@ -149,7 +151,13 @@ export const runCodeWithStdin = async (req: RunCustomStdinRequest): Promise<Cust
   const url = `${getFunctionsUrl()}/runCode`;
   try {
     const response = await axios.post(url, req);
-    return response.data.result as CustomStdinResult;
+    const data = response.data;
+
+    // Backend may return compile_run mode even for custom stdin if problem doc missing
+    if (data.mode === 'compile_run' || data.mode === 'custom') {
+      return data.result as CustomStdinResult;
+    }
+    return data.result as CustomStdinResult;
   } catch (err: unknown) {
     if (axios.isAxiosError(err)) {
       const msg = (err.response?.data as { error?: string })?.error
