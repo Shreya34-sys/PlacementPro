@@ -4,13 +4,13 @@ import { useAuth } from '../context/AuthContext';
 import { createGoogleUserProfile, signInWithGoogle } from '../utils/googleAuth';
 
 interface RegisterPageProps {
-  onNavigateToLogin: () => void;
-  onRegisterSuccess: () => void;
-  onNavigateToTerms: () => void;
-  onNavigateToPrivacy: () => void;
+  onNavigateToLogin: () => void; //used for navigating to the login page when the user clicks on the "Login" link
+  onRegisterSuccess: () => void;  //used for handling successful registration, such as redirecting to the dashboard or showing a success message
+  onNavigateToTerms: () => void;  //used for navigating to the terms and conditions page
+  onNavigateToPrivacy: () => void;  //used for navigating to the privacy policy page
 }
 
-type RegisterErrors = {
+type RegisterErrors = {   //used for managing form validation errors and other registration-related errors
   fullName?: string;
   email?: string;
   password?: string;
@@ -19,7 +19,7 @@ type RegisterErrors = {
   general?: string;
 };
 
-const googleIcon = (
+const googleIcon = (    //used for rendering the Google icon in the "Continue with Google" button
   <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
     <path
       fill="#4285F4"
@@ -40,7 +40,7 @@ const googleIcon = (
   </svg>
 );
 
-const footerSections = [
+const footerSections = [  //used for rendering the footer sections with their respective links
   {
     title: 'Contact Us',
     links: ['College Support', 'placementpro01@gmail.com', 'Find us online'],
@@ -67,14 +67,20 @@ const footerSections = [
   },
 ];
 
-export const RegisterPage: React.FC<RegisterPageProps> = ({
-  onNavigateToLogin,
-  onRegisterSuccess,
-  onNavigateToTerms,
-  onNavigateToPrivacy,
+
+
+
+
+
+
+export const RegisterPage: React.FC<RegisterPageProps> = ({ //used for rendering the registration page and handling user interactions
+  onNavigateToLogin,        //used for navigating to the login page when the user clicks on the "Login" link
+  onRegisterSuccess,     //used for handling successful registration, such as redirecting to the dashboard or showing a success message
+  onNavigateToTerms,    //used for navigating to the terms and conditions page
+  onNavigateToPrivacy,  //used for navigating to the privacy policy page
 }) => {
-  const { register, continueWithGoogle } = useAuth();
-  const [fullName, setFullName] = useState('');
+  const { register, continueWithGoogle } = useAuth();   //used for accessing the authentication context to perform registration and Google sign-in actions
+  const [fullName, setFullName] = useState('');  //used for managing the full name input
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -84,22 +90,22 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({
   const [errors, setErrors] = useState<RegisterErrors>({});
   const [loading, setLoading] = useState(false);
 
-  const clearError = (key: keyof RegisterErrors) => {
+  const clearError = (key: keyof RegisterErrors) => {  //used for clearing specific error messages when the user modifies the corresponding input field
     if (errors[key]) {
-      setErrors({ ...errors, [key]: undefined });
+      setErrors({ ...errors, [key]: undefined }); // Update the errors state to remove the specific error message
     }
   };
 
-  const validate = () => {
+  const validate = () => {    //used for validating the registration form inputs and setting error messages for any invalid fields
     const newErrors: RegisterErrors = {};
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;    //used for validating the email format using a regular expression
 
-    if (!fullName.trim()) {
-      newErrors.fullName = 'Full name is required.';
+    if (!fullName.trim()) {  //used for checking if the full name input is empty or contains only whitespace
+      newErrors.fullName = 'Full name is required.'; //used for setting an error message if the full name input is empty
     }
 
     if (!email.trim()) {
-      newErrors.email = 'College email or email address is required.';
+      newErrors.email = 'College email or email address is required.';//newErrors is inbuilt object that is used to store error messages for the registration form inputs. It is initialized as an empty object and populated with error messages based on the validation checks performed in the validate function.
     } else if (!emailRegex.test(email)) {
       newErrors.email = 'Please enter a valid email address (e.g. alex@student.edu).';
     }
@@ -124,15 +130,15 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleRegister = async (event: React.FormEvent) => {
-    event.preventDefault();
+  const handleRegister = async (event: React.FormEvent) => {  //used for handling the registration form submission, validating the inputs, and performing the registration process
+    event.preventDefault(); //used to prevent the default form submission behavior, which would cause a page reload
     if (!validate()) return;
 
-    setLoading(true);
+    setLoading(true);   //used to indicate that the registration process is in progress, typically by showing a loading spinner or disabling the submit button
     setErrors({});
 
     try {
-      await register({ name: fullName.trim(), email: email.trim(), role: 'student' }, password);
+      await register({ name: fullName.trim(), email: email.trim(), role: 'student' }, password);  //used to call the register function from the authentication context, passing the user's name, email, role, and password to create a new account
       setLoading(false);
       onRegisterSuccess();
     } catch (error) {
