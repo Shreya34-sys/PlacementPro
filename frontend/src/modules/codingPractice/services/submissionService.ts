@@ -1,14 +1,17 @@
 import { collection, query, where, getDocs, orderBy, limit, QueryConstraint } from 'firebase/firestore';
 import { firestoreDb } from '../../../utils/firebase';
-import { Submission, LeaderboardEntry } from '../types/problem';
+import { JudgeLanguage, RunCodeRequest, RunCodeResult, Submission, LeaderboardEntry } from '../types/problem';
+import axios from 'axios';
 
 // Get base URL for Firebase Cloud Functions
+const FIREBASE_PROJECT_ID = import.meta.env.VITE_FIREBASE_PROJECT_ID as string | undefined;
+
 const getFunctionsUrl = () => {
-  // If we are in development, use emulator URL
+  const projectId = FIREBASE_PROJECT_ID || 'placementpro-22829';
   if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-    return 'http://127.0.0.1:5001/placementpro-22829/us-central1';
+    return `http://127.0.0.1:5001/${projectId}/us-central1`;
   }
-  return `https://us-central1-placementpro-22829.cloudfunctions.net`;
+  return `https://us-central1-${projectId}.cloudfunctions.net`;
 };
 
 export const getSubmissions = async (userId: string, problemId?: string): Promise<Submission[]> => {
@@ -80,8 +83,90 @@ export interface SubmitCodeRequest {
   userId: string;
   problemId: string;
   language: string;
+  languageId?: number;
   code: string;
 }
+
+export const getJudgeLanguages = async (): Promise<JudgeLanguage[]> => {
+  const url = `${getFunctionsUrl()}/getJudgeLanguages`;
+  const response = await axios.get(url);
+  return response.data.languages as JudgeLanguage[];
+};
+
+export interface RunCustomStdinRequest {
+  language: string;
+  languageId?: number;
+  code: string;
+  customStdin: string;
+}
+
+export interface CustomStdinResult {
+  status: string;
+  stdout: string;
+  stderr: string;
+  compileOutput: string;
+  runtime: number;
+  memory: number;
+}
+
+export const runCode = async (req: RunCodeRequest): Promise<RunCodeResult> => {
+  const url = `${getFunctionsUrl()}/runCode`;
+  try {
+    const response = await axios.post(url, req);
+    const data = response.data;
+
+    // compile_run mode: no test cases (Codeforces problem) — wrap into RunCodeResult shape
+    if (data.mode === 'compile_run') {
+      const r = data.result as CustomStdinResult;
+      const isError = r.status === 'Compilation Error' || r.status === 'Runtime Error';
+      return {
+        status:       r.status as RunCodeResult['status'],
+        passedTests:  0,
+        totalTests:   0,
+        runtime:      r.runtime,
+        memory:       r.memory,
+        results:      [],
+        errorMessage: isError
+          ? (r.compileOutput || r.stderr || r.status)
+          : undefined,
+        // Attach stdout so the UI can show it even with 0 test cases
+        stdout:  r.stdout,
+        stderr:  r.stderr,
+        compileOutput: r.compileOutput,
+      } as RunCodeResult & { stdout?: string; stderr?: string; compileOutput?: string };
+    }
+
+    return data.result as RunCodeResult;
+  } catch (err: unknown) {
+    if (axios.isAxiosError(err)) {
+      const msg = (err.response?.data as { error?: string })?.error
+        || 'Unable to execute code right now. Please try again in a moment.';
+      throw new Error(msg);
+    }
+    throw err;
+  }
+};
+
+export const runCodeWithStdin = async (req: RunCustomStdinRequest): Promise<CustomStdinResult> => {
+  const url = `${getFunctionsUrl()}/runCode`;
+  try {
+    const response = await axios.post(url, req);
+    const data = response.data;
+
+    // Backend may return compile_run mode even for custom stdin if problem doc missing
+    if (data.mode === 'compile_run' || data.mode === 'custom') {
+      return data.result as CustomStdinResult;
+    }
+    return data.result as CustomStdinResult;
+  } catch (err: unknown) {
+    if (axios.isAxiosError(err)) {
+      const msg = (err.response?.data as { error?: string })?.error
+        || 'Unable to execute code right now. Please try again in a moment.';
+      throw new Error(msg);
+    }
+    throw err;
+  }
+};
 
 export const submitCode = async (req: SubmitCodeRequest): Promise<Submission> => {
   const url = `${getFunctionsUrl()}/submitSolution`;
@@ -94,7 +179,12 @@ export const submitCode = async (req: SubmitCodeRequest): Promise<Submission> =>
   });
 
   if (!response.ok) {
-    throw new Error(`Code submission failed with status ${response.status}`);
+    let msg = 'Unable to submit code right now. Please try again in a moment.';
+    try {
+      const body = await response.json() as { error?: string };
+      if (body?.error) msg = body.error;
+    } catch { /* ignore parse errors */ }
+    throw new Error(msg);
   }
 
   const data = await response.json();

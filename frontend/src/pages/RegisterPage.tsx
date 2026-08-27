@@ -86,25 +86,25 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ //used for rendering
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [acceptTerms, setAcceptTerms] = useState(false);   
+  const [acceptTerms, setAcceptTerms] = useState(false);
   const [errors, setErrors] = useState<RegisterErrors>({});
   const [loading, setLoading] = useState(false);
 
   const clearError = (key: keyof RegisterErrors) => {  //used for clearing specific error messages when the user modifies the corresponding input field
-    if (errors[key]) {      
+    if (errors[key]) {
       setErrors({ ...errors, [key]: undefined }); // Update the errors state to remove the specific error message
     }
   };
 
   const validate = () => {    //used for validating the registration form inputs and setting error messages for any invalid fields
-    const newErrors: RegisterErrors = {};  
+    const newErrors: RegisterErrors = {};
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;    //used for validating the email format using a regular expression
 
     if (!fullName.trim()) {  //used for checking if the full name input is empty or contains only whitespace
       newErrors.fullName = 'Full name is required.'; //used for setting an error message if the full name input is empty
     }
 
-    if (!email.trim()) {  
+    if (!email.trim()) {
       newErrors.email = 'College email or email address is required.';//newErrors is inbuilt object that is used to store error messages for the registration form inputs. It is initialized as an empty object and populated with error messages based on the validation checks performed in the validate function.
     } else if (!emailRegex.test(email)) {
       newErrors.email = 'Please enter a valid email address (e.g. alex@student.edu).';

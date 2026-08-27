@@ -7,7 +7,7 @@ import { ProblemDetails } from '../components/ProblemDetails';
 import { Leaderboard } from '../components/Leaderboard';
 import { AdminConsole } from '../components/AdminConsole';
 import { getUserProgress, getBookmarks, toggleBookmark } from '../services/progressService';
-import { getSubmissions, submitCode } from '../services/submissionService';
+import { getSubmissions, runCode, submitCode } from '../services/submissionService';
 
 interface CodingPracticePageProps {
   onNavigate: (tab: string) => void;
@@ -63,37 +63,26 @@ export const CodingPracticePage: React.FC<CodingPracticePageProps> = ({ onNaviga
     }
   };
 
-  const handleRunCode = async (code: string, language: string) => {
-    // Local execution output helper simulation
-    // Resolves after 1 second simulating sandbox environment
-    await new Promise((resolve) => setTimeout(resolve, 800));
-    
-    // Simple JS execution check for basic runtime simulation
-    if (language === 'javascript') {
-      try {
-        // Quick syntax validation check
-        new Function(code);
-        return { pass: true, output: '8\n-> YES', expected: 'YES' };
-      } catch (e) {
-        return { error: e instanceof Error ? e.message : 'Syntax Error' };
-      }
-    }
-    
-    return { pass: true, output: 'Compilation successful.\nAll local checks passed.', expected: 'All checks passed.' };
+  const handleRunCode = async (code: string, language: string, languageId: number) => {
+    if (!selectedProblem) throw new Error('No problem selected');
+    return runCode({
+      problemId: selectedProblem.id,
+      language,
+      languageId,
+      code,
+    });
   };
 
-  const handleSubmitCode = async (code: string, language: string): Promise<Submission> => {
+  const handleSubmitCode = async (code: string, language: string, languageId: number): Promise<Submission> => {
     if (!selectedProblem) throw new Error('No problem selected');
-    
     try {
       const submission = await submitCode({
         userId,
         problemId: selectedProblem.id,
         language,
-        code
+        languageId,
+        code,
       });
-      
-      // Update submissions history and progress data
       setSubmissions((prev) => [submission, ...prev]);
       fetchUserData();
       return submission;
@@ -104,7 +93,7 @@ export const CodingPracticePage: React.FC<CodingPracticePageProps> = ({ onNaviga
   };
 
   const solvedProblemsCount = Object.values(progressMap).filter((p) => p.solved).length;
-  const currentStreak = 'streak' in (currentUser ?? {}) ? (currentUser as { streak?: number }).streak || 0 : 0;
+  const currentStreak = currentUser?.streak ?? 0;
 
   return (
     <Container fluid className="px-0">
@@ -115,7 +104,7 @@ export const CodingPracticePage: React.FC<CodingPracticePageProps> = ({ onNaviga
             <i className="bi bi-code-square text-primary"></i> Coding Practice Dashboard
           </h3>
           <p className="text-secondary mb-0 fs-7">
-            Hone your programming skills on real Codeforces problems, earn XP, and prepare for campus rounds.
+            Practice DSA inside PlacementPro with native problems, Codeforces references, compiler feedback, and progress tracking.
           </p>
         </div>
 
@@ -178,7 +167,7 @@ export const CodingPracticePage: React.FC<CodingPracticePageProps> = ({ onNaviga
                       return (
                         <Col key={prog.problemId} md={6} lg={4}>
                           <Card className="border p-3 bg-light-subtle rounded-3">
-                            <div className="fw-semibold text-dark mb-1">{prog.problemId.replace('codeforces_', 'Codeforces ')}</div>
+                            <div className="fw-semibold text-dark mb-1">{prog.problemId.replace('codeforces_', 'Codeforces ').replace('pp-', 'PlacementPro ')}</div>
                             <small className="text-muted d-block mb-2">Attempts: {prog.attempts} • Language: {prog.language}</small>
                             <Badge bg="success" className="align-self-start">Solved</Badge>
                           </Card>
@@ -205,7 +194,7 @@ export const CodingPracticePage: React.FC<CodingPracticePageProps> = ({ onNaviga
                       <Col key={bmarkId} md={6} lg={4}>
                         <Card className="border p-3 bg-light-subtle rounded-3 d-flex flex-row align-items-center justify-content-between">
                           <div>
-                            <div className="fw-semibold text-dark mb-1">{bmarkId.replace('codeforces_', 'Codeforces ')}</div>
+                            <div className="fw-semibold text-dark mb-1">{bmarkId.replace('codeforces_', 'Codeforces ').replace('pp-', 'PlacementPro ')}</div>
                             <Badge bg="primary">Bookmarked</Badge>
                           </div>
                           <Button
@@ -230,7 +219,7 @@ export const CodingPracticePage: React.FC<CodingPracticePageProps> = ({ onNaviga
             </div>
           </Tab>
 
-          {currentUser && (
+          {isAdmin && (
             <Tab eventKey="admin" title="Admin Settings">
               <div className="pt-2">
                 <AdminConsole />

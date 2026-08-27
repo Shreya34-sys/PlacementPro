@@ -141,7 +141,6 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
     {
       id: 'comp-1',
       name: 'Google',
-      logo: 'https://images.unsplash.com/photo-1573804633927-bfcbcd909acd?w=100&auto=format&fit=crop&q=80',
       role: 'Software Development Engineer',
       ctc: '28 - 45 LPA',
       difficulty: 'Hard',
@@ -151,7 +150,6 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
     {
       id: 'comp-2',
       name: 'Amazon',
-      logo: 'https://images.unsplash.com/photo-1523474253046-8cd2748b5fd2?w=100&auto=format&fit=crop&q=80',
       role: 'SDE-1 (AWS & Retail)',
       ctc: '22 - 32 LPA',
       difficulty: 'Hard',
@@ -161,7 +159,6 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
     {
       id: 'comp-3',
       name: 'TCS Digital',
-      logo: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=100&auto=format&fit=crop&q=80',
       role: 'System Engineer Prime',
       ctc: '9 - 12 LPA',
       difficulty: 'Medium',
@@ -171,7 +168,6 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
     {
       id: 'comp-4',
       name: 'Razorpay',
-      logo: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=100&auto=format&fit=crop&q=80',
       role: 'Frontend / Backend Engineer',
       ctc: '18 - 26 LPA',
       difficulty: 'Medium-Hard',
@@ -256,6 +252,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
     visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' } },
   };
 
+  const weeklyGoalPct = 75;
+  const circleRadius = 28;
+  const circumference = 2 * Math.PI * circleRadius;
+  const strokeDashoffset = circumference * (1 - weeklyGoalPct / 100);
+
+  const avatarSrc =
+    (currentUser as any)?.photoURL ||
+    (currentUser as any)?.avatar ||
+    `https://ui-avatars.com/api/?name=${encodeURIComponent(userName)}&background=2563EB&color=fff&size=96`;
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -266,19 +272,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
         
-        {/* =========================================================================
-            HEADER METRICS & WELCOME HERO
-           ========================================================================= */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
           className="space-y-6 mb-8"
         >
-          {/* Top Banner Row */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             
-            {/* Welcome Banner (8 Columns) */}
             <motion.div variants={itemVariants} className="lg:col-span-8">
               <div className="h-full bg-gradient-to-br from-[#F8FAFC] to-blue-50/50 border border-[#E5E7EB] text-gray-900 rounded-[16px] p-6 shadow-sm flex flex-col justify-between relative overflow-hidden transition-all duration-250 ease-out hover:-translate-y-1 hover:shadow-lg hover:border-blue-600">
                 
@@ -292,7 +293,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
                     </div>
 
                     <div className="flex items-center gap-4 mb-2">
-                      <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop&q=80" alt="Profile Avatar" className="w-12 h-12 rounded-full border border-gray-200 shadow-sm" />
+                      <img
+                        src={avatarSrc}
+                        alt={`${userName} profile avatar`}
+                        className="w-12 h-12 rounded-full border border-gray-200 shadow-sm"
+                        onError={(e) => {
+                          (e.currentTarget as HTMLImageElement).src =
+                            `https://ui-avatars.com/api/?name=${encodeURIComponent(userName)}&background=2563EB&color=fff&size=96`;
+                        }}
+                      />
                       <h1 className="text-[32px] font-bold text-gray-900 leading-tight tracking-tight">
                         Welcome back, {userName}
                       </h1>
@@ -302,15 +311,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
                     </p>
                   </div>
                   
-                  {/* Circular Weekly Progress Indicator */}
                   <div className="hidden sm:flex flex-col items-center justify-center bg-white p-3 rounded-2xl border border-gray-100 shadow-sm shrink-0">
                     <div className="relative w-16 h-16 flex items-center justify-center">
-                      <svg className="w-full h-full transform -rotate-90">
-                        <circle cx="32" cy="32" r="28" stroke="currentColor" strokeWidth="6" fill="transparent" className="text-gray-100" />
-                        <circle cx="32" cy="32" r="28" stroke="currentColor" strokeWidth="6" fill="transparent" strokeDasharray="175" strokeDashoffset="44" className="text-blue-600" />
+                      <svg className="w-full h-full transform -rotate-90" viewBox="0 0 64 64">
+                        <circle cx="32" cy="32" r={circleRadius} stroke="currentColor" strokeWidth="6" fill="transparent" className="text-gray-100" />
+                        <circle cx="32" cy="32" r={circleRadius} stroke="currentColor" strokeWidth="6" fill="transparent" strokeDasharray={circumference} strokeDashoffset={strokeDashoffset} className="text-blue-600" strokeLinecap="round" />
                       </svg>
                       <div className="absolute flex flex-col items-center justify-center text-center">
-                        <span className="text-[14px] font-bold text-gray-900 leading-none">75%</span>
+                        <span className="text-[14px] font-bold text-gray-900 leading-none">{weeklyGoalPct}%</span>
                       </div>
                     </div>
                     <span className="text-[10px] font-medium text-gray-500 mt-2 uppercase tracking-wide">Weekly Goal</span>
@@ -336,7 +344,6 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
               </div>
             </motion.div>
 
-            {/* Active Resume Lesson Card (4 Columns) */}
             <motion.div variants={itemVariants} className="lg:col-span-4">
               <div className="h-full bg-white rounded-[16px] border border-[#E5E7EB] p-6 shadow-sm flex flex-col justify-between transition-all duration-250 ease-out hover:-translate-y-1 hover:shadow-lg hover:border-blue-600 group">
                 <div>
@@ -378,14 +385,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
                   onClick={() => onNavigate('leetcode-practice')}
                   className="w-full h-[40px] rounded-[12px] bg-blue-50 hover:bg-blue-600 hover:text-white text-blue-600 font-medium text-[14px] flex items-center justify-center gap-2 transition-colors border border-blue-100"
                 >
-                  <span>Resume Lesson</span>
+                  <span>Continue Practice</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
             </motion.div>
           </div>
 
-          {/* Key Metrics Stats Grid (4 Cards) */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {stats.map((stat) => {
               const StatIcon = stat.icon;
@@ -393,7 +399,6 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
                 <motion.div
                   key={stat.id}
                   variants={itemVariants}
-                  whileHover={{ scale: 1.02 }}
                   className="group bg-white rounded-[16px] border border-[#E5E7EB] p-6 shadow-sm flex items-center justify-between transition-all duration-250 ease-out hover:-translate-y-1 hover:shadow-lg hover:border-blue-600"
                 >
                   <div>
@@ -413,9 +418,6 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
           </div>
         </motion.div>
 
-        {/* =========================================================================
-            QUICK ACTIONS LAUNCHPAD (6 Cards)
-           ========================================================================= */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-[22px] font-semibold text-gray-900 flex items-center gap-2">
@@ -458,15 +460,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
           </div>
         </div>
 
-        {/* =========================================================================
-            MAIN DASHBOARD CONTENT: Left 8 Cols (AI Recs + Target Companies) & Right 4 Cols
-           ========================================================================= */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           
-          {/* Left Column (8 Cols) */}
           <div className="lg:col-span-8 space-y-8">
             
-            {/* AI Recommendations Box */}
             <div className="bg-white rounded-[16px] border border-[#E5E7EB] p-6 shadow-sm transition-all duration-250 ease-out hover:shadow-md">
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-2">
@@ -506,7 +503,6 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
               </div>
             </div>
 
-            {/* Recommended Target Companies Grid */}
             <div className="bg-white rounded-[16px] border border-[#E5E7EB] p-6 shadow-sm transition-all duration-250 ease-out hover:shadow-md">
               <div className="flex items-center justify-between mb-6">
                 <div>
@@ -526,14 +522,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {recommendedCompanies.map((comp) => (
-                  <motion.div 
-                    key={comp.id} 
+                  <motion.div
+                    key={comp.id}
                     whileHover={{ scale: 1.02 }}
                     className="border border-[#E5E7EB] rounded-[16px] p-5 bg-white hover:-translate-y-1 transition-all duration-250 ease-out hover:shadow-lg hover:border-blue-600"
                   >
                     <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center gap-3">
-                        <CompanyLogo companyName={comp.name} logoUrl={comp.logo} size={48} />
+                        <CompanyLogo companyName={comp.name} size={48} />
                         <div>
                           <h3 className="text-[18px] font-semibold text-gray-900 leading-tight">{comp.name}</h3>
                           <p className="text-[12px] font-medium text-gray-500 mt-0.5">{comp.role}</p>

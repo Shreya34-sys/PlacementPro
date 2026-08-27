@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Row, Col, Form, Button, InputGroup, Table, Badge, Spinner } from 'react-bootstrap';
-import { Problem, UserProgress } from '../types/problem';
+import { COMPANY_TAGS, DSA_TOPICS, Problem, UserProgress } from '../types/problem';
 import { getProblems } from '../services/problemService';
 
 interface ProblemExplorerProps {
@@ -17,6 +17,7 @@ const TOPICS = [
 ];
 
 const RATINGS = ['All', '800', '1000', '1200', '1400', '1600', '1800', '2000+'];
+const STATUSES = ['All', 'Solved', 'Attempted', 'Unattempted'];
 
 export const ProblemExplorer: React.FC<ProblemExplorerProps> = ({
   progressMap,
@@ -31,6 +32,8 @@ export const ProblemExplorer: React.FC<ProblemExplorerProps> = ({
   const [selectedDiff, setSelectedDiff] = useState('All');
   const [selectedRating, setSelectedRating] = useState('All');
   const [selectedSource, setSelectedSource] = useState('All');
+  const [selectedStatus, setSelectedStatus] = useState('All');
+  const [selectedCompany, setSelectedCompany] = useState('All');
   
   const [lastDoc, setLastDoc] = useState<any>(null);
   const [hasMore, setHasMore] = useState(true);
@@ -43,8 +46,13 @@ export const ProblemExplorer: React.FC<ProblemExplorerProps> = ({
         difficulty: selectedDiff !== 'All' ? selectedDiff : undefined,
         rating: selectedRating !== 'All' ? parseInt(selectedRating) : undefined,
         source: selectedSource !== 'All' ? selectedSource : undefined,
+        topic: selectedSource === 'placementpro' && selectedTopic !== 'All' ? selectedTopic : undefined,
+        status: selectedStatus,
+        company: selectedCompany,
+        search,
         pageSize: 15,
-        lastDoc: loadMore ? lastDoc : null
+        lastDoc: loadMore ? lastDoc : null,
+        progressMap,
       };
 
       const result = await getProblems(filters);
@@ -66,14 +74,14 @@ export const ProblemExplorer: React.FC<ProblemExplorerProps> = ({
 
   useEffect(() => {
     fetchProblemsList(false);
-  }, [selectedTopic, selectedDiff, selectedRating, selectedSource]);
+  }, [selectedTopic, selectedDiff, selectedRating, selectedSource, selectedStatus, selectedCompany]);
 
-  // Clientside search filter
-  const filteredProblems = problems.filter((p) => {
-    if (!search.trim()) return true;
-    return p.title.toLowerCase().includes(search.toLowerCase()) || 
-           p.id.toLowerCase().includes(search.toLowerCase());
-  });
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => fetchProblemsList(false), 250);
+    return () => window.clearTimeout(timeoutId);
+  }, [search]);
+
+  const filteredProblems = problems;
 
   const getDifficultyColor = (diff: string) => {
     switch (diff) {
@@ -84,6 +92,12 @@ export const ProblemExplorer: React.FC<ProblemExplorerProps> = ({
       default: return 'secondary';
     }
   };
+
+  const getSourceLabel = (problem: Problem) => (
+    problem.source === 'placementpro' ? 'PlacementPro' : problem.source
+  );
+
+  const topicOptions = selectedSource === 'placementpro' ? DSA_TOPICS : TOPICS.slice(1);
 
   return (
     <Card className="border-0 shadow-sm" style={{ borderRadius: '12px' }}>
@@ -96,7 +110,7 @@ export const ProblemExplorer: React.FC<ProblemExplorerProps> = ({
       <Card.Body className="p-4">
         {/* Filters */}
         <Row className="g-3 mb-4">
-          <Col md={4}>
+          <Col md={4} xl={3}>
             <InputGroup size="sm">
               <InputGroup.Text className="bg-light border-end-0">
                 <i className="bi bi-search"></i>
@@ -110,7 +124,24 @@ export const ProblemExplorer: React.FC<ProblemExplorerProps> = ({
               />
             </InputGroup>
           </Col>
-          <Col xs={6} md={2}>
+          <Col xs={6} md={2} xl={1}>
+            <Form.Select
+              size="sm"
+              value={selectedSource}
+              onChange={(e) => {
+                setSelectedSource(e.target.value);
+                setSelectedTopic('All');
+                setSelectedRating('All');
+                setSelectedCompany('All');
+              }}
+              className="bg-light"
+            >
+              <option value="All">Source</option>
+              <option value="placementpro">PlacementPro</option>
+              <option value="codeforces">Codeforces</option>
+            </Form.Select>
+          </Col>
+          <Col xs={6} md={2} xl={2}>
             <Form.Select
               size="sm"
               value={selectedTopic}
@@ -118,12 +149,12 @@ export const ProblemExplorer: React.FC<ProblemExplorerProps> = ({
               className="bg-light"
             >
               <option value="All">All Topics</option>
-              {TOPICS.slice(1).map((t) => (
+              {topicOptions.map((t) => (
                 <option key={t} value={t}>{t}</option>
               ))}
             </Form.Select>
           </Col>
-          <Col xs={6} md={2}>
+          <Col xs={6} md={2} xl={1}>
             <Form.Select
               size="sm"
               value={selectedDiff}
@@ -137,12 +168,13 @@ export const ProblemExplorer: React.FC<ProblemExplorerProps> = ({
               <option value="Expert">Expert</option>
             </Form.Select>
           </Col>
-          <Col xs={6} md={2}>
+          <Col xs={6} md={2} xl={1}>
             <Form.Select
               size="sm"
               value={selectedRating}
               onChange={(e) => setSelectedRating(e.target.value)}
               className="bg-light"
+              disabled={selectedSource === 'placementpro'}
             >
               <option value="All">Rating</option>
               {RATINGS.slice(1).map((r) => (
@@ -150,16 +182,31 @@ export const ProblemExplorer: React.FC<ProblemExplorerProps> = ({
               ))}
             </Form.Select>
           </Col>
-          <Col xs={6} md={2}>
+          <Col xs={6} md={2} xl={2}>
             <Form.Select
               size="sm"
-              value={selectedSource}
-              onChange={(e) => setSelectedSource(e.target.value)}
+              value={selectedStatus}
+              onChange={(e) => setSelectedStatus(e.target.value)}
               className="bg-light"
             >
-              <option value="All">Source</option>
-              <option value="codeforces">Codeforces</option>
-              <option value="placementpro">PlacementPro</option>
+              <option value="All">Status</option>
+              {STATUSES.slice(1).map((status) => (
+                <option key={status} value={status}>{status}</option>
+              ))}
+            </Form.Select>
+          </Col>
+          <Col xs={6} md={2} xl={2}>
+            <Form.Select
+              size="sm"
+              value={selectedCompany}
+              onChange={(e) => setSelectedCompany(e.target.value)}
+              className="bg-light"
+              disabled={selectedSource === 'codeforces'}
+            >
+              <option value="All">Company</option>
+              {COMPANY_TAGS.map((company) => (
+                <option key={company} value={company}>{company}</option>
+              ))}
             </Form.Select>
           </Col>
         </Row>
@@ -172,7 +219,7 @@ export const ProblemExplorer: React.FC<ProblemExplorerProps> = ({
                 <th style={{ width: '40px' }}>Status</th>
                 <th>Title</th>
                 <th>Difficulty</th>
-                <th>Rating</th>
+                <th>{selectedSource === 'placementpro' ? 'Topics' : 'Rating'}</th>
                 <th>Tags</th>
                 <th>Solved Count</th>
                 <th style={{ width: '80px' }}>Actions</th>
@@ -212,7 +259,7 @@ export const ProblemExplorer: React.FC<ProblemExplorerProps> = ({
                       </td>
                       <td>
                         <div className="fw-semibold text-dark fs-7">{p.title}</div>
-                        <small className="text-muted fs-8 text-capitalize">{p.source}</small>
+                        <small className="text-muted fs-8 text-capitalize">{getSourceLabel(p)}</small>
                       </td>
                       <td>
                         <Badge bg={getDifficultyColor(p.difficulty)} className="px-2.5 py-1.5 fs-9 fw-semibold">
@@ -220,11 +267,13 @@ export const ProblemExplorer: React.FC<ProblemExplorerProps> = ({
                         </Badge>
                       </td>
                       <td>
-                        <span className="fw-bold fs-7 text-secondary">{p.rating || 'N/A'}</span>
+                        <span className="fw-bold fs-7 text-secondary">
+                          {p.source === 'placementpro' ? (p.topics?.slice(0, 2).join(', ') || 'DSA') : (p.rating || 'N/A')}
+                        </span>
                       </td>
                       <td>
                         <div className="d-flex flex-wrap gap-1">
-                          {p.tags.slice(0, 3).map((tag) => (
+                          {(p.source === 'placementpro' ? p.topics : p.tags).slice(0, 3).map((tag) => (
                             <Badge key={tag} bg="light" text="dark" className="border fs-9 font-normal">
                               {tag}
                             </Badge>

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Button, Spinner, Alert, Table, ProgressBar } from 'react-bootstrap';
 import {
-  collection,
   doc,
   writeBatch,
   setDoc,
@@ -10,32 +9,190 @@ import {
 import { firestoreDb } from '../../../utils/firebase';
 import { getSyncMetadata } from '../services/problemService';
 
-const CF_API_URL = 'https://codeforces.com/api/problemset.problems';
-
-const mapRatingToDifficulty = (rating?: number): string => {
-  if (!rating) return 'Easy';
-  if (rating <= 1000) return 'Easy';
-  if (rating <= 1400) return 'Medium';
-  if (rating <= 1900) return 'Hard';
-  return 'Expert';
+const getFunctionsUrl = () => {
+  const projectId = (import.meta.env.VITE_FIREBASE_PROJECT_ID as string | undefined) || 'placementpro-22829';
+  if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+    return `http://127.0.0.1:5001/${projectId}/us-central1`;
+  }
+  return `https://us-central1-${projectId}.cloudfunctions.net`;
 };
+
+const PLACEMENTPRO_SEED_PROBLEMS = [
+  {
+    id: 'pp-two-sum',
+    title: 'Two Sum',
+    slug: 'two-sum',
+    difficulty: 'Easy',
+    topics: ['Arrays', 'Hashing'],
+    tags: ['arrays', 'hashing'],
+    description: 'Given an array of integers and a target value, print the indices of the two numbers that add up to the target.',
+    inputFormat: 'First line contains n.\nSecond line contains n integers.\nThird line contains target.',
+    outputFormat: 'Print two zero-based indices separated by a space.',
+    constraints: '2 <= n <= 100000\n-10^9 <= nums[i] <= 10^9',
+    examples: [{ input: '4\n2 7 11 15\n9', output: '0 1', explanation: 'nums[0] + nums[1] = 9.' }],
+    companies: ['Amazon', 'Google', 'Microsoft'],
+    visible: [{ input: '4\n2 7 11 15\n9', expectedOutput: '0 1' }],
+    hidden: [{ input: '3\n3 2 4\n6', expectedOutput: '1 2' }],
+  },
+  {
+    id: 'pp-reverse-array',
+    title: 'Reverse Array',
+    slug: 'reverse-array',
+    difficulty: 'Easy',
+    topics: ['Arrays', 'Two Pointer'],
+    tags: ['arrays', 'two-pointer'],
+    description: 'Given an array, print the elements in reverse order.',
+    inputFormat: 'First line contains n.\nSecond line contains n integers.',
+    outputFormat: 'Print the reversed array.',
+    constraints: '1 <= n <= 100000',
+    examples: [{ input: '5\n1 2 3 4 5', output: '5 4 3 2 1' }],
+    companies: ['TCS', 'Infosys', 'Accenture'],
+    visible: [{ input: '5\n1 2 3 4 5', expectedOutput: '5 4 3 2 1' }],
+    hidden: [{ input: '3\n10 20 30', expectedOutput: '30 20 10' }],
+  },
+  {
+    id: 'pp-longest-substring',
+    title: 'Longest Substring Without Repeating Characters',
+    slug: 'longest-substring-without-repeating-characters',
+    difficulty: 'Medium',
+    topics: ['Strings', 'Sliding Window', 'Hashing'],
+    tags: ['strings', 'sliding-window', 'hashing'],
+    description: 'Given a string, print the length of the longest substring without repeating characters.',
+    inputFormat: 'A single string s.',
+    outputFormat: 'Print one integer.',
+    constraints: '0 <= s.length <= 50000',
+    examples: [{ input: 'abcabcbb', output: '3', explanation: 'The answer is abc.' }],
+    companies: ['Amazon', 'Microsoft'],
+    visible: [{ input: 'abcabcbb', expectedOutput: '3' }],
+    hidden: [{ input: 'bbbbb', expectedOutput: '1' }],
+  },
+  {
+    id: 'pp-merge-intervals',
+    title: 'Merge Intervals',
+    slug: 'merge-intervals',
+    difficulty: 'Medium',
+    topics: ['Arrays', 'Sorting'],
+    tags: ['arrays', 'sorting'],
+    description: 'Given intervals, merge all overlapping intervals and print the merged list.',
+    inputFormat: 'First line contains n.\nNext n lines contain start and end.',
+    outputFormat: 'Print each merged interval on a new line.',
+    constraints: '1 <= n <= 100000',
+    examples: [{ input: '4\n1 3\n2 6\n8 10\n15 18', output: '1 6\n8 10\n15 18' }],
+    companies: ['Google', 'Wipro', 'Capgemini'],
+    visible: [{ input: '4\n1 3\n2 6\n8 10\n15 18', expectedOutput: '1 6\n8 10\n15 18' }],
+    hidden: [{ input: '2\n1 4\n4 5', expectedOutput: '1 5' }],
+  },
+  {
+    id: 'pp-word-search',
+    title: 'Word Search',
+    slug: 'word-search',
+    difficulty: 'Hard',
+    topics: ['Backtracking', 'Graph'],
+    tags: ['backtracking', 'graph'],
+    description: 'Given a grid of characters and a word, print YES if the word exists by moving horizontally or vertically without reusing a cell.',
+    inputFormat: 'First line contains rows and columns.\nNext rows lines contain the grid.\nLast line contains the target word.',
+    outputFormat: 'Print YES or NO.',
+    constraints: '1 <= rows, columns <= 12',
+    examples: [{ input: '3 4\nABCE\nSFCS\nADEE\nABCCED', output: 'YES' }],
+    companies: ['Amazon', 'Microsoft'],
+    visible: [{ input: '3 4\nABCE\nSFCS\nADEE\nABCCED', expectedOutput: 'YES' }],
+    hidden: [{ input: '3 4\nABCE\nSFCS\nADEE\nABCB', expectedOutput: 'NO' }],
+  },
+];
 
 export const AdminConsole: React.FC = () => {
   const [meta, setMeta] = useState<any>(null);
+  const [questionBankMeta, setQuestionBankMeta] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [syncing, setSyncing] = useState(false);
+  const [syncingQuestionBank, setSyncingQuestionBank] = useState(false);
+  const [seedingPlacementPro, setSeedingPlacementPro] = useState(false);
   const [syncProgress, setSyncProgress] = useState(0);
   const [syncResult, setSyncResult] = useState<{ success: boolean; message: string } | null>(null);
 
   const fetchMeta = async () => {
     setLoading(true);
     try {
-      const data = await getSyncMetadata();
-      setMeta(data);
+      const [codeforcesData, questionBankData] = await Promise.all([
+        getSyncMetadata('codeforces'),
+        getSyncMetadata('placementproQuestionBank'),
+      ]);
+      setMeta(codeforcesData);
+      setQuestionBankMeta(questionBankData);
     } catch (e) {
       console.error(e);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handlePlacementProBankSync = async () => {
+    setSyncingQuestionBank(true);
+    setSyncResult(null);
+
+    try {
+      const response = await fetch(`${getFunctionsUrl()}/manualPlacementProQuestionBankSync`, {
+        method: 'POST',
+      });
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || data.message || 'Question bank refresh failed.');
+      }
+
+      setSyncResult({
+        success: true,
+        message: `✓ Refreshed ${Number(data.totalSynced || 0).toLocaleString()} PlacementPro DSA questions.`,
+      });
+      fetchMeta();
+    } catch (e) {
+      setSyncResult({
+        success: false,
+        message: e instanceof Error ? e.message : 'PlacementPro question bank refresh failed.',
+      });
+    } finally {
+      setSyncingQuestionBank(false);
+    }
+  };
+
+  const handleSeedPlacementProProblems = async () => {
+    if (!firestoreDb) {
+      setSyncResult({ success: false, message: 'Firestore not configured. Check your .env.local file.' });
+      return;
+    }
+
+    setSeedingPlacementPro(true);
+    setSyncResult(null);
+
+    try {
+      const batch = writeBatch(firestoreDb);
+
+      PLACEMENTPRO_SEED_PROBLEMS.forEach((problem) => {
+        const { visible, hidden, ...problemData } = problem;
+        batch.set(doc(firestoreDb, 'problems', problem.id), {
+          ...problemData,
+          source: 'placementpro',
+          provider: 'placementpro',
+          externalId: null,
+          solvedCount: 0,
+          isActive: true,
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp(),
+        }, { merge: true });
+
+        batch.set(doc(firestoreDb, 'testCases', problem.id), {
+          visible,
+          hidden,
+          updatedAt: serverTimestamp(),
+        }, { merge: true });
+      });
+
+      await batch.commit();
+      setSyncResult({ success: true, message: `✓ Seeded ${PLACEMENTPRO_SEED_PROBLEMS.length} PlacementPro DSA problems with visible and hidden tests.` });
+    } catch (e) {
+      setSyncResult({ success: false, message: e instanceof Error ? e.message : 'PlacementPro seed failed.' });
+    } finally {
+      setSeedingPlacementPro(false);
     }
   };
 
@@ -54,84 +211,20 @@ export const AdminConsole: React.FC = () => {
     setSyncProgress(0);
 
     try {
-      // 1. Fetch from Codeforces API (public, no key needed)
       setSyncProgress(5);
-      const response = await fetch(CF_API_URL);
-      if (!response.ok) throw new Error(`Codeforces API error: ${response.status}`);
+      const response = await fetch(`${getFunctionsUrl()}/manualCodeforcesSync`, {
+        method: 'POST',
+      });
       const data = await response.json();
 
-      if (data.status !== 'OK') throw new Error(`Codeforces returned: ${data.status}`);
-
-      const { problems, problemStatistics } = data.result;
-      setSyncProgress(20);
-
-      // 2. Build stats lookup map
-      const statsMap = new Map<string, number>();
-      for (const stat of problemStatistics) {
-        if (stat.contestId !== undefined && stat.index !== undefined) {
-          statsMap.set(`${stat.contestId}_${stat.index}`, stat.solvedCount || 0);
-        }
+      if (!response.ok) {
+        throw new Error(data.error || data.message || `Codeforces sync failed (${response.status}).`);
       }
-
-      // 3. Filter only PROGRAMMING problems with a rating
-      const validProblems = problems.filter(
-        (p: any) => p.type === 'PROGRAMMING' && p.contestId !== undefined && p.index !== undefined
-      );
-
-      setSyncProgress(30);
-
-      // 4. Batch write in chunks of 500
-      const BATCH_SIZE = 500;
-      let written = 0;
-
-      for (let i = 0; i < validProblems.length; i += BATCH_SIZE) {
-        const chunk = validProblems.slice(i, i + BATCH_SIZE);
-        const batch = writeBatch(firestoreDb);
-
-        for (const problem of chunk) {
-          const problemId = `codeforces_${problem.contestId}_${problem.index}`;
-          const solvedCount = statsMap.get(`${problem.contestId}_${problem.index}`) || 0;
-          const docRef = doc(firestoreDb, 'problems', problemId);
-
-          batch.set(
-            docRef,
-            {
-              source: 'codeforces',
-              contestId: problem.contestId,
-              problemIndex: problem.index,
-              title: problem.name,
-              rating: problem.rating || null,
-              difficulty: mapRatingToDifficulty(problem.rating),
-              tags: Array.isArray(problem.tags) ? problem.tags : [],
-              solvedCount,
-              sourceUrl: `https://codeforces.com/problemset/problem/${problem.contestId}/${problem.index}`,
-              isActive: true,
-              updatedAt: serverTimestamp(),
-            },
-            { merge: true }
-          );
-        }
-
-        await batch.commit();
-        written += chunk.length;
-
-        const progress = 30 + Math.round((written / validProblems.length) * 65);
-        setSyncProgress(progress);
-      }
-
-      // 5. Write sync metadata
-      const metaRef = doc(firestoreDb, 'syncMetadata', 'codeforces');
-      await setDoc(metaRef, {
-        lastSyncAt: serverTimestamp(),
-        status: 'success',
-        totalProblems: written,
-        lastError: null,
-      }, { merge: true });
 
       setSyncProgress(100);
       setSyncResult({
         success: true,
-        message: `✓ Synced ${written.toLocaleString()} problems from Codeforces to Firestore!`
+        message: `✓ Synced ${Number(data.totalSynced || 0).toLocaleString()} problems from Codeforces to Firestore!`
       });
       fetchMeta();
     } catch (e) {
@@ -171,6 +264,70 @@ export const AdminConsole: React.FC = () => {
           </p>
         </div>
 
+        <div className="bg-primary-subtle border border-primary-subtle rounded-3 p-3 mb-4">
+          <h6 className="fw-bold text-dark fs-7 mb-2">PlacementPro Native DSA Bank</h6>
+          <p className="text-secondary fs-8 mb-3">
+            Creates the first PlacementPro-owned problems and stores visible/hidden test cases in Firestore. Hidden tests stay out of the browser and are only used by the backend submit function.
+          </p>
+          <Button
+            variant="primary"
+            size="sm"
+            className="fw-bold"
+            onClick={handleSeedPlacementProProblems}
+            disabled={seedingPlacementPro}
+          >
+            {seedingPlacementPro ? (
+              <>
+                <Spinner size="sm" animation="border" className="me-2" /> Seeding...
+              </>
+            ) : (
+              <>
+                <i className="bi bi-database-add me-2"></i> Seed PlacementPro DSA Problems
+              </>
+            )}
+          </Button>
+        </div>
+
+        <div className="bg-light border rounded-3 p-3 mb-4">
+          <h6 className="fw-bold text-dark fs-7 mb-2">PlacementPro Question Bank Refresh</h6>
+          <p className="text-secondary fs-8 mb-3">
+            Connects to the configured backend question provider and refreshes the PlacementPro DSA catalog. Imported questions appear under the PlacementPro source.
+          </p>
+          <div className="d-flex flex-wrap align-items-center gap-2">
+            <Button
+              variant="outline-primary"
+              size="sm"
+              className="fw-bold"
+              onClick={handlePlacementProBankSync}
+              disabled={syncingQuestionBank}
+            >
+              {syncingQuestionBank ? (
+                <>
+                  <Spinner size="sm" animation="border" className="me-2" /> Refreshing...
+                </>
+              ) : (
+                <>
+                  <i className="bi bi-cloud-download me-2"></i> Refresh PlacementPro Questions
+                </>
+              )}
+            </Button>
+            <span className="text-muted fs-8">
+              Last refreshed: {questionBankMeta?.lastSyncAt
+              ? (() => {
+                  const ts = questionBankMeta.lastSyncAt;
+                  const date = ts?.seconds
+                    ? new Date(ts.seconds * 1000)
+                    : ts?.toDate?.()
+                    ? ts.toDate()
+                    : new Date(ts);
+                  return date.toLocaleString();
+                })()
+              : 'Never'}
+              {questionBankMeta?.totalProblems !== undefined ? ` · ${questionBankMeta.totalProblems.toLocaleString()} questions` : ''}
+            </span>
+          </div>
+        </div>
+
         {syncResult && (
           <Alert variant={syncResult.success ? 'success' : 'danger'} className="py-2.5 mb-4 fs-8 fw-semibold">
             {syncResult.message}
@@ -201,7 +358,15 @@ export const AdminConsole: React.FC = () => {
                   <td className="fw-semibold text-dark" style={{ width: '200px' }}>Last Synchronization:</td>
                   <td>
                     {meta?.lastSyncAt
-                      ? new Date(meta.lastSyncAt.seconds * 1000).toLocaleString()
+                      ? (() => {
+                          const ts = meta.lastSyncAt;
+                          const date = ts?.seconds
+                            ? new Date(ts.seconds * 1000)
+                            : ts?.toDate?.()
+                            ? ts.toDate()
+                            : new Date(ts);
+                          return date.toLocaleString();
+                        })()
                       : <span className="text-muted fst-italic">Never synced yet</span>}
                   </td>
                 </tr>

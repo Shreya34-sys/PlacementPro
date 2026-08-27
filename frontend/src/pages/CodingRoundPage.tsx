@@ -56,56 +56,32 @@ export const CodingRoundPage: React.FC = () => {
       setIsRunning(false);
 
       // Simulate running against test cases
-      const results = selectedProblem.testCases.map((tc) => ({
-        input: tc.input,
-        expected: tc.expectedOutput,
-        actual: tc.expectedOutput, // simulated pass
-        passed: true
-      }));
-
-      const randomTime = Math.floor(Math.random() * 45) + 12; // 12-57ms
-      const randomMemory = (Math.random() * 8 + 14).toFixed(1); // 14.2MB
-
+      // This page uses mock problems — no real Judge0 execution available here.
+      // Display an honest message directing users to the real coding practice module.
       setConsoleOutput({
-        status: 'success',
+        status: 'idle',
         logs: [
-          'Compiling source code... Done.',
-          'Running Sample Test Case 1... PASS',
-          'Running Sample Test Case 2... PASS',
-          'Running Sample Test Case 3... PASS',
-          `Execution finished in ${randomTime}ms. Memory used: ${randomMemory}MB.`
+          '⚠  This practice page uses sample problems for UI demo purposes.',
+          '   Real code execution is available in the Coding Practice module.',
+          '   Navigate to Practice → Coding Practice to run and submit code.',
+          '',
+          '   Code written here will not be evaluated by a compiler.',
         ],
-        testResults: results,
-        execTimeMs: randomTime,
-        memoryMb: parseFloat(randomMemory)
       });
-    }, 1200);
+    }, 400);
   };
 
   const handleSubmitCode = () => {
     setIsSubmitting(true);
-    setConsoleOutput({
-      status: 'idle',
-      logs: ['Submitting solution to automated judge...', 'Executing against hidden test cases (0/25)...']
-    });
-
     setTimeout(() => {
       setIsSubmitting(false);
-
-      const randomTime = Math.floor(Math.random() * 35) + 18;
-      const randomMemory = (Math.random() * 6 + 18).toFixed(1);
-
       setConsoleOutput({
-        status: 'accepted',
+        status: 'idle',
         logs: [
-          'Executing against hidden test cases (25/25)... Completed.',
-          'All test cases passed successfully!',
-          'Status: Accepted',
-          `Runtime: ${randomTime} ms (Beats 89.4% of submissions)`,
-          `Memory: ${randomMemory} MB (Beats 92.1% of submissions)`
+          '⚠  Submission is not available in this demo practice page.',
+          '   Navigate to Practice → Coding Practice to submit real solutions.',
+          '   Your code will be compiled and evaluated against hidden test cases there.',
         ],
-        execTimeMs: randomTime,
-        memoryMb: parseFloat(randomMemory)
       });
 
       setShowSubmitSuccessModal(true);
