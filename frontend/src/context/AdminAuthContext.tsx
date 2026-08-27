@@ -1,5 +1,5 @@
 import React, {
-  createContext,
+  createContext,   
   useContext,
   useEffect,
   useState,
@@ -13,33 +13,33 @@ import {
   sendSignInLinkToEmail,
   isSignInWithEmailLink,
   signInWithEmailLink,
-} from 'firebase/auth';
+} from 'firebase/auth';     //why we didnt import it from utils,firebase? bcz we need to use the firebase auth instance that is initialized in the utils/firebase.ts file, and we also need to use the firebase auth functions that are provided by the firebase/auth package, so we import them from there.
 
 import {
   doc,
   getDoc,
-} from 'firebase/firestore';
+} from 'firebase/firestore'; //inbuilt firestore functions
 
 import {
   firebaseAuth,
   firestoreDb,
 } from '../utils/firebase';
 
-interface AdminAuthContextType {
-  adminUser: User | null;
-  isAdminAuthenticated: boolean;
-  loading: boolean;
+interface AdminAuthContextType {   //used to define the shape of the context value that will be provided by the AdminAuthProvider component, and it also defines the types of the functions that will be used to login, send magic link, complete magic link login, and logout.
+  adminUser: User | null;    //used to store the admin user object
+  isAdminAuthenticated: boolean;  //used to check if the admin is authenticated
+  loading: boolean;    //used to show loading state
 
   login: (
     email: string,
     password: string
-  ) => Promise<void>;
+  ) => Promise<void>;    //work of promise is to handle asynchronous operations, allowing the function to return a value in the future, and enabling the caller to use .then() and .catch() for handling success and error cases respectively.
 
   sendMagicLink: (
     email: string
   ) => Promise<void>;
 
-  completeMagicLinkLogin: () => Promise<void>;
+  completeMagicLinkLogin: () => Promise<void>;    //used to complete the magic link login process after the user clicks the link in their email
 
   logout: () => Promise<void>;
 }
@@ -73,14 +73,14 @@ export const AdminAuthProvider: React.FC<{
   ): Promise<boolean> => {
 
     if (!firestoreDb) {
-      throw new Error(
+      throw new Error(             //used to check if firestore is initialized or not
         'Firestore is not configured.'
       );
     }
 
     const db = firestoreDb;
 
-    const adminRef = doc(
+    const adminRef = doc(    //used to create a reference to the admin document in firestore
       db,
       'users',
       user.uid
@@ -189,9 +189,9 @@ export const AdminAuthProvider: React.FC<{
 
     try {
 
-      const result =
+      const result =          //This is the first major backend connection.
         await signInWithEmailAndPassword(
-          auth,
+          firebaseAuth,
           email,
           password
         );
