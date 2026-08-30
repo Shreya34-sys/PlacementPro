@@ -1,7 +1,6 @@
-import React, {
-  useEffect,
-  useState,
-} from 'react';
+
+
+import React, { useEffect, useState } from 'react';
 
 import {
   Alert,
@@ -11,16 +10,12 @@ import {
   Spinner,
 } from 'react-bootstrap';
 
-import {
-  useAdminAuth,
-} from '../../context/AdminAuthContext';
-
+import { useAdminAuth } from '../../context/AdminAuthContext';
 
 interface AdminLoginPageProps {
   onLoginSuccess: () => void;
   onBackToStudentLogin: () => void;
 }
-
 
 export const AdminLoginPage: React.FC<
   AdminLoginPageProps
@@ -33,22 +28,14 @@ export const AdminLoginPage: React.FC<
     login,
     sendMagicLink,
     completeMagicLinkLogin,
-    isAdminAuthenticated,
     loading,
   } = useAdminAuth();
 
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  const [email, setEmail] =
-    useState('');
-
-  const [password, setPassword] =
-    useState('');
-
-  const [error, setError] =
-    useState('');
-
-  const [success, setSuccess] =
-    useState('');
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
   const [loginLoading, setLoginLoading] =
     useState(false);
@@ -58,24 +45,21 @@ export const AdminLoginPage: React.FC<
 
 
   /*
-   * ONLY process Firebase Magic Links.
+   * MAGIC LINK ONLY
    *
-   * Normal password login does NOT enter
-   * this block.
+   * This runs only when Firebase has an
+   * oobCode in the URL.
+   *
+   * Normal #admin page opening will NOT
+   * trigger login.
    */
   useEffect(() => {
 
-    const url =
-      window.location.href;
+    const url = window.location.href;
 
-    /*
-     * If there is no Firebase action code,
-     * this is a normal admin page.
-     */
     if (!url.includes('oobCode=')) {
       return;
     }
-
 
     const completeLogin = async () => {
 
@@ -83,139 +67,144 @@ export const AdminLoginPage: React.FC<
 
         await completeMagicLinkLogin();
 
-      } catch (error) {
+        /*
+         * Only after successful magic-link
+         * authentication.
+         */
+        onLoginSuccess();
+
+      } catch (err) {
 
         console.error(
           'Magic link error:',
-          error
+          err
         );
 
         setError(
-          error instanceof Error
-            ? error.message
+          err instanceof Error
+            ? err.message
             : 'Magic link login failed.'
         );
-
       }
-
     };
-
 
     completeLogin();
 
-  }, [completeMagicLinkLogin]);
-
-
-  /*
-   * Go to dashboard after successful admin login.
-   */
-  useEffect(() => {
-
-    if (isAdminAuthenticated) {
-      onLoginSuccess();
-    }
-
   }, [
-    isAdminAuthenticated,
+    completeMagicLinkLogin,
     onLoginSuccess,
   ]);
 
 
   /*
    * PASSWORD LOGIN
+   *
+   * This function runs ONLY when the
+   * user submits the form.
    */
-  const handlePasswordLogin =
-    async (
-      e: React.FormEvent
-    ) => {
+  const handlePasswordLogin = async (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
 
-      e.preventDefault();
+    e.preventDefault();
 
-      setError('');
-      setSuccess('');
+    setError('');
+    setSuccess('');
 
-      if (!email.trim() || !password) {
+    if (!email.trim() || !password) {
 
-        setError(
-          'Please enter email and password.'
-        );
+      setError(
+        'Please enter email and password.'
+      );
 
-        return;
-      }
+      return;
+    }
 
-      setLoginLoading(true);
+    setLoginLoading(true);
 
-      try {
+    try {
 
-        await login(
-          email.trim(),
-          password
-        );
+      /*
+       * Firebase admin authentication.
+       */
+      await login(
+        email.trim(),
+        password
+      );
 
-        /*
-         * AdminAuthContext will also detect
-         * authentication and navigate.
-         */
-        onLoginSuccess();
+      /*
+       * Dashboard opens ONLY after
+       * login() succeeds.
+       */
+      onLoginSuccess();
 
-      } catch (error) {
+    } catch (err) {
 
-        setError(
-          error instanceof Error
-            ? error.message
-            : 'Login failed.'
-        );
+      console.error(
+        'Admin login error:',
+        err
+      );
 
-      } finally {
+      setError(
+        err instanceof Error
+          ? err.message
+          : 'Login failed.'
+      );
 
-        setLoginLoading(false);
-      }
-    };
+    } finally {
+
+      setLoginLoading(false);
+    }
+  };
 
 
   /*
    * MAGIC EMAIL LOGIN
    */
-  const handleMagicLink =
-    async () => {
+  const handleMagicLink = async () => {
 
-      setError('');
-      setSuccess('');
+    setError('');
+    setSuccess('');
 
-      if (!email.trim()) {
+    if (!email.trim()) {
 
-        setError(
-          'Please enter your admin email first.'
-        );
+      setError(
+        'Please enter your admin email first.'
+      );
 
-        return;
-      }
+      return;
+    }
 
-      setMagicLoading(true);
+    setMagicLoading(true);
 
-      try {
+    try {
 
-        await sendMagicLink(
-          email.trim()
-        );
+      await sendMagicLink(
+        email.trim()
+      );
 
-        setSuccess(
-          `Magic login link sent to ${email.trim()}. Check your email inbox.`
-        );
+      setSuccess(
+        `Magic login link sent to ${email.trim()}. Check your email inbox.`
+      );
 
-      } catch (error) {
+    } catch (err) {
 
-        setError(
-          error instanceof Error
-            ? error.message
-            : 'Could not send magic login link.'
-        );
+      console.error(
+        'Magic link sending error:',
+        err
+      );
 
-      } finally {
+      setError(
+        err instanceof Error
+          ? err.message
+          : 'Could not send magic login link.'
+      );
 
-        setMagicLoading(false);
-      }
-    };
+    } finally {
+
+      setMagicLoading(false);
+    }
+  };
 
 
   return (
@@ -238,6 +227,8 @@ export const AdminLoginPage: React.FC<
 
         <Card.Body className="p-4 p-md-5">
 
+          {/* HEADER */}
+
           <div className="text-center mb-4">
 
             <div
@@ -250,7 +241,7 @@ export const AdminLoginPage: React.FC<
                 color: 'white',
               }}
             >
-              <i className="bi bi-shield-lock-fill fs-4"></i>
+              <i className="bi bi-shield-lock-fill fs-4" />
             </div>
 
             <h3 className="fw-bold mb-1">
@@ -264,6 +255,8 @@ export const AdminLoginPage: React.FC<
           </div>
 
 
+          {/* ERROR */}
+
           {error && (
             <Alert
               variant="danger"
@@ -275,6 +268,8 @@ export const AdminLoginPage: React.FC<
             </Alert>
           )}
 
+
+          {/* SUCCESS */}
 
           {success && (
             <Alert
@@ -302,7 +297,7 @@ export const AdminLoginPage: React.FC<
 
               <Form.Control
                 type="email"
-                placeholder="ppadmin@gmail.com"
+                placeholder="abc@gmail.com"
                 value={email}
                 onChange={(e) =>
                   setEmail(e.target.value)
@@ -357,7 +352,7 @@ export const AdminLoginPage: React.FC<
                 </>
               ) : (
                 <>
-                  <i className="bi bi-box-arrow-in-right me-2"></i>
+                  <i className="bi bi-box-arrow-in-right me-2" />
 
                   Login with Password
                 </>
@@ -367,6 +362,8 @@ export const AdminLoginPage: React.FC<
 
           </Form>
 
+
+          {/* DIVIDER */}
 
           <div className="d-flex align-items-center my-3">
 
@@ -381,7 +378,7 @@ export const AdminLoginPage: React.FC<
           </div>
 
 
-          {/* MAGIC EMAIL LOGIN */}
+          {/* MAGIC LINK */}
 
           <Button
             type="button"
@@ -406,7 +403,7 @@ export const AdminLoginPage: React.FC<
               </>
             ) : (
               <>
-                <i className="bi bi-envelope me-2"></i>
+                <i className="bi bi-envelope me-2" />
 
                 Login with Magic Email Link
               </>
@@ -415,9 +412,12 @@ export const AdminLoginPage: React.FC<
           </Button>
 
 
+          {/* BACK */}
+
           <div className="text-center mt-4">
 
             <Button
+              type="button"
               variant="link"
               className="text-decoration-none"
               onClick={
@@ -436,3 +436,14 @@ export const AdminLoginPage: React.FC<
     </div>
   );
 };
+
+
+
+
+
+
+
+
+
+
+
