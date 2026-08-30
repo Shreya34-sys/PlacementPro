@@ -477,7 +477,736 @@
 
 
 
-import React, { useState } from 'react';
+// import React, { useState } from 'react';
+
+// import { AuthProvider, useAuth } from './context/AuthContext';
+// import { PlacementProvider } from './context/PlacementContext';
+// import { ThemeProvider } from './context/ThemeContext';
+
+// import { AppLayout } from './components/layout/AppLayout';
+
+// import { DashboardPage } from './pages/DashboardPage';
+// import { JobsPage } from './pages/JobsPage';
+// import { JobDetailsPage } from './pages/JobDetailsPage';
+// import { ApplicationsPage } from './pages/ApplicationsPage';
+// import { StudentsPage } from './pages/StudentsPage';
+// import { InterviewsPage } from './pages/InterviewsPage';
+// import { CompaniesPage } from './pages/CompaniesPage';
+// import { PlacementPrepPage } from './pages/PlacementPrepPage';
+// import { CompanyPrepPage } from './pages/CompanyPrepPage';
+// import { CompanyPrepDetailPage } from './pages/CompanyPrepDetailPage';
+// import { TechnicalPrepPage } from './pages/TechnicalPrepPage';
+// import { GdPrepPage } from './pages/GdPrepPage';
+// import { AptitudeTestPage } from './pages/AptitudeTestPage';
+// import { CodingRoundPage } from './pages/CodingRoundPage';
+// import { LeetCodePracticePage } from './pages/LeetCodePracticePage';
+// import { VersantPrepPage } from './pages/VersantPrepPage';
+// import { HrInterviewPage } from './pages/HrInterviewPage';
+// import { GamifiedAssessmentPage } from './pages/GamifiedAssessmentPage';
+// import { AiInterviewPage } from './pages/AiInterviewPage';
+// import { ResumeAnalyzerPage } from './pages/ResumeAnalyzerPage';
+// import { StudyPlannerPage } from './pages/StudyPlannerPage';
+// import { LeaderboardPage } from './pages/LeaderboardPage';
+// import { AnalyticsPage } from './pages/AnalyticsPage';
+// import { ProfilePage } from './pages/ProfilePage';
+// import { SettingsPage } from './pages/SettingsPage';
+
+// import { LoginPage } from './pages/LoginPage';
+// import { RegisterPage } from './pages/RegisterPage';
+// import { LandingPage } from './pages/LandingPage';
+// import { TermsPage } from './pages/TermsPage';
+// import { PrivacyPage } from './pages/PrivacyPage';
+
+// import { CodingPracticePage } from './modules/codingPractice/pages/CodingPracticePage';
+
+// /* =========================================================
+//    ADMIN IMPORTS
+//    ========================================================= */
+
+// import {
+//   AdminAuthProvider,
+//   useAdminAuth,
+// } from './context/AdminAuthContext';
+
+// import { AdminLoginPage } from './pages/admin/AdminLoginPage';
+// //import { AdminDashboardPage } from './pages/admin/AdminDashboardPage';
+// import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
+
+
+// function AppContent() {
+
+//   /* =========================================================
+//      STUDENT AUTH
+//      ========================================================= */
+
+//   const {
+//     isAuthenticated,
+//     logout,
+//   } = useAuth();
+
+
+//   /* =========================================================
+//      ADMIN AUTH
+//      ========================================================= */
+
+//   const {
+//     isAdminAuthenticated,
+//     logout: adminLogout,
+//   } = useAdminAuth();
+
+
+//   /* =========================================================
+//      CURRENT PAGE
+//      ========================================================= */
+
+//   const [currentTab, setCurrentTab] = useState(() => {
+
+//     const hash = window.location.hash;
+
+//     if (hash === '#terms') {
+//       return 'terms';
+//     }
+
+//     if (hash === '#privacy') {
+//       return 'privacy';
+//     }
+
+//     /*
+//      * IMPORTANT:
+//      * #admin ALWAYS starts at Admin Login.
+//      * Admin dashboard is never selected directly here.
+//      */
+//     if (hash === '#admin') {
+//       return 'admin-login';
+//     }
+
+//     return 'landing';
+//   });
+
+
+//   const [policyBackTab, setPolicyBackTab] =
+//     useState('register');
+
+
+//   const [selectedJobId, setSelectedJobId] =
+//     useState<string>('job-1');
+
+
+//   const [selectedCompanyId, setSelectedCompanyId] =
+//     useState<string>('amazon');
+
+
+//   /* =========================================================
+//      STUDENT NAVIGATION
+//      ========================================================= */
+
+//   const handleNavigate = (
+//     tab: string,
+//     itemId?: string
+//   ) => {
+
+//     /* STUDENT LOGOUT ONLY */
+//     if (tab === 'logout') {
+
+//       logout();
+
+//       setCurrentTab('login');
+
+//       return;
+//     }
+
+
+//     if (
+//       tab === 'job-details' &&
+//       itemId
+//     ) {
+//       setSelectedJobId(itemId);
+//     }
+
+
+//     if (
+//       tab === 'company-prep-detail' &&
+//       itemId
+//     ) {
+//       setSelectedCompanyId(itemId);
+//     }
+
+
+//     if (
+//       tab === 'terms' ||
+//       tab === 'privacy'
+//     ) {
+
+//       setPolicyBackTab(currentTab);
+
+//       window.location.hash = tab;
+
+//     } else {
+
+//       window.history.replaceState(
+//         null,
+//         '',
+//         window.location.pathname
+//       );
+//     }
+
+
+//     setCurrentTab(tab);
+//   };
+
+
+//   /* =========================================================
+//      STUDENT AUTHENTICATION GATE
+
+//      NOTHING HERE CHANGES THE STUDENT DASHBOARD.
+//      ========================================================= */
+
+//   if (
+//     !isAuthenticated &&
+//     currentTab !== 'landing' &&
+//     currentTab !== 'register' &&
+//     currentTab !== 'terms' &&
+//     currentTab !== 'privacy' &&
+//     currentTab !== 'admin-login' &&
+//     currentTab !== 'admin-dashboard'
+//   ) {
+
+//     return (
+//       <div
+//         className="min-vh-100"
+//         style={{
+//           backgroundColor: '#F8FAFC',
+//         }}
+//       >
+
+//         <LoginPage
+
+//           onNavigateToRegister={() =>
+//             setCurrentTab('register')
+//           }
+
+//           onLoginSuccess={() =>
+//             setCurrentTab('dashboard')
+//           }
+
+//           onNavigate={handleNavigate}
+
+//         />
+
+//       </div>
+//     );
+//   }
+
+
+//   /* =========================================================
+//      PAGE ROUTER
+//      ========================================================= */
+
+//   const renderContent = () => {
+
+//     switch (currentTab) {
+
+
+//       /* =====================================================
+//          STUDENT PAGES
+//          ===================================================== */
+
+//       case 'landing':
+
+//         return (
+//           <LandingPage
+//             onNavigate={handleNavigate}
+//           />
+//         );
+
+
+//       case 'login':
+
+//         return (
+//           <LoginPage
+
+//             onNavigateToRegister={() =>
+//               setCurrentTab('register')
+//             }
+
+//             onLoginSuccess={() =>
+//               setCurrentTab('dashboard')
+//             }
+
+//             onNavigate={handleNavigate}
+
+//           />
+//         );
+
+
+//       case 'register':
+
+//         return (
+//           <RegisterPage
+
+//             onNavigateToLogin={() =>
+//               setCurrentTab('login')
+//             }
+
+//             onRegisterSuccess={() =>
+//               setCurrentTab('dashboard')
+//             }
+
+//             onNavigateToTerms={() =>
+//               handleNavigate('terms')
+//             }
+
+//             onNavigateToPrivacy={() =>
+//               handleNavigate('privacy')
+//             }
+
+//           />
+//         );
+
+
+//       case 'terms':
+
+//         return (
+//           <TermsPage
+
+//             onBack={() => {
+
+//               window.history.replaceState(
+//                 null,
+//                 '',
+//                 window.location.pathname
+//               );
+
+//               setCurrentTab(
+//                 policyBackTab
+//               );
+
+//             }}
+
+//           />
+//         );
+
+
+//       case 'privacy':
+
+//         return (
+//           <PrivacyPage
+
+//             onBack={() => {
+
+//               window.history.replaceState(
+//                 null,
+//                 '',
+//                 window.location.pathname
+//               );
+
+//               setCurrentTab(
+//                 policyBackTab
+//               );
+
+//             }}
+
+//           />
+//         );
+
+
+//       case 'dashboard':
+
+//         return (
+//           <DashboardPage
+//             onNavigate={handleNavigate}
+//           />
+//         );
+
+
+//       case 'jobs':
+
+//         return (
+//           <JobsPage
+
+//             onSelectJob={(id) =>
+//               handleNavigate(
+//                 'job-details',
+//                 id
+//               )
+//             }
+
+//           />
+//         );
+
+
+//       case 'job-details':
+
+//         return (
+//           <JobDetailsPage
+
+//             jobId={selectedJobId}
+
+//             onBack={() =>
+//               setCurrentTab('jobs')
+//             }
+
+//           />
+//         );
+
+
+//       case 'companies':
+
+//         return (
+//           <CompaniesPage
+
+//             onNavigateToJob={(id) =>
+//               handleNavigate(
+//                 'job-details',
+//                 id
+//               )
+//             }
+
+//           />
+//         );
+
+
+//       case 'placement-prep':
+//       case 'practice':
+
+//         return (
+//           <PlacementPrepPage
+//             onNavigate={handleNavigate}
+//           />
+//         );
+
+
+//       case 'company-prep':
+
+//         return (
+//           <CompanyPrepPage
+//             onNavigate={handleNavigate}
+//           />
+//         );
+
+
+//       case 'company-prep-detail':
+
+//         return (
+//           <CompanyPrepDetailPage
+
+//             companyId={selectedCompanyId}
+
+//             onBack={() =>
+//               setCurrentTab(
+//                 'company-prep'
+//               )
+//             }
+
+//           />
+//         );
+
+
+//       case 'technical-prep':
+
+//         return (
+//           <TechnicalPrepPage
+//             onNavigate={handleNavigate}
+//           />
+//         );
+
+
+//       case 'gd-prep':
+
+//         return (
+//           <GdPrepPage
+//             onNavigate={handleNavigate}
+//           />
+//         );
+
+
+//       case 'aptitude-test':
+
+//         return <AptitudeTestPage />;
+
+
+//       case 'coding-round':
+
+//         return <CodingRoundPage />;
+
+
+//       case 'leetcode-practice':
+//       case 'coding-practice':
+
+//         return (
+//           <CodingPracticePage
+//             onNavigate={handleNavigate}
+//           />
+//         );
+
+
+//       case 'versant-prep':
+
+//         return <VersantPrepPage />;
+
+
+//       case 'hr-prep':
+
+//         return <HrInterviewPage />;
+
+
+//       case 'gamified-prep':
+
+//         return <GamifiedAssessmentPage />;
+
+
+//       case 'ai-interview':
+
+//         return <AiInterviewPage />;
+
+
+//       case 'resume-analyzer':
+//       case 'resume-prep':
+
+//         return <ResumeAnalyzerPage />;
+
+
+//       case 'study-planner':
+
+//         return <StudyPlannerPage />;
+
+
+//       case 'leaderboard':
+
+//         return <LeaderboardPage />;
+
+
+//       case 'applications':
+
+//         return <ApplicationsPage />;
+
+
+//       case 'students':
+
+//         return <StudentsPage />;
+
+
+//       case 'interviews':
+
+//         return <InterviewsPage />;
+
+
+//       case 'profile':
+
+//         return <ProfilePage />;
+
+
+//       case 'analytics':
+
+//         return <AnalyticsPage />;
+
+
+//       case 'settings':
+
+//         return <SettingsPage />;
+
+
+//       /* =====================================================
+//          ADMIN LOGIN
+//          ===================================================== */
+
+//       case 'admin-login':
+
+//         return (
+//           <AdminLoginPage
+
+//             onLoginSuccess={() => {
+
+//               /*
+//                * ONLY after successful admin
+//                * authentication we enter dashboard.
+//                */
+
+//               setCurrentTab(
+//                 'admin-dashboard'
+//               );
+
+//             }}
+
+//             onBackToStudentLogin={() => {
+
+//               setCurrentTab('login');
+
+//               window.history.replaceState(
+//                 null,
+//                 '',
+//                 window.location.pathname
+//               );
+
+//             }}
+
+//           />
+//         );
+
+
+//       /* =====================================================
+//          ADMIN DASHBOARD
+//          ===================================================== */
+
+//       case 'admin-dashboard':
+
+//         /*
+//          * SECURITY CHECK
+//          *
+//          * Even if somebody manually changes the
+//          * React state or URL, dashboard requires
+//          * Firebase admin authentication.
+//          */
+
+//         if (!isAdminAuthenticated) {
+
+//           return (
+//             <AdminLoginPage
+
+//               onLoginSuccess={() =>
+//                 setCurrentTab(
+//                   'admin-dashboard'
+//                 )
+//               }
+
+//               onBackToStudentLogin={() =>
+//                 setCurrentTab('login')
+//               }
+
+//             />
+//           );
+
+//         }
+
+
+//         return (
+//           <AdminDashboardPage
+
+//             onLogout={async () => {
+
+//               await adminLogout();
+
+//               /*
+//                * After admin logout,
+//                * NEVER remain on dashboard.
+//                */
+
+//               setCurrentTab(
+//                 'admin-login'
+//               );
+
+//               window.location.hash =
+//                 'admin';
+
+//             }}
+
+//           />
+//         );
+
+
+//       /* =====================================================
+//          DEFAULT STUDENT PAGE
+//          ===================================================== */
+
+//       default:
+
+//         return (
+//           <DashboardPage
+//             onNavigate={handleNavigate}
+//           />
+//         );
+//     }
+//   };
+
+
+//   /* =========================================================
+//      ADMIN / LOGIN / PUBLIC PAGES
+//      DO NOT USE STUDENT APP LAYOUT
+//      ========================================================= */
+
+//   if (
+
+//     currentTab === 'login' ||
+//     currentTab === 'register' ||
+//     currentTab === 'landing' ||
+//     currentTab === 'terms' ||
+//     currentTab === 'privacy' ||
+//     currentTab === 'admin-login' ||
+//     currentTab === 'admin-dashboard'
+
+//   ) {
+
+//     return (
+//       <div className="min-vh-100">
+
+//         {renderContent()}
+
+//       </div>
+//     );
+//   }
+
+
+//   /* =========================================================
+//      EXISTING STUDENT APP LAYOUT
+//      ========================================================= */
+
+//   return (
+
+//     <AppLayout
+
+//       currentTab={currentTab}
+
+//       onTabChange={setCurrentTab}
+
+//     >
+
+//       {renderContent()}
+
+//     </AppLayout>
+
+//   );
+// }
+
+
+// /* =========================================================
+//    ALL EXISTING PROVIDERS
+//    ========================================================= */
+
+// export default function App() {
+
+//   return (
+
+//     <ThemeProvider>
+
+//       <AuthProvider>
+
+//         <AdminAuthProvider>
+
+//           <PlacementProvider>
+
+//             <AppContent />
+
+//           </PlacementProvider>
+
+//         </AdminAuthProvider>
+
+//       </AuthProvider>
+
+//     </ThemeProvider>
+
+//   );
+// }
+
+
+
+
+
+
+
+
+
+
+import React, { useEffect, useState } from 'react';
 
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { PlacementProvider } from './context/PlacementContext';
@@ -499,7 +1228,6 @@ import { TechnicalPrepPage } from './pages/TechnicalPrepPage';
 import { GdPrepPage } from './pages/GdPrepPage';
 import { AptitudeTestPage } from './pages/AptitudeTestPage';
 import { CodingRoundPage } from './pages/CodingRoundPage';
-import { LeetCodePracticePage } from './pages/LeetCodePracticePage';
 import { VersantPrepPage } from './pages/VersantPrepPage';
 import { HrInterviewPage } from './pages/HrInterviewPage';
 import { GamifiedAssessmentPage } from './pages/GamifiedAssessmentPage';
@@ -519,9 +1247,9 @@ import { PrivacyPage } from './pages/PrivacyPage';
 
 import { CodingPracticePage } from './modules/codingPractice/pages/CodingPracticePage';
 
-/* =========================================================
+/* =========================
    ADMIN IMPORTS
-   ========================================================= */
+   ========================= */
 
 import {
   AdminAuthProvider,
@@ -529,15 +1257,14 @@ import {
 } from './context/AdminAuthContext';
 
 import { AdminLoginPage } from './pages/admin/AdminLoginPage';
-//import { AdminDashboardPage } from './pages/admin/AdminDashboardPage';
-import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
+import AdminDashboardPage from './pages/admin/AdminDashboardPage';
 
 
 function AppContent() {
 
-  /* =========================================================
+  /* =========================
      STUDENT AUTH
-     ========================================================= */
+     ========================= */
 
   const {
     isAuthenticated,
@@ -545,9 +1272,9 @@ function AppContent() {
   } = useAuth();
 
 
-  /* =========================================================
+  /* =========================
      ADMIN AUTH
-     ========================================================= */
+     ========================= */
 
   const {
     isAdminAuthenticated,
@@ -555,11 +1282,11 @@ function AppContent() {
   } = useAdminAuth();
 
 
-  /* =========================================================
+  /* =========================
      CURRENT PAGE
-     ========================================================= */
+     ========================= */
 
-  const [currentTab, setCurrentTab] = useState(() => {
+  const getInitialTab = () => {
 
     const hash = window.location.hash;
 
@@ -571,17 +1298,16 @@ function AppContent() {
       return 'privacy';
     }
 
-    /*
-     * IMPORTANT:
-     * #admin ALWAYS starts at Admin Login.
-     * Admin dashboard is never selected directly here.
-     */
     if (hash === '#admin') {
       return 'admin-login';
     }
 
     return 'landing';
-  });
+  };
+
+
+  const [currentTab, setCurrentTab] =
+    useState<string>(getInitialTab);
 
 
   const [policyBackTab, setPolicyBackTab] =
@@ -596,41 +1322,132 @@ function AppContent() {
     useState<string>('amazon');
 
 
-  /* =========================================================
+  /* =====================================================
+     BROWSER BACK BUTTON
+
+     Keeps navigation inside PlacementPro.
+     ===================================================== */
+
+  useEffect(() => {
+
+    const handlePopState = () => {
+
+  const hash = window.location.hash;
+
+  /* =========================
+     ADMIN ROUTE
+     ========================= */
+
+  if (hash === '#admin') {
+
+    if (isAdminAuthenticated) {
+      setCurrentTab('admin-dashboard');
+    } else {
+      setCurrentTab('admin-login');
+    }
+
+    return;
+  }
+
+  /* =========================
+     STUDENT ROUTES
+     ========================= */
+
+  if (hash === '#terms') {
+    setCurrentTab('terms');
+    return;
+  }
+
+  if (hash === '#privacy') {
+    setCurrentTab('privacy');
+    return;
+  }
+
+  if (!hash) {
+
+    if (isAuthenticated) {
+      setCurrentTab('dashboard');
+    } else {
+      setCurrentTab('landing');
+    }
+
+  }
+};
+
+
+    window.addEventListener(
+      'popstate',
+      handlePopState
+    );
+
+
+    return () => {
+
+      window.removeEventListener(
+        'popstate',
+        handlePopState
+      );
+
+    };
+
+  }, [
+    isAuthenticated,
+    isAdminAuthenticated,
+  ]);
+
+
+  /* =====================================================
      STUDENT NAVIGATION
-     ========================================================= */
+     ===================================================== */
 
   const handleNavigate = (
     tab: string,
     itemId?: string
   ) => {
 
-    /* STUDENT LOGOUT ONLY */
+    /* STUDENT LOGOUT */
+
     if (tab === 'logout') {
 
       logout();
 
       setCurrentTab('login');
 
+      window.history.pushState(
+        { page: 'login' },
+        '',
+        window.location.pathname
+      );
+
       return;
     }
 
+
+    /* Selected job */
 
     if (
       tab === 'job-details' &&
       itemId
     ) {
+
       setSelectedJobId(itemId);
+
     }
 
+
+    /* Selected company */
 
     if (
       tab === 'company-prep-detail' &&
       itemId
     ) {
+
       setSelectedCompanyId(itemId);
+
     }
 
+
+    /* Terms / Privacy */
 
     if (
       tab === 'terms' ||
@@ -639,15 +1456,24 @@ function AppContent() {
 
       setPolicyBackTab(currentTab);
 
-      window.location.hash = tab;
+      window.history.pushState(
+        { page: tab },
+        '',
+        `#${tab}`
+      );
 
     } else {
 
-      window.history.replaceState(
-        null,
+      /*
+       * Keep every student page inside
+       * browser history.
+       */
+      window.history.pushState(
+        { page: tab },
         '',
         window.location.pathname
       );
+
     }
 
 
@@ -655,11 +1481,9 @@ function AppContent() {
   };
 
 
-  /* =========================================================
+  /* =====================================================
      STUDENT AUTHENTICATION GATE
-
-     NOTHING HERE CHANGES THE STUDENT DASHBOARD.
-     ========================================================= */
+     ===================================================== */
 
   if (
     !isAuthenticated &&
@@ -681,13 +1505,29 @@ function AppContent() {
 
         <LoginPage
 
-          onNavigateToRegister={() =>
-            setCurrentTab('register')
-          }
+          onNavigateToRegister={() => {
 
-          onLoginSuccess={() =>
-            setCurrentTab('dashboard')
-          }
+            window.history.pushState(
+              { page: 'register' },
+              '',
+              window.location.pathname
+            );
+
+            setCurrentTab('register');
+
+          }}
+
+          onLoginSuccess={() => {
+
+            window.history.pushState(
+              { page: 'dashboard' },
+              '',
+              window.location.pathname
+            );
+
+            setCurrentTab('dashboard');
+
+          }}
 
           onNavigate={handleNavigate}
 
@@ -698,18 +1538,18 @@ function AppContent() {
   }
 
 
-  /* =========================================================
+  /* =====================================================
      PAGE ROUTER
-     ========================================================= */
+     ===================================================== */
 
   const renderContent = () => {
 
     switch (currentTab) {
 
 
-      /* =====================================================
+      /* =========================
          STUDENT PAGES
-         ===================================================== */
+         ========================= */
 
       case 'landing':
 
@@ -725,13 +1565,29 @@ function AppContent() {
         return (
           <LoginPage
 
-            onNavigateToRegister={() =>
-              setCurrentTab('register')
-            }
+            onNavigateToRegister={() => {
 
-            onLoginSuccess={() =>
-              setCurrentTab('dashboard')
-            }
+              window.history.pushState(
+                { page: 'register' },
+                '',
+                window.location.pathname
+              );
+
+              setCurrentTab('register');
+
+            }}
+
+            onLoginSuccess={() => {
+
+              window.history.pushState(
+                { page: 'dashboard' },
+                '',
+                window.location.pathname
+              );
+
+              setCurrentTab('dashboard');
+
+            }}
 
             onNavigate={handleNavigate}
 
@@ -744,13 +1600,29 @@ function AppContent() {
         return (
           <RegisterPage
 
-            onNavigateToLogin={() =>
-              setCurrentTab('login')
-            }
+            onNavigateToLogin={() => {
 
-            onRegisterSuccess={() =>
-              setCurrentTab('dashboard')
-            }
+              window.history.pushState(
+                { page: 'login' },
+                '',
+                window.location.pathname
+              );
+
+              setCurrentTab('login');
+
+            }}
+
+            onRegisterSuccess={() => {
+
+              window.history.pushState(
+                { page: 'dashboard' },
+                '',
+                window.location.pathname
+              );
+
+              setCurrentTab('dashboard');
+
+            }}
 
             onNavigateToTerms={() =>
               handleNavigate('terms')
@@ -771,8 +1643,8 @@ function AppContent() {
 
             onBack={() => {
 
-              window.history.replaceState(
-                null,
+              window.history.pushState(
+                { page: policyBackTab },
                 '',
                 window.location.pathname
               );
@@ -794,8 +1666,8 @@ function AppContent() {
 
             onBack={() => {
 
-              window.history.replaceState(
-                null,
+              window.history.pushState(
+                { page: policyBackTab },
                 '',
                 window.location.pathname
               );
@@ -842,9 +1714,17 @@ function AppContent() {
 
             jobId={selectedJobId}
 
-            onBack={() =>
-              setCurrentTab('jobs')
-            }
+            onBack={() => {
+
+              window.history.pushState(
+                { page: 'jobs' },
+                '',
+                window.location.pathname
+              );
+
+              setCurrentTab('jobs');
+
+            }}
 
           />
         );
@@ -892,11 +1772,19 @@ function AppContent() {
 
             companyId={selectedCompanyId}
 
-            onBack={() =>
+            onBack={() => {
+
+              window.history.pushState(
+                { page: 'company-prep' },
+                '',
+                window.location.pathname
+              );
+
               setCurrentTab(
                 'company-prep'
-              )
-            }
+              );
+
+            }}
 
           />
         );
@@ -1006,9 +1894,9 @@ function AppContent() {
         return <SettingsPage />;
 
 
-      /* =====================================================
+      /* =================================================
          ADMIN LOGIN
-         ===================================================== */
+         ================================================= */
 
       case 'admin-login':
 
@@ -1018,9 +1906,15 @@ function AppContent() {
             onLoginSuccess={() => {
 
               /*
-               * ONLY after successful admin
-               * authentication we enter dashboard.
+               * ONLY authenticated admin
+               * can enter dashboard.
                */
+
+              window.history.replaceState(
+                { page: 'admin-dashboard' },
+                '',
+                '#admin'
+              );
 
               setCurrentTab(
                 'admin-dashboard'
@@ -1030,13 +1924,13 @@ function AppContent() {
 
             onBackToStudentLogin={() => {
 
-              setCurrentTab('login');
-
               window.history.replaceState(
-                null,
+                { page: 'login' },
                 '',
                 window.location.pathname
               );
+
+              setCurrentTab('login');
 
             }}
 
@@ -1044,18 +1938,14 @@ function AppContent() {
         );
 
 
-      /* =====================================================
+      /* =================================================
          ADMIN DASHBOARD
-         ===================================================== */
+         ================================================= */
 
       case 'admin-dashboard':
 
         /*
-         * SECURITY CHECK
-         *
-         * Even if somebody manually changes the
-         * React state or URL, dashboard requires
-         * Firebase admin authentication.
+         * SECURITY GATE
          */
 
         if (!isAdminAuthenticated) {
@@ -1063,15 +1953,31 @@ function AppContent() {
           return (
             <AdminLoginPage
 
-              onLoginSuccess={() =>
+              onLoginSuccess={() => {
+
+                window.history.replaceState(
+                  { page: 'admin-dashboard' },
+                  '',
+                  '#admin'
+                );
+
                 setCurrentTab(
                   'admin-dashboard'
-                )
-              }
+                );
 
-              onBackToStudentLogin={() =>
-                setCurrentTab('login')
-              }
+              }}
+
+              onBackToStudentLogin={() => {
+
+                window.history.pushState(
+                  { page: 'login' },
+                  '',
+                  window.location.pathname
+                );
+
+                setCurrentTab('login');
+
+              }}
 
             />
           );
@@ -1087,16 +1993,19 @@ function AppContent() {
               await adminLogout();
 
               /*
-               * After admin logout,
-               * NEVER remain on dashboard.
+               * After logout always return
+               * to admin login.
                */
+
+              window.history.pushState(
+                { page: 'admin-login' },
+                '',
+                '#admin'
+              );
 
               setCurrentTab(
                 'admin-login'
               );
-
-              window.location.hash =
-                'admin';
 
             }}
 
@@ -1104,9 +2013,9 @@ function AppContent() {
         );
 
 
-      /* =====================================================
-         DEFAULT STUDENT PAGE
-         ===================================================== */
+      /* =========================
+         DEFAULT
+         ========================= */
 
       default:
 
@@ -1119,10 +2028,9 @@ function AppContent() {
   };
 
 
-  /* =========================================================
-     ADMIN / LOGIN / PUBLIC PAGES
-     DO NOT USE STUDENT APP LAYOUT
-     ========================================================= */
+  /* =====================================================
+     PAGES WITHOUT STUDENT APP LAYOUT
+     ===================================================== */
 
   if (
 
@@ -1146,9 +2054,9 @@ function AppContent() {
   }
 
 
-  /* =========================================================
+  /* =====================================================
      EXISTING STUDENT APP LAYOUT
-     ========================================================= */
+     ===================================================== */
 
   return (
 
@@ -1156,7 +2064,11 @@ function AppContent() {
 
       currentTab={currentTab}
 
-      onTabChange={setCurrentTab}
+      onTabChange={(tab) => {
+
+        handleNavigate(tab);
+
+      }}
 
     >
 
@@ -1169,7 +2081,7 @@ function AppContent() {
 
 
 /* =========================================================
-   ALL EXISTING PROVIDERS
+   ALL PROVIDERS
    ========================================================= */
 
 export default function App() {
@@ -1193,6 +2105,5 @@ export default function App() {
       </AuthProvider>
 
     </ThemeProvider>
-
   );
 }
