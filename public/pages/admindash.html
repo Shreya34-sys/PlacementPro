@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlacementPro - Faculty Intelligence Hub</title>
+    <link rel="stylesheet" href="/css/admindash.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        function checkAdminAuth() {
+            const token = localStorage.getItem('adminToken') || localStorage.getItem('token');
+            if (!token) {
+                window.location.replace('/admin-login');
+            }
+        }
+        checkAdminAuth();
+        window.addEventListener('pageshow', function (event) {
+            if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+                checkAdminAuth();
+            }
+        });
+    </script>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header class="admin-navbar">
+        <div class="nav-brand-section">
+            <div class="brand-logo">P</div>
+            <div class="brand-text-wrap">
+                <div class="brand-row">
+                    <span class="brand-title">PlacementPro</span>
+                    <span class="brand-tag">Faculty Intelligence Hub</span>
+                </div>
+                <div class="brand-sub">KIT's College of Engineering (Autonomous) • Dept. of CSBS</div>
+            </div>
+        </div>
+
+        <div class="nav-quick-actions">
+            <div class="ai-pill-btn"><span class="gemini-sparkle">✨</span> Gemini Aura <span class="status-dot-active"></span></div>
+            <div class="ai-pill-btn"><span class="icon">⚡</span> Market AI Alerts <span class="badge-num">2</span></div>
+            <button class="theme-toggle-btn" id="themeToggle" title="Toggle Theme">🌙</button>
+            <div class="admin-user-profile">
+                <div class="user-avatar">AD</div>
+                <div class="user-meta">
+                    <span class="user-name" id="navAdminName">Admin</span>
+                    <span class="user-role" id="navAdminRole">Placement Officer</span>
+                </div>
+            </div>
+            <button class="logout-icon-btn" id="logoutBtn" title="Logout">🚪</button>
+        </div>
+    </header>
+
+    <!-- Sub Navigation Links Bar -->
+    <nav class="subnav-bar">
+        <a href="#command-center" class="subnav-item active">
+            <span class="icon">🎛️</span> Command Center
+        </a>
+        <a href="#rag-market-ai" class="subnav-item">
+            <span class="icon">✨</span> RAG & Market AI <span class="nav-badge">2</span>
+        </a>
+        <a href="#campus-drives" class="subnav-item">
+            <span class="icon">💼</span> Campus Drives
+        </a>
+        <a href="#question-bank" class="subnav-item">
+            <span class="icon">📖</span> Question Bank & Tests <span class="blue-dot"></span>
+        </a>
+        <a href="#ai-interviews" class="subnav-item">
+            <span class="icon">🤖</span> AI Interviews <span class="blue-dot"></span>
+        </a>
+        <a href="#student-readiness" class="subnav-item">
+            <span class="icon">👥</span> Student Readiness
+        </a>
+    </nav>
+
+    <!-- Main Content Container -->
+    <main class="dashboard-main-container">
+        
+        <!-- Hero Banner -->
+        <section class="welcome-hero-card">
+            <div class="hero-left">
+                <div class="hero-badge">✨ CAMPUS PLACEMENT SEASON 2026-2027</div>
+                <h1 id="welcomeHeroHeading">Welcome back, Admin</h1>
+                <p>PlacementPro's AI Agents & RAG Knowledge Engine are synchronizing live market trends, orchestrating campus test drives, and analyzing student placement readiness for KIT CSBS.</p>
+            </div>
+            <div class="hero-right">
+                <div class="readiness-benchmark-pill">
+                    <span class="lbl">Batch Readiness</span>
+                    <span class="val">📈 88.5% Benchmark</span>
+                </div>
+                <button class="btn btn-blue-primary" id="manageDrivesBtn">
+                    💼 Manage Campus Drives
+                </button>
+            </div>
+        </section>
+
+        <!-- Clean 4-Stat Overview Grid (Proctoring Flags Chart Completely Removed) -->
+        <section class="stats-overview-grid">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="title">Active Drives</span>
+                    <span class="stat-icon blue">💼</span>
+                </div>
+                <div class="stat-value">2</div>
+                <div class="stat-footer">470 Registrations Total</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="title">Market Alerts</span>
+                    <span class="stat-icon orange">⚡</span>
+                </div>
+                <div class="stat-value text-orange">2</div>
+                <div class="stat-footer">Pending AI Approvals</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="title">RAG Knowledge Chunks</span>
+                    <span class="stat-icon blue">📄</span>
+                </div>
+                <div class="stat-value">4</div>
+                <div class="stat-footer blue-link">Vector Store Operational</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="title">Avg Readiness</span>
+                    <span class="stat-icon green">📈</span>
+                </div>
+                <div class="stat-value text-green">88.5%</div>
+                <div class="stat-footer">KIT TY CSBS Batch</div>
+            </div>
+        </section>
+
+        <!-- Balanced 2-Column Workspace (Live Proctoring Supervisor Chart Removed) -->
+        <div class="workspace-grid">
+            
+            <!-- Left Column: Primary Actions & Drives -->
+            <div class="workspace-col-left">
+                
+                <!-- Faculty AI Ingestion Engine Card -->
+                <div class="card ai-ingestion-card">
+                    <div class="ingestion-floating-badge">
+                        ✨ Google Gemini 2.0 Flash Ingestion AI
+                    </div>
+                    <div class="card-header-with-select">
+                        <div class="ingestion-title-group">
+                            <span class="sparkle-circle-icon">✨</span>
+                            <div>
+                                <h2>Faculty AI Ingestion Engine <span class="gemini-tag">GEMINI POWERED</span></h2>
+                                <p>Paste unstructured syllabus notes or job postings — AI extracts questions & RAG chunks.</p>
+                            </div>
+                        </div>
+                        <select class="drive-select-dropdown" id="ingestionDriveSelect">
+                            <option value="tcs">TCS (Digital / Ninja)</option>
+                            <option value="persistent">Persistent Systems (SPE)</option>
+                            <option value="google">Google India (Software Engineer)</option>
+                        </select>
+                    </div>
+
+                    <div class="prompt-box-wrapper">
+                        <textarea id="aiPromptInput" class="ai-textarea" rows="4" placeholder="Paste Job Description, Hiring Syllabus, or Exam Topics here (e.g. 'TCS 2026 has added 15% more questions on Data Structures and memory optimization...')"></textarea>
+                    </div>
+
+                    <div class="preset-chips-row">
+                        <span class="presets-label">PRESETS:</span>
+                        <button class="preset-chip" onclick="applyPreset('tcs')">TCS 2026 Hiring Shift</button>
+                        <button class="preset-chip" onclick="applyPreset('persistent')">Persistent Systems Core CS</button>
+                        <button class="preset-chip" onclick="applyPreset('infosys')">Infosys DSE Syllabus</button>
+                    </div>
+
+                    <div class="ingestion-footer-row">
+                        <span class="auto-pop-text">Auto-populates: MCQ Questions • Coding Specs • Eligibility Rules • RAG Store</span>
+                        <button class="btn btn-purple-gradient" id="runIngestionBtn">
+                            🚀 Run AI Ingestion
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Active Campus Placement Drives -->
+                <div class="card active-drives-card">
+                    <div class="card-section-header">
+                        <div class="sec-title"><span class="icon">💼</span> Active Campus Placement Drives</div>
+                        <a href="#all-drives" class="sec-link">View All & Create &rarr;</a>
+                    </div>
+
+                    <div class="drives-list">
+                        <!-- Drive 1 -->
+                        <div class="drive-item-row">
+                            <div class="drive-icon-box">🏢</div>
+                            <div class="drive-details">
+                                <div class="drive-title-line">
+                                    <span class="company-name">Tata Consultancy Services (TCS)</span>
+                                    <span class="status-tag active">ACTIVE</span>
+                                </div>
+                                <div class="drive-sub">TCS Digital / Ninja Campus Drive 2026 • 7.5 LPA (Avg)</div>
+                                <div class="drive-eligibility">Eligibility: Min CGPA 6.5 | CSBS, CSE, IT, ENTC, Electrical</div>
+                            </div>
+                            <div class="drive-stats-right">
+                                <span class="reg-count">218 <small>registered</small></span>
+                                <span class="eval-rounds">4 Evaluated Rounds</span>
+                            </div>
+                        </div>
+
+                        <!-- Drive 2 -->
+                        <div class="drive-item-row">
+                            <div class="drive-icon-box orange">⚡</div>
+                            <div class="drive-details">
+                                <div class="drive-title-line">
+                                    <span class="company-name">Persistent Systems</span>
+                                    <span class="status-tag active">ACTIVE</span>
+                                </div>
+                                <div class="drive-sub">Software Product Engineer (SPE) • 8.5 LPA</div>
+                                <div class="drive-eligibility">Eligibility: Min CGPA 7 | CSBS, CSE, IT</div>
+                            </div>
+                            <div class="drive-stats-right">
+                                <span class="reg-count">164 <small>registered</small></span>
+                                <span class="eval-rounds">3 Evaluated Rounds</span>
+                            </div>
+                        </div>
+
+                        <!-- Drive 3 -->
+                        <div class="drive-item-row">
+                            <div class="drive-icon-box blue">🌐</div>
+                            <div class="drive-details">
+                                <div class="drive-title-line">
+                                    <span class="company-name">Google India</span>
+                                    <span class="status-tag draft">DRAFT</span>
+                                </div>
+                                <div class="drive-sub">Software Engineer - Early Career 2026 • 32.0 LPA</div>
+                                <div class="drive-eligibility">Eligibility: Min CGPA 8.5 | CSBS, CSE, IT</div>
+                            </div>
+                            <div class="drive-stats-right">
+                                <span class="reg-count">88 <small>registered</small></span>
+                                <span class="eval-rounds">2 Evaluated Rounds</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Right Column: Market AI Intelligence -->
+            <div class="workspace-col-right">
+                
+                <div class="card market-alerts-card">
+                    <div class="card-section-header">
+                        <div class="sec-title"><span class="icon orange">✨</span> AI Market Trend Alerts</div>
+                        <span class="approval-badge">1-Click Approvals</span>
+                    </div>
+                    <p class="sec-subtext">AI agents periodically scan recruiter patterns and propose instant updates to syllabus, questions, or evaluation rubrics.</p>
+
+                    <div class="alerts-wrapper">
+                        <!-- Alert 1 -->
+                        <div class="alert-box-item" id="alert-1">
+                            <div class="alert-item-header">
+                                <span class="alert-comp">Tata Consultancy Services (TCS)</span>
+                                <span class="conf-badge">97% Confidence</span>
+                            </div>
+                            <div class="alert-headline">Auto-Upgrade TCS Digital Coding Pool to Include TAC Verification</div>
+                            <p class="alert-desc">TCS Digital 2026 exam benchmarks demonstrate a 25% higher candidate rejection rate for unoptimized intermediate memory code. Recruiter rubric prioritizes TAC...</p>
+                            <div class="alert-action-buttons">
+                                <button class="btn btn-light-sm" onclick="rejectAlert('alert-1')">Reject</button>
+                                <button class="btn btn-green-sm" onclick="approveAlert('alert-1')">✓ Approve & Sync</button>
+                            </div>
+                        </div>
+
+                        <!-- Alert 2 -->
+                        <div class="alert-box-item" id="alert-2">
+                            <div class="alert-item-header">
+                                <span class="alert-comp">Persistent Systems</span>
+                                <span class="conf-badge">93% Confidence</span>
+                            </div>
+                            <div class="alert-headline">Stricter Memory & System Architecture Thresholds</div>
+                            <p class="alert-desc">Persistent remote screening drives have updated their evaluation standards, prioritizing multi-threaded logic and optimized SQL joins.</p>
+                            <div class="alert-action-buttons">
+                                <button class="btn btn-light-sm" onclick="rejectAlert('alert-2')">Reject</button>
+                                <button class="btn btn-green-sm" onclick="approveAlert('alert-2')">✓ Approve & Sync</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-outline-full mt-16" id="openMarketStoreBtn">
+                        Open Full Market Intelligence & RAG Store &rarr;
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Bar -->
+    <footer class="admin-footer">
+        <div class="footer-left">
+            <strong>PlacementPro</strong> • Department of Computer Science & Business Systems (CSBS)
+        </div>
+        <div class="footer-right">
+            Powered by <strong class="brand-blue-text">Google Gemini AI Agents</strong> & RAG Knowledge Engine
+        </div>
+    </footer>
+
+    <script src="/js/admindash.js"></script>
+</body>
+</html>

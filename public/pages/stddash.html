@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlacementPro - Student Dashboard</title>
+    <link rel="stylesheet" href="/css/stddash.css">
+
+    <!-- Auth Validation Guard & Back-Button BF-Cache Guard -->
+    <script>
+        function checkAuth() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.replace('/login');
+            }
+        }
+
+        // 1. Immediately validate token before page render
+        checkAuth();
+
+        // 2. Prevent back-button viewing after logout (Cache Re-validation)
+        window.addEventListener('pageshow', (event) => {
+            if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+                checkAuth();
+            }
+        });
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header class="navbar">
+        <div class="nav-left">
+            <div class="brand">
+                <span class="brand-icon">💼</span>
+                <span class="brand-name">PlacementPro</span>
+            </div>
+        </div>
+
+        <nav class="nav-links">
+            <a href="/dashboard" class="nav-item active">Home</a>
+            <div class="dropdown">
+                <a href="#" class="nav-item">Placement Prep <span class="arrow">⌄</span></a>
+            </div>
+            <a href="#" class="nav-item">Practice</a>
+            <a href="#" class="nav-item">Companies</a>
+            <a href="#" class="nav-item">Analytics</a>
+            <a href="#" class="nav-item">Leaderboard</a>
+        </nav>
+
+        <div class="nav-right">
+            <button class="icon-btn notification-btn">
+                <span>🔔</span>
+                <span class="dot"></span>
+            </button>
+            <button class="icon-btn theme-toggle" id="themeToggleBtn">🌙</button>
+
+            <!-- Profile Widget & Dropdown Menu -->
+            <div class="profile-container" id="profileDropdownContainer">
+                <div class="user-profile" id="profileTrigger">
+                    <div class="avatar" id="navAvatar">AY</div>
+                    <div class="user-info">
+                        <span class="user-name" id="navUserName">Aaryan Yerudkar</span>
+                        <span class="user-role">Student Mode</span>
+                    </div>
+                </div>
+
+                <div class="profile-menu" id="profileMenu">
+                    <div class="menu-header">
+                        <strong id="menuUserName">Aaryan Yerudkar</strong>
+                        <p id="menuUserEmail">aaryanyerudkar@gmail.com</p>
+                    </div>
+                    <div class="menu-divider"></div>
+                    <a href="/pages/stdprofile.html" class="menu-item">
+                        <span class="icon">👤</span> Profile & Portfolio
+                    </a>
+                    <a href="#" class="menu-item">
+                        <span class="icon">⚙</span> Account Settings
+                    </a>
+                    <div class="menu-divider"></div>
+                    <a href="javascript:void(0)" onclick="handleStudentLogout()" class="menu-item logout" id="logoutBtn">
+                        <span class="icon">🚪</span> Log Out
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="dashboard-container">
+
+        <!-- Top Section Grid -->
+        <div class="grid-top">
+            <section class="card welcome-card">
+                <div class="welcome-header">
+                    <div class="meta-tags">
+                        <span class="badge blue-badge">✨ Student Placement Portal</span>
+                        <span class="sub-text">CS & IT Engineering • Batch 2026</span>
+                    </div>
+                </div>
+                
+                <div class="welcome-body">
+                    <div class="avatar-large" id="bodyAvatar">AY</div>
+                    <div class="welcome-text">
+                        <h1 id="welcomeHeading">Welcome back, Aaryan Yerudkar</h1>
+                        <p>Your placement journey is on track. Focus today on <strong>Dynamic Programming</strong> and <strong>Mock Technical Interviews</strong> to reach your target CTC.</p>
+                    </div>
+                    <div class="weekly-goal-circle">
+                        <svg viewBox="0 0 36 36" class="circular-chart blue">
+                            <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            <path class="circle" stroke-dasharray="75, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            <text x="18" y="20.35" class="percentage">75%</text>
+                        </svg>
+                        <span class="goal-label">WEEKLY GOAL</span>
+                    </div>
+                </div>
+
+                <div class="welcome-actions">
+                    <button class="btn btn-primary">▶ Continue Learning Journey</button>
+                    <button class="btn btn-secondary">🤖 Launch AI Mock Interview</button>
+                </div>
+            </section>
+
+            <section class="card learning-widget">
+                <div class="card-header-sm">
+                    <span class="label-uppercase">📖 CONTINUE LEARNING</span>
+                    <span class="badge grey-badge">Module 4 of 6</span>
+                </div>
+                <h2>Data Structures & Algorithms</h2>
+                <p class="subtitle">Graph Algorithms & Breadth-First Search (BFS)</p>
+
+                <div class="progress-block">
+                    <div class="progress-labels">
+                        <span>Module Progress</span>
+                        <span class="progress-val">72%</span>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div class="progress-fill" style="width: 72%;"></div>
+                    </div>
+                    <div class="progress-footer">
+                        <span>18 / 25 Topics Completed</span>
+                        <span>Est. 45 mins left</span>
+                    </div>
+                </div>
+
+                <button class="btn btn-light-blue w-full">Continue Practice &rarr;</button>
+            </section>
+        </div>
+
+        <!-- Stat Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-info">
+                    <span class="stat-label">Readiness Score</span>
+                    <span class="stat-value">88%</span>
+                    <span class="stat-trend positive">↗ +4% this week</span>
+                </div>
+                <div class="stat-icon blue-bg">🎗</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-info">
+                    <span class="stat-label">Modules Completed</span>
+                    <span class="stat-value">18 / 25</span>
+                    <span class="stat-trend positive">↗ 72% completed</span>
+                </div>
+                <div class="stat-icon green-bg">✅</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-info">
+                    <span class="stat-label">Problems Solved</span>
+                    <span class="stat-value">142</span>
+                    <span class="stat-trend positive">↗ 12 solved this week</span>
+                </div>
+                <div class="stat-icon orange-bg">🎯</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-info">
+                    <span class="stat-label">Analytics</span>
+                    <span class="stat-value">92%</span>
+                    <span class="stat-trend positive">↗ Insights updated</span>
+                </div>
+                <div class="stat-icon purple-bg">📈</div>
+            </div>
+        </div>
+
+        <!-- Quick Actions Launchpad -->
+        <div class="section-header">
+            <h2>⚡ Quick Actions Launchpad</h2>
+            <a href="#" class="link-more">View Full Syllabus &rsaquo;</a>
+        </div>
+
+        <div class="launchpad-grid">
+            <div class="launchpad-card"><div class="lp-icon blue-icon">🤖</div><div class="lp-details"><h3>AI Mock Interview</h3><p>Live voice & code assessment</p></div><span class="chevron">&rsaquo;</span></div>
+            <div class="launchpad-card"><div class="lp-icon green-icon">&lt;/&gt;</div><div class="lp-details"><h3>LeetCode Arena</h3><p>Top 150 DS & Algo problems</p></div><span class="chevron">&rsaquo;</span></div>
+            <div class="launchpad-card"><div class="lp-icon orange-icon">🧠</div><div class="lp-details"><h3>Aptitude Practice</h3><p>Quantitative & logical speed tests</p></div><span class="chevron">&rsaquo;</span></div>
+            <div class="launchpad-card"><div class="lp-icon purple-icon">📄</div><div class="lp-details"><h3>Resume AI Analyzer</h3><p>ATS keyword & match score check</p></div><span class="chevron">&rsaquo;</span></div>
+            <div class="launchpad-card"><div class="lp-icon magenta-icon">🎙</div><div class="lp-details"><h3>Versant Speech Test</h3><p>Fluency & voice evaluation</p></div><span class="chevron">&rsaquo;</span></div>
+            <div class="launchpad-card"><div class="lp-icon teal-icon">🏢</div><div class="lp-details"><h3>Company Questions</h3><p>Target Google, Amazon, TCS</p></div><span class="chevron">&rsaquo;</span></div>
+        </div>
+
+        <!-- Two Column Main Body -->
+        <div class="main-body-split">
+            <!-- Left Side Feed -->
+            <div class="feed-column">
+                <div class="section-header-row">
+                    <h2>🤖 AI Recommendations for You</h2>
+                    <button class="btn-outline-sm">🛡 Live Diagnostics</button>
+                </div>
+
+                <div class="card recommendation-card">
+                    <div class="rec-icon-box yellow-bg">💡</div>
+                    <div class="rec-content">
+                        <span class="badge grey-badge">Data Structures</span>
+                        <h3>Boost Dynamic Programming Speed</h3>
+                        <p>Your accuracy in DP problems is 62%. Practice 5 Memoization pattern questions to reach target threshold.</p>
+                    </div>
+                    <button class="btn btn-secondary">Practice DP &rarr;</button>
+                </div>
+
+                <div class="card recommendation-card">
+                    <div class="rec-icon-box purple-bg">🗣</div>
+                    <div class="rec-content">
+                        <span class="badge grey-badge">Communication</span>
+                        <h3>Complete Versant Voice Practice</h3>
+                        <p>Amazon and TCS require strong English fluency. Take a 15-minute voice assessment to evaluate pronunciation and fluency.</p>
+                    </div>
+                    <button class="btn btn-secondary">Start Versant &rarr;</button>
+                </div>
+
+                <div class="card recommendation-card">
+                    <div class="rec-icon-box blue-bg">📄</div>
+                    <div class="rec-content">
+                        <span class="badge grey-badge">Resume Analyzer</span>
+                        <h3>Optimize Resume for ATS Screening</h3>
+                        <p>Your ATS match score for SDE roles is 84%. Add "Microservices Architecture" and "Redis Caching" keywords.</p>
+                    </div>
+                    <button class="btn btn-secondary">Analyze Resume &rarr;</button>
+                </div>
+
+                <!-- Recommended Target Companies -->
+                <div class="section-header">
+                    <h2>🏢 Recommended Target Companies</h2>
+                    <a href="#" class="link-more">View All &rsaquo;</a>
+                </div>
+
+                <div class="company-grid-card">
+                    <div class="company-box">
+                        <div class="company-top">
+                            <div class="company-logo">G</div>
+                            <div>
+                                <h3>Google</h3>
+                                <p>Software Development Engineer</p>
+                            </div>
+                            <span class="badge green-badge">96% Match</span>
+                        </div>
+                        <div class="company-specs">
+                            <span>Target CTC: <strong>28 - 45 LPA</strong></span>
+                            <span>Difficulty: <strong class="text-orange">Hard</strong></span>
+                        </div>
+                        <div class="tech-tags">
+                            <span>C++</span><span>Python</span><span>DS & Algo</span><span>System Design</span>
+                        </div>
+                        <button class="btn btn-secondary w-full">Start Google Prep Kit</button>
+                    </div>
+
+                    <div class="company-box">
+                        <div class="company-top">
+                            <div class="company-logo amazon-logo">A</div>
+                            <div>
+                                <h3>Amazon</h3>
+                                <p>SDE-1 (AWS & Retail)</p>
+                            </div>
+                            <span class="badge green-badge">92% Match</span>
+                        </div>
+                        <div class="company-specs">
+                            <span>Target CTC: <strong>22 - 32 LPA</strong></span>
+                            <span>Difficulty: <strong class="text-orange">Hard</strong></span>
+                        </div>
+                        <div class="tech-tags">
+                            <span>Java</span><span>Trees & Graphs</span><span>OOP</span><span>Leadership Principles</span>
+                        </div>
+                        <button class="btn btn-secondary w-full">Start Amazon Prep Kit</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side Column -->
+            <div class="sidebar-column">
+                <div class="section-header-row">
+                    <h2>📅 Upcoming Interviews</h2>
+                    <span class="badge blue-badge">3 Scheduled</span>
+                </div>
+
+                <div class="card interview-card">
+                    <div class="interview-meta">
+                        <span class="badge orange-bg-badge">Today • 04:00 PM</span>
+                        <span class="time-left">⏱ 45 mins</span>
+                    </div>
+                    <div class="interview-details">
+                        <div class="company-icon-box">🏢</div>
+                        <div>
+                            <h3>Amazon Mock Technical Interview</h3>
+                            <p>Data Structures & System Design...</p>
+                        </div>
+                    </div>
+                    <div class="interview-footer">
+                        <span>🤖 AI Interviewer (Gemini)</span>
+                        <button class="btn btn-secondary-sm">Join Room</button>
+                    </div>
+                </div>
+
+                <div class="card interview-card">
+                    <div class="interview-meta">
+                        <span class="badge blue-bg-badge">Tomorrow • 10:00 AM</span>
+                        <span class="time-left">⏱ 90 mins</span>
+                    </div>
+                    <div class="interview-details">
+                        <div class="company-icon-box tcs-box">T</div>
+                        <div>
+                            <h3>TCS Digital Mock Test</h3>
+                            <p>Aptitude & Speed Coding Round...</p>
+                        </div>
+                    </div>
+                    <div class="interview-footer">
+                        <span>💻 Online Assessment Engine</span>
+                        <button class="btn btn-secondary-sm">Join Room</button>
+                    </div>
+                </div>
+
+                <div class="card interview-card">
+                    <div class="interview-meta">
+                        <span class="badge grey-bg">Aug 18, 2026 • 02:30 PM</span>
+                        <span class="time-left">⏱ 20 mins</span>
+                    </div>
+                    <div class="interview-details">
+                        <div class="company-icon-box">🗣</div>
+                        <div>
+                            <h3>Versant Voice Assessment</h3>
+                            <p>Spoken English & Fluency</p>
+                        </div>
+                    </div>
+                    <div class="interview-footer">
+                        <span>🎙 Automated Speech Engine</span>
+                        <button class="btn btn-secondary-sm">Join Room</button>
+                    </div>
+                </div>
+
+                <!-- Overview Card -->
+                <div class="card overview-card">
+                    <div class="overview-header">
+                        <h3>Overview</h3>
+                        <span class="badge green-outline">Updated today</span>
+                    </div>
+                    <span class="sub-label">YOUR READINESS</span>
+                    <h4>You're making progress</h4>
+
+                    <div class="readiness-gauge-box">
+                        <div class="gauge-circle">
+                            <span class="gauge-val">82</span>
+                            <span class="gauge-sub">/100</span>
+                        </div>
+                        <div class="gauge-info">
+                            <p><strong>Keep going</strong></p>
+                            <p class="small-text">Complete one interview simulation to improve your score.</p>
+                        </div>
+                    </div>
+                    <div class="progress-bar-bg mb-12">
+                        <div class="progress-fill" style="width: 82%;"></div>
+                    </div>
+                    <div class="next-up-box">
+                        <div>
+                            <span class="label-tiny">NEXT UP</span>
+                            <p><strong>Technical interview practice</strong></p>
+                            <span class="small-text">30 minutes • tailored to your target...</span>
+                        </div>
+                        <span class="arrow-right">&rsaquo;</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="/js/stddash.js"></script>
+</body>
+</html>

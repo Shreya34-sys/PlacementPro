@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - PlacementPro</title>
+    <link rel="stylesheet" href="/css/adminlogin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="admin-card">
+        <div class="admin-icon-wrapper">
+            <div class="shield-icon">🛡️</div>
+        </div>
+        
+        <h2>Admin Login</h2>
+        <p class="admin-subtitle">PlacementPro Administration</p>
+
+        <!-- Admin Password Login Form -->
+        <form id="adminLoginForm" novalidate>
+            <div class="form-group">
+                <label>Admin Email</label>
+                <input type="email" class="admin-input" id="adminEmail" placeholder="abc@gmail.com" required>
+            </div>
+
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" class="admin-input" id="adminPassword" placeholder="Enter password" required>
+            </div>
+
+            <button type="submit" class="btn-admin-submit">
+                <span>🔐</span> Login with Password
+            </button>
+        </form>
+
+        <div class="divider"><span>OR</span></div>
+
+        <!-- Magic Link Trigger Button -->
+        <button type="button" class="btn-magic-link" id="btnMagicLink">
+            ✉ Login with Magic Email Link
+        </button>
+
+        <div class="admin-footer">
+            <a href="/login">&larr; Back to Student Login</a>
+        </div>
+    </div>
+
+    <script src="/js/app.js"></script>
+    <script src="/js/auth.js"></script>
+</body>
+</html>

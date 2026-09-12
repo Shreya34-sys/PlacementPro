@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlacementPro - User Profile & Resume Credentials</title>
+    <link rel="stylesheet" href="/css/stdprofile.css">
+
+    <script>
+        // Check token immediately on load
+        function checkAuth() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.replace('/login');
+            }
+        }
+
+        checkAuth();
+
+        // Prevent Back-Forward Cache (BF Cache) unauthorized access
+        window.addEventListener('pageshow', function (event) {
+            if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+                checkAuth();
+            }
+        });
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Top Navigation Header -->
+    <header class="navbar">
+        <div class="nav-left">
+            <div class="brand">
+                <span class="brand-icon">💼</span>
+                <span class="brand-name">PlacementPro</span>
+            </div>
+        </div>
+
+        <div class="nav-right">
+            <a href="/dashboard" class="btn btn-secondary-sm nav-btn-back">
+                &larr; Back to Dashboard
+            </a>
+            <button class="btn btn-secondary-sm logout-btn" id="logoutBtn">
+                🚪 Logout
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="dashboard-container">
+        <div class="profile-page-header">
+            <h2>User Profile & Resume Credentials</h2>
+            <p>Update your academic metrics, personal contact information, and placement resume.</p>
+        </div>
+
+        <div class="profile-grid">
+            <!-- Left Panel: Profile Specs Form -->
+            <div class="card profile-form-card">
+                <div class="card-title"><span class="icon">👤</span> Profile Specifications</div>
+
+                <form id="profileForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="profName">Full Name</label>
+                            <input type="text" id="profName" placeholder="Loading name..." required>
+                        </div>
+                        <div class="form-group">
+                            <label for="profEmail">Email Address</label>
+                            <input type="email" id="profEmail" placeholder="Loading email..." disabled>
+                        </div>
+                    </div>
+
+                    <div class="form-row-3">
+                        <div class="form-group">
+                            <label for="profDept">Department / Branch</label>
+                            <select id="profDept">
+                                <option value="Computer Science">Computer Science</option>
+                                <option value="Information Technology">Information Technology</option>
+                                <option value="AI & Data Science">AI & Data Science</option>
+                                <option value="Electronics & Telecom">Electronics & Telecom</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="profDivision">Division</label>
+                            <input type="text" id="profDivision" placeholder="e.g. A" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="profBatch">Batch Year</label>
+                            <input type="number" id="profBatch" placeholder="2026" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="profCgpa">CGPA Grade</label>
+                            <input type="text" id="profCgpa" placeholder="8.8" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="profPhone">Phone Number</label>
+                        <input type="text" id="profPhone" placeholder="9876543210" required>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary" id="saveBtn">💾 Save Profile Changes</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Right Panel: Resume & Activity Heatmap -->
+            <div class="right-profile-panel">
+                <!-- Resume Card -->
+                <div class="card resume-card">
+                    <div class="card-title"><span class="icon">📄</span> Placement Resume</div>
+                    <p class="card-subtext">Upload your latest resume (PDF format) to apply for campus job drives.</p>
+
+                    <div class="file-upload-box">
+                        <label for="resumeFile" class="file-label">Browse PDF</label>
+                        <span class="file-name" id="fileNameDisplay">No file chosen</span>
+                        <input type="file" id="resumeFile" accept=".pdf" class="hidden-input">
+                    </div>
+
+                    <button type="button" class="btn btn-primary w-full" id="uploadResumeBtn">☁ Upload & Set Active Resume</button>
+                </div>
+
+                <!-- Activity Heatmap Card -->
+                <div class="card activity-card">
+                    <div class="activity-header">
+                        <span class="fire-icon">🔥</span>
+                        <div>
+                            <h3>Preparation Activity</h3>
+                            <p class="activity-subtitle">245 activities completed in 2026</p>
+                        </div>
+                    </div>
+
+                    <div class="calendar-widget">
+                        <div class="cal-header">
+                            <button type="button" class="cal-nav">&larr; Prev</button>
+                            <span class="month-title">September 2026</span>
+                            <button type="button" class="cal-nav">Next &rarr;</button>
+                        </div>
+                        <div class="cal-days">
+                            <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+                        </div>
+                        <div class="cal-grid">
+                            <div class="day empty"></div>
+                            <div class="day level-1">1</div>
+                            <div class="day level-3">2</div>
+                            <div class="day level-1">3</div>
+                            <div class="day level-1">4</div>
+                            <div class="day level-3">5</div>
+                            <div class="day level-1">6</div>
+                            <div class="day level-1">7</div>
+                            <div class="day level-3">8</div>
+                            <div class="day level-2">9</div>
+                            <div class="day level-1">10</div>
+                            <div class="day level-4">11</div>
+                            <div class="day level-2">12</div>
+                            <div class="day level-1">13</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="/js/stdprofile.js"></script>
+</body>
+</html>

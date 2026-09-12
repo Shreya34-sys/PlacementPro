@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Portal Login - PlacementPro</title>
+    <link rel="stylesheet" href="/css/auth.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="auth-container">
+        <!-- Left Side Banner -->
+        <div class="auth-banner">
+            <div class="brand">
+                <span class="brand-icon">💼</span>
+                <span class="brand-name">PlacementPro</span>
+            </div>
+            <div class="banner-content">
+                <h1>Supercharge Your Campus Placement Journey</h1>
+                <p>Access company question banks, practice AI mock interviews, track daily progress, and connect directly with top recruiters.</p>
+            </div>
+            <div class="banner-footer">
+                <span>© 2026 PlacementPro Inc.</span>
+                <span>Student Career Portal</span>
+            </div>
+        </div>
+
+        <!-- Right Side Login Form -->
+        <div class="auth-form-panel">
+            <h2>Student Portal Login</h2>
+            <p class="form-subtitle">Enter your college credentials to access your dashboard</p>
+
+            <form id="loginForm" novalidate>
+                <div class="form-group">
+                    <label>College Email / Email</label>
+                    <div class="input-box">
+                        <span>✉</span>
+                        <input type="email" id="loginEmail" placeholder="e.g. alex.johnson@student.edu" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="label-row">
+                        <label>Password</label>
+                        <a href="#" class="forgot-link">Forgot Password?</a>
+                    </div>
+                    <div class="input-box">
+                        <span>🔒</span>
+                        <input type="password" id="loginPassword" placeholder="Enter password (min 6 chars)" required>
+                        <!-- Keep type="button" so clicking this button doesn't submit the form -->
+                        <button type="button" class="eye-btn">👁</button>
+                    </div>
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="remember">
+                    <label for="remember">Remember me on this device</label>
+                </div>
+
+                <button type="submit" class="btn-submit">Log In to Dashboard &rarr;</button>
+            </form>
+
+            <div class="divider"><span>OR</span></div>
+
+            <!-- Replace your current btn-google line with this -->
+             <a href="/api/auth/google" class="btn-google" style="text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                 <img src="https://www.svgrepo.com/show/475656/google-color.svg" width="18" alt="Google">
+                 Continue with Google
+             </a>
+
+            <div class="form-footer" style="margin-top: 24px;">
+                Don't have an account? <a href="/signup">Register Now</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/app.js"></script>
+    <script src="/js/auth.js"></script>
+</body>
+</html>
