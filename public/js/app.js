@@ -41,6 +41,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
+
+// const { GoogleGenAI } = require('@google/genai');
+// require('dotenv').config();
+
+// const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+
+// async function testKey() {
+//   try {
+//     const response = await ai.models.generateContent({
+//       model: 'gemini-2.5-flash',
+//       contents: 'Respond with "Key is working!" if you receive this message.',
+//     });
+//     console.log('SUCCESS:', response.text);
+//   } catch (err) {
+//     console.error('API ERROR:', err.message);
+//   }
+// }
+
+//testKey();
+
 // Automates Authenticated API Requests (apiRequest function):
 // Instead of writing long fetch() code on every single web page, this helper function automatically grabs the saved JWT token from browser storage, attaches it to the request header (Authorization: Bearer <token>), and sends data to the backend.
 

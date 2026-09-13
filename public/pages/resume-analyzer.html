@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlacementPro - Resume AI Analyzer</title>
+    <link rel="stylesheet" href="/css/stddash.css">
+    <link rel="stylesheet" href="/css/resume-analyzer.css">
+
+    <script>
+        function checkAuth() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.replace('/login');
+            }
+        }
+
+        // 1. Immediately validate token before page render
+        checkAuth();
+
+        // 2. Prevent back-button viewing after logout (Cache Re-validation)
+        window.addEventListener('pageshow', (event) => {
+            if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+                checkAuth();
+            }
+        });
+    </script>
+
+    
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="nav-left">
+            <div class="brand">
+                <span class="brand-icon">💼</span>
+                <span class="brand-name">PlacementPro</span>
+            </div>
+        </div>
+        <nav class="nav-links">
+            <a href="/dashboard" class="nav-item">Home</a>
+            <a href="/resume-analyzer" class="nav-item active">Resume AI</a>
+        </nav>
+    </header>
+
+    <main class="dashboard-container">
+        <div class="section-header">
+            <h2>📄 ATS Resume Analyzer & Optimizer</h2>
+            <p>Upload your resume to check ATS compatibility, extract missing skills, and get an optimized 100% matched version.</p>
+        </div>
+
+        <div class="analyzer-grid">
+            <!-- Upload Panel -->
+            <section class="card upload-card">
+                <h3>Upload Document</h3>
+                <form id="resumeForm">
+                    <div class="drop-zone" id="dropZone">
+                        <span class="upload-icon">📁</span>
+                        <p>Drag & Drop your Resume (PDF / DOCX)</p>
+                        <input type="file" id="resumeFile" name="resume" accept=".pdf,.docx" required hidden>
+                        <button type="button" class="btn btn-secondary-sm" onclick="document.getElementById('resumeFile').click()">Browse File</button>
+                        <span id="fileName" class="file-name"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="jobDescription">Target Job Description (Optional)</label>
+                        <textarea id="jobDescription" placeholder="Paste the job requirements here for direct keyword matching..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-full" id="analyzeBtn">🤖 Analyze Resume</button>
+                </form>
+            </section>
+
+            <!-- Results Panel -->
+            <section class="card results-card" id="resultsCard">
+                <div class="card-header-sm">
+                    <h3>ATS Assessment Output</h3>
+                    <span class="badge blue-badge" id="overallScoreBadge">Score: --%</span>
+                </div>
+
+                <div class="metrics-grid">
+                    <div class="metric-box">
+                        <span class="metric-val" id="atsScore">0%</span>
+                        <span class="metric-label">ATS Compatibility</span>
+                    </div>
+                    <div class="metric-box">
+                        <span class="metric-val" id="skillsMatch">0%</span>
+                        <span class="metric-label">Skills Match</span>
+                    </div>
+                    <div class="metric-box">
+                        <span class="metric-val" id="keywordMatch">0%</span>
+                        <span class="metric-label">Keyword Match</span>
+                    </div>
+                </div>
+
+                <div class="analysis-details">
+                    <h4>Missing Critical Skills</h4>
+                    <ul class="tag-list danger" id="missingSkills">
+                        <li><span>--</span></li>
+                    </ul>
+
+                    <h4>Improvement Suggestions</h4>
+                    <ul class="suggestion-list" id="suggestionsList">
+                        <li>Upload a file to view suggestions</li>
+                    </ul>
+
+                    <h4>Formatting & General Feedback</h4>
+                    <ul class="suggestion-list" id="generalFeedback">
+                        <li>No feedback generated yet.</li>
+                    </ul>
+                </div>
+
+                <div class="action-footer">
+                    <button class="btn btn-light-blue w-full" id="downloadOptimizedBtn" disabled>⚡ Get 100% Optimized Resume Text</button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="/js/resume-analyzer.js"></script>
+</body>
+</html>

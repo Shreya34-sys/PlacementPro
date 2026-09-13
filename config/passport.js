@@ -58,8 +58,84 @@
 
 
 // config/passport.js
+// const passport = require('passport');
+// const GoogleStrategy = require('passport-google-oauth20').Strategy;
+// const User = require('../models/userModel');
+// const nodemailer = require('nodemailer');
+
+// // Sets up email sending engine using standard Gmail SMTP credentials
+// const transporter = nodemailer.createTransport({
+//     service: 'gmail',
+//     auth: {
+//         user: process.env.EMAIL_USER,
+//         pass: process.env.EMAIL_PASS
+//     }
+// });
+
+// passport.use(new GoogleStrategy({
+//     clientID: process.env.GOOGLE_CLIENT_ID,
+//     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+//     // Dynamic callback URL fallback using process.env.PORT
+//     callbackURL: process.env.GOOGLE_CALLBACK_URL || `http://localhost:${process.env.PORT || 5000}/api/auth/google/callback`
+// }, async (accessToken, refreshToken, profile, done) => {
+//     try {
+//         const email = profile.emails && profile.emails[0] ? profile.emails[0].value : null;
+        
+//         if (!email) {
+//             return done(new Error("No email found in Google profile"), null);
+//         }
+
+//         let user = await User.findByEmail(email);
+
+//         if (!user) {
+//             // Register brand new student account in MySQL
+//             user = await User.createGoogleUser({
+//                 fullName: profile.displayName,
+//                 email: email,
+//                 googleId: profile.id
+//             });
+
+//             // Send welcome email asynchronously without blocking authentication
+//             if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
+//                 transporter.sendMail({
+//                     from: `"PlacementPro" <${process.env.EMAIL_USER}>`,
+//                     to: email,
+//                     subject: 'Welcome to PlacementPro!',
+//                     text: `Hello ${profile.displayName},\n\nWelcome to PlacementPro! Please login to access your dashboard.\n\nBest Regards,\nPlacementPro Team`
+//                 }).catch(err => console.error('Welcome email failed to send:', err));
+//             }
+//         }
+
+//         return done(null, user);
+//     } catch (err) {
+//         return done(err, null);
+//     }
+// }));
+
+// // Required session serialization hooks for Passport initialization
+// passport.serializeUser((user, done) => {
+//     done(null, user.id || user);
+// });
+
+// passport.deserializeUser((id, done) => {
+//     done(null, { id });
+// });
+
+// module.exports = passport;
+
+
+
+
+
+
+
+
+
+
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const JwtStrategy = require('passport-jwt').Strategy; // 1. Import JwtStrategy
+const ExtractJwt = require('passport-jwt').ExtractJwt; // 2. Import ExtractJwt
 const User = require('../models/userModel');
 const nodemailer = require('nodemailer');
 
@@ -72,10 +148,10 @@ const transporter = nodemailer.createTransport({
     }
 });
 
+// --- GOOGLE STRATEGY ---
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    // Dynamic callback URL fallback using process.env.PORT
     callbackURL: process.env.GOOGLE_CALLBACK_URL || `http://localhost:${process.env.PORT || 5000}/api/auth/google/callback`
 }, async (accessToken, refreshToken, profile, done) => {
     try {
@@ -88,14 +164,12 @@ passport.use(new GoogleStrategy({
         let user = await User.findByEmail(email);
 
         if (!user) {
-            // Register brand new student account in MySQL
             user = await User.createGoogleUser({
                 fullName: profile.displayName,
                 email: email,
                 googleId: profile.id
             });
 
-            // Send welcome email asynchronously without blocking authentication
             if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
                 transporter.sendMail({
                     from: `"PlacementPro" <${process.env.EMAIL_USER}>`,
@@ -112,7 +186,28 @@ passport.use(new GoogleStrategy({
     }
 }));
 
-// Required session serialization hooks for Passport initialization
+// --- JWT STRATEGY (ADD THIS SECTION) ---
+const jwtOpts = {
+    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+    secretOrKey: process.env.JWT_SECRET || 'your_fallback_secret_key'
+};
+
+passport.use('jwt', new JwtStrategy(jwtOpts, async (jwtPayload, done) => {
+    try {
+        // Fetch user based on id stored in JWT payload
+        const userId = jwtPayload.id || jwtPayload.userId;
+        const user = await User.findById(userId);
+
+        if (user) {
+            return done(null, user); // Attaches user to req.user
+        }
+        return done(null, false);
+    } catch (err) {
+        return done(err, false);
+    }
+}));
+
+// Required session serialization hooks
 passport.serializeUser((user, done) => {
     done(null, user.id || user);
 });
@@ -122,6 +217,24 @@ passport.deserializeUser((id, done) => {
 });
 
 module.exports = passport;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
