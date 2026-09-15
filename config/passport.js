@@ -1,136 +1,3 @@
-// // passport.js simplifies complex authentication workflows like Google OAuth 2.0.
-// const passport = require('passport');  //Imports the core Passport authentication library to manage social logins.
-// const GoogleStrategy = require('passport-google-oauth20').Strategy;    //Imports the specific Google OAuth 2.0 blueprint/strategy from the extension package.
-// const User = require('../models/userModel');  //Imports your database model so Passport can search for or create user records in MySQL.
-// const nodemailer = require('nodemailer'); //Imports Nodemailer to send transactional emails when a user signs up.
-
-// //Sets up your email sending engine using standard Gmail SMTP credentials loaded securely from .env
-// const transporter = nodemailer.createTransport({
-//     service: 'gmail',
-//     auth: {
-//         user: process.env.EMAIL_USER,
-//         pass: process.env.EMAIL_PASS
-//     }
-// });
-
-// passport.use(new GoogleStrategy({
-//     clientID: process.env.GOOGLE_CLIENT_ID,  //clientID / clientSecret: Loads your secret Google Cloud App credentials from .env.
-//     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-//     callbackURL: "http://localhost:5000/api/auth/google/callback"
-// }, async (accessToken, refreshToken, profile, done) => {        //Runs automatically right after Google confirms the user's identity, providing their Google profile object.
-//     try {
-//         const email = profile.emails[0].value;    //What it does: Extracts the primary email address from Google's profile payload and checks your MySQL users table to see if an account already exists under that email.
-//         let user = await User.findByEmail(email);
-
-//         if (!user) {    //If the email isn't in your database, this registers a brand new student account in MySQL with their full name, email, and unique Google ID (leaving the password column NULL).
-//             user = await User.createGoogleUser({
-//                 fullName: profile.displayName,
-//                 email: email,
-//                 googleId: profile.id
-//             });
-
-//             // Send welcome email to new Google user
-//             await transporter.sendMail({
-//                 from: `"PlacementPro" <${process.env.EMAIL_USER}>`,
-//                 to: email,
-//                 subject: 'Welcome to PlacementPro!',
-//                 text: `Hello ${profile.displayName},\n\nWelcome to PlacementPro! Please login to access your dashboard.\n\nBest Regards,\nPlacementPro Team`
-//             });
-//         }
-
-//         return done(null, user);  //Signals to Passport that authentication succeeded and passes the database user record to the next Express route handler.
-//     } catch (err) {
-//         return done(err, null);  //Catches any database or network failures and hands the error off to Express.
-//     }
-// }));
-
-// module.exports = passport;
-
-
-
-
-
-
-
-
-
-
-
-
-// config/passport.js
-// const passport = require('passport');
-// const GoogleStrategy = require('passport-google-oauth20').Strategy;
-// const User = require('../models/userModel');
-// const nodemailer = require('nodemailer');
-
-// // Sets up email sending engine using standard Gmail SMTP credentials
-// const transporter = nodemailer.createTransport({
-//     service: 'gmail',
-//     auth: {
-//         user: process.env.EMAIL_USER,
-//         pass: process.env.EMAIL_PASS
-//     }
-// });
-
-// passport.use(new GoogleStrategy({
-//     clientID: process.env.GOOGLE_CLIENT_ID,
-//     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-//     // Dynamic callback URL fallback using process.env.PORT
-//     callbackURL: process.env.GOOGLE_CALLBACK_URL || `http://localhost:${process.env.PORT || 5000}/api/auth/google/callback`
-// }, async (accessToken, refreshToken, profile, done) => {
-//     try {
-//         const email = profile.emails && profile.emails[0] ? profile.emails[0].value : null;
-        
-//         if (!email) {
-//             return done(new Error("No email found in Google profile"), null);
-//         }
-
-//         let user = await User.findByEmail(email);
-
-//         if (!user) {
-//             // Register brand new student account in MySQL
-//             user = await User.createGoogleUser({
-//                 fullName: profile.displayName,
-//                 email: email,
-//                 googleId: profile.id
-//             });
-
-//             // Send welcome email asynchronously without blocking authentication
-//             if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
-//                 transporter.sendMail({
-//                     from: `"PlacementPro" <${process.env.EMAIL_USER}>`,
-//                     to: email,
-//                     subject: 'Welcome to PlacementPro!',
-//                     text: `Hello ${profile.displayName},\n\nWelcome to PlacementPro! Please login to access your dashboard.\n\nBest Regards,\nPlacementPro Team`
-//                 }).catch(err => console.error('Welcome email failed to send:', err));
-//             }
-//         }
-
-//         return done(null, user);
-//     } catch (err) {
-//         return done(err, null);
-//     }
-// }));
-
-// // Required session serialization hooks for Passport initialization
-// passport.serializeUser((user, done) => {
-//     done(null, user.id || user);
-// });
-
-// passport.deserializeUser((id, done) => {
-//     done(null, { id });
-// });
-
-// module.exports = passport;
-
-
-
-
-
-
-
-
-
 
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
@@ -152,40 +19,52 @@ const transporter = nodemailer.createTransport({
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: process.env.GOOGLE_CALLBACK_URL || `http://localhost:${process.env.PORT || 5000}/api/auth/google/callback`
+    callbackURL:
+        process.env.GOOGLE_CALLBACK_URL ||
+        `http://localhost:${process.env.PORT || 5000}/api/auth/google/callback`
 }, async (accessToken, refreshToken, profile, done) => {
+
     try {
-        const email = profile.emails && profile.emails[0] ? profile.emails[0].value : null;
-        
+
+        const email =
+            profile.emails && profile.emails[0]
+                ? profile.emails[0].value
+                : null;
+
         if (!email) {
-            return done(new Error("No email found in Google profile"), null);
+            return done(new Error('No email found in Google profile'), null);
         }
+
+        console.log('Google authentication successful for:', email);
 
         let user = await User.findByEmail(email);
 
-        if (!user) {
-            user = await User.createGoogleUser({
-                fullName: profile.displayName,
-                email: email,
-                googleId: profile.id
-            });
+if (!user) {
 
-            if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
-                transporter.sendMail({
-                    from: `"PlacementPro" <${process.env.EMAIL_USER}>`,
-                    to: email,
-                    subject: 'Welcome to PlacementPro!',
-                    text: `Hello ${profile.displayName},\n\nWelcome to PlacementPro! Please login to access your dashboard.\n\nBest Regards,\nPlacementPro Team`
-                }).catch(err => console.error('Welcome email failed to send:', err));
-            }
-        }
+    user = await User.createGoogleUser({
+        fullName: profile.displayName,
+        email: email,
+        googleId: profile.id
+    });
 
-        return done(null, user);
+} else {
+
+    // Existing student account
+    if (!user.googleId) {
+        await User.linkGoogleAccount(user.id, profile.id);
+        user.googleId = profile.id;
+    }
+}
+
+return done(null, user);
+
     } catch (err) {
+
+        console.error('GOOGLE AUTH ERROR:', err);
+
         return done(err, null);
     }
 }));
-
 // --- JWT STRATEGY (ADD THIS SECTION) ---
 const jwtOpts = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),

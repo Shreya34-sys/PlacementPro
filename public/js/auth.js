@@ -1,5 +1,28 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+
+    const urlParams = new URLSearchParams(window.location.search);
+
+const googleToken = urlParams.get('token');
+const googleType = urlParams.get('type');
+
+
+if (googleToken) {
+    localStorage.setItem('token', googleToken);
+
+    // Keep token available before any dashboard authentication check runs
+    console.log('Google JWT saved successfully');
+
+    // Remove token from URL after saving it
+    window.history.replaceState(
+        {},
+        document.title,
+        window.location.pathname
+    );
+}
+
+
+
     // ==========================================
     // 1. Password Visibility Toggle (Eye Buttons)
     // ==========================================
@@ -162,3 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 }); // Properly closes DOMContentLoaded listener
+
+
+
+

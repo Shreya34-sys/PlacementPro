@@ -8,23 +8,48 @@
 
     <!-- Auth Validation Guard & Back-Button BF-Cache Guard -->
     <script>
-        function checkAuth() {
-            const token = localStorage.getItem('token');
-            if (!token) {
-                window.location.replace('/login');
-            }
+    function checkAuth() {
+        // 1. Check whether Google OAuth / Magic Link gave us a token
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlToken = urlParams.get('token');
+
+        if (urlToken) {
+            // Save token into localStorage
+            localStorage.setItem('token', urlToken);
+
+            // Remove token from URL
+            window.history.replaceState(
+                {},
+                document.title,
+                window.location.pathname
+            );
         }
 
-        // 1. Immediately validate token before page render
-        checkAuth();
+        // 2. Now check localStorage
+        const token = localStorage.getItem('token');
 
-        // 2. Prevent back-button viewing after logout (Cache Re-validation)
-        window.addEventListener('pageshow', (event) => {
-            if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
-                checkAuth();
-            }
-        });
-    </script>
+        if (!token) {
+            window.location.replace('/login');
+            return false;
+        }
+
+        return true;
+    }
+
+    // Run immediately before dashboard is displayed
+    checkAuth();
+
+    // Prevent back-button access after logout
+    window.addEventListener('pageshow', (event) => {
+        if (
+            event.persisted ||
+            (window.performance &&
+             window.performance.navigation.type === 2)
+        ) {
+            checkAuth();
+        }
+    });
+</script>
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -407,6 +432,7 @@
         </div>
     </main>
 
+    <script src="/js/app.js"></script>
     <script src="/js/stddash.js"></script>
 </body>
 </html>

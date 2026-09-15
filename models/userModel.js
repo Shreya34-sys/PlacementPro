@@ -26,13 +26,46 @@ class User {   //Organizes all database queries related to the users table into 
     }
 
     static async createGoogleUser({ fullName, email, googleId }) {
+    const connection = await db.getConnection();
+
+    try {
+        await connection.beginTransaction();
+
         const userId = crypto.randomUUID();
-        await db.execute(
-            'INSERT INTO users (id, fullName, email, googleId, role) VALUES (?, ?, ?, ?, ?)',
+
+        // 1. Create user in users table
+        await connection.execute(
+            `INSERT INTO users
+            (id, fullName, email, googleId, role)
+            VALUES (?, ?, ?, ?, ?)`,
             [userId, fullName, email, googleId, 'student']
         );
-        return { id: userId, fullName, email, role: 'student' };
+
+        // 2. Create corresponding student record
+        await connection.execute(
+            `INSERT INTO students
+            (std_id, full_name)
+            VALUES (?, ?)`,
+            [userId, fullName]
+        );
+
+        await connection.commit();
+
+        return {
+            id: userId,
+            fullName,
+            email,
+            role: 'student'
+        };
+
+    } catch (error) {
+        await connection.rollback();
+        throw error;
+
+    } finally {
+        connection.release();
     }
+}
 
     static async createAdmin({ fullName, email, password, designation, department }) {
         const userId = crypto.randomUUID();
@@ -48,6 +81,32 @@ class User {   //Organizes all database queries related to the users table into 
         );
         return { id: userId, fullName, email, role: 'admin' };
     }
+
+
+    static async ensureStudentRecord(user) {
+    const [rows] = await db.execute(
+        'SELECT std_id FROM students WHERE std_id = ?',
+        [user.id]
+    );
+
+    if (rows.length === 0) {
+        await db.execute(
+            'INSERT INTO students (std_id, full_name) VALUES (?, ?)',
+            [user.id, user.fullName]
+        );
+    }
+
+    return user;
+}
+
+
+static async linkGoogleAccount(userId, googleId) {
+    await db.execute(
+        'UPDATE users SET googleId = ? WHERE id = ?',
+        [googleId, userId]
+    );
+}
+
 }
 
 module.exports = User;
