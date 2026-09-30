@@ -77,7 +77,7 @@ passport.use('jwt', new JwtStrategy(jwtOpts, async (jwtPayload, done) => {
         const userId = jwtPayload.id || jwtPayload.userId;
         const user = await User.findById(userId);
 
-        if (user) {
+        if (user && user.is_active !== 0) {
             return done(null, user); // Attaches user to req.user
         }
         return done(null, false);

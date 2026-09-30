@@ -1,0 +1,193 @@
+:root {
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --primary-light: #eff6ff;
+  --bg-main: #f8fafc;
+  --card-bg: #ffffff;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --border-light: #e2e8f0;
+  --success: #10b981;
+  --success-bg: #ecfdf5;
+  --danger: #ef4444;
+  --danger-bg: #fef2f2;
+  --radius: 16px;
+  --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.05);
+  --shadow-lg: 0 10px 25px -5px rgba(15, 23, 42, 0.08);
+  --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+/* Container Shell */
+.shell {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Main Card */
+.card.guideline {
+  background: var(--card-bg);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius);
+  padding: 40px;
+  box-shadow: var(--shadow-lg);
+}
+
+/* Header Styling */
+.result-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.eyebrow {
+  display: inline-block;
+  background: #dbeafe;
+  color: #1e40af;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  padding: 6px 14px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+
+h1#resultTitle {
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 0;
+  color: var(--text-main);
+}
+
+/* Dynamic Metrics Container */
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 36px;
+}
+
+/* Styles applied to dynamically created metric cards from JS */
+.metrics > div, .metric-card {
+  background: var(--bg-main);
+  border: 1px solid var(--border-light);
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  transition: var(--transition);
+}
+
+.metrics > div:hover, .metric-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+  border-color: #cbd5e1;
+}
+
+.metrics h3, .metric-card .label {
+  margin: 0 0 6px 0;
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.metrics p, .metric-card .value {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+/* Analytics Section */
+.analytics-section {
+  border-top: 1px solid var(--border-light);
+  padding-top: 32px;
+  margin-bottom: 36px;
+}
+
+.analytics-section h2 {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 20px 0;
+  color: var(--text-main);
+}
+
+/* Topic Results Container */
+#topicResults {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Styles for dynamically inserted topic cards */
+#topicResults > div, .topic-item {
+  background: #ffffff;
+  border: 1px solid var(--border-light);
+  padding: 16px 20px;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+/* Footer Action Link */
+.action-footer {
+  display: flex;
+  justify-content: center;
+}
+
+a.primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--primary);
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 15px;
+  padding: 14px 28px;
+  border-radius: 12px;
+  transition: var(--transition);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+}
+
+a.primary:hover {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
+}
+
+@media (max-width: 640px) {
+  .card.guideline {
+    padding: 24px;
+  }
+
+  h1#resultTitle {
+    font-size: 24px;
+  }
+
+  a.primary {
+    width: 100%;
+  }
+}

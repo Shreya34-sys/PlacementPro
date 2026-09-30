@@ -1,0 +1,42 @@
+<!-- <!doctype html><html><head><meta charset="utf-8"><title>Assessment Result</title><link rel="stylesheet" href="/css/proctored-exams.css"></head><body><main class="shell"><section class="card guideline"><p class="eyebrow">ASSESSMENT COMPLETE</p><h1 id="resultTitle">Your result</h1><div id="summary" class="metrics"></div><h2>Topic-wise analytics</h2><div id="topicResults"></div><a class="primary" href="/pages/available-exams.html">Back to assessments</a></section></main><script src="/js/exam-result.js"></script></body></html> -->
+
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Assessment Result</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/exam-result.css">
+</head>
+<body>
+  <main class="shell">
+    <section class="card guideline">
+      <!-- Header Badge & Title -->
+      <div class="result-header">
+        <span class="eyebrow">ASSESSMENT COMPLETE</span>
+        <h1 id="resultTitle">Your result</h1>
+      </div>
+
+      <!-- Metrics Container (Populated by exam-result.js) -->
+      <div id="summary" class="metrics"></div>
+
+      <!-- Topic-wise Breakdown -->
+      <div class="analytics-section">
+        <h2>Topic-wise analytics</h2>
+        <div id="topicResults" class="topic-results-grid"></div>
+      </div>
+
+      <!-- Footer Action -->
+      <div class="action-footer">
+        <a class="primary" href="/pages/available-exams.html">Back to assessments</a>
+      </div>
+    </section>
+  </main>
+
+  <script src="/js/exam-result.js"></script>
+</body>
+</html>

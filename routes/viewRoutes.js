@@ -15,6 +15,17 @@ router.get('/admin-login', (req, res) => res.sendFile(path.join(pagesDir, 'admin
 router.get('/dashboard', (req, res) => res.sendFile(path.join(pagesDir, 'stddash.html')));
 router.get('/admin-dashboard', (req, res) => res.sendFile(path.join(pagesDir, 'admindash.html')));
 
+
+router.get('/admin-exams', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'public', 'pages', 'admin-exams.html'));
+});
+router.get('/admin-exam-builder', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'public', 'pages', 'admin-exam-builder.html'));
+});
+router.get('/live-proctoring', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'public', 'pages', 'proctoring.html'));
+});
+
 module.exports = router;
 
 

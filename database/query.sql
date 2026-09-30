@@ -37,74 +37,9 @@ CREATE TABLE students (
 
 
 
--- database/schema.sql
 
--- 1. EXAMS TABLE
-CREATE TABLE IF NOT EXISTS exams (
-    exam_id VARCHAR(36) PRIMARY KEY,
-    title VARCHAR(150) NOT NULL,
-    subject VARCHAR(100) NOT NULL,
-    exam_type ENUM('mcq', 'theory', 'mixed') DEFAULT 'mcq',
-    duration_minutes INT NOT NULL,
-    total_questions INT DEFAULT 0,
-    total_marks INT DEFAULT 0,
-    passing_marks INT NOT NULL,
-    created_by VARCHAR(36),
-    instructions TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE SET NULL
-);
 
--- 2. QUESTIONS TABLE
-CREATE TABLE IF NOT EXISTS questions (
-    question_id VARCHAR(36) PRIMARY KEY,
-    exam_id VARCHAR(36) NOT NULL,
-    question_text TEXT NOT NULL,
-    question_type ENUM('mcq', 'theory') DEFAULT 'mcq',
-    option_a VARCHAR(255) NOT NULL,
-    option_b VARCHAR(255) NOT NULL,
-    option_c VARCHAR(255) NOT NULL,
-    option_d VARCHAR(255) NOT NULL,
-    correct_option ENUM('A', 'B', 'C', 'D') NOT NULL,
-    marks INT DEFAULT 1,
-    FOREIGN KEY (exam_id) REFERENCES exams(exam_id) ON DELETE CASCADE
-);
 
--- 3. EXAM ATTEMPTS TABLE
-CREATE TABLE IF NOT EXISTS exam_attempts (
-    attempt_id VARCHAR(36) PRIMARY KEY,
-    exam_id VARCHAR(36) NOT NULL,
-    std_id VARCHAR(36) NOT NULL,
-    score DECIMAL(5,2) DEFAULT 0.00,
-    status ENUM('in_progress', 'completed', 'disqualified') DEFAULT 'in_progress',
-    warning_count INT DEFAULT 0,
-    started_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    submitted_at TIMESTAMP NULL,
-    FOREIGN KEY (exam_id) REFERENCES exams(exam_id) ON DELETE CASCADE,
-    FOREIGN KEY (std_id) REFERENCES users(id) ON DELETE CASCADE
-);
-
--- 4. STUDENT ANSWERS TABLE
-CREATE TABLE IF NOT EXISTS student_answers (
-    answer_id VARCHAR(36) PRIMARY KEY,
-    attempt_id VARCHAR(36) NOT NULL,
-    question_id VARCHAR(36) NOT NULL,
-    selected_option ENUM('A', 'B', 'C', 'D'),
-    is_correct BOOLEAN DEFAULT FALSE,
-    FOREIGN KEY (attempt_id) REFERENCES exam_attempts(attempt_id) ON DELETE CASCADE,
-    FOREIGN KEY (question_id) REFERENCES questions(question_id) ON DELETE CASCADE
-);
-
--- 5. PROCTORING LOGS TABLE (FOR PHASE 2)
-CREATE TABLE IF NOT EXISTS proctoring_logs (
-    log_id VARCHAR(36) PRIMARY KEY,
-    attempt_id VARCHAR(36) NOT NULL,
-    violation_type ENUM('tab_switch', 'esc_fullscreen', 'multiple_faces', 'no_face', 'gaze_off', 'mobile_detected') NOT NULL,
-    severity ENUM('low', 'medium', 'high') NOT NULL,
-    snapshot_url VARCHAR(255) NULL,
-    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (attempt_id) REFERENCES exam_attempts(attempt_id) ON DELETE CASCADE
-);
 
 
 
@@ -128,3 +63,103 @@ CREATE TABLE resume_analyses (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (std_id) REFERENCES users(id) ON DELETE CASCADE
 );
+
+
+
+-- PlacementPro AI-proctored aptitude module. All primary keys are UUID strings.
+CREATE TABLE exams (
+  id CHAR(36) PRIMARY KEY,
+  created_by CHAR(36) NOT NULL,
+  title VARCHAR(180) NOT NULL,
+  instructions TEXT NOT NULL,
+  duration_minutes SMALLINT UNSIGNED NOT NULL,
+  starts_at DATETIME NOT NULL,
+  ends_at DATETIME NOT NULL,
+  status ENUM('draft','published','closed') NOT NULL DEFAULT 'draft',
+  negative_marking DECIMAL(5,2) NOT NULL DEFAULT 0,
+  max_warnings TINYINT UNSIGNED NOT NULL DEFAULT 3,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT fk_exam_admin FOREIGN KEY (created_by) REFERENCES users(id),
+  CHECK (ends_at > starts_at)
+);
+
+CREATE TABLE exam_topics (
+  id CHAR(36) PRIMARY KEY,
+  exam_id CHAR(36) NOT NULL,
+  name VARCHAR(100) NOT NULL,
+  display_order SMALLINT UNSIGNED NOT NULL,
+  CONSTRAINT fk_topic_exam FOREIGN KEY (exam_id) REFERENCES exams(id) ON DELETE CASCADE,
+  UNIQUE KEY uq_exam_topic_order (exam_id, display_order)
+);
+
+CREATE TABLE exam_questions (
+  id CHAR(36) PRIMARY KEY,
+  exam_id CHAR(36) NOT NULL,
+  topic_id CHAR(36) NOT NULL,
+  question_text TEXT NOT NULL,
+  marks DECIMAL(5,2) NOT NULL DEFAULT 1,
+  display_order SMALLINT UNSIGNED NOT NULL,
+  CONSTRAINT fk_question_exam FOREIGN KEY (exam_id) REFERENCES exams(id) ON DELETE CASCADE,
+  CONSTRAINT fk_question_topic FOREIGN KEY (topic_id) REFERENCES exam_topics(id),
+  UNIQUE KEY uq_exam_question_order (exam_id, display_order)
+);
+
+CREATE TABLE question_options (
+  id CHAR(36) PRIMARY KEY,
+  question_id CHAR(36) NOT NULL,
+  option_text TEXT NOT NULL,
+  is_correct BOOLEAN NOT NULL DEFAULT FALSE,
+  display_order TINYINT UNSIGNED NOT NULL,
+  CONSTRAINT fk_option_question FOREIGN KEY (question_id) REFERENCES exam_questions(id) ON DELETE CASCADE,
+  UNIQUE KEY uq_question_option_order (question_id, display_order)
+);
+
+CREATE TABLE exam_attempts (
+  id CHAR(36) PRIMARY KEY,
+  exam_id CHAR(36) NOT NULL,
+  student_id CHAR(36) NOT NULL,
+  state ENUM('started','submitted','auto_submitted') NOT NULL DEFAULT 'started',
+  started_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  submitted_at DATETIME NULL,
+  warnings_count TINYINT UNSIGNED NOT NULL DEFAULT 0,
+  score DECIMAL(7,2) NULL,
+  UNIQUE KEY uq_exam_student_attempt (exam_id, student_id),
+  CONSTRAINT fk_attempt_exam FOREIGN KEY (exam_id) REFERENCES exams(id),
+  CONSTRAINT fk_attempt_student FOREIGN KEY (student_id) REFERENCES students(std_id)
+);
+
+CREATE TABLE attempt_answers (
+  id CHAR(36) PRIMARY KEY,
+  attempt_id CHAR(36) NOT NULL,
+  question_id CHAR(36) NOT NULL,
+  option_id CHAR(36) NULL,
+  marked_for_review BOOLEAN NOT NULL DEFAULT FALSE,
+  answered_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY uq_attempt_question (attempt_id, question_id),
+  CONSTRAINT fk_answer_attempt FOREIGN KEY (attempt_id) REFERENCES exam_attempts(id) ON DELETE CASCADE,
+  CONSTRAINT fk_answer_question FOREIGN KEY (question_id) REFERENCES exam_questions(id),
+  CONSTRAINT fk_answer_option FOREIGN KEY (option_id) REFERENCES question_options(id)
+);
+
+CREATE TABLE proctoring_flags (
+  id CHAR(36) PRIMARY KEY,
+  attempt_id CHAR(36) NOT NULL,
+  severity ENUM('high','medium','low') NOT NULL,
+  event_type ENUM('tab_switch','camera_off','multiple_faces','no_face','mobile_detected','clipboard','focus_lost','manual') NOT NULL,
+  message VARCHAR(500) NOT NULL,
+  evidence_url VARCHAR(500) NULL,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  resolved_at DATETIME NULL,
+  resolved_by CHAR(36) NULL,
+  CONSTRAINT fk_flag_attempt FOREIGN KEY (attempt_id) REFERENCES exam_attempts(id) ON DELETE CASCADE,
+  CONSTRAINT fk_flag_admin FOREIGN KEY (resolved_by) REFERENCES users(id),
+  KEY ix_flags_severity_time (severity, created_at)
+);
+
+
+
+
+ALTER TABLE exams ADD COLUMN deleted_at DATETIME NULL AFTER updated_at;
+ALTER TABLE users ADD COLUMN is_active BOOLEAN NOT NULL DEFAULT TRUE;
+CREATE INDEX ix_exams_visibility ON exams (status, deleted_at, starts_at, ends_at);

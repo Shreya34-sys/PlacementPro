@@ -7,19 +7,98 @@
     <link rel="stylesheet" href="/css/admindash.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script>
-        function checkAdminAuth() {
-            const token = localStorage.getItem('adminToken') || localStorage.getItem('token');
-            if (!token) {
-                window.location.replace('/admin-login');
-            }
+    function checkAdminAuth() {
+
+        const params = new URLSearchParams(window.location.search);
+
+        const urlToken = params.get('token');
+        const urlType = params.get('type');
+
+        // ==========================================
+        // ADMIN TOKEN FROM MAGIC LINK / GOOGLE
+        // ==========================================
+
+        if (urlToken && urlType === 'admin') {
+
+            localStorage.setItem('adminToken', urlToken);
+
+            // Prevent student token from being used
+            localStorage.removeItem('token');
+
+            // Remove token from browser URL
+            window.history.replaceState(
+                {},
+                document.title,
+                window.location.pathname
+            );
         }
-        checkAdminAuth();
-        window.addEventListener('pageshow', function (event) {
-            if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
-                checkAdminAuth();
+
+        // ==========================================
+        // CHECK ADMIN TOKEN
+        // ==========================================
+
+        const adminToken = localStorage.getItem('adminToken');
+
+        if (!adminToken) {
+            window.location.replace('/admin-login');
+            return;
+        }
+
+        try {
+
+            const parts = adminToken.split('.');
+
+            if (parts.length !== 3) {
+                throw new Error('Invalid JWT format');
             }
-        });
-    </script>
+
+            const payload = JSON.parse(
+                atob(parts[1])
+            );
+
+            // ONLY ADMIN
+            if (payload.role !== 'admin') {
+
+                localStorage.removeItem('adminToken');
+
+                window.location.replace('/admin-login');
+                return;
+            }
+
+            console.log(
+                'Admin authentication verified:',
+                payload.email
+            );
+
+        } catch (error) {
+
+            console.error(
+                'Admin authentication failed:',
+                error
+            );
+
+            localStorage.removeItem('adminToken');
+
+            window.location.replace('/admin-login');
+        }
+    }
+
+    checkAdminAuth();
+
+    window.addEventListener('pageshow', function (event) {
+
+        if (
+            event.persisted ||
+            (
+                window.performance &&
+                window.performance.navigation.type === 2
+            )
+        ) {
+            checkAdminAuth();
+        }
+
+    });
+</script>
 </head>
 <body>
 
@@ -62,9 +141,13 @@
         <a href="#campus-drives" class="subnav-item">
             <span class="icon">💼</span> Campus Drives
         </a>
-        <a href="#question-bank" class="subnav-item">
-            <span class="icon">📖</span> Question Bank & Tests <span class="blue-dot"></span>
-        </a>
+
+
+        <a href="/pages/admin-exams.html" class="subnav-item" style="text-decoration: none; color: inherit;">
+  <span class="icon">📖</span> Question Bank &amp; Tests <span class="blue-dot"></span>
+</a>
+
+
         <a href="#ai-interviews" class="subnav-item">
             <span class="icon">🤖</span> AI Interviews <span class="blue-dot"></span>
         </a>
@@ -88,9 +171,7 @@
                     <span class="lbl">Batch Readiness</span>
                     <span class="val">📈 88.5% Benchmark</span>
                 </div>
-                <button class="btn btn-blue-primary" id="manageDrivesBtn">
-                    💼 Manage Campus Drives
-                </button>
+                <a class="btn btn-blue-primary" id="manageDrivesBtn" href="/pages/admin-exams.html" style="text-decoration: none;">📝 Manage Aptitude Tests</a>
             </div>
         </section>
 
@@ -132,6 +213,10 @@
                 <div class="stat-footer">KIT TY CSBS Batch</div>
             </div>
         </section>
+ 
+</section>
+
+
 
         <!-- Balanced 2-Column Workspace (Live Proctoring Supervisor Chart Removed) -->
         <div class="workspace-grid">

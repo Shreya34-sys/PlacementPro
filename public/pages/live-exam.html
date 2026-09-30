@@ -1,0 +1,79 @@
+<!-- <!doctype html><html><head><meta charset="utf-8"><title>Live Exam</title><link rel="stylesheet" href="/css/proctored-exams.css"></head>
+<video id="camera" class="camera-preview" muted playsinline></video>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/exam-client.js"></script>
+<script src="/js/student-proctor.js"></script>
+<body><main class="live-shell"><header class="live-head"><div><span class="pill blue">Live Exam Mode</span><h1 id="examTitle">Assessment</h1><p id="progress">Question 1</p></div><div><span id="timer" class="timer">--:--</span><button id="submit" class="success">Submit Test</button></div></header><div class="progress"><i id="bar"></i></div><section class="live-grid"><article class="card question-card"><div class="question-top"><b id="questionNo">Question 1</b><span id="topic" class="pill cyan"></span></div><h2 id="questionText"></h2><div id="options"></div><div class="actions"><button id="previous">← Previous</button><button id="mark">Mark for Review & Next</button><button id="next" class="primary">Save & Next →</button></div></article><aside class="card palette"><h2>▦ Question Palette</h2><div id="warning" class="warning hidden"></div><div id="paletteButtons" class="palette-grid"></div><button id="finalize" class="outline">Finalize Assessment</button></aside></section></main><video id="camera" muted playsinline class="camera-preview"></video><script src="/socket.io/socket.io.js"></script><script src="/js/exam-client.js"></script></body></html> -->
+
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Live Assessment | Proctored Mode</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/live-exam.css">
+</head>
+<body>
+  <main class="live-shell">
+    <!-- Header Bar -->
+    <header class="live-head">
+      <div class="head-info">
+        <span class="pill blue">Live Exam Mode</span>
+        <h1 id="examTitle">Assessment</h1>
+        <p id="progress">Question 1</p>
+      </div>
+      <div class="head-actions">
+        <div id="timer" class="timer">--:--</div>
+        <button id="submit" class="success">Submit Test</button>
+      </div>
+    </header>
+
+    <!-- Overall Test Progress Indicator -->
+    <div class="progress">
+      <i id="bar"></i>
+    </div>
+
+    <!-- Main Workspace -->
+    <section class="live-grid">
+      <!-- Question Section -->
+      <article class="card question-card">
+        <div class="question-top">
+          <b id="questionNo">Question 1</b>
+          <span id="topic" class="pill cyan"></span>
+        </div>
+        
+        <h2 id="questionText"></h2>
+        
+        <div id="options" class="options-container"></div>
+
+        <div class="actions">
+          <button id="previous" class="btn btn-outline">← Previous</button>
+          <button id="mark" class="btn btn-warning">Mark for Review &amp; Next</button>
+          <button id="next" class="btn btn-primary">Save &amp; Next →</button>
+        </div>
+      </article>
+
+      <!-- Sidebar & Question Palette -->
+      <aside class="card palette">
+        <h2>▦ Question Palette</h2>
+        <div id="warning" class="warning hidden"></div>
+        <div id="paletteButtons" class="palette-grid"></div>
+        <button id="finalize" class="outline">Finalize Assessment</button>
+      </aside>
+    </section>
+  </main>
+
+  <!-- Live Proctoring Camera Feed -->
+  <video id="camera" class="camera-preview" muted playsinline></video>
+
+  <!-- External Scripts -->
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/exam-client.js"></script>
+  <script src="/js/student-proctor.js"></script>
+</body>
+</html>

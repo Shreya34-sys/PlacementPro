@@ -1,168 +1,71 @@
-// const db = require('../config/db');
-// const { v4: uuidv4 } = require('uuid');
-
-// const ExamModel = {
-//     async createExam(data) {
-//         const examId = uuidv4();
-//         const query = `
-//             INSERT INTO exams (exam_id, title, subject, duration_minutes, total_questions, total_marks, passing_marks, created_by)
-//             VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-//         `;
-//         await db.execute(query, [
-//             examId,
-//             data.title,
-//             data.subject,
-//             data.duration_minutes,
-//             data.total_questions,
-//             data.total_marks,
-//             data.passing_marks,
-//             data.created_by
-//         ]);
-//         return examId;
-//     },
-
-//     async saveQuestions(examId, questions) {
-//         const query = `
-//             INSERT INTO questions (question_id, exam_id, question_text, option_a, option_b, option_c, option_d, correct_option, marks)
-//             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-//         `;
-//         for (const q of questions) {
-//             await db.execute(query, [
-//                 uuidv4(),
-//                 examId,
-//                 q.question_text,
-//                 q.option_a,
-//                 q.option_b,
-//                 q.option_c,
-//                 q.option_d,
-//                 q.correct_option,
-//                 q.marks || 1
-//             ]);
-//         }
-//     },
-
-//     async getExamById(examId) {
-//         const [exam] = await db.execute('SELECT * FROM exams WHERE exam_id = ?', [examId]);
-//         const [questions] = await db.execute('SELECT question_id, question_text, option_a, option_b, option_c, option_d, marks FROM questions WHERE exam_id = ?', [examId]);
-//         return { exam: exam[0], questions };
-//     },
-
-//     async startAttempt(examId, stdId) {
-//         const attemptId = uuidv4();
-//         const query = `INSERT INTO exam_attempts (attempt_id, exam_id, std_id) VALUES (?, ?, ?)`;
-//         await db.execute(query, [attemptId, examId, stdId]);
-//         return attemptId;
-//     },
-
-//     async submitAttempt(attemptId, answers) {
-//         let totalScore = 0;
-//         for (const ans of answers) {
-//             const [q] = await db.execute('SELECT correct_option, marks FROM questions WHERE question_id = ?', [ans.question_id]);
-//             const isCorrect = q[0] && q[0].correct_option === ans.selected_option;
-//             const marksAwarded = isCorrect ? q[0].marks : 0;
-//             totalScore += marksAwarded;
-
-//             await db.execute(
-//                 `INSERT INTO student_answers (answer_id, attempt_id, question_id, selected_option, is_correct) VALUES (?, ?, ?, ?, ?)`,
-//                 [uuidv4(), attemptId, ans.question_id, ans.selected_option, isCorrect]
-//             );
-//         }
-
-//         await db.execute(
-//             `UPDATE exam_attempts SET score = ?, status = 'completed', submitted_at = NOW() WHERE attempt_id = ?`,
-//             [totalScore, attemptId]
-//         );
-
-//         return totalScore;
-//     }
-// };
-
-// module.exports = ExamModel;
-
-
-
-
-
-
 const db = require('../config/db');
-const crypto = require('crypto');
+const { randomUUID } = require('crypto');
 
-const ExamModel = {
-    getAllExams: async () => {
-        const [exams] = await db.query(
-            `SELECT exam_id AS id, title, subject, duration_minutes, total_questions, total_marks 
-             FROM exams ORDER BY created_at DESC`
-        );
-        return exams;
-    },
-
-    getExamById: async (examId) => {
-        const [[exam]] = await db.query(
-            `SELECT exam_id AS id, title, duration_minutes, instructions FROM exams WHERE exam_id = ?`, 
-            [examId]
-        );
-        return exam;
-    },
-
-    getQuestionsByExamId: async (examId) => {
-        const [questions] = await db.query(
-            `SELECT question_id AS id, question_text, option_a, option_b, option_c, option_d 
-             FROM questions WHERE exam_id = ?`, 
-            [examId]
-        );
-        return questions;
-    },
-
-    submitExamAttempt: async (examId, studentId, answers) => {
-        const connection = await db.getConnection();
-        try {
-            await connection.beginTransaction();
-
-            const [questions] = await connection.query(
-                `SELECT question_id, correct_option, marks FROM questions WHERE exam_id = ?`,
-                [examId]
-            );
-
-            let earnedMarks = 0;
-            let totalPossibleMarks = 0;
-
-            const attemptId = crypto.randomUUID();
-            await connection.query(
-                `INSERT INTO exam_attempts (attempt_id, exam_id, std_id, status, submitted_at) VALUES (?, ?, ?, 'completed', NOW())`,
-                [attemptId, examId, studentId]
-            );
-
-            for (const q of questions) {
-                totalPossibleMarks += q.marks;
-                const selectedOpt = answers[q.question_id] || null;
-                const isCorrect = selectedOpt === q.correct_option;
-
-                if (isCorrect) earnedMarks += q.marks;
-
-                await connection.query(
-                    `INSERT INTO student_answers (answer_id, attempt_id, question_id, selected_option, is_correct) 
-                     VALUES (?, ?, ?, ?, ?)`,
-                    [crypto.randomUUID(), attemptId, q.question_id, selectedOpt, isCorrect]
-                );
-            }
-
-            const finalPercentage = totalPossibleMarks > 0 ? ((earnedMarks / totalPossibleMarks) * 100).toFixed(2) : 0;
-            
-            await connection.query(
-                `UPDATE exam_attempts SET score = ? WHERE attempt_id = ?`,
-                [finalPercentage, attemptId]
-            );
-
-            await connection.commit();
-            return finalPercentage;
-
-        } catch (err) {
-            await connection.rollback();
-            throw err;
-        } finally {
-            connection.release();
+class Exam {
+  static async create(adminId, payload) {
+    const connection = await db.getConnection();
+    try {
+      await connection.beginTransaction();
+      const examId = randomUUID();
+      await connection.execute(`INSERT INTO exams
+        (id, created_by, title, instructions, duration_minutes, starts_at, ends_at, status, negative_marking)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [examId, adminId, payload.title, payload.instructions, payload.durationMinutes,
+          payload.startsAt, payload.endsAt, payload.status || 'draft', payload.negativeMarking || 0]);
+      for (const [topicIndex, topic] of payload.topics.entries()) {
+        const topicId = randomUUID();
+        await connection.execute('INSERT INTO exam_topics (id, exam_id, name, display_order) VALUES (?, ?, ?, ?)', [topicId, examId, topic.name, topicIndex + 1]);
+        for (const [questionIndex, question] of topic.questions.entries()) {
+          const questionId = randomUUID();
+          await connection.execute(`INSERT INTO exam_questions (id, exam_id, topic_id, question_text, marks, display_order)
+            VALUES (?, ?, ?, ?, ?, ?)`, [questionId, examId, topicId, question.text, question.marks, question.displayOrder || questionIndex + 1]);
+          const correctCount = question.options.filter(option => option.isCorrect).length;
+          if (correctCount !== 1) throw new Error('Each MCQ must have exactly one correct option.');
+          for (const [optionIndex, option] of question.options.entries()) {
+            await connection.execute('INSERT INTO question_options (id, question_id, option_text, is_correct, display_order) VALUES (?, ?, ?, ?, ?)',
+              [randomUUID(), questionId, option.text, option.isCorrect, optionIndex + 1]);
+          }
         }
-    }
-};
+      }
+      await connection.commit();
+      return examId;
+    } catch (error) { await connection.rollback(); throw error; } finally { connection.release(); }
+  }
 
-module.exports = ExamModel;
+  static async availableForStudent(studentId) {
+    const [rows] = await db.execute(`SELECT e.id, e.title, e.duration_minutes, e.starts_at, e.ends_at,
+     e.status, COUNT(q.id) AS questionCount, a.id AS attemptId, a.state AS attemptState,
+      CASE WHEN a.id IS NOT NULL THEN 'completed' WHEN NOW() > e.ends_at THEN 'expired'
+           WHEN NOW() < e.starts_at THEN 'upcoming' ELSE 'available' END AS availability
+      FROM exams e LEFT JOIN exam_questions q ON q.exam_id=e.id
+      LEFT JOIN exam_attempts a ON a.exam_id=e.id AND a.student_id=?
+      WHERE e.status='published' AND e.deleted_at IS NULL GROUP BY e.id, a.id ORDER BY e.created_at DESC`, [studentId]);
+    return rows;
+  }
+
+ static async remove(examId, adminId) {
+    const [result] = await db.execute('UPDATE exams SET deleted_at=NOW() WHERE id=? AND created_by=? AND deleted_at IS NULL', [examId, adminId]);
+    return result.affectedRows === 1;
+  }
+
+  static async listForAdmin(adminId) {
+    const [rows] = await db.execute(`SELECT e.id,e.title,e.status,e.duration_minutes,e.starts_at,e.ends_at,
+      CASE WHEN NOW() > e.ends_at THEN 'expired' ELSE e.status END AS display_status,
+      COUNT(q.id) AS question_count FROM exams e LEFT JOIN exam_questions q ON q.exam_id=e.id
+        WHERE e.created_by=? AND e.deleted_at IS NULL GROUP BY e.id ORDER BY e.created_at DESC`, [adminId]);
+    return rows;
+  }
+
+  static async studentExam(examId) {
+    const [rows] = await db.execute(`SELECT q.id, q.question_text, q.marks, q.display_order, t.name AS topic,
+      o.id AS option_id, o.option_text, o.display_order AS option_order
+      FROM exam_questions q JOIN exam_topics t ON t.id=q.topic_id
+      JOIN question_options o ON o.question_id=q.id WHERE q.exam_id=? ORDER BY q.display_order, o.display_order`, [examId]);
+    const questions = new Map();
+    rows.forEach(row => { if (!questions.has(row.id)) questions.set(row.id, { id: row.id, text: row.question_text, marks: row.marks, order: row.display_order, topic: row.topic, options: [] }); questions.get(row.id).options.push({ id: row.option_id, text: row.option_text }); });
+    return [...questions.values()];
+  }
+
+  
+}
+module.exports = Exam;

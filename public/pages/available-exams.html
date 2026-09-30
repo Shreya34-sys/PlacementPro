@@ -1,83 +1,41 @@
-<!DOCTYPE html>
+
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PlacementPro - AI Proctored Exams</title>
-    <link rel="stylesheet" href="/css/stddash.css">
-    <script>
-        const token = localStorage.getItem('token');
-        if (!token) window.location.replace('/login');
-    </script>
-    <style>
-        .exams-container { max-width: 1200px; margin: 2rem auto; padding: 0 1.5rem; }
-        .exam-card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; margin-top: 1.5rem; }
-        .exam-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
-        .exam-card h3 { font-size: 1.2rem; color: #0f172a; margin-bottom: 0.5rem; }
-        .exam-meta { font-size: 0.875rem; color: #64748b; margin-bottom: 1rem; display: flex; gap: 1rem; }
-        .badge-proctored { background: #fef3c7; color: #d97706; padding: 0.25rem 0.6rem; border-radius: 20px; font-weight: 600; font-size: 0.75rem; display: inline-block; width: fit-content; margin-bottom: 0.75rem; }
-    </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Proctored Exams</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/available-exams.css">
 </head>
 <body>
-    <header class="navbar">
-        <div class="nav-left">
-            <div class="brand"><span class="brand-icon">💼</span><span class="brand-name">PlacementPro</span></div>
+  <main class="shell">
+    <header class="app-header">
+      <div class="header-top">
+        <div class="brand-title">
+          <p class="eyebrow">ASSESSMENT CENTER</p>
+          <h1>Aptitude &amp; Technical Assessment Portal</h1>
+          <p class="subtitle">Live campus screening assessments with real-time AI camera proctoring.</p>
         </div>
-        <nav class="nav-links">
-            <a href="/dashboard" class="nav-item">Home</a>
-            <a href="/pages/available-exams.html" class="nav-item active">AI Exams</a>
-        </nav>
+        <div class="header-nav">
+          <a class="nav-btn" href="/pages/stddash.html">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            Home / Dashboard
+          </a>
+        </div>
+      </div>
     </header>
 
-    <main class="exams-container">
-        <div class="section-header">
-            <h2>📝 Scheduled AI Proctored Exams</h2>
-            <p style="color: #64748b;">Select an exam to begin. Fullscreen and monitoring will activate upon start.</p>
-        </div>
+    <section id="examList" class="exam-grid">
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>Fetching available assessments…</p>
+      </div>
+    </section>
+  </main>
 
-        <div class="exam-card-grid" id="examsListGrid">
-            <p>Loading available exams...</p>
-        </div>
-    </main>
-
-    <script>
-        async function fetchExams() {
-            try {
-                const res = await fetch('/api/exams', {
-                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
-                });
-                const exams = await res.json();
-                const container = document.getElementById('examsListGrid');
-
-                if (!res.ok || !exams.length) {
-                    container.innerHTML = `<p style="grid-column: 1/-1; color: #64748b;">No live exams available right now.</p>`;
-                    return;
-                }
-
-                container.innerHTML = exams.map(exam => `
-                    <div class="exam-card">
-                        <div>
-                            <span class="badge-proctored">🛡️ AI Proctored</span>
-                            <h3>${exam.title}</h3>
-                            <p style="color:#475569; font-size: 0.9rem; margin-bottom: 1rem;">${exam.description || 'Standard Assessment Test'}</p>
-                            <div class="exam-meta">
-                                <span>⏱️ ${exam.duration_minutes || 30} mins</span>
-                                <span>❓ ${exam.total_questions || 10} Qs</span>
-                            </div>
-                        </div>
-                        <button class="btn btn-primary w-full" onclick="startExam(${exam.id})">Start Assessment &rarr;</button>
-                    </div>
-                `).join('');
-            } catch (err) {
-                document.getElementById('examsListGrid').innerHTML = `<p style="color: #ef4444;">Failed to load exams.</p>`;
-            }
-        }
-
-        function startExam(id) {
-            window.location.href = `/pages/take-exam.html?id=${id}`;
-        }
-
-        fetchExams();
-    </script>
+  <script src="/js/available-exams.js"></script>
 </body>
 </html>

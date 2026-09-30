@@ -1,26 +1,38 @@
 document.addEventListener('DOMContentLoaded', () => {
 
 
-    const urlParams = new URLSearchParams(window.location.search);
+const urlParams = new URLSearchParams(window.location.search);
 
-const googleToken = urlParams.get('token');
-const googleType = urlParams.get('type');
+const authToken = urlParams.get('token');
+const authType = urlParams.get('type');
 
+if (authToken) {
 
-if (googleToken) {
-    localStorage.setItem('token', googleToken);
+    if (authType === 'admin') {
 
-    // Keep token available before any dashboard authentication check runs
-    console.log('Google JWT saved successfully');
+        // Admin magic link / admin Google login
+        localStorage.setItem('adminToken', authToken);
 
-    // Remove token from URL after saving it
+        // Make sure student token cannot be used here
+        localStorage.removeItem('token');
+
+        console.log('Admin authentication token saved successfully.');
+
+    } else {
+
+        // Student Google login
+        localStorage.setItem('token', authToken);
+
+        console.log('Google student JWT saved successfully.');
+    }
+
+    // Remove token from URL
     window.history.replaceState(
         {},
         document.title,
         window.location.pathname
     );
 }
-
 
 
     // ==========================================
