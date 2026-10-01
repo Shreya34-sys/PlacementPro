@@ -352,8 +352,8 @@ button.success:hover, #submit:hover {
   position: fixed;
   bottom: 24px;
   right: 24px;
-  width: 160px;
-  height: 120px;
+  width: 300px;
+  height: 220px;
   border-radius: 12px;
   object-fit: cover;
   border: 2px solid var(--primary);
@@ -367,4 +367,45 @@ button.success:hover, #submit:hover {
   .live-head { flex-direction: column; align-items: flex-start; gap: 16px; }
   .head-actions { width: 100%; justify-content: space-between; }
   .camera-preview { width: 120px; height: 90px; bottom: 16px; right: 16px; }
+}
+.camera-wrapper {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  width: 160px;
+  z-index: 1000;
+}
+
+.camera-wrapper .camera-preview {
+  position: static;
+  display: block;
+  width: 160px;
+  height: 120px;
+}
+
+.camera-status {
+  margin-top: 6px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.82);
+  color: #fff;
+  font-size: 11px;
+  line-height: 1.25;
+}
+
+.camera-status[data-state="ok"] {
+  border: 1px solid rgba(0, 200, 120, 0.7);
+}
+
+.camera-status[data-state="error"] {
+  border: 1px solid rgba(255, 80, 80, 0.8);
+}
+
+.camera-retry {
+  width: 100%;
+  margin-top: 6px;
+  padding: 7px 8px;
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
 }

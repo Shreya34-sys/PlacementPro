@@ -1,12 +1,3 @@
-<!-- <!doctype html><html><head><meta charset="utf-8"><title>Live Exam</title><link rel="stylesheet" href="/css/proctored-exams.css"></head>
-<video id="camera" class="camera-preview" muted playsinline></video>
-
-<script src="/socket.io/socket.io.js"></script>
-<script src="/js/exam-client.js"></script>
-<script src="/js/student-proctor.js"></script>
-<body><main class="live-shell"><header class="live-head"><div><span class="pill blue">Live Exam Mode</span><h1 id="examTitle">Assessment</h1><p id="progress">Question 1</p></div><div><span id="timer" class="timer">--:--</span><button id="submit" class="success">Submit Test</button></div></header><div class="progress"><i id="bar"></i></div><section class="live-grid"><article class="card question-card"><div class="question-top"><b id="questionNo">Question 1</b><span id="topic" class="pill cyan"></span></div><h2 id="questionText"></h2><div id="options"></div><div class="actions"><button id="previous">← Previous</button><button id="mark">Mark for Review & Next</button><button id="next" class="primary">Save & Next →</button></div></article><aside class="card palette"><h2>▦ Question Palette</h2><div id="warning" class="warning hidden"></div><div id="paletteButtons" class="palette-grid"></div><button id="finalize" class="outline">Finalize Assessment</button></aside></section></main><video id="camera" muted playsinline class="camera-preview"></video><script src="/socket.io/socket.io.js"></script><script src="/js/exam-client.js"></script></body></html> -->
-
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -28,6 +19,7 @@
         <p id="progress">Question 1</p>
       </div>
       <div class="head-actions">
+        <button id="fullscreenBtn" class="outline" type="button">Enter Fullscreen</button>
         <div id="timer" class="timer">--:--</div>
         <button id="submit" class="success">Submit Test</button>
       </div>
@@ -69,7 +61,11 @@
   </main>
 
   <!-- Live Proctoring Camera Feed -->
-  <video id="camera" class="camera-preview" muted playsinline></video>
+  <div class="camera-wrapper">
+    <video id="camera" class="camera-preview" muted playsinline></video>
+    <div id="cameraStatus" class="camera-status">Starting camera…</div>
+    <button id="retryCamera" class="camera-retry" type="button" hidden>Retry Camera</button>
+  </div>
 
   <!-- External Scripts -->
   <script src="/socket.io/socket.io.js"></script>

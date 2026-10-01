@@ -68,20 +68,33 @@ async function load() {
  */
 async function begin() {
   try {
-    const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-    const video = document.querySelector('#camera');
-    if (video) {
-      video.srcObject = stream;
-      video.play();
-    }
-  } catch {
-    alert('A working camera and microphone are required to begin this assessment.');
-    return;
-  }
+    // Camera is mandatory
+    const stream = await navigator.mediaDevices.getUserMedia({
+        video: {
+            facingMode: 'user',
+            width: { ideal: 640 },
+            height: { ideal: 480 }
+        },
+        audio: false
+    });
 
-  if (document.documentElement.requestFullscreen) {
-    await document.documentElement.requestFullscreen();
-  }
+    // We only needed to test the camera here.
+    // student-proctor.js will request/use the camera on the live exam page.
+    stream.getTracks().forEach(track => track.stop());
+
+} catch (error) {
+    console.error('CAMERA CHECK FAILED:', error);
+    console.error('Error name:', error.name);
+    console.error('Error message:', error.message);
+
+    alert(
+        `Camera could not be started.\n\n` +
+        `Error: ${error.name}\n` +
+        `${error.message}`
+    );
+
+    return;
+}
 
   const r = await api(`/api/exams/${examId}/attempts`, { method: 'POST' });
   attempt = await r.json();
@@ -260,6 +273,19 @@ async function live() {
       emitFlag('focus_lost', 'Full-screen mode exited.');
     }
   });
+
+  const fullscreenBtn = document.querySelector('#fullscreenBtn');
+  if (fullscreenBtn) {
+    fullscreenBtn.onclick = async () => {
+      try {
+        if (!document.fullscreenElement && document.documentElement.requestFullscreen) {
+          await document.documentElement.requestFullscreen();
+        }
+      } catch (error) {
+        console.warn('Fullscreen request failed:', error);
+      }
+    };
+  }
 
   // Socket connection for remote auto-submission
   const socket = io({ auth: { token } });

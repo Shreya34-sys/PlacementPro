@@ -63,6 +63,10 @@ const resumeRoutes = require('./routes/resumeRoutes');
 const app = express();
 const server = http.createServer(app); // Socket.IO must attach to an HTTP server, not app.listen().
 
+app.use('/vendor/mediapipe', express.static(
+    path.join(__dirname, 'node_modules/@mediapipe/tasks-vision')
+));
+
 app.use(express.json({ limit: '1mb' }));
 app.use(express.urlencoded({ extended: true, limit: '1mb' }));
 app.use(express.static(path.join(__dirname, 'public')));
