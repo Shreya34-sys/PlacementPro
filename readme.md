@@ -9,3 +9,24 @@ The test-creation payload is: `{ title, instructions, durationMinutes, startsAt,
 Security note: browsers cannot reliably block OS-level screenshots, screen recording, or a user with another device. The client requests camera/mic permission, full screen, and reports tab changes/clipboard/full-screen exits, while the server stores the warnings and auto-submits at three. For genuine face, phone, and multi-person detection, post signed detections from a separately hosted, consented ML pipeline to the `flags` endpoint; do not treat browser JavaScript as proof of cheating.
 
 Before production, add ownership checks to every attempt route (student id must equal `exam_attempts.student_id`), rate limits, request validation (Zod/Joi), HTTPS, a privacy/retention policy for camera evidence, and server-side scheduled closure of expired exams.
+
+
+
+
+CREATE FOLDER AND OPEN CMD SHELL:
+
+1.git clone -b BRANCH_NAME REPO_URL
+
+2.npm install
+
+3.create database/run queries present in query.sql
+
+4.create .env file and paste imp keys
+
+5.run project in PlacementPro folder (by opening cmd in PlacementPro folder): 
+  npm run dev
+
+6.see project on localhost:5000 (for student)
+		localhost:5000/#admin (for admins)
+
+

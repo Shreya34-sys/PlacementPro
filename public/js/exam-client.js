@@ -256,24 +256,8 @@ async function live() {
     button.onclick = () => confirm('Submit this assessment?') && submit();
   });
 
-  // Proctoring Event Listeners
-  ['visibilitychange', 'copy', 'paste', 'cut'].forEach((event) => {
-    document.addEventListener(event, () => {
-      if (event === 'visibilitychange' ? document.hidden : true) {
-        emitFlag(
-          event === 'visibilitychange' ? 'tab_switch' : 'clipboard',
-          event === 'visibilitychange' ? 'Tab/application focus was lost.' : 'Clipboard action attempted.'
-        );
-      }
-    });
-  });
-
-  document.addEventListener('fullscreenchange', () => {
-    if (!document.fullscreenElement) {
-      emitFlag('focus_lost', 'Full-screen mode exited.');
-    }
-  });
-
+  // Proctoring event listeners are handled by student-proctor.js.
+  // Keeping them here would register the same events twice on live-exam.html.
   const fullscreenBtn = document.querySelector('#fullscreenBtn');
   if (fullscreenBtn) {
     fullscreenBtn.onclick = async () => {

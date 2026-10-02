@@ -243,6 +243,28 @@
         await flagsResponse.json();
 
       // --------------------------------------------------------
+      // UPDATE FLAG SEVERITY COUNTERS
+      // --------------------------------------------------------
+
+      const highCount =
+        flags.filter((flag) => flag.severity === 'high').length;
+
+      const mediumCount =
+        flags.filter((flag) => flag.severity === 'medium').length;
+
+      const lowCount =
+        flags.filter((flag) => flag.severity === 'low').length;
+
+      const statBoxes =
+        document.querySelectorAll('#flagStats b');
+
+      if (statBoxes.length >= 3) {
+        statBoxes[0].textContent = highCount;
+        statBoxes[1].textContent = mediumCount;
+        statBoxes[2].textContent = lowCount;
+      }
+
+      // --------------------------------------------------------
       // MAP FLAGS BY ATTEMPT
       // --------------------------------------------------------
 
@@ -717,6 +739,21 @@
 
       // Refresh because the warning itself
       // should also disappear from the card.
+      refresh();
+    }
+  );
+
+  // ============================================================
+  // REAL-TIME STUDENT REMOVED
+  // ============================================================
+
+  socket.on(
+    'proctor:student-removed',
+    () => {
+      console.log(
+        'ADMIN: Student was removed from the current assessment.'
+      );
+
       refresh();
     }
   );

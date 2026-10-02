@@ -667,8 +667,27 @@
             'Tab-switch warning lock released.'
           );
         },
-        1500
+        3000
       );
+    }
+  );
+
+  // ============================================================
+  // FULLSCREEN EXIT DETECTION
+  // Kept here because this file owns proctoring events on the
+  // live exam page. exam-client.js no longer registers them.
+  // ============================================================
+
+  document.addEventListener(
+    'fullscreenchange',
+    () => {
+      if (!document.fullscreenElement) {
+        sendFlag(
+          'focus_lost',
+          'Full-screen mode exited.',
+          'low'
+        );
+      }
     }
   );
 
