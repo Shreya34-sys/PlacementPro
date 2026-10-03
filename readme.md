@@ -1,32 +1,21 @@
-# AI-proctored aptitude module — drop-in files
+# PlacementPro Versant Module
 
-Install the existing packages plus Socket.IO: `npm i socket.io`. Run `01_exam_schema.sql` once against the existing `placementpro` database. It adds only module tables, uses UUID strings everywhere, and has no auto-increment columns.
+A separate MVC module for a Versant-style automated English communication round.
 
-Copy files 02–07 into the matching project folders (rename the numeric prefix away). Mount `06_routes_examRoutes.js` at the existing `/api/exams` route. Replace the current `app.listen` setup with an HTTP server and call `setupSockets(server, app)` from `07_socket_setup.js`. Copy files 08–17 into `public/pages`, `public/js`, and `public/css` with the names following their prefixes.
+Included:
+- Admin test/content management
+- Six speaking sections
+- Reference audio upload
+- Unique assignment access codes
+- Student microphone readiness
+- MediaRecorder speech capture
+- No-backtracking server validation
+- Silence auto-stop
+- Full-screen/tab-switch events
+- Whisper speech-to-text through Groq
+- LLM/local grading
+- WPM and pause metrics
+- CEFR-style result
+- Admin result view
 
-The test-creation payload is: `{ title, instructions, durationMinutes, startsAt, endsAt, status, negativeMarking, topics: [{ name, questions: [{ text, marks, options: [{ text, isCorrect }] }] }] }`. Only admins can create tests and read/resolve proctoring flags. New exams are returned newest-first for students.
-
-Security note: browsers cannot reliably block OS-level screenshots, screen recording, or a user with another device. The client requests camera/mic permission, full screen, and reports tab changes/clipboard/full-screen exits, while the server stores the warnings and auto-submits at three. For genuine face, phone, and multi-person detection, post signed detections from a separately hosted, consented ML pipeline to the `flags` endpoint; do not treat browser JavaScript as proof of cheating.
-
-Before production, add ownership checks to every attempt route (student id must equal `exam_attempts.student_id`), rate limits, request validation (Zod/Joi), HTTPS, a privacy/retention policy for camera evidence, and server-side scheduled closure of expired exams.
-
-
-
-
-CREATE FOLDER AND OPEN CMD SHELL:
-
-1.git clone -b BRANCH_NAME REPO_URL
-
-2.npm install
-
-3.create database/run queries present in query.sql
-
-4.create .env file and paste imp keys
-
-5.run project in PlacementPro folder (by opening cmd in PlacementPro folder): 
-  npm run dev
-
-6.see project on localhost:5000 (for student)
-		localhost:5000/#admin (for admins)
-
-
+It intentionally does not modify the existing PlacementPro exam/proctoring files.

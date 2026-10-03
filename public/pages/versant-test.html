@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PlacementPro | English Communication Assessment</title>
+<link rel="stylesheet" href="/css/versant-test.css">
+</head>
+<body>
+<main>
+<section id="testList" class="card landing-card">
+  <div class="page-nav"><a class="back-link" href="/pages/stddash.html">← Back to Home</a></div>
+  <div class="brand-mark">PLACEMENTPRO</div>
+  <div class="eyebrow">ENGLISH COMMUNICATION ASSESSMENT</div>
+  <h1>Communication Test</h1>
+  <p>Published assessments are available to all students. Select an assessment to begin.</p>
+  <div id="testsLoading">Loading assessments...</div>
+  <div id="availableTests"></div>
+  <div id="gateMsg" class="gate-msg"></div>
+</section>
+
+<section id="test" class="hidden">
+  <header class="test-header">
+    <div class="test-header-main"><a class="header-back" href="/">← Home</a>
+    <div>
+      <div class="brand-mark light">PLACEMENTPRO</div>
+      <b id="testTitle"></b>
+      <span id="section"></span>
+    </div></div>
+    <div class="timer-wrap"><small>TIME REMAINING</small><strong id="timer">00:00</strong></div>
+  </header>
+
+  <div class="progress"><div id="bar"></div></div>
+
+  <div class="card question-card">
+    <div class="question-meta">
+      <p id="counter"></p>
+      <span class="status-pill">AUTOMATED RESPONSE</span>
+    </div>
+
+    <div class="prompt-area">
+      <div class="eyebrow">QUESTION</div>
+      <h2 id="prompt"></h2>
+      <audio id="promptAudio" controls class="hidden"></audio>
+    </div>
+
+    <div id="status" class="status-message">Get ready...</div>
+    <div id="autoHint" class="auto-hint"></div>
+
+    <div class="mic" aria-live="polite">
+      <div class="mic-top">
+        <span id="micDot"></span>
+        <strong id="recordingState">Microphone ready</strong>
+        <span id="recordingTime">0:00</span>
+      </div>
+      <div class="level" aria-label="Microphone level"><div id="levelFill"></div></div>
+      <div class="mic-details">
+        <span>Captured: <b id="recordingSize">0 B</b></span>
+        <span>Recording starts automatically after the tone.</span>
+      </div>
+    </div>
+
+    <div class="automation-note">
+      <span class="cue-dot"></span>
+      <span>Your response will stop automatically after silence or when the response time ends.</span>
+    </div>
+
+    <button id="startAnswer" class="hidden" type="button">Start Answer</button>
+    <button id="next" class="hidden" type="button" disabled>Submit &amp; Next</button>
+  </div>
+</section>
+
+<section id="done" class="card hidden result-card">
+  <div class="brand-mark">PLACEMENTPRO</div>
+  <div class="eyebrow">ASSESSMENT COMPLETE</div>
+  <h1>Test submitted</h1>
+  <p>Your responses have been recorded and your result is being prepared.</p>
+  <a id="resultLink" class="result-button">View Result</a>
+</section>
+</main>
+<script src="/js/versant-test.js"></script>
+</body>
+</html>
