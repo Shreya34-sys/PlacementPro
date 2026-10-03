@@ -34,8 +34,11 @@
 <p>After publishing, this test is automatically available to <strong>every student</strong>. No access code or manual assignment is required.</p>
 <form id="questionForm" enctype="multipart/form-data">
 <select id="sectionId" required></select>
-<textarea id="questionText" placeholder="Question/prompt text" required></textarea>
-<input id="expectedText" placeholder="Expected answer (for repeat/short answer)">
+<div id="questionModeHelp" class="question-mode-help">
+  Choose a section to see whether this question needs text or audio.
+</div>
+<textarea id="questionText" placeholder="Question/prompt text"></textarea>
+<input id="expectedText" placeholder="Expected/reference answer (optional)">
 <input id="acceptedAnswers" placeholder='Accepted answers JSON, e.g. ["ice","Ice"]'>
 <div class="grid">
 <label>Response seconds<input id="responseSeconds" type="number" value="30"></label>
@@ -43,7 +46,8 @@
 <label>Order<input id="questionOrder" type="number" value="1"></label>
 <label>Points<input id="points" type="number" value="10"></label>
 </div>
-<label>Prompt audio <input id="promptAudio" type="file" accept="audio/*"></label>
+<label>Question audio <input id="promptAudio" type="file" accept="audio/*"></label>
+<small class="form-note">Repeat Sentence, Short Answer, Story Retelling and Open Opinion require audio only. Read Aloud and Sentence Build require text only.</small>
 <button>Add Question</button>
 </form>
 <div class="actions">

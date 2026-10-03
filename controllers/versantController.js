@@ -49,17 +49,87 @@ exports.getTest = async (req, res, next) => {
 
 exports.addQuestion = async (req, res, next) => {
   try {
-    const { sectionId, questionText, expectedText, acceptedAnswers, responseSeconds, silenceSeconds, questionOrder, points } = req.body;
-    if (!sectionId || !questionText?.trim()) return res.status(400).json({ message: 'Section and question text are required.' });
+    const {
+      sectionId, questionText, expectedText, acceptedAnswers,
+      responseSeconds, silenceSeconds, questionOrder, points
+    } = req.body;
+
+    if (!sectionId) {
+      return res.status(400).json({ message: 'Section is required.' });
+    }
+
+    const section = await model.getSection(sectionId);
+    if (!section) {
+      return res.status(404).json({ message: 'Versant section not found.' });
+    }
+
+    const audioOnlySections = new Set([
+      'repeat_sentence',
+      'short_answer',
+      'story_retell',
+      'open_opinion'
+    ]);
+    const textOnlySections = new Set([
+      'read_aloud',
+      'sentence_build'
+    ]);
+
+    const key = section.section_key;
+    const text = String(questionText || '').trim();
+    const hasAudio = Boolean(req.file);
+
+    if (audioOnlySections.has(key)) {
+      if (!hasAudio) {
+        return res.status(400).json({
+          message: `${section.display_name} requires question audio. Text question is not used for this section.`
+        });
+      }
+      // Keep the database's NOT NULL question_text column valid, but do not
+      // expose/use this placeholder as the student's question text.
+      req.body.questionText = '';
+    }
+
+    if (textOnlySections.has(key)) {
+      if (!text) {
+        return res.status(400).json({
+          message: `${section.display_name} requires question text. Question audio is not used for this section.`
+        });
+      }
+      if (hasAudio) {
+        fs.unlink(req.file.path, () => {});
+        return res.status(400).json({
+          message: `${section.display_name} accepts text only. Remove the question audio.`
+        });
+      }
+    }
+
     let accepted = acceptedAnswers;
     if (Array.isArray(acceptedAnswers)) accepted = JSON.stringify(acceptedAnswers);
-    const audio = req.file ? `/uploads/versant/${req.file.filename}` : null;
+
+    // For text-prompt sections, the prompt itself is the reference text used
+    // by the existing exact-match scoring path.
+    const referenceText = textOnlySections.has(key)
+      ? (expectedText?.trim() || text)
+      : (expectedText || null);
+
+    const audio = hasAudio ? `/uploads/versant/${req.file.filename}` : null;
+
     const id = await model.addQuestion({
-      sectionId, questionText: questionText.trim(), expectedText, acceptedAnswers: accepted,
-      responseSeconds, silenceSeconds, questionOrder, points, promptAudioUrl: audio
+      sectionId,
+      questionText: audioOnlySections.has(key) ? '' : text,
+      expectedText: referenceText,
+      acceptedAnswers: accepted,
+      responseSeconds,
+      silenceSeconds,
+      questionOrder,
+      points,
+      promptAudioUrl: audio
     });
+
     res.status(201).json({ id, promptAudioUrl: audio });
-  } catch (e) { next(e); }
+  } catch (e) {
+    next(e);
+  }
 };
 
 exports.publish = async (req, res, next) => {
@@ -159,7 +229,12 @@ exports.submit = async (req, res, next) => {
     if (!a) return res.status(404).json({ message: 'Test attempt not found.' });
     if (a.status === 'submitted') {
       const existing = await model.getResult(a.id, studentId(req));
-      return res.json({ message: 'Versant test already submitted.', result: existing });
+      // A previous submission normally has a stored result. If an older or
+      // interrupted submission left the result row missing, rebuild it below
+      // instead of sending the student to a blank result page.
+      if (existing) {
+        return res.json({ message: 'Versant test already submitted.', result: existing });
+      }
     }
 
     const questions = await model.getQuestionsForAssignment(a.id);

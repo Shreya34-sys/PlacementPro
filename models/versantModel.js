@@ -101,6 +101,15 @@ async function listPublishedTests() {
   return rows;
 }
 
+async function getSection(sectionId) {
+  const [[section]] = await db.execute(
+    `SELECT id, test_id, section_key, display_name
+     FROM versant_sections WHERE id=?`,
+    [sectionId]
+  );
+  return section || null;
+}
+
 async function getTest(testId) {
   const [[test]] = await db.execute(`SELECT * FROM versant_tests WHERE id=?`, [testId]);
   if (!test) return null;
@@ -344,7 +353,7 @@ async function addEvent(assignmentId, type, data) {
 }
 
 module.exports = {
-  createTest, listTests, deleteTest, listPublishedTests, getTest, addQuestion, setTestStatus,
+  createTest, listTests, deleteTest, listPublishedTests, getTest, getSection, addQuestion, setTestStatus,
   getPublishedTest, getOrCreateAssignment, getAssignmentForStudent,
   startAssignment, getQuestionsForAssignment, getQuestionForAssignment,
   saveResponse, advanceQuestion, submitAssignment, listAssignments,

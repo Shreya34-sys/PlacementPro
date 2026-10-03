@@ -635,8 +635,13 @@ function showQuestion() {
     $('section').textContent =
         question.sectionName;
 
-    $('prompt').textContent =
-        question.questionText;
+    const sectionKey = String(question.sectionKey || '').toLowerCase();
+    const textOnly = ['read_aloud', 'sentence_build'].includes(sectionKey);
+    const audioOnly = ['repeat_sentence', 'short_answer', 'story_retell', 'open_opinion'].includes(sectionKey);
+
+    $('prompt').textContent = textOnly
+        ? question.questionText
+        : (audioOnly ? 'Listen to the question.' : (question.questionText || ''));
 
     $('bar').style.width =
         `${(index / questions.length) * 100}%`;
@@ -680,21 +685,13 @@ function showQuestion() {
        QUESTION AUDIO
        ===================================================== */
 
-    if (question.promptAudioUrl) {
-        $('promptAudio').src =
-            question.promptAudioUrl;
-
-        $('promptAudio')
-            .classList
-            .remove('hidden');
-
+    if (audioOnly && question.promptAudioUrl) {
+        $('promptAudio').src = question.promptAudioUrl;
+        $('promptAudio').classList.add('hidden');
     } else {
-        $('promptAudio')
-            .removeAttribute('src');
-
-        $('promptAudio')
-            .classList
-            .add('hidden');
+        $('promptAudio').pause();
+        $('promptAudio').removeAttribute('src');
+        $('promptAudio').classList.add('hidden');
     }
 
 
@@ -789,7 +786,14 @@ async function beginAutomatedResponse(question) {
        2. QUESTION AUDIO
        ===================================================== */
 
-    if (question.promptAudioUrl) {
+    const audioPromptSection = [
+        'repeat_sentence',
+        'short_answer',
+        'story_retell',
+        'open_opinion'
+    ].includes(String(question.sectionKey || '').toLowerCase());
+
+    if (audioPromptSection && question.promptAudioUrl) {
         try {
             const audio =
                 $('promptAudio');
@@ -1381,14 +1385,18 @@ async function finish() {
         return;
     }
 
-    finishing = true;
-
     clearInterval(timer);
     clearQuestionTimers();
 
     /*
-     * If recording is still active, stop it first.
-     * The onstop handler will continue the submission flow.
+     * If the final recording is still active, stop it first.
+     *
+     * IMPORTANT:
+     * Do NOT set `finishing = true` before recorder.stop().
+     * The recorder's onstop handler calls uploadResponse(), and
+     * uploadResponse() must be allowed to upload/score the final
+     * answer. Once that upload completes, uploadResponse() calls
+     * finish() again and the actual test submission happens then.
      */
     if (
         recorder?.state === 'recording'
@@ -1397,8 +1405,10 @@ async function finish() {
         return;
     }
 
+    finishing = true;
+
     try {
-        await api(
+        const submitData = await api(
             `/api/versant/student/assignments/${assignment.id}/submit`,
             {
                 method: 'POST'
@@ -1424,6 +1434,13 @@ async function finish() {
         $('done')
             .classList
             .remove('hidden');
+
+        if (submitData?.result) {
+            sessionStorage.setItem(
+                `versant_result_${assignment.id}`,
+                JSON.stringify(submitData.result)
+            );
+        }
 
         $('resultLink').href =
             `/pages/versant-result.html?assignment=${assignment.id}`;

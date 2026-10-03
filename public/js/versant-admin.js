@@ -56,6 +56,56 @@ window.openTest=async id=>{
   }catch(e){alert(e.message);}
 };
 
+function updateQuestionFormMode(){
+  const selected=$('sectionId').selectedOptions[0];
+  const key=selected?.dataset.sectionKey || '';
+  const audioOnly=['repeat_sentence','short_answer','story_retell','open_opinion'].includes(key);
+  const textOnly=['read_aloud','sentence_build'].includes(key);
+
+  const text=$('questionText');
+  const audio=$('promptAudio');
+  const expected=$('expectedText');
+  const accepted=$('acceptedAnswers');
+  const help=$('questionModeHelp');
+
+  if(audioOnly){
+    help.textContent='This section uses an audio question only. Upload the prompt audio; no text question is required.';
+
+    text.value='';
+    text.disabled=true;
+    text.required=false;
+    text.placeholder='Not used for this section — upload question audio below.';
+    audio.disabled=false;
+    audio.required=true;
+    expected.disabled=true;
+    accepted.disabled=true;
+    expected.value='';
+    accepted.value='';
+  }else if(textOnly){
+    help.textContent='This section uses a text question only. Enter the prompt text; question audio is disabled.';
+    text.disabled=false;
+    text.required=true;
+    text.placeholder='Enter the text the student must read/build.';
+    audio.value='';
+    audio.disabled=true;
+    audio.required=false;
+    expected.disabled=false;
+    accepted.disabled=false;
+    expected.placeholder='Reference answer (optional; defaults to the question text)';
+    accepted.placeholder='Accepted answers JSON (optional)';
+  }else{
+    help.textContent='Select a Versant section to configure the question input.';
+    text.disabled=false;
+    text.required=true;
+    audio.disabled=false;
+    audio.required=false;
+    expected.disabled=false;
+    accepted.disabled=false;
+  }
+}
+
+$('sectionId').addEventListener('change', updateQuestionFormMode);
+
 function renderQuestions(){
   $('questions').innerHTML=selectedTest.sections.map(s=>`<h3>${esc(s.display_name)}</h3>`+
     s.questions.map(q=>`<div class="question"><b>#${q.question_order}</b> ${esc(q.question_text)}<small>${q.response_seconds}s · ${q.prompt_audio_url?'<a href="'+q.prompt_audio_url+'" target="_blank">audio</a>':''}</small></div>`).join('')
