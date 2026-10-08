@@ -14,6 +14,10 @@ const resumeRoutes = require('./routes/resumeRoutes');
 
 const versantRoutes = require('./routes/versantRoutes');
 
+const codingRoutes = require('./routes/codingRoutes');
+const codingViewRoutes = require('./routes/codingViewRoutes');
+const attachCodingSockets = require('./config/codingSocket');
+
 const app = express();
 const server = http.createServer(app); // Socket.IO must attach to an HTTP server, not app.listen().
 
@@ -28,14 +32,17 @@ app.use(passport.initialize());
 
 // Socket.IO is available to controllers via req.app.get('io').
 setupSockets(server, app);
+attachCodingSockets(app.get('io'));
 
 app.use('/api/exams', examRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/student', studentRoutes);
 app.use('/api/resume', resumeRoutes);
 app.use('/api/versant', versantRoutes);
+app.use('/api/coding', codingRoutes);
 
 // Keep this last because it contains page/catch-all routes.
+app.use('/', codingViewRoutes);
 app.use('/', viewRoutes);
 
 // Error handler: routes should call next(error), not expose database details.

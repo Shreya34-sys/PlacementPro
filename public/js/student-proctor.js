@@ -16,6 +16,9 @@
 
   const socket = io({ auth: { token: studentAuthToken } });
 
+  // Restore the last warning count immediately after a page refresh.
+  restoreWarningAfterRefresh();
+
   let cameraStream = null;
   let peerConnection = null;
   let remoteDescriptionSet = false;
@@ -61,11 +64,76 @@
   // WARNING DISPLAY
   // ============================================================
 
+  // Keep the warning as a small non-blocking banner.
+  // Some older exam CSS styles #warning as a full-screen red overlay;
+  // these inline rules intentionally override that without changing
+  // the rest of the coding exam UI.
+  function styleWarningBox() {
+    if (!warningBox) return;
+
+    Object.assign(warningBox.style, {
+      position: 'fixed',
+      top: '16px',
+      left: '50%',
+      right: 'auto',
+      bottom: 'auto',
+      transform: 'translateX(-50%)',
+      width: 'min(560px, calc(100vw - 32px))',
+      maxWidth: '560px',
+      minHeight: '0',
+      height: 'auto',
+      padding: '12px 18px',
+      margin: '0',
+      zIndex: '99999',
+      boxSizing: 'border-box',
+      borderRadius: '10px',
+      background: '#fff3cd',
+      color: '#664d03',
+      border: '1px solid #ffecb5',
+      boxShadow: '0 6px 18px rgba(0,0,0,.15)',
+      textAlign: 'center',
+      fontSize: '14px',
+      lineHeight: '1.4',
+      display: 'block'
+    });
+  }
+
   function updateWarning(message, count) {
     if (!warningBox) return;
 
-    warningBox.textContent = `Integrity warning ${count}/3: ${message}`;
+    const safeCount = Math.max(0, Math.min(3, Number(count) || 0));
+    warningBox.textContent = `Integrity warning ${safeCount}/3: ${message}`;
+    styleWarningBox();
     warningBox.classList.remove('hidden');
+
+    // Persist the last confirmed server count for this exact attempt.
+    // This is only UI state; the backend remains the source of truth.
+    try {
+      localStorage.setItem(
+        `placementpro:proctor-warning:${attemptId}`,
+        JSON.stringify({ count: safeCount, message: String(message || '') })
+      );
+    } catch (_) {}
+  }
+
+  function restoreWarningAfterRefresh() {
+    if (!warningBox) return;
+
+    try {
+      const raw = localStorage.getItem(
+        `placementpro:proctor-warning:${attemptId}`
+      );
+      if (!raw) return;
+
+      const saved = JSON.parse(raw);
+      const count = Number(saved?.count);
+      if (!Number.isFinite(count) || count <= 0) return;
+
+      updateWarning(
+        saved.message || 'Proctoring warning recorded.',
+        count
+      );
+    } catch (_) {}
   }
 
   // ============================================================
