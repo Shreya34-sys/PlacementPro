@@ -2,23 +2,56 @@ const db = require('../config/db');
 const { randomUUID } = require('crypto');
 
 class Exam {
+  static async ensureImportColumns(connection = db) {
+    const [columns] = await connection.execute(
+      `SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS
+       WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'exam_questions'
+         AND COLUMN_NAME IN ('explanation', 'difficulty')`
+    );
+    const existing = new Set(columns.map(column => column.COLUMN_NAME));
+    if (!existing.has('explanation')) {
+      await connection.execute('ALTER TABLE exam_questions ADD COLUMN explanation TEXT NULL');
+    }
+    if (!existing.has('difficulty')) {
+      await connection.execute("ALTER TABLE exam_questions ADD COLUMN difficulty ENUM('easy','medium','hard') NOT NULL DEFAULT 'medium'");
+    }
+  }
+
   static async create(adminId, payload) {
     const connection = await db.getConnection();
     try {
+      const hasImportMetadata = payload.topics.some(topic =>
+        topic.questions.some(question => question.explanation || question.difficulty)
+      );
+      if (hasImportMetadata) await Exam.ensureImportColumns(connection);
       await connection.beginTransaction();
       const examId = randomUUID();
       await connection.execute(`INSERT INTO exams
-        (id, created_by, title, instructions, duration_minutes, starts_at, ends_at, status, negative_marking)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-        [examId, adminId, payload.title, payload.instructions, payload.durationMinutes,
+        (id, created_by, title, exam_type, instructions, duration_minutes, starts_at, ends_at, status, negative_marking)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [examId, adminId, payload.title, payload.examType || payload.exam_type || 'aptitude', payload.instructions, payload.durationMinutes,
           payload.startsAt, payload.endsAt, payload.status || 'draft', payload.negativeMarking || 0]);
       for (const [topicIndex, topic] of payload.topics.entries()) {
         const topicId = randomUUID();
         await connection.execute('INSERT INTO exam_topics (id, exam_id, name, display_order) VALUES (?, ?, ?, ?)', [topicId, examId, topic.name, topicIndex + 1]);
         for (const [questionIndex, question] of topic.questions.entries()) {
           const questionId = randomUUID();
-          await connection.execute(`INSERT INTO exam_questions (id, exam_id, topic_id, question_text, marks, display_order)
-            VALUES (?, ?, ?, ?, ?, ?)`, [questionId, examId, topicId, question.text, question.marks, question.displayOrder || questionIndex + 1]);
+          if (hasImportMetadata) {
+            await connection.execute(`INSERT INTO exam_questions (id, exam_id, topic_id, question_text, explanation, difficulty, marks, display_order)
+              VALUES (?, ?, ?, ?, ?, ?, ?, ?)`, [
+              questionId,
+              examId,
+              topicId,
+              question.text,
+              question.explanation || null,
+              question.difficulty || 'medium',
+              question.marks,
+              question.displayOrder || questionIndex + 1
+            ]);
+          } else {
+            await connection.execute(`INSERT INTO exam_questions (id, exam_id, topic_id, question_text, marks, display_order)
+              VALUES (?, ?, ?, ?, ?, ?)`, [questionId, examId, topicId, question.text, question.marks, question.displayOrder || questionIndex + 1]);
+          }
           const correctCount = question.options.filter(option => option.isCorrect).length;
           if (correctCount !== 1) throw new Error('Each MCQ must have exactly one correct option.');
           for (const [optionIndex, option] of question.options.entries()) {
@@ -30,6 +63,86 @@ class Exam {
       await connection.commit();
       return examId;
     } catch (error) { await connection.rollback(); throw error; } finally { connection.release(); }
+  }
+
+  static async appendQuestions(adminId, examId, payload) {
+    const connection = await db.getConnection();
+    try {
+      await Exam.ensureImportColumns(connection);
+      await connection.beginTransaction();
+      const [[exam]] = await connection.execute(
+        'SELECT id FROM exams WHERE id=? AND created_by=? AND deleted_at IS NULL FOR UPDATE',
+        [examId, adminId]
+      );
+      if (!exam) {
+        const error = new Error('Question set not found.');
+        error.status = 404;
+        throw error;
+      }
+
+      if (payload.status) {
+        await connection.execute('UPDATE exams SET status=? WHERE id=?', [payload.status, examId]);
+      }
+      if (payload.negativeMarking !== undefined && payload.negativeMarking !== null) {
+        await connection.execute('UPDATE exams SET negative_marking=? WHERE id=?', [payload.negativeMarking, examId]);
+      }
+
+      const [topicRows] = await connection.execute(
+        'SELECT id, name, display_order FROM exam_topics WHERE exam_id=? ORDER BY display_order',
+        [examId]
+      );
+      const topicMap = new Map(topicRows.map(topic => [topic.name.toLowerCase(), topic]));
+      let nextTopicOrder = topicRows.reduce((max, topic) => Math.max(max, topic.display_order), 0) + 1;
+      const [[questionOrder]] = await connection.execute(
+        'SELECT COALESCE(MAX(display_order), 0) AS maxOrder FROM exam_questions WHERE exam_id=?',
+        [examId]
+      );
+      let nextQuestionOrder = Number(questionOrder.maxOrder) + 1;
+
+      for (const topic of payload.topics) {
+        let topicRow = topicMap.get(topic.name.toLowerCase());
+        if (!topicRow) {
+          topicRow = { id: randomUUID(), name: topic.name, display_order: nextTopicOrder++ };
+          topicMap.set(topic.name.toLowerCase(), topicRow);
+          await connection.execute(
+            'INSERT INTO exam_topics (id, exam_id, name, display_order) VALUES (?, ?, ?, ?)',
+            [topicRow.id, examId, topicRow.name, topicRow.display_order]
+          );
+        }
+
+        for (const question of topic.questions) {
+          const questionId = randomUUID();
+          await connection.execute(`INSERT INTO exam_questions
+            (id, exam_id, topic_id, question_text, explanation, difficulty, marks, display_order)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)`, [
+            questionId,
+            examId,
+            topicRow.id,
+            question.text,
+            question.explanation || null,
+            question.difficulty || 'medium',
+            question.marks,
+            nextQuestionOrder++
+          ]);
+          const correctCount = question.options.filter(option => option.isCorrect).length;
+          if (correctCount !== 1) throw new Error('Each MCQ must have exactly one correct option.');
+          for (const [optionIndex, option] of question.options.entries()) {
+            await connection.execute(
+              'INSERT INTO question_options (id, question_id, option_text, is_correct, display_order) VALUES (?, ?, ?, ?, ?)',
+              [randomUUID(), questionId, option.text, option.isCorrect, optionIndex + 1]
+            );
+          }
+        }
+      }
+
+      await connection.commit();
+      return examId;
+    } catch (error) {
+      await connection.rollback();
+      throw error;
+    } finally {
+      connection.release();
+    }
   }
 
   static async availableForStudent(studentId) {

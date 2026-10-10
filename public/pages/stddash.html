@@ -144,29 +144,29 @@
 
                 <div class="welcome-actions">
                     <button class="btn btn-primary">▶ Continue Learning Journey</button>
-                    <button class="btn btn-secondary">🤖 Launch AI Mock Interview</button>
+                    <a class="btn btn-secondary" href="/pages/interviews.html" style="text-decoration:none;">Launch Mock Interview</a>
                 </div>
             </section>
 
             <section class="card learning-widget">
                 <div class="card-header-sm">
                     <span class="label-uppercase">📖 CONTINUE LEARNING</span>
-                    <span class="badge grey-badge">Module 4 of 6</span>
+                    <span class="badge grey-badge" id="progressModuleBadge">0 modules solved</span>
                 </div>
-                <h2>Data Structures & Algorithms</h2>
-                <p class="subtitle">Graph Algorithms & Breadth-First Search (BFS)</p>
+                <h2 id="progressLatestModuleName">No modules solved yet</h2>
+                <p class="subtitle" id="progressLatestModuleMeta">Complete an assessment to record your first score.</p>
 
                 <div class="progress-block">
                     <div class="progress-labels">
-                        <span>Module Progress</span>
-                        <span class="progress-val">72%</span>
+                        <span>Modules solved</span>
+                        <span class="progress-val" id="progressModulePercent">0%</span>
                     </div>
                     <div class="progress-bar-bg">
-                        <div class="progress-fill" style="width: 72%;"></div>
+                        <div class="progress-fill" id="progressModuleBar" style="width: 0%;"></div>
                     </div>
                     <div class="progress-footer">
-                        <span>18 / 25 Topics Completed</span>
-                        <span>Est. 45 mins left</span>
+                        <span id="progressModuleTotal">of 0 available</span>
+                        <span>Updates automatically</span>
                     </div>
                 </div>
 
@@ -178,8 +178,8 @@
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-info">
-                    <span class="stat-label">Readiness Score</span>
-                    <span class="stat-value">88%</span>
+                    <span class="stat-label">Latest Score</span>
+                    <span class="stat-value" id="progressLatestScore">0%</span>
                     <span class="stat-trend positive">↗ +4% this week</span>
                 </div>
                 <div class="stat-icon blue-bg">🎗</div>
@@ -187,8 +187,8 @@
 
             <div class="stat-card">
                 <div class="stat-info">
-                    <span class="stat-label">Modules Completed</span>
-                    <span class="stat-value">18 / 25</span>
+                    <span class="stat-label">Modules Solved</span>
+                    <span class="stat-value" id="progressSolvedModules">0</span>
                     <span class="stat-trend positive">↗ 72% completed</span>
                 </div>
                 <div class="stat-icon green-bg">✅</div>
@@ -196,8 +196,8 @@
 
             <div class="stat-card">
                 <div class="stat-info">
-                    <span class="stat-label">Problems Solved</span>
-                    <span class="stat-value">142</span>
+                    <span class="stat-label">Best Score</span>
+                    <span class="stat-value" id="progressBestScore">0%</span>
                     <span class="stat-trend positive">↗ 12 solved this week</span>
                 </div>
                 <div class="stat-icon orange-bg">🎯</div>
@@ -205,13 +205,53 @@
 
             <div class="stat-card">
                 <div class="stat-info">
-                    <span class="stat-label">Analytics</span>
-                    <span class="stat-value">92%</span>
+                    <span class="stat-label">Average Score</span>
+                    <span class="stat-value" id="progressAverageScore">0%</span>
                     <span class="stat-trend positive">↗ Insights updated</span>
                 </div>
                 <div class="stat-icon purple-bg">📈</div>
             </div>
         </div>
+
+        <section class="card preparation-activity-card" aria-labelledby="preparationActivityHeading">
+            <div class="live-progress-header">
+                <div>
+                    <h2 id="preparationActivityHeading">Preparation Activity</h2>
+                    <p class="sub-text" id="preparationTodayStatus">Answer one question on a day to build your streak.</p>
+                </div>
+                <div class="preparation-streak" aria-live="polite">
+                    <strong id="preparationStreak">0 days</strong>
+                    <span>current streak</span>
+                </div>
+            </div>
+            <div id="preparationWeek" class="preparation-week" aria-label="Question activity for the last seven days">
+                <p class="progress-empty">Loading activity...</p>
+            </div>
+        </section>
+
+        <section class="card live-progress-card" aria-labelledby="liveProgressHeading">
+            <div class="live-progress-header">
+                <div>
+                    <h2 id="liveProgressHeading">Score and module activity</h2>
+                    <p class="sub-text">Your submitted assessments appear here.</p>
+                </div>
+                <span class="progress-connection" id="progressConnection" data-state="reconnecting" role="status">Connecting</span>
+            </div>
+            <div class="live-progress-grid">
+                <div class="live-progress-section">
+                    <h3>Solved modules</h3>
+                    <div id="solvedModulesList" class="progress-list" aria-live="polite">
+                        <p class="progress-empty">Loading modules...</p>
+                    </div>
+                </div>
+                <div class="live-progress-section">
+                    <h3>Recent scores</h3>
+                    <div id="recentScoresList" class="progress-list" aria-live="polite">
+                        <p class="progress-empty">Loading scores...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
         <!-- Quick Actions Launchpad -->
         <div class="section-header">
@@ -257,7 +297,7 @@
             </a>
 
 
-            <div class="launchpad-card"><div class="lp-icon teal-icon">🏢</div><div class="lp-details"><h3>Company Questions</h3><p>Target Google, Amazon, TCS</p></div><span class="chevron">&rsaquo;</span></div>
+            <a href="/pages/interviews.html" class="launchpad-card" style="text-decoration: none; color: inherit;"><div class="lp-icon teal-icon">HR</div><div class="lp-details"><h3>Mock Interviews</h3><p>HR, technical and company-specific practice</p></div><span class="chevron">&rsaquo;</span></a>
         </div>
 
         <!-- Two Column Main Body -->
@@ -444,5 +484,7 @@
 
     <script src="/js/app.js"></script>
     <script src="/js/stddash.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/progress-dashboard.js"></script>
 </body>
 </html>

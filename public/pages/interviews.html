@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PlacementPro Interviews</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/interviews.css">
+</head>
+<body>
+  <main class="interview-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Mock Interview Studio</p>
+        <h1>Interview Practice</h1>
+        <p class="subtitle">HR, technical, behavioral, and company-specific interviews assigned by your faculty.</p>
+      </div>
+      <div class="nav-actions">
+        <a class="btn" href="/dashboard">Dashboard</a>
+        <a class="btn" href="/pages/available-exams.html">Aptitude Tests</a>
+      </div>
+    </header>
+
+    <section class="grid three" aria-label="Interview summary">
+      <div class="card metric"><span class="pill">Assigned</span><strong id="assignedCount">0</strong><span class="subtitle">Open interviews</span></div>
+      <div class="card metric"><span class="pill green">Submitted</span><strong id="submittedCount">0</strong><span class="subtitle">Attempts completed</span></div>
+      <div class="card metric"><span class="pill orange">Next Deadline</span><strong id="deadlineText">None</strong><span class="subtitle">Keep an eye on timing</span></div>
+    </section>
+
+    <section class="grid two" style="margin-top:20px">
+      <div class="card">
+        <div class="item-head">
+          <div>
+            <h2>Assigned Interviews</h2>
+            <p class="subtitle">Only published interviews assigned to you or your class appear here.</p>
+          </div>
+          <button class="btn" id="refreshBtn">Refresh</button>
+        </div>
+        <div id="assignmentList" class="list" style="margin-top:18px"></div>
+      </div>
+
+      <aside class="card">
+        <h2>Practice Sessions</h2>
+        <p class="subtitle">Use these categories to understand the kind of interviews your faculty can assign.</p>
+        <div class="list" style="margin-top:16px">
+          <div class="item"><span class="pill">HR</span><strong>Communication and self-introduction</strong><span class="subtitle">Tell me about yourself, strengths, goals.</span></div>
+          <div class="item"><span class="pill green">Technical</span><strong>Core CS and role skills</strong><span class="subtitle">DBMS, OOP, DSA, projects, system basics.</span></div>
+          <div class="item"><span class="pill orange">Behavioral</span><strong>STAR-based experience answers</strong><span class="subtitle">Leadership, conflict, teamwork, ownership.</span></div>
+          <div class="item"><span class="pill">Company</span><strong>Targeted company rounds</strong><span class="subtitle">Role-specific expectations and values.</span></div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="card" style="margin-top:20px">
+      <h2>Interview History & Results</h2>
+      <div id="historyList" class="list" style="margin-top:16px"></div>
+    </section>
+  </main>
+  <script src="/js/interviews.js"></script>
+</body>
+</html>

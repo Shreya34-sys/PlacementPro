@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Faculty Interview Management</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/interviews.css">
+</head>
+<body>
+  <main class="interview-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Faculty Interview Management</p>
+        <h1>HR & Mock Interviews</h1>
+        <p class="subtitle">Create question sets, import Excel questions, assign interviews, and review submissions.</p>
+      </div>
+      <div class="nav-actions">
+        <a class="btn" href="/pages/admindash.html">Dashboard</a>
+        <button class="btn" id="templateBtn">Download Excel Template</button>
+      </div>
+    </header>
+
+    <section id="status" class="status hidden" aria-live="polite"></section>
+
+    <section class="grid two">
+      <form id="setForm" class="card">
+        <h2>Create / Publish Interview Set</h2>
+        <div class="form-grid two" style="margin-top:16px">
+          <label>Title<input id="title" required maxlength="180" placeholder="Amazon HR Mock Round"></label>
+          <label>Category<select id="category"><option value="hr">HR</option><option value="technical">Technical</option><option value="behavioral">Behavioral</option><option value="company">Company-Specific</option></select></label>
+          <label>Company<input id="companyName" placeholder="Optional"></label>
+          <label>Status<select id="statusSelect"><option value="draft">Draft</option><option value="published">Publish</option></select></label>
+          <label>Attempt Limit<input id="maxAttempts" type="number" min="1" max="10" value="1"></label>
+          <label>Deadline<input id="deadline" type="datetime-local"></label>
+        </div>
+        <label style="margin-top:14px">Description<textarea id="description" placeholder="Instructions and expectations for students"></textarea></label>
+
+        <div class="item-head" style="margin-top:18px">
+          <h3>Questions</h3>
+          <button class="btn" type="button" id="addQuestionBtn">Add Question</button>
+        </div>
+        <div id="questionEditors" class="list" style="margin-top:14px"></div>
+        <button class="btn primary" type="submit" style="margin-top:18px">Save Set</button>
+      </form>
+
+      <aside class="card">
+        <h2>Excel Import</h2>
+        <p class="subtitle">Preview imported questions, fix row-level issues, then attach them to a selected set.</p>
+        <form id="importForm" class="toolbar" style="margin-top:16px">
+          <input id="excelFile" type="file" accept=".xlsx,.xls" required>
+          <button class="btn" type="submit">Preview</button>
+        </form>
+        <label style="margin-top:14px">Attach to Set<select id="importSet"></select></label>
+        <div id="importErrors" class="status error hidden"></div>
+        <div id="importPreview" class="list" style="margin-top:14px"></div>
+        <button class="btn primary" id="saveImportBtn" type="button" disabled>Save Imported Questions</button>
+      </aside>
+    </section>
+
+    <section class="card" style="margin-top:20px">
+      <div class="item-head">
+        <h2>Interview Sets</h2>
+        <button class="btn" id="reloadSetsBtn">Reload</button>
+      </div>
+      <div id="setList" class="list" style="margin-top:16px"></div>
+    </section>
+
+    <section class="grid two" style="margin-top:20px">
+      <div class="card">
+        <h2>Assign Set</h2>
+        <div class="form-grid two" style="margin-top:16px">
+          <label>Set<select id="assignSet"></select></label>
+          <label>Target<select id="targetType"><option value="all">All Students</option><option value="class">Class</option><option value="student">Student ID</option></select></label>
+          <label>Student ID<input id="targetStudentId" placeholder="Only for student target"></label>
+          <label>Department<input id="department" placeholder="Only for class target"></label>
+          <label>Division<input id="division" placeholder="Optional"></label>
+          <label>Batch Year<input id="batchYear" type="number" placeholder="2026"></label>
+          <label>Max Attempts<input id="assignAttempts" type="number" min="1" value="1"></label>
+          <label>Deadline<input id="assignDeadline" type="datetime-local"></label>
+        </div>
+        <button class="btn primary" id="assignBtn" type="button" style="margin-top:16px">Assign Interview</button>
+      </div>
+
+      <div class="card">
+        <div class="item-head">
+          <h2>Submissions</h2>
+          <button class="btn" id="reloadSubmissionsBtn">Reload</button>
+        </div>
+        <div id="submissionList" class="list" style="margin-top:16px"></div>
+      </div>
+    </section>
+
+    <section id="reviewPanel" class="card hidden" style="margin-top:20px"></section>
+  </main>
+  <script src="/js/admin-interviews.js"></script>
+</body>
+</html>

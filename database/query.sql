@@ -98,6 +98,8 @@ CREATE TABLE exam_questions (
   exam_id CHAR(36) NOT NULL,
   topic_id CHAR(36) NOT NULL,
   question_text TEXT NOT NULL,
+  explanation TEXT NULL,
+  difficulty ENUM('easy','medium','hard') NOT NULL DEFAULT 'medium',
   marks DECIMAL(5,2) NOT NULL DEFAULT 1,
   display_order SMALLINT UNSIGNED NOT NULL,
   CONSTRAINT fk_question_exam FOREIGN KEY (exam_id) REFERENCES exams(id) ON DELETE CASCADE,

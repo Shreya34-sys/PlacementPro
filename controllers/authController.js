@@ -30,6 +30,25 @@ const getInsertedId = (result) => {
     return result.id || result.insertId || (Array.isArray(result) && result[0]?.insertId);
 };
 
+const isDatabaseConnectionError = (error) => {
+    const codes = new Set([
+        error?.code,
+        ...(Array.isArray(error?.errors) ? error.errors.map((item) => item?.code) : [])
+    ]);
+    const mysqlAccessDenied =
+        error?.errno === 1045 ||
+        error?.sqlState === '28000' ||
+        /access denied for user/i.test(error?.message || '');
+
+    return ['ECONNREFUSED', 'ENOTFOUND', 'ETIMEDOUT', 'EHOSTUNREACH', 'PROTOCOL_CONNECTION_LOST', 'ER_ACCESS_DENIED_ERROR']
+        .some((code) => codes.has(code)) || mysqlAccessDenied;
+};
+
+const databaseUnavailableResponse = (res, action) => res.status(503).json({
+    success: false,
+    message: `Database is unavailable or the MySQL credentials are incorrect. Check DB_HOST, DB_USER, DB_PASSWORD, and DB_NAME in .env, initialize the ppro database, then try ${action} again.`
+});
+
 exports.signup = async (req, res) => {
     try {
         const { name, fullName, email, password } = req.body;
@@ -46,13 +65,13 @@ exports.signup = async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const result = await User.createStudent({
+        const createdUser = await User.createStudent({
             fullName: studentName,
             email,
             password: hashedPassword
         });
 
-        const userId = getInsertedId(result);
+        const userId = getInsertedId(createdUser);
         const secret = process.env.JWT_SECRET || 'fallback_secret_for_dev_only';
 
         const token = jwt.sign(
@@ -79,6 +98,9 @@ exports.signup = async (req, res) => {
 
     } catch (error) {
         console.error('CRITICAL SIGNUP ERROR:', error.stack || error);
+        if (isDatabaseConnectionError(error)) {
+            return databaseUnavailableResponse(res, 'signup');
+        }
         return res.status(500).json({ message: 'Server error during signup.', error: error.message });
     }
 };
@@ -119,6 +141,9 @@ exports.studentLogin = async (req, res) => {
 
     } catch (error) {
         console.error('CRITICAL LOGIN ERROR:', error.stack || error);
+        if (isDatabaseConnectionError(error)) {
+            return databaseUnavailableResponse(res, 'login');
+        }
         return res.status(500).json({ message: 'Server error during login.', error: error.message });
     }
 };
@@ -157,6 +182,9 @@ exports.adminLogin = async (req, res) => {
         });
     } catch (error) {
         console.error('ADMIN LOGIN ERROR:', error);
+        if (isDatabaseConnectionError(error)) {
+            return databaseUnavailableResponse(res, 'admin login');
+        }
         return res.status(500).json({ message: 'Server error during admin login.' });
     }
 };

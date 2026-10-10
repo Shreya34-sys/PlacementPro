@@ -35,26 +35,30 @@ exports.analyzeResume = async (req, res) => {
 
         let extractedText = '';
         if (
-    req.file.mimetype === 'application/pdf' ||
-    req.file.originalname.toLowerCase().endsWith('.pdf')
-) {
-    extractedText = await extractPdfText(req.file.buffer);
-} else if (
-    req.file.mimetype ===
-    'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
-    req.file.originalname.toLowerCase().endsWith('.docx')
-) {
-    const result = await mammoth.extractRawText({
-        buffer: req.file.buffer
-    });
+            req.file.mimetype === 'application/pdf' ||
+            req.file.originalname.toLowerCase().endsWith('.pdf')
+        ) {
+            extractedText = await extractPdfText(req.file.buffer);
+        } else if (
+            req.file.mimetype === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
+            req.file.originalname.toLowerCase().endsWith('.docx')
+        ) {
+            const result = await mammoth.extractRawText({
+                buffer: req.file.buffer
+            });
 
-    extractedText = result.value;
-} else {
-    return res.status(400).json({
-        success: false,
-        message: 'Only PDF and DOCX files are supported.'
-    });
-}
+            extractedText = result.value;
+        } else if (
+            req.file.mimetype === 'text/plain' ||
+            req.file.originalname.toLowerCase().endsWith('.txt')
+        ) {
+            extractedText = req.file.buffer.toString('utf8');
+        } else {
+            return res.status(400).json({
+                success: false,
+                message: 'Only PDF, DOCX, and TXT files are supported.'
+            });
+        }
 
         const jobDescription = (req.body.jobDescription || 'General Software Engineering Role').replace(/[\r\n]+/g, ' ').trim();
 
@@ -121,7 +125,7 @@ Respond strictly using this JSON structure:
         const aiResult = JSON.parse(rawContent);
 
         const recordData = {
-            resumeid: uuidv4(),
+            id: uuidv4(),
             std_id: studentId,
             file_name: req.file.originalname,
             ats_score: Number(aiResult.ats_score) || 0,

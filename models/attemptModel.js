@@ -1,5 +1,6 @@
 const db = require('../config/db');
 const { randomUUID } = require('crypto');
+const preparationActivity = require('../services/preparationActivityService');
 
 class Attempt {
     static async start(examId, studentId) {
@@ -47,6 +48,54 @@ class Attempt {
                 Boolean(markedForReview)
             ]
         );
+    }
+
+    static async saveAnswerForUser(attemptId, studentId, questionId, optionId, markedForReview = false) {
+        const selectedOption = optionId || null;
+        await preparationActivity.ensureTable();
+        const connection = await db.getConnection();
+        let transactionStarted = false;
+
+        try {
+            await connection.beginTransaction();
+            transactionStarted = true;
+            const [validRows] = await connection.execute(
+                `SELECT q.id
+                 FROM exam_attempts a
+                 JOIN exam_questions q ON q.exam_id = a.exam_id AND q.id = ?
+                 LEFT JOIN question_options o ON o.question_id = q.id AND o.id = ?
+                 WHERE a.id = ? AND a.student_id = ? AND a.state = 'started'
+                   AND (? IS NULL OR o.id IS NOT NULL)
+                 LIMIT 1`,
+                [questionId, selectedOption, attemptId, studentId, selectedOption]
+            );
+            if (!validRows[0]) {
+                const error = new Error('Question or active attempt not found.');
+                error.status = 404;
+                throw error;
+            }
+
+            await connection.execute(
+                `INSERT INTO attempt_answers
+                    (id, attempt_id, question_id, option_id, marked_for_review)
+                 VALUES (?, ?, ?, ?, ?)
+                 ON DUPLICATE KEY UPDATE
+                    option_id = VALUES(option_id),
+                    marked_for_review = VALUES(marked_for_review),
+                    answered_at = CURRENT_TIMESTAMP`,
+                [randomUUID(), attemptId, questionId, selectedOption, Boolean(markedForReview)]
+            );
+            if (selectedOption) {
+                await preparationActivity.recordQuestion(studentId, `exam:${questionId}`, connection);
+            }
+            await connection.commit();
+            transactionStarted = false;
+        } catch (error) {
+            if (transactionStarted) await connection.rollback();
+            throw error;
+        } finally {
+            connection.release();
+        }
     }
 
     static async submit(attemptId, forced = false) {
@@ -99,6 +148,20 @@ class Attempt {
             score
         };
     }
+
+    static async submitForUser(attemptId, studentId, forced = false) {
+        const [rows] = await db.execute(
+            'SELECT id FROM exam_attempts WHERE id = ? AND student_id = ?',
+            [attemptId, studentId]
+        );
+        if (!rows[0]) {
+            const error = new Error('Attempt not found.');
+            error.status = 404;
+            throw error;
+        }
+        return Attempt.submit(attemptId, forced);
+    }
+
 }
 
 module.exports = Attempt;

@@ -4,18 +4,17 @@ const db = require('../config/db');
 class ResumeModel {
     static async createAnalysis(data) {
         const query = `
-            INSERT INTO resume_analyses 
-            (resumeid, std_id, file_name, ats_score, skills_match, keyword_match, formatting_status, analysis_json, rewritten_resume)
+            INSERT INTO resumes 
+            (id, std_id, file_name, ats_score, skills_match, keyword_match, formatting_status, analysis_json, rewritten_resume)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
-        
-        // Ensure analysis_json is properly converted to a JSON string once for MySQL
-        const jsonValue = typeof data.analysis_json === 'string' 
-            ? data.analysis_json 
+
+        const jsonValue = typeof data.analysis_json === 'string'
+            ? data.analysis_json
             : JSON.stringify(data.analysis_json);
 
         const values = [
-            data.resumeid,
+            data.id || data.resumeid,
             data.std_id,
             data.file_name,
             data.ats_score,
@@ -25,14 +24,14 @@ class ResumeModel {
             jsonValue,
             data.rewritten_resume || null
         ];
-        
+
         await db.execute(query, values);
-        return data.resumeid;
+        return values[0];
     }
 
-    static async getAnalysisById(resumeid, std_id) {
-        const query = `SELECT * FROM resume_analyses WHERE resumeid = ? AND std_id = ?`;
-        const [rows] = await db.execute(query, [resumeid, std_id]);
+    static async getAnalysisById(id, std_id) {
+        const query = `SELECT * FROM resumes WHERE id = ? AND std_id = ?`;
+        const [rows] = await db.execute(query, [id, std_id]);
         return rows[0];
     }
 }

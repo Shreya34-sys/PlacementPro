@@ -3,10 +3,14 @@
     "@google/genai": "^2.22.0",
     "@google/generative-ai": "^0.24.1",
     "@mediapipe/tasks-vision": "^1.0.1",
-    "bcryptjs": "^3.0.3",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "express-rate-limit": "^7.3.1",
     "groq-sdk": "^1.6.0",
+    "helmet": "^8.0.0",
+    "jszip": "^3.10.2",
     "jsonwebtoken": "^9.0.3",
     "mammoth": "^1.12.3",
     "multer": "^2.3.0",
@@ -18,12 +22,14 @@
     "passport-jwt": "^4.0.1",
     "pdf2json": "^4.1.0",
     "socket.io": "^4.8.3",
-    "uuid": "^14.0.2"
+    "uuid": "^14.0.2",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "nodemon": "^3.1.14"
   },
   "scripts": {
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "db:seed": "node database/seed.js"
   }
 }

@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Interview Room</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/interviews.css">
+</head>
+<body>
+  <main class="interview-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Interview Room</p>
+        <h1 id="roomTitle">Mock Interview</h1>
+        <p class="subtitle">Monitoring flags are possible concerns for faculty review, not proof of misconduct or automatic penalties.</p>
+      </div>
+      <div class="nav-actions">
+        <a class="btn" href="/pages/interviews.html">Exit Room</a>
+      </div>
+    </header>
+
+    <section id="consentPanel" class="card">
+      <h2>Before You Start</h2>
+      <p class="subtitle">This interview may use your camera and microphone for preview, speech transcription, and basic integrity signals such as tab changes, face presence, and fullscreen exits. No webcam recording is stored by default. Lighting, camera quality, accessibility needs, and device limits can cause false positives.</p>
+      <div class="toolbar" style="margin-top:16px">
+        <button class="btn primary" id="startBtn">I Understand - Start Interview</button>
+        <button class="btn" id="previewMediaBtn">Preview Camera/Microphone</button>
+      </div>
+    </section>
+
+    <section id="roomPanel" class="room-layout hidden">
+      <div class="card">
+        <div class="item-head">
+          <div>
+            <span class="pill" id="questionMeta">Question 1</span>
+            <h2 id="questionText" style="margin-top:10px">Loading question...</h2>
+            <p class="subtitle" id="questionTopic"></p>
+          </div>
+          <div class="timer-grid">
+            <div class="timer"><span class="subtitle">Prep</span><strong id="prepTimer">00:00</strong></div>
+            <div class="timer"><span class="subtitle">Answer</span><strong id="answerTimer">00:00</strong></div>
+          </div>
+        </div>
+        <div class="progress"><span id="progressBar"></span></div>
+
+        <label style="margin-top:18px">
+          Your Answer
+          <textarea id="answerText" rows="9" placeholder="Speak or type your answer here..."></textarea>
+        </label>
+        <div class="toolbar" style="margin-top:14px">
+          <button class="btn" id="speechBtn">Start Speech</button>
+          <button class="btn" id="saveAnswerBtn">Save Answer</button>
+          <button class="btn" id="prevBtn">Previous</button>
+          <button class="btn" id="nextBtn">Next</button>
+          <button class="btn primary" id="submitBtn">Submit Interview</button>
+        </div>
+      </div>
+
+      <aside class="grid">
+        <div class="card">
+          <h2>Camera Preview</h2>
+          <div class="video-box" style="margin-top:12px"><video id="cameraPreview" autoplay muted playsinline></video><span id="cameraFallback">Camera not enabled</span></div>
+        </div>
+        <div class="card">
+          <h2>Progress</h2>
+          <div id="palette" class="palette" style="margin-top:14px"></div>
+        </div>
+        <div class="card">
+          <h2>Monitoring Notes</h2>
+          <div id="eventLog" class="list" style="margin-top:14px"></div>
+        </div>
+      </aside>
+    </section>
+  </main>
+  <script src="/js/interview-room.js"></script>
+</body>
+</html>
