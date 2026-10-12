@@ -139,6 +139,14 @@ body {
     font-weight: bold;
 }
 
+.check-icon svg,
+.card-link svg {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    vertical-align: -0.15em;
+}
+
 /* General Sections */
 .features-section, .steps-section, .cta-section {
     padding: 90px 80px;

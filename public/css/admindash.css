@@ -582,6 +582,7 @@ body {
 
 .btn-light-sm { background-color: var(--card-bg); border: 1px solid var(--border-color); padding: 5px 12px; font-size: 11px; }
 .btn-green-sm { background-color: #059669; color: white; padding: 5px 12px; font-size: 11px; }
+.btn-green-sm svg { display: inline-block; width: 1em; height: 1em; margin-right: 4px; vertical-align: -0.15em; }
 .btn-outline-full { width: 100%; background: transparent; border: 1px solid #bfdbfe; color: #2563eb; }
 .btn-outline-full:hover { background-color: #eff6ff; }
 
