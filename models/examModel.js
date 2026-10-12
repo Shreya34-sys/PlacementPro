@@ -4,17 +4,73 @@ const { randomUUID } = require('crypto');
 class Exam {
   static async ensureImportColumns(connection = db) {
     const [columns] = await connection.execute(
-      `SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS
-       WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'exam_questions'
-         AND COLUMN_NAME IN ('explanation', 'difficulty')`
+      `SELECT TABLE_NAME, COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS
+       WHERE TABLE_SCHEMA = DATABASE()
+         AND ((TABLE_NAME = 'exam_questions' AND COLUMN_NAME IN ('explanation', 'difficulty'))
+           OR (TABLE_NAME = 'exams' AND COLUMN_NAME = 'exam_type'))`
     );
-    const existing = new Set(columns.map(column => column.COLUMN_NAME));
-    if (!existing.has('explanation')) {
+    const existing = new Set(columns.map(column => `${column.TABLE_NAME}.${column.COLUMN_NAME}`));
+    if (!existing.has('exam_questions.explanation')) {
       await connection.execute('ALTER TABLE exam_questions ADD COLUMN explanation TEXT NULL');
     }
-    if (!existing.has('difficulty')) {
+    if (!existing.has('exam_questions.difficulty')) {
       await connection.execute("ALTER TABLE exam_questions ADD COLUMN difficulty ENUM('easy','medium','hard') NOT NULL DEFAULT 'medium'");
     }
+    if (!existing.has('exams.exam_type')) {
+      await connection.execute("ALTER TABLE exams ADD COLUMN exam_type VARCHAR(32) NOT NULL DEFAULT 'aptitude'");
+    }
+  }
+
+  static async ensureImportTable(connection = db) {
+    await connection.execute(`CREATE TABLE IF NOT EXISTS exam_question_imports (
+      created_by VARCHAR(36) NOT NULL,
+      file_hash CHAR(64) NOT NULL,
+      exam_id CHAR(36) NULL,
+      imported_count INT UNSIGNED NOT NULL DEFAULT 0,
+      skipped_rows INT UNSIGNED NOT NULL DEFAULT 0,
+      created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      PRIMARY KEY (created_by, file_hash),
+      CONSTRAINT fk_exam_import_admin FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE CASCADE,
+      CONSTRAINT fk_exam_import_exam FOREIGN KEY (exam_id) REFERENCES exams(id) ON DELETE CASCADE
+    )`);
+  }
+
+  static async claimImport(connection, adminId, payload) {
+    if (!payload.importFingerprint) return null;
+    const [result] = await connection.execute(
+      `INSERT IGNORE INTO exam_question_imports (created_by, file_hash)
+       VALUES (?, ?)`,
+      [adminId, payload.importFingerprint]
+    );
+    if (result.affectedRows === 1) return null;
+
+    const [[existing]] = await connection.execute(
+      `SELECT exam_id, imported_count, skipped_rows
+       FROM exam_question_imports WHERE created_by=? AND file_hash=? FOR UPDATE`,
+      [adminId, payload.importFingerprint]
+    );
+    await connection.rollback();
+    if (!existing || !existing.exam_id) {
+      throw new Error('The previous import with this file fingerprint is incomplete. Retry the import.');
+    }
+    return {
+      duplicate: true,
+      id: existing.exam_id,
+      importedCount: 0,
+      skippedRows: 0,
+      originalImportedCount: Number(existing.imported_count),
+      originalSkippedRows: Number(existing.skipped_rows)
+    };
+  }
+
+  static async completeImport(connection, adminId, examId, payload) {
+    if (!payload.importFingerprint) return;
+    await connection.execute(
+      `UPDATE exam_question_imports
+       SET exam_id=?, imported_count=?, skipped_rows=?
+       WHERE created_by=? AND file_hash=?`,
+      [examId, payload.importedCount, payload.skippedRows || 0, adminId, payload.importFingerprint]
+    );
   }
 
   static async create(adminId, payload) {
@@ -24,7 +80,10 @@ class Exam {
         topic.questions.some(question => question.explanation || question.difficulty)
       );
       if (hasImportMetadata) await Exam.ensureImportColumns(connection);
+      if (payload.importFingerprint) await Exam.ensureImportTable(connection);
       await connection.beginTransaction();
+      const duplicate = await Exam.claimImport(connection, adminId, payload);
+      if (duplicate) return duplicate;
       const examId = randomUUID();
       await connection.execute(`INSERT INTO exams
         (id, created_by, title, exam_type, instructions, duration_minutes, starts_at, ends_at, status, negative_marking)
@@ -60,6 +119,7 @@ class Exam {
           }
         }
       }
+      await Exam.completeImport(connection, adminId, examId, payload);
       await connection.commit();
       return examId;
     } catch (error) { await connection.rollback(); throw error; } finally { connection.release(); }
@@ -69,7 +129,10 @@ class Exam {
     const connection = await db.getConnection();
     try {
       await Exam.ensureImportColumns(connection);
+      if (payload.importFingerprint) await Exam.ensureImportTable(connection);
       await connection.beginTransaction();
+      const duplicate = await Exam.claimImport(connection, adminId, payload);
+      if (duplicate) return duplicate;
       const [[exam]] = await connection.execute(
         'SELECT id FROM exams WHERE id=? AND created_by=? AND deleted_at IS NULL FOR UPDATE',
         [examId, adminId]
@@ -135,6 +198,7 @@ class Exam {
         }
       }
 
+      await Exam.completeImport(connection, adminId, examId, payload);
       await connection.commit();
       return examId;
     } catch (error) {

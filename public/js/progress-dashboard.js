@@ -12,9 +12,18 @@ document.addEventListener('DOMContentLoaded', () => {
     ['progressBestScore', 'Highest completed assessment score'],
     ['progressAverageScore', 'Mean of completed assessment scores']
   ];
+  const setTrendLabel = (trend, label) => {
+    if (!trend) return;
+    const icon = trend.querySelector('svg');
+    if (icon) {
+      trend.replaceChildren(icon, document.createTextNode(` ${label}`));
+    } else {
+      trend.textContent = label;
+    }
+  };
   initialTrendLabels.forEach(([id, label]) => {
     const trend = document.getElementById(id)?.parentElement.querySelector('.stat-trend');
-    if (trend) trend.textContent = label;
+    setTrendLabel(trend, label);
   });
 
   const setConnection = (state, label) => {
@@ -76,10 +85,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const moduleTrend = document.getElementById('progressSolvedModules')?.parentElement.querySelector('.stat-trend');
     const bestTrend = document.getElementById('progressBestScore')?.parentElement.querySelector('.stat-trend');
     const averageTrend = document.getElementById('progressAverageScore')?.parentElement.querySelector('.stat-trend');
-    if (latestTrend) latestTrend.textContent = 'Most recent assessment';
-    if (moduleTrend) moduleTrend.textContent = `${summary.modules.total} available modules`;
-    if (bestTrend) bestTrend.textContent = 'Highest completed assessment score';
-    if (averageTrend) averageTrend.textContent = 'Mean of completed assessment scores';
+    setTrendLabel(latestTrend, 'Most recent assessment');
+    setTrendLabel(moduleTrend, `${summary.modules.total} available modules`);
+    setTrendLabel(bestTrend, 'Highest completed assessment score');
+    setTrendLabel(averageTrend, 'Mean of completed assessment scores');
 
     const activity = summary.preparationActivity;
     if (activity) {

@@ -44,10 +44,12 @@ if (authToken) {
             const input = button.previousElementSibling;
             if (input && input.type === 'password') {
                 input.type = 'text';
-                button.textContent = '🙈';
+                button.textContent = 'Hide';
+                button.setAttribute('aria-label', 'Hide password');
             } else if (input) {
                 input.type = 'password';
-                button.textContent = '👁';
+                button.textContent = 'Show';
+                button.setAttribute('aria-label', 'Show password');
             }
         });
     });
@@ -181,7 +183,7 @@ if (authToken) {
             }
 
             btnMagicLink.disabled = true;
-            btnMagicLink.textContent = '⏳ Dispatching Magic Link...';
+            btnMagicLink.textContent = 'Sending Magic Link...';
 
             try {
                 const response = await apiRequest('/api/auth/admin-magic-link', 'POST', { email });
@@ -191,13 +193,12 @@ if (authToken) {
                 alert(error.message || 'Failed to send magic link. Ensure admin email is correct.');
             } finally {
                 btnMagicLink.disabled = false;
-                btnMagicLink.textContent = '✉ Login with Magic Email Link';
+                btnMagicLink.textContent = 'Login with Magic Email Link';
             }
         });
     }
 
 }); // Properly closes DOMContentLoaded listener
-
 
 
 

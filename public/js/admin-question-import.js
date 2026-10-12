@@ -7,7 +7,10 @@ if (!token) {
 const state = {
   questions: [],
   errors: [],
-  importToken: crypto.randomUUID(),
+  fileErrors: [],
+  importFingerprint: '',
+  emptyRowsSkipped: 0,
+  previewStats: null,
   saving: false
 };
 
@@ -25,6 +28,15 @@ const examId = document.getElementById('examId');
 
 excelFile.addEventListener('change', () => {
   fileName.textContent = excelFile.files[0] ? excelFile.files[0].name : 'No file selected';
+  state.importFingerprint = '';
+  state.questions = [];
+  state.errors = [];
+  state.fileErrors = [];
+  state.emptyRowsSkipped = 0;
+  state.previewStats = null;
+  renderSummary();
+  renderErrors();
+  renderPreview();
 });
 
 templateButton.addEventListener('click', async () => {
@@ -33,7 +45,10 @@ templateButton.addEventListener('click', async () => {
     const response = await fetch('/api/exams/import/template', {
       headers: { Authorization: `Bearer ${token}` }
     });
-    if (!response.ok) throw new Error('Unable to download template.');
+    if (!response.ok) {
+      const data = await response.json().catch(() => ({}));
+      throw new Error(data.message || 'Unable to download the Excel template.');
+    }
     const blob = await response.blob();
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
@@ -74,6 +89,10 @@ uploadForm.addEventListener('submit', async event => {
     if (!response.ok) throw new Error(data.message || 'Unable to parse Excel file.');
     state.questions = data.questions || [];
     state.errors = data.errors || [];
+    state.fileErrors = state.errors.filter(error => error.field === 'Header' || error.field === 'File');
+    state.importFingerprint = data.importFingerprint || '';
+    state.emptyRowsSkipped = data.stats?.emptyRowsSkipped || 0;
+    state.previewStats = data.stats || null;
     if (data.negativeMarking !== null && data.negativeMarking !== undefined) {
       document.getElementById('negativeMarking').value = data.negativeMarking;
     }
@@ -83,6 +102,9 @@ uploadForm.addEventListener('submit', async event => {
   } catch (error) {
     state.questions = [];
     state.errors = [{ row: 1, field: 'File', message: error.message }];
+    state.fileErrors = state.errors.slice();
+    state.importFingerprint = '';
+    state.previewStats = null;
     renderSummary();
     renderErrors();
     renderPreview();
@@ -116,6 +138,16 @@ previewList.addEventListener('click', event => {
 
 saveButton.addEventListener('click', async () => {
   if (state.saving || !state.questions.length) return;
+  const metadataErrors = validateSaveMetadata();
+  if (metadataErrors.length) {
+    state.errors = [
+      ...metadataErrors.map(message => ({ row: 1, field: 'Question Set', message })),
+      ...state.errors.filter(error => error.field !== 'Question Set')
+    ];
+    renderErrors();
+    renderSummary();
+    return;
+  }
   state.saving = true;
   setLoading(saveButton, true, 'Saving...');
 
@@ -133,22 +165,33 @@ saveButton.addEventListener('click', async () => {
       state.errors = data.errors || [];
       renderMetadataErrors(data.metadataErrors || []);
       renderErrors();
+      renderSummary(data.stats);
       renderPreview();
+      if (data.fingerprintErrors?.length) {
+        state.errors.push(...data.fingerprintErrors.map(message => ({ row: 1, field: 'File', message })));
+        renderErrors();
+      }
       return;
+    }
+    if (!data.duplicate && (!Number.isFinite(Number(data.importedCount)) || Number(data.importedCount) < 1)) {
+      throw new Error(data.message || 'The server saved no questions.');
     }
     summaryPanel.classList.remove('hidden');
     summaryPanel.textContent = data.duplicate
-      ? 'This import was already saved. No duplicate question set was created.'
-      : `${data.importedCount} questions imported successfully.`;
-    errorsPanel.classList.add('hidden');
-    saveButton.disabled = true;
-    setTimeout(() => window.location.assign('/pages/admin-exams.html'), 900);
+      ? 'This file was already imported. No questions were added.'
+      : `${data.importedCount} questions imported; ${data.skippedRows || 0} rows skipped; ${(data.errors || []).length} validation issue${(data.errors || []).length === 1 ? '' : 's'}.`;
+    state.errors = data.errors || [];
+    state.importFingerprint = '';
+    renderErrors();
+    renderPreviewControls();
+    setTimeout(() => window.location.assign('/pages/admin-exams.html'), 1800);
   } catch (error) {
     state.errors = [{ row: 1, field: 'Save', message: error.message || 'Unable to save imported questions.' }];
     renderErrors();
   } finally {
     state.saving = false;
-    setLoading(saveButton, false, 'Save Imported Questions');
+    saveButton.textContent = 'Save Imported Questions';
+    renderPreviewControls();
   }
 });
 
@@ -157,17 +200,22 @@ async function loadExistingExams() {
     const response = await fetch('/api/exams/admin', {
       headers: { Authorization: `Bearer ${token}` }
     });
-    if (!response.ok) throw new Error('Unable to load existing sets.');
-    const exams = await response.json();
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(data.message || `Unable to load existing question sets (HTTP ${response.status}).`);
+    const exams = data;
     examId.innerHTML = exams.map(exam => `<option value="${escapeHtml(exam.id)}">${escapeHtml(exam.title)}</option>`).join('');
   } catch (error) {
+    console.error('Unable to load question sets:', error);
     examId.innerHTML = '<option value="">Unable to load question sets</option>';
+    state.errors = [{ row: 1, field: 'Question Set', message: error.message || 'Unable to load existing question sets.' }];
+    renderErrors();
   }
 }
 
 function buildSavePayload() {
   return {
-    importToken: state.importToken,
+    importFingerprint: state.importFingerprint,
+    emptyRowsSkipped: state.emptyRowsSkipped,
     target: target.value,
     examId: examId.value,
     title: document.getElementById('title').value.trim(),
@@ -181,6 +229,29 @@ function buildSavePayload() {
   };
 }
 
+function validateSaveMetadata() {
+  if (target.value === 'existing') {
+    return examId.value ? [] : ['Choose an existing question set.'];
+  }
+
+  const errors = [];
+  const title = document.getElementById('title').value.trim();
+  const description = document.getElementById('description').value.trim();
+  const duration = Number(document.getElementById('durationMinutes').value);
+  const startsAt = document.getElementById('startsAt').value;
+  const endsAt = document.getElementById('endsAt').value;
+
+  if (!title) errors.push('Question set title is required.');
+  if (!description) errors.push('Description or instructions are required.');
+  if (!Number.isFinite(duration) || duration < 1) errors.push('Duration must be at least 1 minute.');
+  if (!startsAt) errors.push('Start date and time is required.');
+  if (!endsAt) errors.push('End date and time is required.');
+  if (startsAt && endsAt && new Date(startsAt) >= new Date(endsAt)) {
+    errors.push('End date must be after start date.');
+  }
+  return errors;
+}
+
 function updateQuestionFromCard(card) {
   const index = Number(card.dataset.index);
   const question = state.questions[index];
@@ -191,6 +262,15 @@ function updateQuestionFromCard(card) {
   question.topic = card.querySelector('.topic-input').value.trim();
   question.difficulty = card.querySelector('.difficulty-input').value;
   question.marks = Number(card.querySelector('.marks-input').value);
+  const negativeMarksValue = card.querySelector('.negative-marks-input').value;
+  question.negativeMarks = negativeMarksValue === '' ? null : Number(negativeMarksValue);
+  const rowNegativeMarks = [...new Set(state.questions
+    .map(item => item.negativeMarks)
+    .filter(value => value !== null && value !== undefined && Number.isFinite(Number(value)))
+    .map(Number))];
+  if (rowNegativeMarks.length === 1) {
+    document.getElementById('negativeMarking').value = rowNegativeMarks[0];
+  }
   state.errors = validateQuestions(state.questions);
   renderSummary();
   renderErrors();
@@ -198,14 +278,22 @@ function updateQuestionFromCard(card) {
 }
 
 function renderSummary(stats) {
+  if (stats) state.previewStats = stats;
   if (!state.questions.length && !stats) {
     summaryPanel.classList.add('hidden');
     return;
   }
-  const totalRows = stats ? stats.totalRows : state.questions.length;
-  const validRows = stats ? stats.validRows : state.questions.length;
+  const activeStats = stats || state.previewStats;
+  const invalidRows = new Set(state.errors.filter(error => error.row > 1).map(error => error.row));
+  const totalRows = activeStats ? activeStats.totalRows : state.questions.length;
+  const validRows = activeStats
+    ? state.questions.filter(question => !invalidRows.has(question.rowNumber)).length
+    : state.questions.length - invalidRows.size;
+  const skippedRows = activeStats
+    ? Math.max(0, totalRows - validRows) + state.emptyRowsSkipped
+    : invalidRows.size + state.emptyRowsSkipped;
   summaryPanel.classList.remove('hidden');
-  summaryPanel.textContent = `${totalRows} rows parsed. ${validRows} ready to import. ${state.errors.length} validation issue${state.errors.length === 1 ? '' : 's'} found.`;
+  summaryPanel.textContent = `${totalRows} question rows parsed. ${validRows} valid; ${skippedRows} rows will be skipped. ${state.errors.length} validation issue${state.errors.length === 1 ? '' : 's'} found.`;
 }
 
 function renderMetadataErrors(metadataErrors) {
@@ -223,7 +311,7 @@ function renderErrors() {
   }
   errorsPanel.classList.remove('hidden');
   errorsPanel.innerHTML = `
-    <strong>Fix these issues before saving:</strong>
+    <strong>Validation issues:</strong>
     <ul>${state.errors.map(error => `<li>Row ${error.row}: ${escapeHtml(error.field)} - ${escapeHtml(error.message)}</li>`).join('')}</ul>
   `;
 }
@@ -238,11 +326,17 @@ function renderPreview() {
 }
 
 function renderPreviewControls() {
-  saveButton.disabled = !state.questions.length || state.errors.length > 0;
+  const invalidRows = new Set(state.errors.filter(error => error.row > 1).map(error => error.row));
+  const hasFileErrors = state.errors.some(error =>
+    error.field === 'Header' || error.field === 'File' ||
+    (error.row === 1 && error.field === 'Negative Marks')
+  );
+  const validQuestionCount = state.questions.filter(question => !invalidRows.has(question.rowNumber)).length;
+  saveButton.disabled = state.saving || !state.importFingerprint || !validQuestionCount || hasFileErrors;
 }
 
 function validateQuestions(questions) {
-  const errors = [];
+  const errors = state.fileErrors.slice();
   const seen = new Map();
   questions.forEach((question, index) => {
     const row = question.rowNumber || index + 2;
@@ -259,12 +353,27 @@ function validateQuestions(questions) {
     if (!Number.isFinite(Number(question.marks)) || Number(question.marks) <= 0) {
       errors.push({ row, field: 'Marks', message: 'Marks must be greater than 0.' });
     }
+    if (question.negativeMarks !== null && question.negativeMarks !== undefined &&
+      (!Number.isFinite(Number(question.negativeMarks)) || Number(question.negativeMarks) < 0 || Number(question.negativeMarks) > 100)) {
+      errors.push({ row, field: 'Negative Marks', message: 'Negative marks must be 0 or a positive number at most 100.' });
+    }
     const key = [question.question, ...question.options].map(value => String(value || '').trim().toLowerCase()).join('|');
     if (question.question && question.options.every(Boolean)) {
       if (seen.has(key)) errors.push({ row, field: 'Question', message: `Duplicate of row ${seen.get(key)}.` });
       else seen.set(key, row);
     }
   });
+  const negativeMarkValues = new Set(questions
+    .map(question => question.negativeMarks)
+    .filter(value => value !== null && value !== undefined && Number.isFinite(Number(value)))
+    .map(value => String(Number(value))));
+  if (negativeMarkValues.size > 1) {
+    errors.push({
+      row: 1,
+      field: 'Negative Marks',
+      message: 'This test system supports one negative marking value per exam. Use the same value in every row or set it once in the import form.'
+    });
+  }
   return errors;
 }
 
@@ -309,6 +418,10 @@ function renderQuestionCard(question, index) {
           <div class="form-group">
             <label>Marks</label>
             <input class="form-control marks-input" type="number" min="0.25" step="0.25" value="${escapeHtml(question.marks)}">
+          </div>
+          <div class="form-group">
+            <label>Negative Marks</label>
+            <input class="form-control negative-marks-input" type="number" min="0" max="100" step="0.25" value="${escapeHtml(question.negativeMarks ?? '')}">
           </div>
         </div>
         <div class="form-group">

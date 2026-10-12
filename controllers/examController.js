@@ -1,14 +1,13 @@
 const Exam = require('../models/examModel');
 const Attempt = require('../models/attemptModel');
 const db = require('../config/db');
+const { createHash } = require('crypto');
 const progressService = require('../services/progressService');
 const {
   parseWorkbook,
   validateQuestionRows,
   buildTemplateWorkbook
 } = require('../services/excelQuestionImportService');
-
-const completedImports = new Map();
 
 function numberOrDefault(value, fallback) {
   const number = Number(value);
@@ -109,39 +108,70 @@ exports.previewImport = async (req, res, next) => {
   try {
     if (!req.file) return res.status(400).json({ message: 'Upload an Excel file before previewing.' });
     const result = await parseWorkbook(req.file.buffer, req.file.originalname);
-    res.json(result);
+    res.json({
+      ...result,
+      importFingerprint: createHash('sha256').update(req.file.buffer).digest('hex')
+    });
   } catch (error) { next(error); }
 };
 
 exports.saveImport = async (req, res, next) => {
   try {
-    const importToken = String(req.body.importToken || '');
-    if (importToken && completedImports.has(importToken)) {
-      return res.status(200).json({
-        id: completedImports.get(importToken),
-        duplicate: true,
-        importedCount: 0,
-        message: 'This import was already saved.'
-      });
-    }
-
     const { errors: metadataErrors, metadata } = validateImportMetadata(req.body);
     const validation = validateQuestionRows(rowsFromSubmittedQuestions(req.body.questions));
-    if (metadataErrors.length || validation.errors.length) {
+    const importFingerprint = String(req.body.importFingerprint || '').toLowerCase();
+    const fingerprintError = /^[a-f0-9]{64}$/.test(importFingerprint)
+      ? []
+      : ['The uploaded file fingerprint is missing or invalid. Preview the file again before saving.'];
+    const fileErrors = validation.errors.filter(error =>
+      error.field === 'Header' || error.field === 'File' ||
+      (error.row === 1 && error.field === 'Negative Marks')
+    );
+    const skippedEmptyRows = Math.max(0, Math.min(5000, numberOrDefault(req.body.emptyRowsSkipped, 0)));
+    if (metadataErrors.length || fingerprintError.length || fileErrors.length) {
+      console.warn('Aptitude question import validation failed.', {
+        adminId: req.user.id,
+        metadataErrors,
+        questionErrors: validation.errors.map(({ row, field, message }) => ({ row, field, message })),
+        invalidFingerprint: fingerprintError.length > 0
+      });
       return res.status(400).json({
-        message: 'Fix validation errors before saving.',
+        message: metadataErrors.length
+          ? 'Complete the required question-set fields before saving.'
+          : fingerprintError.length
+            ? 'Preview the uploaded workbook again before saving.'
+            : 'The spreadsheet is missing required columns or contains a file-level validation error.',
         metadataErrors,
         errors: validation.errors,
-        stats: validation.stats
+        stats: { ...validation.stats, skippedRows: validation.stats.skippedRows + skippedEmptyRows },
+        fingerprintErrors: fingerprintError
       });
     }
 
-    const topics = buildTopics(validation.questions);
-    const examId = metadata.target === 'existing'
+    if (!validation.validQuestions.length) {
+      console.warn('Aptitude question import contained no valid questions.', {
+        adminId: req.user.id,
+        questionErrors: validation.errors.map(({ row, field, message }) => ({ row, field, message }))
+      });
+      return res.status(400).json({
+        message: 'No valid questions were available to save.',
+        errors: validation.errors,
+        stats: { ...validation.stats, skippedRows: validation.stats.skippedRows + skippedEmptyRows }
+      });
+    }
+
+    const topics = buildTopics(validation.validQuestions);
+    const importPayload = {
+      importFingerprint,
+      importedCount: validation.validQuestions.length,
+      skippedRows: validation.stats.skippedRows + skippedEmptyRows
+    };
+    const saved = metadata.target === 'existing'
       ? await Exam.appendQuestions(req.user.id, metadata.examId, {
         status: metadata.status,
         negativeMarking: metadata.negativeMarking,
-        topics
+        topics,
+        ...importPayload
       })
       : await Exam.create(req.user.id, {
         title: metadata.title,
@@ -151,19 +181,28 @@ exports.saveImport = async (req, res, next) => {
         endsAt: metadata.endsAt,
         status: metadata.status,
         negativeMarking: metadata.negativeMarking,
-        topics
+        topics,
+        ...importPayload
       });
-
-    if (importToken) {
-      completedImports.set(importToken, examId);
-      setTimeout(() => completedImports.delete(importToken), 15 * 60 * 1000).unref();
+    if (saved && saved.duplicate) {
+      return res.status(200).json({
+        ...saved,
+        errors: [],
+        message: 'This file was already imported. No questions were added.'
+      });
     }
 
     res.status(201).json({
-      id: examId,
-      importedCount: validation.questions.length,
+      id: saved,
+      importedCount: validation.validQuestions.length,
+      skippedRows: validation.stats.skippedRows + skippedEmptyRows,
       errors: validation.errors,
-      message: `Imported ${validation.questions.length} questions successfully.`
+      stats: {
+        ...validation.stats,
+        validRows: validation.validQuestions.length,
+        skippedRows: validation.stats.skippedRows + skippedEmptyRows
+      },
+      message: `Imported ${validation.validQuestions.length} questions. Skipped ${validation.stats.skippedRows + skippedEmptyRows} rows.`
     });
   } catch (error) { next(error); }
 };

@@ -21,18 +21,37 @@ const HEADER_KEYS = {
   optionc: 'optionC',
   optiond: 'optionD',
   correctanswer: 'correctAnswer',
+  correctoption: 'correctAnswer',
+  correctchoice: 'correctAnswer',
+  answer: 'correctAnswer',
+  option1: 'optionA',
+  option2: 'optionB',
+  option3: 'optionC',
+  option4: 'optionD',
   explanation: 'explanation',
   topic: 'topic',
+  category: 'topic',
   difficulty: 'difficulty',
+  level: 'difficulty',
   marks: 'marks',
-  negativemarks: 'negativeMarks'
+  mark: 'marks',
+  negativemarks: 'negativeMarks',
+  negativemarking: 'negativeMarks'
 };
 
 const OPTION_INDEX = { A: 0, B: 1, C: 2, D: 3 };
 const MAX_IMPORT_ROWS = 500;
+const REQUIRED_HEADER_KEYS = [
+  'question',
+  'optionA',
+  'optionB',
+  'optionC',
+  'optionD',
+  'correctAnswer'
+];
 
 function normalizeHeader(value) {
-  return String(value || '').toLowerCase().replace(/[^a-z]/g, '');
+  return String(value || '').toLowerCase().replace(/[^a-z0-9]/g, '');
 }
 
 function clean(value) {
@@ -53,21 +72,29 @@ function parseCorrectAnswer(value, options) {
   const raw = clean(value);
   const upper = raw.toUpperCase().replace(/^OPTION\s+/, '');
   if (OPTION_INDEX[upper] !== undefined) return OPTION_INDEX[upper];
+  const optionTextIndex = options.findIndex(option => normalizeText(option) === normalizeText(raw));
+  if (optionTextIndex >= 0) return optionTextIndex;
   const match = raw.match(/^[1-4]$/);
   if (match) return Number(raw) - 1;
-  const optionTextIndex = options.findIndex(option => normalizeText(option) === normalizeText(raw));
-  return optionTextIndex >= 0 ? optionTextIndex : null;
+  return null;
 }
 
-function validateQuestionRows(rows) {
-  const errors = [];
+function validateQuestionRows(rows, { headerErrors = [], emptyRowsSkipped = 0 } = {}) {
+  const errors = [...headerErrors];
   const questions = [];
+  const validQuestions = [];
   const duplicateKeys = new Map();
   const negativeMarks = new Set();
 
   if (!rows.length) {
     errors.push({ row: 1, field: 'File', message: 'The spreadsheet does not contain any question rows.' });
-    return { questions, errors, stats: { totalRows: 0, validRows: 0, errorRows: 0 }, negativeMarking: null };
+    return {
+      questions,
+      validQuestions,
+      errors,
+      stats: { totalRows: 0, validRows: 0, errorRows: 0, emptyRowsSkipped, skippedRows: emptyRowsSkipped },
+      negativeMarking: null
+    };
   }
 
   if (rows.length > MAX_IMPORT_ROWS) {
@@ -80,7 +107,7 @@ function validateQuestionRows(rows) {
     const question = clean(row.question);
     const options = [row.optionA, row.optionB, row.optionC, row.optionD].map(clean);
     const correctIndex = parseCorrectAnswer(row.correctAnswer, options);
-    const marks = parseNumber(row.marks);
+    const marks = clean(row.marks) ? parseNumber(row.marks) : 1;
     const negative = parseNumber(row.negativeMarks);
     const difficulty = clean(row.difficulty || 'medium').toLowerCase();
     const topic = clean(row.topic || 'General');
@@ -112,7 +139,7 @@ function validateQuestionRows(rows) {
     if (negative !== null) negativeMarks.add(String(negative));
 
     rowErrors.forEach(error => errors.push({ row: rowNumber, ...error }));
-    questions.push({
+    const parsedQuestion = {
       rowNumber,
       question,
       options,
@@ -122,7 +149,9 @@ function validateQuestionRows(rows) {
       difficulty: ['easy', 'medium', 'hard'].includes(difficulty) ? difficulty : 'medium',
       marks: marks ?? 1,
       negativeMarks: negative
-    });
+    };
+    questions.push(parsedQuestion);
+    if (!rowErrors.length) validQuestions.push(parsedQuestion);
   });
 
   if (negativeMarks.size > 1) {
@@ -134,25 +163,29 @@ function validateQuestionRows(rows) {
   }
 
   const rowsWithErrors = new Set(errors.filter(error => error.row > 1).map(error => error.row));
+  const validRows = questions.length - rowsWithErrors.size;
   return {
     questions,
+    validQuestions,
     errors,
     stats: {
       totalRows: rows.length,
-      validRows: questions.length - rowsWithErrors.size,
-      errorRows: rowsWithErrors.size
+      validRows,
+      errorRows: rowsWithErrors.size,
+      emptyRowsSkipped,
+      skippedRows: rowsWithErrors.size + emptyRowsSkipped
     },
     negativeMarking: negativeMarks.size === 1 ? Number([...negativeMarks][0]) : null
   };
 }
 
-function rowsFromSheetJs(buffer, extension) {
+function rowsFromSheetJs(buffer) {
   const XLSX = require('xlsx');
   const workbook = XLSX.read(buffer, { type: 'buffer', cellDates: false });
   const sheetName = workbook.SheetNames[0];
-  if (!sheetName) return [];
+  if (!sheetName) throw new Error('The workbook has no worksheets.');
   const sheet = workbook.Sheets[sheetName];
-  const matrix = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: '' });
+  const matrix = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: '', blankrows: true });
   return rowsFromMatrix(matrix);
 }
 
@@ -213,21 +246,33 @@ async function rowsFromXlsxZip(buffer) {
 }
 
 function rowsFromMatrix(matrix) {
-  const nonEmptyRows = matrix.filter(row => row && row.some(cell => clean(cell)));
-  if (!nonEmptyRows.length) return [];
-  const headers = nonEmptyRows[0].map(normalizeHeader);
+  const headerRowIndex = matrix.findIndex(row => row && row.some(cell => clean(cell)));
+  if (headerRowIndex < 0) return { rows: [], headerErrors: [], emptyRowsSkipped: 0 };
+  const headers = matrix[headerRowIndex].map(normalizeHeader);
   const mappedHeaders = headers.map(header => HEADER_KEYS[header] || null);
+  const foundHeaders = new Set(mappedHeaders.filter(Boolean));
+  const headerErrors = REQUIRED_HEADER_KEYS
+    .filter(key => !foundHeaders.has(key))
+    .map(key => ({
+      row: headerRowIndex + 1,
+      field: 'Header',
+      message: `Required column "${REQUIRED_HEADERS.find((header, index) => HEADER_KEYS[normalizeHeader(header)] === key) || key}" is missing.`
+    }));
   const rows = [];
-  for (let index = 1; index < nonEmptyRows.length; index += 1) {
-    const source = nonEmptyRows[index];
-    if (!source.some(cell => clean(cell))) continue;
+  let emptyRowsSkipped = 0;
+  for (let index = headerRowIndex + 1; index < matrix.length; index += 1) {
+    const source = matrix[index] || [];
+    if (!source.some(cell => clean(cell))) {
+      emptyRowsSkipped += 1;
+      continue;
+    }
     const row = { __rowNumber: index + 1 };
     mappedHeaders.forEach((key, cellIndex) => {
       if (key) row[key] = source[cellIndex];
     });
     rows.push(row);
   }
-  return rows;
+  return { rows, headerErrors, emptyRowsSkipped };
 }
 
 async function parseWorkbook(buffer, filename = '') {
@@ -237,20 +282,33 @@ async function parseWorkbook(buffer, filename = '') {
     error.status = 400;
     throw error;
   }
+  const signature = Buffer.from(buffer).subarray(0, 8);
+  const isXlsx = signature[0] === 0x50 && signature[1] === 0x4b;
+  const isXls = signature.equals(Buffer.from([0xd0, 0xcf, 0x11, 0xe0, 0xa1, 0xb1, 0x1a, 0xe1]));
+  const isXmlSpreadsheet = extension === 'xls' && /^\s*</.test(Buffer.from(buffer).toString('utf8', 0, 128));
+  if ((extension === 'xlsx' && !isXlsx) || (extension === 'xls' && !isXls && !isXlsx && !isXmlSpreadsheet)) {
+    const error = new Error(`The uploaded file does not contain a valid .${extension} Excel workbook.`);
+    error.status = 400;
+    throw error;
+  }
 
   try {
-    return validateQuestionRows(rowsFromSheetJs(buffer, extension));
+    const parsed = rowsFromSheetJs(buffer);
+    return validateQuestionRows(parsed.rows, parsed);
   } catch (error) {
     if (extension === 'xls') {
-      const xlsError = new Error('Legacy .xls parsing requires the xlsx package. Please install dependencies or upload .xlsx.');
+      const xlsError = new Error('The .xls file could not be parsed. Please confirm it is a valid Excel workbook or save it as .xlsx.');
       xlsError.status = 400;
+      xlsError.cause = error;
       throw xlsError;
     }
     try {
-      return validateQuestionRows(await rowsFromXlsxZip(buffer));
+      const parsed = await rowsFromXlsxZip(buffer);
+      return validateQuestionRows(parsed.rows, parsed);
     } catch (fallbackError) {
       const parseError = new Error('The Excel file could not be read. Download the template and upload a valid .xlsx file.');
       parseError.status = 400;
+      parseError.cause = fallbackError;
       throw parseError;
     }
   }

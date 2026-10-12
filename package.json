@@ -10,8 +10,8 @@
     "express-rate-limit": "^7.3.1",
     "groq-sdk": "^1.6.0",
     "helmet": "^8.0.0",
-    "jszip": "^3.10.2",
     "jsonwebtoken": "^9.0.3",
+    "jszip": "^3.10.2",
     "mammoth": "^1.12.3",
     "multer": "^2.3.0",
     "mysql2": "^3.24.4",
@@ -30,6 +30,7 @@
   },
   "scripts": {
     "dev": "nodemon server.js",
-    "db:seed": "node database/seed.js"
+    "db:seed": "node database/seed.js",
+    "test:excel-import": "node --test services/excelQuestionImportService.test.js models/examModel.test.js"
   }
 }

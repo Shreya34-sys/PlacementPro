@@ -4,7 +4,7 @@
 //     if (themeToggleBtn) {
 //         themeToggleBtn.addEventListener('click', () => {
 //             document.body.classList.toggle('dark-mode');
-//             themeToggleBtn.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+//             themeToggleBtn.textContent = document.body.classList.contains('dark-mode') ? 'Light theme' : 'Dark theme';
 //         });
 //     }
 
@@ -34,7 +34,7 @@
 //             }
 
 //             const originalBtnText = runIngestionBtn.innerHTML;
-//             runIngestionBtn.innerHTML = '⏳ Ingesting & Processing RAG...';
+//             runIngestionBtn.innerHTML = 'Ingesting & Processing RAG...';
 //             runIngestionBtn.disabled = true;
 
 //             try {
@@ -179,7 +179,20 @@ function loadAdminProfile() {
 document.addEventListener('DOMContentLoaded', () => {
   const token = localStorage.getItem('adminToken'); if (!token) return window.location.replace('/admin-login');
   loadAdminProfile();
-  document.getElementById('themeToggle')?.addEventListener('click', () => { document.body.classList.toggle('dark-mode'); document.getElementById('themeToggle').textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙'; });
+  const themeToggle = document.getElementById('themeToggle');
+  const updateThemeIcon = () => {
+    const dark = document.body.classList.contains('dark-mode');
+    themeToggle.innerHTML = dark
+      ? '<svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"/></svg>'
+      : '<svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20.5 15.5A8.5 8.5 0 0 1 8.5 3.5 8.5 8.5 0 1 0 20.5 15.5Z"/></svg>';
+    themeToggle.setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme');
+    themeToggle.title = dark ? 'Switch to light theme' : 'Switch to dark theme';
+  };
+  updateThemeIcon();
+  themeToggle?.addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+    updateThemeIcon();
+  });
   document.getElementById('logoutBtn')?.addEventListener('click', () => { localStorage.removeItem('adminToken'); window.location.replace('/admin-login'); });
   document.getElementById('manageDrivesBtn')?.addEventListener('click', () => adminPage('/pages/admin-exams.html'));
   document.getElementById('createExamBtn')?.addEventListener('click', () => adminPage('/pages/admin-exam-builder.html'));

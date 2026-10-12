@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const fileName = document.getElementById('fileName');
     const form = document.getElementById('resumeForm');
     const analyzeBtn = document.getElementById('analyzeBtn');
+    const analyzeButtonMarkup = analyzeBtn.innerHTML;
 
     fileInput.addEventListener('change', () => {
         if (fileInput.files.length > 0) {
@@ -23,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
         formData.append('jobDescription', document.getElementById('jobDescription').value);
 
         analyzeBtn.disabled = true;
-        analyzeBtn.textContent = '🔄 Analyzing...';
+        analyzeBtn.textContent = 'Analyzing...';
 
         try {
             const token = localStorage.getItem('token');
@@ -46,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('An error occurred during analysis.');
         } finally {
             analyzeBtn.disabled = false;
-            analyzeBtn.textContent = '🤖 Analyze Resume';
+            analyzeBtn.innerHTML = analyzeButtonMarkup;
         }
     });
 function renderResults(result) {
@@ -66,7 +67,7 @@ function renderResults(result) {
     const missingList = document.getElementById('missingSkills');
 
     missingList.innerHTML = result.analysis_json.missing_skills
-        .map(s => `<li><span>❌ ${s}</span></li>`)
+        .map(s => `<li><span>${s}</span></li>`)
         .join('');
 
     // Suggestions
@@ -80,7 +81,7 @@ function renderResults(result) {
     const feedbackList = document.getElementById('generalFeedback');
 
     feedbackList.innerHTML = result.analysis_json.general_feedback
-        .map(f => `<li>📌 ${f}</li>`)
+        .map(f => `<li>${f}</li>`)
         .join('');
 
     // Optimized Resume

@@ -72,7 +72,7 @@
         </div>
         <div class="form-group new-only">
           <label for="title">Title</label>
-          <input id="title" class="form-control" maxlength="180" placeholder="Campus aptitude practice set">
+          <input id="title" class="form-control" maxlength="180" placeholder="Campus aptitude practice set" required>
         </div>
         <div class="form-group">
           <label for="status">Status</label>
@@ -85,21 +85,21 @@
 
       <div class="form-group new-only">
         <label for="description">Description / Instructions</label>
-        <textarea id="description" class="form-control" rows="3" placeholder="Instructions students should read before starting..."></textarea>
+        <textarea id="description" class="form-control" rows="3" placeholder="Instructions students should read before starting..." required></textarea>
       </div>
 
       <div class="form-grid">
         <div class="form-group new-only">
           <label for="durationMinutes">Duration (Minutes)</label>
-          <input id="durationMinutes" class="form-control" type="number" min="1" value="20">
+          <input id="durationMinutes" class="form-control" type="number" min="1" value="20" required>
         </div>
         <div class="form-group new-only">
           <label for="startsAt">Starts At</label>
-          <input id="startsAt" class="form-control" type="datetime-local">
+          <input id="startsAt" class="form-control" type="datetime-local" required>
         </div>
         <div class="form-group new-only">
           <label for="endsAt">Ends At</label>
-          <input id="endsAt" class="form-control" type="datetime-local">
+          <input id="endsAt" class="form-control" type="datetime-local" required>
         </div>
         <div class="form-group">
           <label for="negativeMarking">Negative Marks</label>
@@ -115,7 +115,7 @@
       <div class="section-header import-header">
         <div>
           <h2>Preview</h2>
-          <p class="subtitle">Edit or remove rows before saving. Rows with validation errors must be fixed first.</p>
+          <p class="subtitle">Review the parsed rows before saving. Valid rows will be imported; invalid and blank rows will be skipped and reported.</p>
         </div>
         <button class="btn btn-primary" type="button" id="saveButton" disabled>
           Save Imported Questions
