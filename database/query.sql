@@ -71,6 +71,7 @@ CREATE TABLE exams (
   id CHAR(36) PRIMARY KEY,
   created_by CHAR(36) NOT NULL,
   title VARCHAR(180) NOT NULL,
+  exam_type VARCHAR(32) NOT NULL DEFAULT 'aptitude',
   instructions TEXT NOT NULL,
   duration_minutes SMALLINT UNSIGNED NOT NULL,
   starts_at DATETIME NOT NULL,
@@ -98,6 +99,8 @@ CREATE TABLE exam_questions (
   exam_id CHAR(36) NOT NULL,
   topic_id CHAR(36) NOT NULL,
   question_text TEXT NOT NULL,
+  explanation TEXT NULL,
+  difficulty ENUM('easy','medium','hard') NOT NULL DEFAULT 'medium',
   marks DECIMAL(5,2) NOT NULL DEFAULT 1,
   display_order SMALLINT UNSIGNED NOT NULL,
   CONSTRAINT fk_question_exam FOREIGN KEY (exam_id) REFERENCES exams(id) ON DELETE CASCADE,
@@ -113,6 +116,18 @@ CREATE TABLE question_options (
   display_order TINYINT UNSIGNED NOT NULL,
   CONSTRAINT fk_option_question FOREIGN KEY (question_id) REFERENCES exam_questions(id) ON DELETE CASCADE,
   UNIQUE KEY uq_question_option_order (question_id, display_order)
+);
+
+CREATE TABLE exam_question_imports (
+  created_by VARCHAR(36) NOT NULL,
+  file_hash CHAR(64) NOT NULL,
+  exam_id CHAR(36) NULL,
+  imported_count INT UNSIGNED NOT NULL DEFAULT 0,
+  skipped_rows INT UNSIGNED NOT NULL DEFAULT 0,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (created_by, file_hash),
+  CONSTRAINT fk_exam_import_admin FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE CASCADE,
+  CONSTRAINT fk_exam_import_exam FOREIGN KEY (exam_id) REFERENCES exams(id) ON DELETE CASCADE
 );
 
 CREATE TABLE exam_attempts (

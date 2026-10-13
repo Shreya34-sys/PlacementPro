@@ -2,6 +2,8 @@ const fs = require('fs');
 const path = require('path');
 const model = require('../models/versantModel');
 const scorer = require('../services/versantScoringService');
+const progressService = require('../services/progressService');
+const preparationActivity = require('../services/preparationActivityService');
 
 function adminId(req) { return req.user?.id || null; }
 function studentId(req) { return req.user?.id; }
@@ -215,6 +217,8 @@ exports.submitResponse = async (req, res, next) => {
       totalScore: score.total, gradingJson: score
     });
     await model.advanceQuestion(a.id, studentId(req), questionNo);
+    await preparationActivity.recordQuestion(studentId(req), `versant:${question.id}`);
+    await progressService.emitProgress(req.app.get('io'), studentId(req));
 
     res.json({ questionNo, score, nextQuestionNo: questionNo + 1 });
   } catch (e) { next(e); }
@@ -262,6 +266,7 @@ exports.submit = async (req, res, next) => {
       vocabulary, sentenceMastery, coherence, wpm, hesitations, cefr, passed
     });
     await model.submitAssignment(a.id, studentId(req));
+    await progressService.emitProgress(req.app.get('io'), studentId(req));
     res.json({ message: 'Versant test submitted.', result: { overall, cefr, passed, questions: questions.length, answered: responses.length } });
   } catch (e) { next(e); }
 };

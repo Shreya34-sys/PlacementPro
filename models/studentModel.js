@@ -9,12 +9,13 @@ class Student {
                 u.id, 
                 u.email, 
                 u.role,
-                COALESCE(s.full_name, u.fullName) AS full_name, 
-                s.department, 
-                s.division || null, 
-                s.batch_year, 
-                s.cgpa, 
-                s.phone_number 
+                COALESCE(s.full_name, u.fullName) AS full_name,
+                s.department,
+                s.division,
+                s.batch_year,
+                s.cgpa,
+                s.phone_number,
+                u.fullName
              FROM users u 
              LEFT JOIN students s ON u.id = s.std_id 
              WHERE u.id = ?`,

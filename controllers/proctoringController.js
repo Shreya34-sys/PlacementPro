@@ -1,6 +1,7 @@
 const db = require('../config/db');
 const Attempt = require('../models/attemptModel');
 const { randomUUID } = require('crypto');
+const progressService = require('../services/progressService');
 
 const MAX_WARNINGS = 3;
 
@@ -140,6 +141,7 @@ exports.flag = async (req, res, next) => {
 
     if (autoSubmitted) {
       const result = await Attempt.submit(attempt.id, true);
+      await progressService.emitProgress(io, attempt.student_id);
 
       if (io) {
         io.to(`student:attempt:${attempt.id}`).emit(

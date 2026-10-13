@@ -5,7 +5,7 @@ const pool = mysql.createPool({     //Creating a new database connection for eve
     host: process.env.DB_HOST || 'localhost',  //Sets the database server location using process.env.DB_HOST. If it's missing in .env, it defaults to 'localhost'
     user: process.env.DB_USER || 'root',
     password: process.env.DB_PASSWORD || '',
-    database: process.env.DB_NAME || 'placementpro',
+    database: process.env.DB_NAME || 'ppro',
     waitForConnections: true,  //If all pool connections are busy when a new request comes in, setting this to true makes the request wait in a queue until a connection frees up (instead of throwing an immediate error).
     connectionLimit: 10, //estricts the pool to opening a maximum of 10 simultaneous connections at any given time to protect your MySQL server from memory overload.
     queueLimit: 0  //Sets no cap (0) on the maximum number of requests that can wait in line when all 10 connections are currently busy

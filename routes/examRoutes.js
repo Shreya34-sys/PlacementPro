@@ -37,11 +37,29 @@
 
 const router=require('express').Router();
 const passport=require('passport');
+const multer=require('multer');
 const exam=require('../controllers/examController');
 const proctor=require('../controllers/proctoringController');
 const auth=passport.authenticate('jwt',{session:false});
 const adminOnly=(req,res,next)=>req.user.role==='admin'?next():res.sendStatus(403);
+const upload=multer({
+  storage:multer.memoryStorage(),
+  limits:{fileSize:5*1024*1024},
+  fileFilter:(req,file,cb)=>{
+    if(/\.(xlsx|xls)$/i.test(file.originalname)) return cb(null,true);
+    const error=new Error('Only .xlsx and .xls files are supported.');
+    error.status=400;
+    cb(error);
+  }
+});
+const uploadImportFile=(req,res,next)=>upload.single('file')(req,res,error=>{
+  if(error) error.status=400;
+  next(error);
+});
 router.post('/',auth,adminOnly,exam.create); router.get('/admin',auth,adminOnly,exam.listForAdmin); router.get('/available',auth,exam.listAvailable);
+router.get('/import/template',auth,adminOnly,exam.template);
+router.post('/import/preview',auth,adminOnly,uploadImportFile,exam.previewImport);
+router.post('/import/save',auth,adminOnly,exam.saveImport);
 router.get('/:examId/proctoring/active-attempts',auth,adminOnly,proctor.activeAttempts);
 router.get('/:examId/proctoring/flags',auth,adminOnly,proctor.liveFlags);
 router.patch('/proctoring/flags/:flagId/resolve',auth,adminOnly,proctor.resolve);

@@ -23,6 +23,9 @@ function setupSockets(httpServer, app) {
   });
 
   io.on('connection', (socket) => {
+    const userId = socket.user.id || socket.user.userId;
+    if (userId) socket.join(`user:${userId}`);
+
     socket.on('join-attempt', (attemptId) => {
       if (!attemptId || socket.user.role !== 'student') return;
       socket.join(`student:attempt:${attemptId}`);
