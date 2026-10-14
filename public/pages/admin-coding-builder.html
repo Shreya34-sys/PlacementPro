@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Create Coding Round · PlacementPro</title><link rel="stylesheet" href="/css/coding-admin.css"></head>
+<body><main class="coding-shell">
+<header class="coding-header"><div><span class="eyebrow">TECHNICAL ROUND</span><h1>Build Coding Assessment</h1><p>Questions and hidden/public test cases are stored separately from your existing aptitude module.</p></div><a class="ghost" href="/admin-coding-rounds">Back</a></header>
+<section class="panel">
+<h2>Round settings</h2>
+<div class="form-grid">
+<label>Title<input id="title" placeholder="DSA Coding Round"></label>
+<label>Duration (minutes)<input id="duration" type="number" value="60" min="5"></label>
+<label>Starts at<input id="startsAt" type="datetime-local"></label>
+<label>Ends at<input id="endsAt" type="datetime-local"></label>
+<label>Max warnings<input id="maxWarnings" type="number" value="3" min="1" max="20"></label>
+<label>Access code (optional)<input id="accessCode" placeholder="Auto-generated if empty"></label>
+</div>
+<label>Description<textarea id="description" rows="3"></textarea></label>
+<label>Instructions<textarea id="instructions" rows="4">Do not leave full screen. Keep your face visible. Run is for sample cases; Submit evaluates hidden cases.</textarea></label>
+<div class="checks"><label><input id="face" type="checkbox" checked> Face detection</label><label><input id="audio" type="checkbox" checked> Audio monitoring</label><label><input id="tab" type="checkbox" checked> Tab/fullscreen lock</label><label><input id="clipboard" type="checkbox" checked> Clipboard guard</label></div>
+<button id="createRound" class="primary">Create round</button><span id="roundStatus"></span>
+</section>
+<section id="questionPanel" class="panel hidden">
+<div class="section-head"><h2 id="questionEditorHeading">Add coding question</h2><span id="roundCode"></span></div>
+<div class="form-grid">
+<label>Question title<input id="qTitle" placeholder="Two Sum"></label>
+<label>Points<input id="qPoints" type="number" value="100"></label>
+</div>
+<label>Problem statement<textarea id="qStatement" rows="6"></textarea></label>
+<label>Constraints<textarea id="qConstraints" rows="3"></textarea></label>
+<div class="form-grid"><label>Input format<textarea id="qInput" rows="3"></textarea></label><label>Output format<textarea id="qOutput" rows="3"></textarea></label></div>
+<label>Allowed languages</label><div class="checks"><label><input class="lang" value="python" type="checkbox" checked> Python</label><label><input class="lang" value="java" type="checkbox" checked> Java</label><label><input class="lang" value="cpp" type="checkbox" checked> C++</label><label><input class="lang" value="javascript" type="checkbox" checked> JavaScript</label></div>
+<div class="starter-grid">
+<label>Python starter<textarea id="starterPython"># Write your solution here</textarea></label>
+<label>Java starter<textarea id="starterJava">public class Main { public static void main(String[] args) { } }</textarea></label>
+<label>C++ starter<textarea id="starterCpp">#include <bits/stdc++.h>\nusing namespace std;\nint main(){}</textarea></label>
+<label>JavaScript starter<textarea id="starterJavascript">const fs = require('fs');\nconst input = fs.readFileSync(0,'utf8');</textarea></label>
+</div>
+<div class="section-head"><h3>Test cases</h3></div>
+<div id="cases"></div>
+<div class="actions"><button id="addCase" class="ghost" type="button">+ Add case</button><button id="addQuestion" class="primary" type="button">Add Question</button><button id="newQuestion" class="ghost" type="button">+ New Question</button><button id="publishRound" class="secondary" type="button" disabled>Publish Round</button></div><div id="questionList" class="saved-question-list"></div><div class="panel" style="margin-top:18px"><h3>Student invitations</h3><p class="meta">Optional: enter student emails separated by commas/new lines. If you leave this empty, the published round is visible to all students.</p><textarea id="inviteEmails" rows="4" placeholder="student1@example.com, student2@example.com"></textarea><button id="assignStudents" class="ghost">Generate Student Access Codes</button><pre id="assignmentOutput"></pre></div>
+<span id="questionStatus"></span>
+</section>
+</main><script src="/js/admin-coding-builder.js"></script></body></html>

@@ -1,0 +1,8 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Coding Assessment</title><link rel="stylesheet" href="/css/coding-student.css"></head>
+<body><div id="proctorNotice" class="proctor-notice">Preparing secure coding environment…</div>
+<header class="exambar"><strong id="roundTitle">Coding Round</strong><span id="timer">00:00</span><span id="warningCounter">Warnings: 0/3</span></header>
+<main class="coding-workspace"><aside id="questionNav" class="question-nav"></aside><section class="problem"><h2 id="questionTitle"></h2><div id="problemStatement"></div><h3>Input</h3><pre id="inputFormat"></pre><h3>Output</h3><pre id="outputFormat"></pre><h3>Constraints</h3><pre id="constraints"></pre></section>
+<section class="editor-panel"><div class="editor-tools"><select id="language"></select><button id="runBtn">Run Code</button><button id="submitQuestionBtn">Submit Problem</button><button id="finalSubmitBtn" class="danger">Finish Round</button></div><div id="editor"></div><div id="console"><div class="console-head">Console / Evaluation</div><pre id="consoleOutput">Run your code to see sample results.</pre></div></section></main>
+<div id="cameraPanel"><button id="shareScreenBtn" type="button">Share screen with proctor</button><video id="camera" autoplay muted playsinline></video><span id="cameraStatus">Starting camera…</span></div>
+<script src="/socket.io/socket.io.js"></script><script src="/js/coding-proctor.js"></script><script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs/loader.js"></script><script src="/js/coding-round.js"></script></body></html>

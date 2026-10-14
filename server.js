@@ -16,8 +16,6 @@ const examRoutes = require('./routes/examRoutes');
 const resumeRoutes = require('./routes/resumeRoutes');
 const companyRoutes = require('./routes/companyRoutes');
 const versantRoutes = require('./routes/versantRoutes');
-const progressRoutes = require('./routes/progressRoutes');
-const interviewRoutes = require('./routes/interviewRoutes');
 
 const app = express();
 const server = http.createServer(app);
@@ -51,6 +49,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.initialize());
 
 setupSockets(server, app);
+attachCodingSockets(app.get('io'));
 
 const v1Router = express.Router();
 v1Router.use('/auth', authLimiter, authRoutes);
@@ -68,9 +67,8 @@ app.use('/api/auth', authLimiter, authRoutes);
 app.use('/api/student', studentRoutes);
 app.use('/api/resume', resumeRoutes);
 app.use('/api/versant', versantRoutes);
-app.use('/api/companies', companyRoutes);
-app.use('/api/progress', progressRoutes);
-app.use('/api/interviews', interviewRoutes);
+
+// Keep this last because it contains page/catch-all routes.
 app.use('/', viewRoutes);
 
 app.use((error, req, res, next) => {
