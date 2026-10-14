@@ -106,20 +106,59 @@ exports.assignmentQuestions = async (req, res, next) => {
 };
 
 exports.startAttempt = async (req, res, next) => {
-  try { res.status(201).json(await Interview.startAttempt(req.user.id, req.params.assignmentId)); } catch (error) { next(error); }
+  try { res.status(201).json(await Interview.startAttempt(req.user.id, req.params.assignmentId, req.body)); } catch (error) { next(error); }
 };
 
 exports.saveAnswer = async (req, res, next) => {
   try {
-    await Interview.saveAnswer(req.user.id, req.params.attemptId, req.body);
+    await Interview.saveAnswer(req.user.id, req.params.attemptId, req.body, req.file
+      ? { buffer: req.file.buffer, mimeType: req.file.mimetype }
+      : null);
     res.sendStatus(204);
   } catch (error) { next(error); }
 };
 
+async function sendAnswerAudio(req, res, isAdmin) {
+  const audio = await Interview.answerAudio(req.user.id, req.params.attemptId, req.params.questionId, isAdmin);
+  if (!audio) return res.status(404).json({ message: 'No saved audio recording was found.' });
+  res.set({
+    'Content-Type': audio.audio_mime_type || 'application/octet-stream',
+    'Content-Length': audio.audio_data.length,
+    'Cache-Control': 'private, no-store'
+  });
+  return res.send(audio.audio_data);
+}
+
+exports.studentAudio = async (req, res, next) => {
+  try { await sendAnswerAudio(req, res, false); } catch (error) { next(error); }
+};
+
+exports.reviewAudio = async (req, res, next) => {
+  try { await sendAnswerAudio(req, res, true); } catch (error) { next(error); }
+};
+
 exports.recordEvent = async (req, res, next) => {
   try {
-    await Interview.recordEvent(req.user.id, req.params.attemptId, req.body);
-    res.sendStatus(204);
+    const result = await Interview.recordEvent(req.user.id, req.params.attemptId, req.body);
+    const io = req.app.get('io');
+    if (io) {
+      io.to(`admin:attempt:${req.params.attemptId}`).emit('interview:warning-update', {
+        attemptId: req.params.attemptId,
+        eventType: req.body.eventType,
+        severity: req.body.severity,
+        message: req.body.message,
+        warningsCount: result.warningsCount || 0,
+        action: result.action || null,
+        terminated: Boolean(result.terminated)
+      });
+      if (result.terminated) {
+        io.to(`student:attempt:${req.params.attemptId}`).emit('interview:terminated', {
+          attemptId: req.params.attemptId,
+          message: 'The interview ended after the configured monitoring warning action. Saved answers were preserved.'
+        });
+      }
+    }
+    res.json(result);
   } catch (error) { next(error); }
 };
 

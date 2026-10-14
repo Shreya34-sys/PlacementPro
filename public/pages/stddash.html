@@ -213,22 +213,6 @@
             </div>
         </div>
 
-        <section class="card preparation-activity-card" aria-labelledby="preparationActivityHeading">
-            <div class="live-progress-header">
-                <div>
-                    <h2 id="preparationActivityHeading">Preparation Activity</h2>
-                    <p class="sub-text" id="preparationTodayStatus">Answer one question on a day to build your streak.</p>
-                </div>
-                <div class="preparation-streak" aria-live="polite">
-                    <strong id="preparationStreak">0 days</strong>
-                    <span>current streak</span>
-                </div>
-            </div>
-            <div id="preparationWeek" class="preparation-week" aria-label="Question activity for the last seven days">
-                <p class="progress-empty">Loading activity...</p>
-            </div>
-        </section>
-
         <section class="card live-progress-card" aria-labelledby="liveProgressHeading">
             <div class="live-progress-header">
                 <div>
@@ -304,41 +288,6 @@
         <div class="main-body-split">
             <!-- Left Side Feed -->
             <div class="feed-column">
-                <div class="section-header-row">
-                    <h2><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="7" width="18" height="14" rx="3"/><path d="M12 3v4M8 13h.01M16 13h.01M8 17h8"/></svg> AI Recommendations for You</h2>
-                    <button class="btn-outline-sm"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11ZM9 12l2 2 4-4"/></svg> Live Diagnostics</button>
-                </div>
-
-                <div class="card recommendation-card">
-                    <div class="rec-icon-box yellow-bg"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 18h6M10 22h4M8 14a6 6 0 1 1 8 0c-.8.7-1 1.4-1 2h-6c0-.6-.2-1.3-1-2Z"/></svg></div>
-                    <div class="rec-content">
-                        <span class="badge grey-badge">Data Structures</span>
-                        <h3>Boost Dynamic Programming Speed</h3>
-                        <p>Your accuracy in DP problems is 62%. Practice 5 Memoization pattern questions to reach target threshold.</p>
-                    </div>
-                    <button class="btn btn-secondary">Practice DP &rarr;</button>
-                </div>
-
-                <div class="card recommendation-card">
-                    <div class="rec-icon-box purple-bg"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 11.5a8.5 8.5 0 0 1-12.7 7.4L3 21l2.1-5.3A8.5 8.5 0 1 1 21 11.5Z"/><path d="M9 10v3M12 8v7M15 10v3"/></svg></div>
-                    <div class="rec-content">
-                        <span class="badge grey-badge">Communication</span>
-                        <h3>Complete Versant Voice Practice</h3>
-                        <p>Amazon and TCS require strong English fluency. Take a 15-minute voice assessment to evaluate pronunciation and fluency.</p>
-                    </div>
-                     <a href="/pages/versant-test.html" class="btn btn-secondary" style="text-decoration: none; text-align: center; display: inline-block;">Start Versant &rarr;</a>
-                </div>
-
-                        <div class="card recommendation-card">
-    <div class="rec-icon-box blue-bg"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6M8 13h8M8 17h8"/></svg></div>
-    <div class="rec-content">
-        <span class="badge grey-badge">Resume Analyzer</span>
-        <h3>Optimize Resume for ATS Screening</h3>
-        <p>Your ATS match score for SDE roles is 84%. Add "Microservices Architecture" and "Redis Caching" keywords.</p>
-    </div>
-    <a href="/api/resume" class="btn btn-secondary" style="text-decoration: none; text-align: center; display: inline-block;">Analyze Resume &rarr;</a>
-</div>
-
                 <!-- Recommended Target Companies -->
                 <div class="section-header">
                     <h2><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M9 7h1M14 7h1M9 11h1M14 11h1M9 15h1M14 15h1M10 21v-3h4v3"/></svg> Recommended Target Companies</h2>
