@@ -331,7 +331,16 @@ class Interview {
       if (Number(countRow.attempts) >= assignment.max_attempts) throw Object.assign(new Error('Attempt limit reached.'), { status: 409 });
       const [[activeAttempt]] = await connection.execute(`SELECT id FROM interview_attempts
         WHERE assignment_id=? AND student_id=? AND state='started' LIMIT 1 FOR UPDATE`, [assignmentId, studentId]);
-      if (activeAttempt) throw Object.assign(new Error('You already have an interview attempt in progress.'), { status: 409 });
+      if (activeAttempt) {
+        const [questions] = await connection.execute(`SELECT q.id, q.question_text, q.category, q.topic, q.difficulty, q.marks,
+          q.preparation_time_seconds, q.answer_time_seconds, sq.display_order, s.title, s.description
+          FROM interview_set_questions sq
+          JOIN interview_questions q ON q.id=sq.question_id
+          JOIN interview_sets s ON s.id=sq.set_id
+          WHERE sq.set_id=? AND q.deleted_at IS NULL ORDER BY sq.display_order`, [assignment.set_id]);
+        await connection.commit();
+        return { attemptId: activeAttempt.id, questions, resumed: true };
+      }
       const [questions] = await connection.execute(`SELECT q.id, q.question_text, q.category, q.topic, q.difficulty, q.marks,
         q.preparation_time_seconds, q.answer_time_seconds, sq.display_order, s.title, s.description
         FROM interview_set_questions sq
@@ -583,6 +592,114 @@ class Interview {
     } finally {
       connection.release();
     }
+  }
+
+  static async getOrCreateAiHrAssignment() {
+    await Interview.ensureTables();
+    const [existing] = await db.execute(`SELECT a.id assignment_id, s.id set_id
+      FROM interview_assignments a
+      JOIN interview_sets s ON s.id = a.set_id
+      WHERE s.title = 'AI HR Interactive Mock Interview'
+        AND a.status = 'published' AND s.deleted_at IS NULL
+      LIMIT 1`);
+    if (existing[0]) {
+      return existing[0].assignment_id;
+    }
+
+    const [admins] = await db.execute(`SELECT id FROM users WHERE role='admin' LIMIT 1`);
+    const adminId = admins[0]?.id || '8b964856-ee3c-45cd-a048-7d4a991734c3';
+
+    const setId = randomUUID();
+    await db.execute(`INSERT INTO interview_sets
+      (id, created_by, title, description, category, status, default_preparation_seconds, default_answer_seconds, max_attempts)
+      VALUES (?, ?, ?, ?, 'hr', 'published', 0, 180, 99)`,
+      [setId, adminId, 'AI HR Interactive Mock Interview', 'Real-time conversational AI HR mock interview with live voice activity detection, dynamic follow-up questions, and instant executive feedback.']);
+
+    const HR_QUESTIONS = [
+      {
+        text: 'Tell me about yourself, your educational journey, and what drives your passion in this field.',
+        topic: 'Self-Introduction', category: 'hr', order: 1
+      },
+      {
+        text: 'Could you walk me through your most impactful project? What challenges did you encounter and how did you resolve them?',
+        topic: 'Projects & Technical Experience', category: 'technical', order: 2
+      },
+      {
+        text: 'What would you consider your greatest professional strength, and what is one area you are actively working to improve?',
+        topic: 'Strengths & Weaknesses', category: 'hr', order: 3
+      },
+      {
+        text: 'Tell me about a time you worked in a team with differing opinions or technical disagreements. How did you handle it?',
+        topic: 'Teamwork & Collaboration', category: 'behavioral', order: 4
+      },
+      {
+        text: 'Describe a situation where you faced a tight deadline or high pressure. How did you prioritize your tasks to deliver successfully?',
+        topic: 'Conflict Handling & Pressure', category: 'behavioral', order: 5
+      },
+      {
+        text: 'Where do you see yourself in the next 3 to 5 years, and how do you plan to achieve those career goals?',
+        topic: 'Career Goals & Vision', category: 'hr', order: 6
+      },
+      {
+        text: 'Can you share a time when a project or plan did not go as expected? What happened, what was your role, and what did you learn?',
+        topic: 'Behavioral & Situational (STAR)', category: 'behavioral', order: 7
+      }
+    ];
+
+    for (const q of HR_QUESTIONS) {
+      const qId = randomUUID();
+      await db.execute(`INSERT INTO interview_questions
+        (id, created_by, question_text, category, topic, difficulty, marks, preparation_time_seconds, answer_time_seconds)
+        VALUES (?, ?, ?, ?, ?, 'medium', 10, 0, 180)`,
+        [qId, adminId, q.text, q.category, q.topic]);
+      await db.execute(`INSERT INTO interview_set_questions
+        (set_id, question_id, display_order) VALUES (?, ?, ?)`,
+        [setId, qId, q.order]);
+    }
+
+    const assignmentId = randomUUID();
+    await db.execute(`INSERT INTO interview_assignments
+      (id, set_id, assigned_by, target_type, max_attempts, status)
+      VALUES (?, ?, ?, 'all', 99, 'published')`,
+      [assignmentId, setId, adminId]);
+
+    return assignmentId;
+  }
+
+  static async saveAiFeedback(attemptId, feedback) {
+    await Interview.ensureTables();
+    const overallScore = Number(feedback?.overallScore || 0);
+    const feedbackJson = JSON.stringify(feedback);
+    const summary = feedback?.executiveSummary || 'AI HR Mock Interview Completed.';
+
+    await db.execute(`UPDATE interview_attempts
+      SET state='submitted', total_score=?, submitted_at=COALESCE(submitted_at, NOW())
+      WHERE id=?`, [overallScore, attemptId]);
+
+    await db.execute(`INSERT INTO interview_results
+      (id, attempt_id, total_score, status, ai_feedback, faculty_summary)
+      VALUES (?, ?, ?, 'submitted', ?, ?)
+      ON DUPLICATE KEY UPDATE
+        total_score=VALUES(total_score),
+        status='submitted',
+        ai_feedback=VALUES(ai_feedback),
+        faculty_summary=VALUES(faculty_summary),
+        updated_at=CURRENT_TIMESTAMP`,
+      [randomUUID(), attemptId, overallScore, feedbackJson, summary]);
+
+    return { overallScore };
+  }
+
+  static async getAttemptFeedback(userId, attemptId, isAdmin = false) {
+    await Interview.ensureTables();
+    const [rows] = await db.execute(`SELECT at.id, at.state, at.started_at, at.submitted_at, at.total_score, at.max_score,
+      s.title, s.category, r.ai_feedback, r.faculty_summary, r.status result_status
+      FROM interview_attempts at
+      JOIN interview_sets s ON s.id=at.set_id
+      LEFT JOIN interview_results r ON r.attempt_id=at.id
+      WHERE at.id=? ${isAdmin ? '' : 'AND at.student_id=?'} LIMIT 1`,
+      isAdmin ? [attemptId] : [attemptId, userId]);
+    return rows[0] || null;
   }
 }
 

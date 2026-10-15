@@ -97,7 +97,12 @@ async function begin() {
 }
 
   const r = await api(`/api/exams/${examId}/attempts`, { method: 'POST' });
-  attempt = await r.json();
+  const data = await r.json().catch(() => ({}));
+  if (!r.ok || !data.id) {
+    alert(data.message || 'Could not start assessment attempt.');
+    return;
+  }
+  attempt = data;
   location.href = `/pages/live-exam.html?exam=${examId}&attempt=${attempt.id}`;
 }
 
@@ -278,7 +283,7 @@ async function live() {
 }
 
 // Router initialization based on active route
-if (location.pathname.endsWith('exam-guidelines.html')) {
+if (location.pathname.includes('exam-guidelines')) {
   load().then(() => {
     document.querySelector('#title').textContent = exam.title;
     document.querySelector('#intro').textContent = exam.instructions;

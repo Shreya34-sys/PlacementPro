@@ -5,6 +5,11 @@ const {
   validateRows,
   buildTemplateWorkbook
 } = require('../services/interviewImportService');
+const {
+  generateNextQuestion,
+  generateComprehensiveFeedback,
+  transcribeAudio
+} = require('../services/aiInterviewService');
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -180,4 +185,73 @@ exports.review = async (req, res, next) => {
 
 exports.saveReview = async (req, res, next) => {
   try { res.json(await Interview.reviewAttempt(req.user.id, req.params.attemptId, req.body)); } catch (error) { next(error); }
+};
+
+exports.defaultAiAssignment = async (req, res, next) => {
+  try {
+    const assignmentId = await Interview.getOrCreateAiHrAssignment();
+    res.json({ assignmentId });
+  } catch (error) { next(error); }
+};
+
+exports.aiConverse = async (req, res, next) => {
+  try {
+    const { attemptId, questionId, studentAnswer, topicIndex, conversationHistory, topic } = req.body;
+    const studentName = req.user.name || req.user.std_name || 'Candidate';
+
+    if (attemptId && questionId && studentAnswer) {
+      await Interview.saveAnswer(req.user.id, attemptId, {
+        questionId,
+        answerText: studentAnswer,
+        transcriptSource: 'speech'
+      }).catch(err => console.warn('Answer save in converse:', err.message));
+    }
+
+    const result = await generateNextQuestion({
+      conversationHistory: Array.isArray(conversationHistory) ? conversationHistory : [],
+      studentAnswer: studentAnswer || '',
+      currentTopicIndex: typeof topicIndex === 'number' ? topicIndex : 0,
+      studentName
+    });
+
+    res.json(result);
+  } catch (error) { next(error); }
+};
+
+exports.aiFeedback = async (req, res, next) => {
+  try {
+    const { attemptId, conversationHistory } = req.body;
+    const studentName = req.user.name || req.user.std_name || 'Candidate';
+
+    const feedback = await generateComprehensiveFeedback({
+      conversationHistory: Array.isArray(conversationHistory) ? conversationHistory : [],
+      studentName
+    });
+
+    if (attemptId) {
+      await Interview.saveAiFeedback(attemptId, feedback).catch(err => console.warn('Save AI feedback:', err.message));
+    }
+
+    res.json({ success: true, feedback, overallScore: feedback.overallScore });
+  } catch (error) { next(error); }
+};
+
+exports.attemptFeedback = async (req, res, next) => {
+  try {
+    const row = await Interview.getAttemptFeedback(req.user.id, req.params.attemptId, req.user.role === 'admin');
+    if (!row) return res.status(404).json({ message: 'Feedback not found.' });
+    let feedback = row.ai_feedback;
+    if (typeof feedback === 'string') {
+      try { feedback = JSON.parse(feedback); } catch {}
+    }
+    res.json({ feedback, attempt: row });
+  } catch (error) { next(error); }
+};
+
+exports.aiTranscribe = async (req, res, next) => {
+  try {
+    if (!req.file) return res.status(400).json({ message: 'Audio file required for transcription.' });
+    const text = await transcribeAudio(req.file.buffer, req.file.mimetype);
+    res.json({ text });
+  } catch (error) { next(error); }
 };

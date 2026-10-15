@@ -4,14 +4,119 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Live AI Proctoring</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/proctored-exams.css">
+  <style>
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 6px;
+      letter-spacing: 0.02em;
+    }
+    .status-online {
+      background: #dcfce7;
+      color: #15803d;
+      border: 1px solid #bbf7d0;
+    }
+    .status-offline {
+      background: #f1f5f9;
+      color: #64748b;
+      border: 1px solid #e2e8f0;
+    }
+    .status-cam-live {
+      background: #dbeafe;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+    }
+    .status-cam-off {
+      background: #fee2e2;
+      color: #b91c1c;
+      border: 1px solid #fecaca;
+    }
+    .feed-video-wrap {
+      position: relative;
+      height: 180px;
+      background: #091322;
+      border-radius: 12px 12px 0 0;
+      overflow: hidden;
+    }
+    .feed-video-wrap video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      background: #091322;
+    }
+    .feed-video-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: rgba(9, 19, 34, 0.88);
+      color: #94a3b8;
+      font-size: 13px;
+      font-weight: 600;
+      gap: 8px;
+    }
+    .feed-meta-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+      margin-bottom: 8px;
+    }
+    .status-badges-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .alert-count-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .feed-spinner {
+      width: 22px;
+      height: 22px;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-top-color: #38bdf8;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+  </style>
 </head>
 <body>
   <main class="shell proctor">
-    <header>
-      <p class="eyebrow danger">AUDIO-VISUAL INTEGRITY & SURVEILLANCE CONSOLE</p>
-      <h1>Live AI Proctoring & Audio Surveillance Supervisor</h1>
-      <p>Highest severity alerts and student feeds appear first.</p>
+    <header class="app-header" style="padding: 24px 28px; margin-bottom: 24px;">
+      <div class="header-top" style="margin-bottom: 0;">
+        <div class="brand-title">
+          <p class="eyebrow danger">AUDIO-VISUAL INTEGRITY &amp; SURVEILLANCE CONSOLE</p>
+          <h1>Live AI Proctoring &amp; Audio Surveillance Supervisor</h1>
+          <p id="examSubtitle" class="subtitle">Highest severity alerts and student feeds appear first.</p>
+        </div>
+        <div class="header-nav" style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+          <label for="examSelect" style="font-size: 13px; font-weight: 700; color: var(--text-muted, #64748b);">Assessment:</label>
+          <select id="examSelect" style="padding: 8px 14px; border-radius: 8px; border: 1px solid #cbd5e1; font-family: inherit; font-size: 13px; font-weight: 600; background: #fff; min-width: 260px; color: #0f172a; cursor: pointer;"></select>
+          <a class="nav-btn" href="/pages/admindash.html" style="text-decoration: none;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            Dashboard
+          </a>
+        </div>
+      </div>
     </header>
 
     <section id="flagStats" class="metrics">
@@ -21,7 +126,10 @@
     </section>
 
     <section class="card">
-      <h2>▣ Live Student Monitoring</h2>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; border-bottom: 1px solid var(--border-color, #e2e8f0); padding-bottom: 12px;">
+        <h2 style="margin: 0; font-size: 18px; font-weight: 700;">▣ Live Student Monitoring</h2>
+        <span id="activeCountBadge" class="pill blue" style="font-size: 12px;">0 Active Students</span>
+      </div>
       <div id="studentFeeds" class="feed-grid"></div>
     </section>
   </main>

@@ -301,6 +301,12 @@
 
           showRetry(true);
 
+          socket.emit('proctor:camera-status', {
+            attemptId,
+            status: 'stopped',
+            detail: 'track_ended'
+          });
+
           sendFlag(
             'camera_off',
             'Student camera stopped.',
@@ -311,6 +317,10 @@
 
       // Join Socket.IO attempt room
       socket.emit('join-attempt', attemptId);
+      socket.emit('proctor:camera-status', {
+        attemptId,
+        status: 'active'
+      });
 
       setCameraStatus(
         'Camera is active and being monitored.',
@@ -329,6 +339,12 @@
       console.error('CAMERA ERROR:', error);
       console.error('Camera error name:', error.name);
       console.error('Camera error message:', error.message);
+
+      socket.emit('proctor:camera-status', {
+        attemptId,
+        status: 'error',
+        detail: error.name
+      });
 
       const devices = await listCameraDevices();
 
@@ -765,7 +781,7 @@
 
   socket.on(
     'proctor:request-stream',
-    async () => {
+    async ({ viewerId } = {}) => {
 
       if (!cameraStream) {
         console.warn(
@@ -807,7 +823,8 @@
               {
                 attemptId,
                 candidate: event.candidate,
-                target: 'admin'
+                target: 'admin',
+                viewerId
               }
             );
           }
@@ -835,7 +852,8 @@
         {
           attemptId,
           offer:
-            peerConnection.localDescription
+            peerConnection.localDescription,
+          viewerId
         }
       );
     }

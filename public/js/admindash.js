@@ -174,6 +174,9 @@ function loadAdminProfile() {
     const admin = stored ? JSON.parse(stored) : token ? JSON.parse(atob(token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/'))) : {};
     const name = admin.name || admin.fullName || 'Admin'; const role = admin.designation || 'Placement Officer';
     [['navAdminName', name], ['navAdminRole', role], ['welcomeHeroHeading', `Welcome back, ${name}`]].forEach(([id, value]) => { const el = document.getElementById(id); if (el) el.textContent = value; });
+    const initials = name.split(' ').filter(Boolean).slice(0, 2).map(part => part[0].toUpperCase()).join('') || 'AD';
+    const avatarEl = document.getElementById('navAvatarInitials');
+    if (avatarEl) avatarEl.textContent = initials;
   } catch (error) { console.error('Unable to load admin profile:', error); }
 }
 document.addEventListener('DOMContentLoaded', () => {
@@ -197,6 +200,13 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('manageDrivesBtn')?.addEventListener('click', () => adminPage('/pages/admin-exams.html'));
   document.getElementById('createExamBtn')?.addEventListener('click', () => adminPage('/pages/admin-exam-builder.html'));
   document.getElementById('openProctoringBtn')?.addEventListener('click', () => adminPage('/pages/proctoring.html'));
+  document.getElementById('openMarketStoreBtn')?.addEventListener('click', () => {
+    const rag = document.getElementById('rag-market-ai');
+    if (rag) {
+      rag.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      document.getElementById('aiPromptInput')?.focus();
+    }
+  });
   document.getElementById('runIngestionBtn')?.addEventListener('click', async () => {
     const prompt = document.getElementById('aiPromptInput')?.value.trim(); if (!prompt) return alert('Enter or choose a prompt first.');
     try { await fetch('/api/admin/ingest', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }, body: JSON.stringify({ prompt, drive: document.getElementById('ingestionDriveSelect')?.value }) }); alert('AI ingestion completed.'); } catch { alert('Unable to run AI ingestion.'); }

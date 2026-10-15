@@ -47,4 +47,11 @@ router.get('/attempts/:attemptId/answers/:questionId/audio', auth, studentOnly, 
 router.post('/attempts/:attemptId/events', auth, studentOnly, interview.recordEvent);
 router.post('/attempts/:attemptId/submit', auth, studentOnly, interview.submitAttempt);
 
+// AI HR Interactive Voice Interview routes
+router.get('/ai/default-assignment', auth, studentOnly, interview.defaultAiAssignment);
+router.post('/ai/converse', auth, studentOnly, interview.aiConverse);
+router.post('/ai/feedback', auth, studentOnly, interview.aiFeedback);
+router.get('/attempts/:attemptId/feedback', auth, interview.attemptFeedback);
+router.post('/ai/transcribe', auth, studentOnly, handleAnswerUpload, interview.aiTranscribe);
+
 module.exports = router;

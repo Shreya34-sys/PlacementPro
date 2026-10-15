@@ -10,6 +10,24 @@ const assignmentList = document.getElementById('assignmentList');
 const historyList = document.getElementById('historyList');
 
 document.getElementById('refreshBtn').addEventListener('click', loadDashboard);
+document.getElementById('startLiveAiBtn')?.addEventListener('click', async () => {
+  const btn = document.getElementById('startLiveAiBtn');
+  btn.disabled = true;
+  btn.textContent = 'Launching AI Interview Room...';
+  try {
+    const res = await api('/api/interviews/ai/default-assignment');
+    const data = await res.json();
+    if (data.assignmentId) {
+      window.location.href = `/pages/interview-room.html?assignment=${encodeURIComponent(data.assignmentId)}&ai=true`;
+    } else {
+      throw new Error('Unable to launch interview assignment.');
+    }
+  } catch (err) {
+    alert(err.message || 'Unable to start AI interview.');
+    btn.disabled = false;
+    btn.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg> Start AI HR Interview Now';
+  }
+});
 
 async function loadDashboard() {
   assignmentList.innerHTML = '<div class="item">Loading assigned interviews...</div>';

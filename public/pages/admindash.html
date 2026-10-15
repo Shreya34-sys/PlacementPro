@@ -1,250 +1,321 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PlacementPro - Faculty Intelligence Hub</title>
     <link rel="stylesheet" href="/css/admindash.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <script>
-    function checkAdminAuth() {
+        function checkAdminAuth() {
+            const params = new URLSearchParams(window.location.search);
+            const urlToken = params.get('token');
+            const urlType = params.get('type');
 
-        const params = new URLSearchParams(window.location.search);
-
-        const urlToken = params.get('token');
-        const urlType = params.get('type');
-
-        // ==========================================
-        // ADMIN TOKEN FROM MAGIC LINK / GOOGLE
-        // ==========================================
-
-        if (urlToken && urlType === 'admin') {
-
-            localStorage.setItem('adminToken', urlToken);
-
-            // Prevent student token from being used
-            localStorage.removeItem('token');
-
-            // Remove token from browser URL
-            window.history.replaceState(
-                {},
-                document.title,
-                window.location.pathname
-            );
-        }
-
-        // ==========================================
-        // CHECK ADMIN TOKEN
-        // ==========================================
-
-        const adminToken = localStorage.getItem('adminToken');
-
-        if (!adminToken) {
-            window.location.replace('/admin-login');
-            return;
-        }
-
-        try {
-
-            const parts = adminToken.split('.');
-
-            if (parts.length !== 3) {
-                throw new Error('Invalid JWT format');
+            if (urlToken && urlType === 'admin') {
+                localStorage.setItem('adminToken', urlToken);
+                localStorage.removeItem('token');
+                window.history.replaceState({}, document.title, window.location.pathname);
             }
 
-            const payload = JSON.parse(
-                atob(parts[1])
-            );
-
-            // ONLY ADMIN
-            if (payload.role !== 'admin') {
-
-                localStorage.removeItem('adminToken');
-
+            const adminToken = localStorage.getItem('adminToken');
+            if (!adminToken) {
                 window.location.replace('/admin-login');
                 return;
             }
 
-            console.log(
-                'Admin authentication verified:',
-                payload.email
-            );
-
-        } catch (error) {
-
-            console.error(
-                'Admin authentication failed:',
-                error
-            );
-
-            localStorage.removeItem('adminToken');
-
-            window.location.replace('/admin-login');
-        }
-    }
-
-    checkAdminAuth();
-
-    window.addEventListener('pageshow', function (event) {
-
-        if (
-            event.persisted ||
-            (
-                window.performance &&
-                window.performance.navigation.type === 2
-            )
-        ) {
-            checkAdminAuth();
+            try {
+                const parts = adminToken.split('.');
+                if (parts.length !== 3) {
+                    throw new Error('Invalid JWT format');
+                }
+                const payload = JSON.parse(atob(parts[1]));
+                if (payload.role !== 'admin') {
+                    localStorage.removeItem('adminToken');
+                    window.location.replace('/admin-login');
+                    return;
+                }
+            } catch (error) {
+                console.error('Admin authentication failed:', error);
+                localStorage.removeItem('adminToken');
+                window.location.replace('/admin-login');
+            }
         }
 
-    });
-</script>
+        checkAdminAuth();
+
+        window.addEventListener('pageshow', function (event) {
+            if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+                checkAdminAuth();
+            }
+        });
+    </script>
 </head>
+
 <body>
 
     <!-- Header Navigation -->
     <header class="admin-navbar">
         <div class="nav-brand-section">
-            <div class="brand-logo">P</div>
+            <div class="brand-logo" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="7" width="20" height="14" rx="3"></rect>
+                    <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"></path>
+                    <path d="M12 12v3"></path>
+                </svg>
+            </div>
             <div class="brand-text-wrap">
                 <div class="brand-row">
                     <span class="brand-title">PlacementPro</span>
                     <span class="brand-tag">Faculty Intelligence Hub</span>
                 </div>
-                <div class="brand-sub">KIT's College of Engineering (Autonomous) â€¢ Dept. of CSBS</div>
+                <div class="brand-sub">KIT's College of Engineering (Autonomous) • Dept. of CSBS</div>
             </div>
         </div>
 
         <div class="nav-quick-actions">
-            <div class="ai-pill-btn"><span class="gemini-sparkle"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m12 3 1.9 5.8L20 11l-6.1 2.2L12 19l-1.9-5.8L4 11l6.1-2.2L12 3ZM19 14l1 2.5 2.5 1-2.5 1L19 21l-1-2.5-2.5-1 2.5-1L19 14Z"/></svg></span> Gemini Aura <span class="status-dot-active"></span></div>
-            <div class="ai-pill-btn"><span class="icon"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m13 2-9 12h7l-1 8 10-13h-7l1-7Z"/></svg></span> Market AI Alerts <span class="badge-num">2</span></div>
-            <button class="theme-toggle-btn" id="themeToggle" title="Toggle Theme"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20.5 15.5A8.5 8.5 0 0 1 8.5 3.5 8.5 8.5 0 1 0 20.5 15.5Z"/></svg></button>
+            <div class="ai-pill-btn" title="Google Gemini 2.0 Aura Agent Active">
+                <span class="gemini-sparkle">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m12 3 1.9 5.8L20 11l-6.1 2.2L12 19l-1.9-5.8L4 11l6.1-2.2L12 3ZM19 14l1 2.5 2.5 1-2.5 1L19 21l-1-2.5-2.5-1 2.5-1L19 14Z" />
+                    </svg>
+                </span>
+                <span>Gemini Aura</span>
+                <span class="status-dot-active" aria-label="Active"></span>
+            </div>
+
+            <a href="#rag-market-ai" class="ai-pill-btn" title="2 Pending AI Market Alerts">
+                <span class="icon">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m13 2-9 12h7l-1 8 10-13h-7l1-7Z" />
+                    </svg>
+                </span>
+                <span>Market AI Alerts</span>
+                <span class="badge-num">2</span>
+            </a>
+
+            <button class="theme-toggle-btn" id="themeToggle" title="Toggle Theme" aria-label="Toggle theme">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20.5 15.5A8.5 8.5 0 0 1 8.5 3.5 8.5 8.5 0 1 0 20.5 15.5Z" />
+                </svg>
+            </button>
+
             <div class="admin-user-profile">
-                <div class="user-avatar">AD</div>
+                <div class="user-avatar" id="navAvatarInitials">AD</div>
                 <div class="user-meta">
                     <span class="user-name" id="navAdminName">Admin</span>
                     <span class="user-role" id="navAdminRole">Placement Officer</span>
                 </div>
             </div>
-            <button class="logout-icon-btn" id="logoutBtn" title="Logout"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10 17l5-5-5-5M15 12H3M21 19V5a2 2 0 0 0-2-2h-5"/></svg></button>
+
+            <button class="logout-icon-btn" id="logoutBtn" title="Logout" aria-label="Logout">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                    <polyline points="16 17 21 12 16 7" />
+                    <line x1="21" y1="12" x2="9" y2="12" />
+                </svg>
+            </button>
         </div>
     </header>
 
     <!-- Sub Navigation Links Bar -->
-    <nav class="subnav-bar">
+    <nav class="subnav-bar" aria-label="Dashboard navigation">
         <a href="#command-center" class="subnav-item active">
-            <span class="icon"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M2 14h4M10 8h4M18 16h4"/></svg></span> Command Center
+            <span class="icon">
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="7" height="7"></rect>
+                    <rect x="14" y="3" width="7" height="7"></rect>
+                    <rect x="14" y="14" width="7" height="7"></rect>
+                    <rect x="3" y="14" width="7" height="7"></rect>
+                </svg>
+            </span>
+            <span>Command Center</span>
         </a>
+
         <a href="#rag-market-ai" class="subnav-item">
-            <span class="icon">âœ¨</span> RAG & Market AI <span class="nav-badge">2</span>
+            <span class="icon">
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m12 3 1.9 5.8L20 11l-6.1 2.2L12 19l-1.9-5.8L4 11l6.1-2.2L12 3ZM19 14l1 2.5 2.5 1-2.5 1L19 21l-1-2.5-2.5-1 2.5-1L19 14Z" />
+                </svg>
+            </span>
+            <span>RAG & Market AI</span>
+            <span class="nav-badge">2</span>
         </a>
+
         <a href="#campus-drives" class="subnav-item">
-            <span class="icon"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="7" width="18" height="14" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12h18M10 12v2h4v-2"/></svg></span> Campus Drives
+            <span class="icon">
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="7" width="18" height="14" rx="2" />
+                    <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12h18M10 12v2h4v-2" />
+                </svg>
+            </span>
+            <span>Campus Drives</span>
         </a>
 
-
-        <a href="/admin-exams" class="subnav-item" style="text-decoration: none; color: inherit;">
-  <span class="icon">ðŸ“–</span> Question Bank &amp; Tests <span class="blue-dot"></span>
-</a>
-
+        <a href="/admin-exams" class="subnav-item">
+            <span class="icon">
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z" />
+                    <path d="M6 6h10M6 10h10" />
+                </svg>
+            </span>
+            <span>Question Bank & Tests</span>
+            <span class="blue-dot"></span>
+        </a>
 
         <a href="/versant-admin" class="subnav-item">
-            <span class="icon"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3M8 22h8"/></svg></span> Versant Rounds <span class="blue-dot"></span>
+            <span class="icon">
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="9" y="2" width="6" height="12" rx="3" />
+                    <path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3M8 22h8" />
+                </svg>
+            </span>
+            <span>Versant Rounds</span>
+            <span class="blue-dot"></span>
         </a>
 
         <a href="/admin-interviews" class="subnav-item">
-            <span class="icon">HR</span> Mock Interviews <span class="blue-dot"></span>
+            <span class="icon">
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                    <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+                </svg>
+            </span>
+            <span>Mock Interviews</span>
+            <span class="blue-dot"></span>
         </a>
 
-
         <a href="#student-readiness" class="subnav-item">
-            <span class="icon"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="9" cy="8" r="3"/><path d="M3 20v-1a6 6 0 0 1 12 0v1M16 5.2a3 3 0 0 1 0 5.6M18 14a5 5 0 0 1 3 4.6V20"/></svg></span> Student Readiness
+            <span class="icon">
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="m4.93 4.93 4.24 4.24M14.83 14.83l4.24 4.24M14.83 9.17l4.24-4.24M4.93 19.07l4.24-4.24" />
+                </svg>
+            </span>
+            <span>Student Readiness</span>
         </a>
     </nav>
 
     <!-- Main Content Container -->
     <main class="dashboard-main-container">
-        
-        <!-- Hero Banner -->
+
+        <!-- Welcome Hero Section -->
         <section class="welcome-hero-card" id="command-center">
             <div class="hero-left">
-                <div class="hero-badge"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m12 3 1.9 5.8L20 11l-6.1 2.2L12 19l-1.9-5.8L4 11l6.1-2.2L12 3ZM19 14l1 2.5 2.5 1-2.5 1L19 21l-1-2.5-2.5-1 2.5-1L19 14Z"/></svg> CAMPUS PLACEMENT SEASON 2026-2027</div>
-                <h1 id="welcomeHeroHeading">Welcome back, Admin</h1>
-                <p>PlacementPro's AI Agents & RAG Knowledge Engine are synchronizing live market trends, orchestrating campus test drives, and analyzing student placement readiness for KIT CSBS.</p>
+                <div class="hero-season-tag">
+                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                    </svg>
+                    <span>CAMPUS PLACEMENT SEASON 2026–2027</span>
+                </div>
+                <h1 id="welcomeHeroHeading">Welcome back, Dr. S. Patil</h1>
+                <p>PlacementPro's AI Agents & RAG Knowledge Engine synchronize live recruiter benchmarks, orchestrate campus test drives, and analyze student placement readiness for KIT CSBS.</p>
             </div>
             <div class="hero-right">
-                <div class="readiness-benchmark-pill" id="student-readiness">
+                <div class="readiness-benchmark-pill" id="student-readiness" title="Batch Readiness Benchmark">
                     <span class="lbl">Batch Readiness</span>
-                    <span class="val"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m3 17 6-6 4 4 8-9M15 6h6v6"/></svg> 88.5% Benchmark</span>
+                    <span class="val">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
+                            <polyline points="16 7 22 7 22 13"></polyline>
+                        </svg>
+                        <span>88.5% Benchmark</span>
+                    </span>
                 </div>
-                <a class="btn btn-blue-primary" id="manageDrivesBtn" href="/admin-exams" style="text-decoration: none;">Manage Aptitude Tests</a>
-                <a class="btn btn-blue-primary" href="/admin-interviews" style="text-decoration: none;">Manage Interviews</a>
+                <div class="hero-action-buttons">
+                    <a class="btn btn-secondary" id="manageDrivesBtn" href="/admin-exams">Manage Aptitude Tests</a>
+                    <a class="btn btn-primary" href="/admin-interviews">Manage Interviews</a>
+                </div>
             </div>
         </section>
 
-        <!-- Clean 4-Stat Overview Grid (Proctoring Flags Chart Completely Removed) -->
-        <section class="stats-overview-grid">
+        <!-- Equal-Height 4-Statistic Cards -->
+        <section class="stats-overview-grid" aria-label="Placement KPI Overview">
             <div class="stat-card">
-                <div class="stat-header">
-                    <span class="title">Active Drives</span>
-                    <span class="stat-icon blue"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="7" width="18" height="14" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12h18M10 12v2h4v-2"/></svg></span>
+                <div class="stat-card-top">
+                    <span class="stat-card-label">Active Drives</span>
+                    <div class="stat-card-icon blue">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="7" width="18" height="14" rx="2" />
+                            <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12h18M10 12v2h4v-2" />
+                        </svg>
+                    </div>
                 </div>
-                <div class="stat-value">2</div>
-                <div class="stat-footer">470 Registrations Total</div>
+                <div class="stat-card-value">2</div>
+                <div class="stat-card-meta">470 Registrations Total</div>
             </div>
 
             <div class="stat-card">
-                <div class="stat-header">
-                    <span class="title">Market Alerts</span>
-                    <span class="stat-icon orange"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m13 2-9 12h7l-1 8 10-13h-7l1-7Z"/></svg></span>
+                <div class="stat-card-top">
+                    <span class="stat-card-label">Market Alerts</span>
+                    <div class="stat-card-icon orange">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m13 2-9 12h7l-1 8 10-13h-7l1-7Z" />
+                        </svg>
+                    </div>
                 </div>
-                <div class="stat-value text-orange">2</div>
-                <div class="stat-footer">Pending AI Approvals</div>
+                <div class="stat-card-value text-orange">2</div>
+                <div class="stat-card-meta">Pending AI Approvals</div>
             </div>
 
             <div class="stat-card">
-                <div class="stat-header">
-                    <span class="title">RAG Knowledge Chunks</span>
-                    <span class="stat-icon blue"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6M8 13h8M8 17h8"/></svg></span>
+                <div class="stat-card-top">
+                    <span class="stat-card-label">RAG Knowledge Chunks</span>
+                    <div class="stat-card-icon blue">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                            <path d="M14 2v6h6M8 13h8M8 17h8" />
+                        </svg>
+                    </div>
                 </div>
-                <div class="stat-value">4</div>
-                <div class="stat-footer blue-link">Vector Store Operational</div>
+                <div class="stat-card-value">4</div>
+                <div class="stat-card-meta highlight-blue">Vector Store Operational</div>
             </div>
 
             <div class="stat-card">
-                <div class="stat-header">
-                    <span class="title">Avg Readiness</span>
-                    <span class="stat-icon green"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m3 17 6-6 4 4 8-9M15 6h6v6"/></svg></span>
+                <div class="stat-card-top">
+                    <span class="stat-card-label">Avg Readiness</span>
+                    <div class="stat-card-icon green">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
+                            <polyline points="16 7 22 7 22 13"></polyline>
+                        </svg>
+                    </div>
                 </div>
-                <div class="stat-value text-green">88.5%</div>
-                <div class="stat-footer">KIT TY CSBS Batch</div>
+                <div class="stat-card-value text-green">88.5%</div>
+                <div class="stat-card-meta">KIT TY CSBS Batch</div>
             </div>
         </section>
- 
-</section>
 
-
-
-        <!-- Balanced 2-Column Workspace (Live Proctoring Supervisor Chart Removed) -->
+        <!-- Balanced 2-Column Workspace Grid -->
         <div class="workspace-grid">
-            
+
             <!-- Left Column: Primary Actions & Drives -->
             <div class="workspace-col-left">
-                
+
                 <!-- Faculty AI Ingestion Engine Card -->
                 <div class="card ai-ingestion-card" id="rag-market-ai">
-                    <div class="ingestion-floating-badge">
-                        <svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m12 3 1.9 5.8L20 11l-6.1 2.2L12 19l-1.9-5.8L4 11l6.1-2.2L12 3ZM19 14l1 2.5 2.5 1-2.5 1L19 21l-1-2.5-2.5-1 2.5-1L19 14Z"/></svg> Google Gemini 2.0 Flash Ingestion AI
-                    </div>
-                    <div class="card-header-with-select">
-                        <div class="ingestion-title-group">
-                            <span class="sparkle-circle-icon"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m12 3 1.9 5.8L20 11l-6.1 2.2L12 19l-1.9-5.8L4 11l6.1-2.2L12 3ZM19 14l1 2.5 2.5 1-2.5 1L19 21l-1-2.5-2.5-1 2.5-1L19 14Z"/></svg></span>
+                    <div class="card-section-header ingestion-header">
+                        <div class="sec-title-group">
+                            <div class="sec-icon-circle blue">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="m12 3 1.9 5.8L20 11l-6.1 2.2L12 19l-1.9-5.8L4 11l6.1-2.2L12 3ZM19 14l1 2.5 2.5 1-2.5 1L19 21l-1-2.5-2.5-1 2.5-1L19 14Z" />
+                                </svg>
+                            </div>
                             <div>
-                                <h2>Faculty AI Ingestion Engine <span class="gemini-tag">GEMINI POWERED</span></h2>
-                                <p>Paste unstructured syllabus notes or job postings â€” AI extracts questions & RAG chunks.</p>
+                                <div class="ingestion-title-row">
+                                    <h2>Faculty AI Ingestion Engine</h2>
+                                    <span class="gemini-tag">GEMINI 2.0 FLASH</span>
+                                </div>
+                                <p class="sec-subtext">Paste job descriptions or syllabus notes — AI extracts questions and vector chunks.</p>
                             </div>
                         </div>
-                        <select class="drive-select-dropdown" id="ingestionDriveSelect">
+                        <select class="drive-select-dropdown" id="ingestionDriveSelect" aria-label="Select target company drive">
                             <option value="tcs">TCS (Digital / Ninja)</option>
                             <option value="persistent">Persistent Systems (SPE)</option>
                             <option value="google">Google India (Software Engineer)</option>
@@ -252,20 +323,32 @@
                     </div>
 
                     <div class="prompt-box-wrapper">
-                        <textarea id="aiPromptInput" class="ai-textarea" rows="4" placeholder="Paste Job Description, Hiring Syllabus, or Exam Topics here (e.g. 'TCS 2026 has added 15% more questions on Data Structures and memory optimization...')"></textarea>
+                        <textarea id="aiPromptInput" class="ai-textarea" rows="4"
+                            placeholder="Paste Job Description, Hiring Syllabus, or Exam Topics here (e.g. 'TCS 2026 has added 15% more questions on Data Structures and memory optimization...')"></textarea>
                     </div>
 
                     <div class="preset-chips-row">
-                        <span class="presets-label">PRESETS:</span>
-                        <button class="preset-chip" onclick="applyPreset('tcs')">TCS 2026 Hiring Shift</button>
-                        <button class="preset-chip" onclick="applyPreset('persistent')">Persistent Systems Core CS</button>
-                        <button class="preset-chip" onclick="applyPreset('infosys')">Infosys DSE Syllabus</button>
+                        <span class="presets-label">QUICK PRESETS:</span>
+                        <div class="chips-container">
+                            <button type="button" class="preset-chip" onclick="applyPreset('tcs')">TCS 2026 Hiring Shift</button>
+                            <button type="button" class="preset-chip" onclick="applyPreset('persistent')">Persistent Core CS</button>
+                            <button type="button" class="preset-chip" onclick="applyPreset('infosys')">Infosys DSE Syllabus</button>
+                        </div>
                     </div>
 
                     <div class="ingestion-footer-row">
-                        <span class="auto-pop-text">Auto-populates: MCQ Questions â€¢ Coding Specs â€¢ Eligibility Rules â€¢ RAG Store</span>
-                        <button class="btn btn-purple-gradient" id="runIngestionBtn">
-                            <svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 15c-1.5 1.2-2 4-2 4s2.8-.5 4-2M9 13l-3-3c2-4 6-6 13-7-1 7-3 11-7 13l-3-3ZM9 13l-2 5 5-2M14 8h.01"/></svg> Run AI Ingestion
+                        <span class="auto-pop-text">
+                            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 14 14"></polyline>
+                            </svg>
+                            <span>Auto-populates: MCQs • Coding Specs • Eligibility Rules • RAG Store</span>
+                        </span>
+                        <button type="button" class="btn btn-primary" id="runIngestionBtn">
+                            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="m12 3 1.9 5.8L20 11l-6.1 2.2L12 19l-1.9-5.8L4 11l6.1-2.2L12 3ZM19 14l1 2.5 2.5 1-2.5 1L19 21l-1-2.5-2.5-1 2.5-1L19 14Z" />
+                            </svg>
+                            <span>Run AI Ingestion</span>
                         </button>
                     </div>
                 </div>
@@ -273,20 +356,30 @@
                 <!-- Active Campus Placement Drives -->
                 <div class="card active-drives-card" id="campus-drives">
                     <div class="card-section-header">
-                        <div class="sec-title"><span class="icon"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="7" width="18" height="14" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12h18M10 12v2h4v-2"/></svg></span> Active Campus Placement Drives</div>
-                        <a href="/admin-exams" class="sec-link">View All & Create &rarr;</a>
+                        <div class="sec-title">
+                            <span class="icon blue">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="7" width="18" height="14" rx="2" />
+                                    <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12h18M10 12v2h4v-2" />
+                                </svg>
+                            </span>
+                            <h3>Active Campus Placement Drives</h3>
+                        </div>
+                        <a href="/admin-exams" class="sec-link">View All &amp; Create &rarr;</a>
                     </div>
 
                     <div class="drives-list">
-                        <!-- Drive 1 -->
+                        <!-- Drive 1: TCS -->
                         <div class="drive-item-row">
-                            <div class="drive-icon-box"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M9 7h1M14 7h1M9 11h1M14 11h1M9 15h1M14 15h1M10 21v-3h4v3"/></svg></div>
+                            <div class="drive-icon-box blue">
+                                <span>TCS</span>
+                            </div>
                             <div class="drive-details">
                                 <div class="drive-title-line">
                                     <span class="company-name">Tata Consultancy Services (TCS)</span>
                                     <span class="status-tag active">ACTIVE</span>
                                 </div>
-                                <div class="drive-sub">TCS Digital / Ninja Campus Drive 2026 â€¢ 7.5 LPA (Avg)</div>
+                                <div class="drive-sub">TCS Digital / Ninja Campus Drive 2026 • 7.5 LPA (Avg)</div>
                                 <div class="drive-eligibility">Eligibility: Min CGPA 6.5 | CSBS, CSE, IT, ENTC, Electrical</div>
                             </div>
                             <div class="drive-stats-right">
@@ -295,16 +388,18 @@
                             </div>
                         </div>
 
-                        <!-- Drive 2 -->
+                        <!-- Drive 2: Persistent -->
                         <div class="drive-item-row">
-                            <div class="drive-icon-box orange"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m13 2-9 12h7l-1 8 10-13h-7l1-7Z"/></svg></div>
+                            <div class="drive-icon-box orange">
+                                <span>PS</span>
+                            </div>
                             <div class="drive-details">
                                 <div class="drive-title-line">
                                     <span class="company-name">Persistent Systems</span>
                                     <span class="status-tag active">ACTIVE</span>
                                 </div>
-                                <div class="drive-sub">Software Product Engineer (SPE) â€¢ 8.5 LPA</div>
-                                <div class="drive-eligibility">Eligibility: Min CGPA 7 | CSBS, CSE, IT</div>
+                                <div class="drive-sub">Software Product Engineer (SPE) • 8.5 LPA</div>
+                                <div class="drive-eligibility">Eligibility: Min CGPA 7.0 | CSBS, CSE, IT</div>
                             </div>
                             <div class="drive-stats-right">
                                 <span class="reg-count">164 <small>registered</small></span>
@@ -312,15 +407,17 @@
                             </div>
                         </div>
 
-                        <!-- Drive 3 -->
+                        <!-- Drive 3: Google -->
                         <div class="drive-item-row">
-                            <div class="drive-icon-box blue"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></svg></div>
+                            <div class="drive-icon-box indigo">
+                                <span>G</span>
+                            </div>
                             <div class="drive-details">
                                 <div class="drive-title-line">
                                     <span class="company-name">Google India</span>
                                     <span class="status-tag draft">DRAFT</span>
                                 </div>
-                                <div class="drive-sub">Software Engineer - Early Career 2026 â€¢ 32.0 LPA</div>
+                                <div class="drive-sub">Software Engineer - Early Career 2026 • 32.0 LPA</div>
                                 <div class="drive-eligibility">Eligibility: Min CGPA 8.5 | CSBS, CSE, IT</div>
                             </div>
                             <div class="drive-stats-right">
@@ -333,15 +430,22 @@
 
             </div>
 
-            <!-- Right Column: Market AI Intelligence -->
+            <!-- Right Column: AI Market Trend Alerts -->
             <div class="workspace-col-right">
-                
+
                 <div class="card market-alerts-card">
                     <div class="card-section-header">
-                        <div class="sec-title"><span class="icon orange"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m12 3 1.9 5.8L20 11l-6.1 2.2L12 19l-1.9-5.8L4 11l6.1-2.2L12 3ZM19 14l1 2.5 2.5 1-2.5 1L19 21l-1-2.5-2.5-1 2.5-1L19 14Z"/></svg></span> AI Market Trend Alerts</div>
+                        <div class="sec-title">
+                            <span class="icon orange">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="m12 3 1.9 5.8L20 11l-6.1 2.2L12 19l-1.9-5.8L4 11l6.1-2.2L12 3ZM19 14l1 2.5 2.5 1-2.5 1L19 21l-1-2.5-2.5-1 2.5-1L19 14Z" />
+                                </svg>
+                            </span>
+                            <h3>AI Market Trend Alerts</h3>
+                        </div>
                         <span class="approval-badge">1-Click Approvals</span>
                     </div>
-                    <p class="sec-subtext">AI agents periodically scan recruiter patterns and propose instant updates to syllabus, questions, or evaluation rubrics.</p>
+                    <p class="sec-subtext">AI agents monitor live recruiter hiring benchmarks and propose instant syllabus or test rubric updates.</p>
 
                     <div class="alerts-wrapper">
                         <!-- Alert 1 -->
@@ -351,10 +455,15 @@
                                 <span class="conf-badge">97% Confidence</span>
                             </div>
                             <div class="alert-headline">Auto-Upgrade TCS Digital Coding Pool to Include TAC Verification</div>
-                            <p class="alert-desc">TCS Digital 2026 exam benchmarks demonstrate a 25% higher candidate rejection rate for unoptimized intermediate memory code. Recruiter rubric prioritizes TAC...</p>
+                            <p class="alert-desc">TCS Digital 2026 exam benchmarks demonstrate a 25% higher candidate rejection rate for unoptimized intermediate memory code. Recruiter rubric prioritizes TAC verification.</p>
                             <div class="alert-action-buttons">
-                                <button class="btn btn-light-sm" onclick="rejectAlert('alert-1')">Reject</button>
-                                <button class="btn btn-green-sm" onclick="approveAlert('alert-1')"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m5 12 4 4L19 6"/></svg> Approve & Sync</button>
+                                <button type="button" class="btn btn-ghost-sm" onclick="rejectAlert('alert-1')">Reject</button>
+                                <button type="button" class="btn btn-green-sm" onclick="approveAlert('alert-1')">
+                                    <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                    <span>Approve &amp; Sync</span>
+                                </button>
                             </div>
                         </div>
 
@@ -367,14 +476,19 @@
                             <div class="alert-headline">Stricter Memory & System Architecture Thresholds</div>
                             <p class="alert-desc">Persistent remote screening drives have updated their evaluation standards, prioritizing multi-threaded logic and optimized SQL joins.</p>
                             <div class="alert-action-buttons">
-                                <button class="btn btn-light-sm" onclick="rejectAlert('alert-2')">Reject</button>
-                                <button class="btn btn-green-sm" onclick="approveAlert('alert-2')"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m5 12 4 4L19 6"/></svg> Approve & Sync</button>
+                                <button type="button" class="btn btn-ghost-sm" onclick="rejectAlert('alert-2')">Reject</button>
+                                <button type="button" class="btn btn-green-sm" onclick="approveAlert('alert-2')">
+                                    <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                    <span>Approve &amp; Sync</span>
+                                </button>
                             </div>
                         </div>
                     </div>
 
-                    <button class="btn btn-outline-full mt-16" id="openMarketStoreBtn">
-                        Open Full Market Intelligence & RAG Store &rarr;
+                    <button type="button" class="btn btn-secondary-outline w-full mt-16" id="openMarketStoreBtn">
+                        Open Full Market Intelligence &amp; RAG Store &rarr;
                     </button>
                 </div>
 
@@ -385,13 +499,14 @@
     <!-- Footer Bar -->
     <footer class="admin-footer">
         <div class="footer-left">
-            <strong>PlacementPro</strong> â€¢ Department of Computer Science & Business Systems (CSBS)
+            <strong>PlacementPro</strong> • Department of Computer Science & Business Systems (CSBS)
         </div>
         <div class="footer-right">
-            Powered by <strong class="brand-blue-text">Google Gemini AI Agents</strong> & RAG Knowledge Engine
+            Powered by <strong class="brand-blue-text">Google Gemini AI Agents</strong> &amp; RAG Knowledge Engine
         </div>
     </footer>
 
     <script src="/js/admindash.js"></script>
 </body>
+
 </html>

@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
+  const urlToken = new URLSearchParams(window.location.search).get('token');
+  if (urlToken) localStorage.setItem('token', urlToken);
   const token = localStorage.getItem('token');
   if (!token) return;
 
@@ -48,45 +50,25 @@ document.addEventListener('DOMContentLoaded', () => {
     requestAnimationFrame(renderFrame);
   };
 
-  const formatScore = (score) => `${Number(score || 0).toFixed(1).replace(/\.0$/, '')}%`;
-
-  const renderList = (element, rows, emptyText, scoreLabel) => {
-    if (!element) return;
-    element.replaceChildren();
-    if (!rows.length) {
-      const empty = document.createElement('p');
-      empty.className = 'progress-empty';
-      empty.textContent = emptyText;
-      element.append(empty);
-      return;
-    }
-
-    rows.forEach((row) => {
-      const item = document.createElement('div');
-      item.className = 'progress-row';
-      const name = document.createElement('span');
-      name.textContent = row.name;
-      const score = document.createElement('strong');
-      score.textContent = formatScore(row.score);
-      item.append(name, score);
-      if (scoreLabel) item.setAttribute('aria-label', `${row.name}: ${formatScore(row.score)}`);
-      element.append(item);
-    });
-  };
-
   const render = (summary) => {
     if (!summary) return;
-    animateValue(document.getElementById('progressLatestScore'), summary.score.latest, '%');
-    animateValue(document.getElementById('progressBestScore'), summary.score.best, '%');
-    animateValue(document.getElementById('progressAverageScore'), summary.score.average, '%');
-    animateValue(document.getElementById('progressSolvedModules'), summary.modules.completed);
+    if (summary.score) {
+      animateValue(document.getElementById('progressLatestScore'), summary.score.latest, '%');
+      animateValue(document.getElementById('progressBestScore'), summary.score.best, '%');
+      animateValue(document.getElementById('progressAverageScore'), summary.score.average, '%');
+    }
+    if (summary.modules) {
+      animateValue(document.getElementById('progressSolvedModules'), summary.modules.completed);
+    }
 
     const latestTrend = document.getElementById('progressLatestScore')?.parentElement.querySelector('.stat-trend');
     const moduleTrend = document.getElementById('progressSolvedModules')?.parentElement.querySelector('.stat-trend');
     const bestTrend = document.getElementById('progressBestScore')?.parentElement.querySelector('.stat-trend');
     const averageTrend = document.getElementById('progressAverageScore')?.parentElement.querySelector('.stat-trend');
     setTrendLabel(latestTrend, 'Most recent assessment');
-    setTrendLabel(moduleTrend, `${summary.modules.total} available modules`);
+    if (summary.modules?.total !== undefined) {
+      setTrendLabel(moduleTrend, `${summary.modules.total} available modules`);
+    }
     setTrendLabel(bestTrend, 'Highest completed assessment score');
     setTrendLabel(averageTrend, 'Mean of completed assessment scores');
 
@@ -102,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const week = document.getElementById('preparationWeek');
       if (week) {
         week.replaceChildren();
-        activity.days.forEach((day) => {
+        activity.days?.forEach((day) => {
           const date = new Date(`${day.date}T12:00:00Z`);
           const item = document.createElement('div');
           item.className = `preparation-day${day.active ? ' is-active' : ''}${day.date === activity.today ? ' is-today' : ''}`;
@@ -116,27 +98,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       }
     }
-
-    const total = document.getElementById('progressModuleTotal');
-    if (total) total.textContent = `of ${summary.modules.total} available`;
-    const moduleBadge = document.getElementById('progressModuleBadge');
-    if (moduleBadge) moduleBadge.textContent = `${summary.modules.completed} modules solved`;
-    const percent = Number(summary.modules.percentage || 0);
-    const percentText = document.getElementById('progressModulePercent');
-    if (percentText) percentText.textContent = `${Math.round(percent)}%`;
-    const bar = document.getElementById('progressModuleBar');
-    if (bar) bar.style.width = `${percent}%`;
-
-    const latest = summary.modules.items[0];
-    const latestName = document.getElementById('progressLatestModuleName');
-    const latestMeta = document.getElementById('progressLatestModuleMeta');
-    if (latestName) latestName.textContent = latest ? latest.name : 'No modules solved yet';
-    if (latestMeta) latestMeta.textContent = latest
-      ? `Latest score: ${formatScore(latest.score)}`
-      : 'Complete an assessment to record your first score.';
-
-    renderList(document.getElementById('solvedModulesList'), summary.modules.items, 'No solved modules yet.', true);
-    renderList(document.getElementById('recentScoresList'), summary.recentScores, 'Scores will appear after you submit an assessment.', true);
   };
 
   const loadSummary = async () => {

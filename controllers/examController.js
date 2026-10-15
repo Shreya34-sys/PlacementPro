@@ -235,9 +235,25 @@ exports.open = async (req, res, next) => {
   } catch (error) { next(error); }
 };
 exports.remove = async (req, res, next) => { try { const removed = await Exam.remove(req.params.examId, req.user.id); if (!removed) return res.status(404).json({ message: 'Exam not found.' }); res.sendStatus(204); } catch (error) { next(error); } };
+
 exports.start = async (req, res, next) => {
-  try { res.status(201).json(await Attempt.start(req.params.examId, req.user.id)); } catch (error) { next(error); }
+  try {
+    const attempt = await Attempt.start(req.params.examId, req.user.id);
+    const io = req.app.get('io');
+    if (io) {
+      io.to(`admin:exam:${req.params.examId}`).emit('proctor:student-joined', {
+        attemptId: attempt.id,
+        examId: req.params.examId,
+        studentId: req.user.id,
+        fullName: req.user.fullName || 'Student',
+        warningsCount: 0,
+        isOnline: true
+      });
+    }
+    res.status(201).json(attempt);
+  } catch (error) { next(error); }
 };
+
 exports.answer = async (req, res, next) => {
   try {
     await Attempt.saveAnswerForUser(
@@ -251,15 +267,25 @@ exports.answer = async (req, res, next) => {
     res.sendStatus(204);
   } catch (error) { next(error); }
 };
+
 exports.submit = async (req, res, next) => {
   try {
     const result = await Attempt.submitForUser(req.params.attemptId, req.user.id, Boolean(req.body.forced));
     if (result && result.state !== 'started') {
       await progressService.emitProgress(req.app.get('io'), req.user.id);
+      const io = req.app.get('io');
+      if (io && result.exam_id) {
+        io.to(`admin:exam:${result.exam_id}`).emit('proctor:student-submitted', {
+          attemptId: req.params.attemptId,
+          examId: result.exam_id,
+          studentId: req.user.id
+        });
+      }
     }
     res.json(result);
   } catch (error) { next(error); }
 };
+
 exports.result = async (req, res, next) => {
   try {
     const [summary] = await db.execute(`SELECT a.score,a.state,e.title, COUNT(q.id) question_count,

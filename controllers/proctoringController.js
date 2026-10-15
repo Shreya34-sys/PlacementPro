@@ -29,7 +29,16 @@ exports.activeAttempts = async (req, res, next) => {
       ORDER BY a.warnings_count DESC, a.started_at DESC
     `, [req.params.examId]);
 
-    res.json(rows);
+    const isOnline = req.app.get('isAttemptOnline') || (() => false);
+    const getCameraStatus = req.app.get('getAttemptCameraStatus') || (() => 'unknown');
+
+    const enriched = rows.map((row) => ({
+      ...row,
+      isOnline: isOnline(row.attempt_id),
+      cameraStatus: getCameraStatus(row.attempt_id)
+    }));
+
+    res.json(enriched);
   } catch (error) {
     next(error);
   }
@@ -148,6 +157,12 @@ exports.flag = async (req, res, next) => {
           'exam:auto-submitted',
           result
         );
+        io.to(`admin:exam:${attempt.exam_id}`).emit('proctor:student-submitted', {
+          attemptId: attempt.id,
+          examId: attempt.exam_id,
+          studentId: attempt.student_id,
+          reason: 'auto_submitted_max_warnings'
+        });
       }
     }
 

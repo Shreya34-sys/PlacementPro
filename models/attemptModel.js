@@ -4,12 +4,37 @@ const preparationActivity = require('../services/preparationActivityService');
 
 class Attempt {
     static async start(examId, studentId) {
+        const [examRows] = await db.execute(
+            'SELECT id, status, starts_at, ends_at FROM exams WHERE id = ? AND deleted_at IS NULL',
+            [examId]
+        );
+
+        if (!examRows[0]) {
+            const error = new Error('Exam not found.');
+            error.status = 404;
+            throw error;
+        }
+
+        if (examRows[0].status !== 'published') {
+            const error = new Error('This exam is not open.');
+            error.status = 403;
+            throw error;
+        }
+
         const [existingRows] = await db.execute(
             'SELECT id, state FROM exam_attempts WHERE exam_id = ? AND student_id = ?',
             [examId, studentId]
         );
 
         if (existingRows.length > 0) {
+            if (existingRows[0].state === 'started') {
+                return {
+                    id: existingRows[0].id,
+                    exam_id: examId,
+                    student_id: studentId,
+                    state: 'started'
+                };
+            }
             const error = new Error('You have already attempted this assessment.');
             error.status = 409;
             throw error;
@@ -161,7 +186,6 @@ class Attempt {
         }
         return Attempt.submit(attemptId, forced);
     }
-
 }
 
 module.exports = Attempt;

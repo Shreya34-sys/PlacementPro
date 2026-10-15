@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/interviews.css?v=20261012-required-camera">
+  <link rel="stylesheet" href="/css/interviews.css?v=20261015-ai-hr-interview">
 </head>
 <body class="interview-room-page">
   <main class="interview-shell interview-room-shell">
@@ -59,85 +59,167 @@
 
     <section id="roomPanel" class="room-layout hidden" aria-label="Interview questions">
       <div class="card question-card">
+        <!-- AI HR Interviewer Persona & Voice Banner -->
+        <div class="ai-interviewer-card" id="aiInterviewerCard">
+          <div class="ai-interviewer-header">
+            <div class="ai-profile">
+              <div class="ai-avatar-wrapper" id="aiAvatar">
+                <svg class="ai-avatar-icon" viewBox="0 0 24 24"><path d="M12 2a5 5 0 0 1 5 5v3a5 5 0 0 1-10 0V7a5 5 0 0 1 5-5zm0 14c4.418 0 8 2.239 8 5v1H4v-1c0-2.761 3.582-5 8-5z"/></svg>
+              </div>
+              <div class="ai-info">
+                <h3>Sarah Jenkins</h3>
+                <p>Senior AI HR Recruiter · Placement Intelligence</p>
+              </div>
+            </div>
+            <div class="ai-speech-waves" id="aiSpeechWaves" aria-label="Interviewer voice activity">
+              <span class="ai-wave-bar"></span>
+              <span class="ai-wave-bar"></span>
+              <span class="ai-wave-bar"></span>
+              <span class="ai-wave-bar"></span>
+              <span class="ai-wave-bar"></span>
+            </div>
+          </div>
+          <div class="ai-live-statement" id="aiSpeechStatement">
+            <span class="ai-ack" id="aiAckText">"Welcome! Let's begin your interview."</span>
+            <span class="ai-question" id="aiSpokenQuestionText">Tell me about yourself, your educational journey, and what drives your passion in this field.</span>
+          </div>
+          <div class="ai-controls-bar">
+            <div class="toolbar">
+              <button class="ai-btn-sm" id="repeatQuestionBtn" type="button" title="Repeat question aloud"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/></svg>Repeat Question</button>
+              <button class="ai-btn-sm" id="skipQuestionBtn" type="button" title="Skip to next topic"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg>Skip Question</button>
+              <button class="ai-btn-sm" id="voiceToggleBtn" type="button" title="Mute/Unmute AI Voice"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg><span id="voiceToggleLabel">AI Voice: On</span></button>
+            </div>
+            <span class="pill" id="aiTurnStatus">Interviewer Speaking</span>
+          </div>
+        </div>
+
         <div class="item-head">
           <div class="question-heading">
             <span class="pill" id="questionMeta">Question 1</span>
-            <h2 id="questionText">Loading question...</h2>
-            <p class="subtitle" id="questionTopic"></p>
+            <h2 id="questionText">Tell me about yourself, your educational journey, and what drives your passion in this field.</h2>
+            <p class="subtitle" id="questionTopic">HR / Self-Introduction / easy</p>
           </div>
           <div class="timer-grid" aria-label="Question timers">
-            <div class="timer"><span class="timer-label">Preparation</span><strong id="prepTimer">00:00</strong></div>
-            <div class="timer"><span class="timer-label">Answer time</span><strong id="answerTimer">00:00</strong></div>
+            <div class="timer"><span class="timer-label">Session time</span><strong id="sessionTimer">00:00</strong></div>
+            <div class="timer"><span class="timer-label">Answer clock</span><strong id="answerTimer">03:00</strong></div>
+            <div class="timer hidden"><span class="timer-label">Preparation</span><strong id="prepTimer">00:00</strong></div>
           </div>
         </div>
-        <div class="progress-wrap"><div class="progress" role="progressbar" aria-label="Interview question progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="progressBar"></span></div><span id="progressLabel" class="progress-label">Question 1 of 1</span></div>
+        <div class="progress-wrap"><div class="progress" role="progressbar" aria-label="Interview question progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="progressBar"></span></div><span id="progressLabel" class="progress-label">Stage 1 of 7: Self-Introduction</span></div>
 
+        <!-- Student Voice Answering & Voice Activity Detection -->
         <section class="answer-label voice-answer-panel" aria-describedby="answerSaveStatus">
           <div class="item-head">
             <div>
-              <p class="eyebrow">Voice answer</p>
-              <h3>Automatic microphone recording</h3>
-              <p class="subtitle">Recording starts after Start Interview, listens for speech, and saves when your answer ends. Silence and background noise are never treated as cheating.</p>
+              <p class="eyebrow">Natural Voice Answer</p>
+              <h3>Speak into your microphone</h3>
+              <p class="subtitle">Answer naturally. The AI uses voice activity detection to automatically detect when you finish speaking, or click "Done Speaking" below.</p>
             </div>
-            <span id="voiceStatus" class="pill orange">Mic waiting</span>
+            <div class="row-actions">
+              <span id="recordingIndicator" class="pill red hidden">● REC 00:00</span>
+              <span id="voiceStatus" class="pill orange">Mic waiting</span>
+            </div>
           </div>
           <div class="voice-meter" aria-label="Microphone activity">
             <span id="voiceLevel"></span>
           </div>
           <div class="meta voice-meta">
             <span id="recordingTimer">00:00</span>
-            <span id="silenceStatus">Silence threshold: 2.5s</span>
-            <span id="micErrorText">Microphone permission will be requested after start.</span>
+            <span id="silenceStatus">Silence threshold: 2.2s</span>
+            <span id="micErrorText">Microphone permission active.</span>
           </div>
+
+          <!-- Live Spoken Transcript Preview -->
+          <div id="liveTranscriptBox" class="vad-indicator-box">
+            <div class="vad-header">
+              <strong style="font-size:13px; color:#1e293b;">Live Speech Recognition:</strong>
+              <span class="silence-countdown" id="silenceCountdownText">Listening...</span>
+            </div>
+            <div id="liveTranscriptText" style="font-size:14px; min-height:38px; color:#334155; font-style:italic; line-height:1.5;">
+              Waiting for you to begin speaking...
+            </div>
+          </div>
+
           <textarea id="answerText" class="hidden" aria-hidden="true" tabindex="-1"></textarea>
         </section>
+
         <div class="answer-tools">
-          <div class="toolbar">
-            <button class="btn" id="saveAnswerBtn" type="button">Save voice answer</button>
+          <div class="toolbar" style="justify-content:space-between; width:100%;">
+            <div class="toolbar">
+              <button class="btn primary" id="doneSpeakingBtn" type="button" style="background:#059669; border-color:#059669;">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+                Done Speaking (Process Answer)
+              </button>
+              <button class="btn" id="saveAnswerBtn" type="button">Save Answer Audio</button>
+              <button class="btn" id="toggleTextInputBtn" type="button">Type Answer Instead</button>
+            </div>
+            <button class="btn danger" id="submitBtn" type="button">End Interview &amp; Get Feedback</button>
           </div>
-          <p id="answerSaveStatus" class="save-status" role="status" aria-live="polite">Your voice answer is not recorded yet.</p>
+          <p id="answerSaveStatus" class="save-status" role="status" aria-live="polite">Your spoken answer will be processed automatically.</p>
           <audio id="recordingPlayback" class="recording-playback hidden" controls aria-label="Saved answer recording"></audio>
         </div>
+
+        <!-- Live Conversation Transcript Stream -->
+        <section class="conversation-stream-panel" aria-label="Conversation History">
+          <div class="conversation-stream-header">
+            <div>
+              <p class="eyebrow">Real-Time Interview Log</p>
+              <h4 style="margin:0; font-size:15px;">Conversation Transcript</h4>
+            </div>
+            <span class="section-note" id="transcriptCountBadge">0 exchanges</span>
+          </div>
+          <div class="conversation-stream" id="conversationStream" role="log" aria-live="polite">
+            <!-- Appended dynamically -->
+          </div>
+        </section>
+
         <div class="question-footer">
           <div class="toolbar question-nav">
             <button class="btn" id="prevBtn" type="button">Previous question</button>
             <button class="btn" id="nextBtn" type="button">Next question</button>
           </div>
-          <button class="btn primary" id="submitBtn" type="button">Submit interview</button>
         </div>
       </div>
 
       <aside class="room-sidebar">
         <div class="card camera-card">
           <div class="item-head">
-            <div><p class="eyebrow">Required camera</p><h2>Camera &amp; microphone</h2></div>
+            <div><p class="eyebrow">Proctoring &amp; Audio</p><h2>Camera &amp; microphone</h2></div>
             <div class="media-states" aria-label="Device status">
-              <span class="camera-indicator" id="cameraStatus">Camera not ready</span>
-              <span class="camera-indicator" id="micStatus">Mic off</span>
+              <span class="camera-indicator" id="cameraStatus">Camera active</span>
+              <span class="camera-indicator" id="micStatus">Mic active</span>
             </div>
           </div>
-          <div class="video-box"><video id="cameraPreview" autoplay muted playsinline></video><span id="cameraFallback">Waiting for required camera</span></div>
+          <div class="video-box"><video id="cameraPreview" autoplay muted playsinline></video><span id="cameraFallback">Waiting for camera</span></div>
         </div>
         <div class="card progress-card">
-          <p class="eyebrow">Your progress</p><h2>Questions</h2>
-          <p class="subtitle">Select a question to review or continue.</p>
+          <p class="eyebrow">Interview Stages</p><h2>Progress</h2>
+          <p class="subtitle">Complete all core HR assessment competencies.</p>
           <div id="palette" class="palette" aria-label="Question navigation"></div>
         </div>
         <div class="card monitoring-card">
-          <p class="eyebrow">For context</p><h2>Session notes</h2>
-          <span id="monitoringStatus" class="pill">Notes begin after start</span>
-          <div id="eventLog" class="list"><p class="monitoring-empty">No session notes yet.</p></div>
+          <p class="eyebrow">Integrity Context</p><h2>Session notes</h2>
+          <span id="monitoringStatus" class="pill">Monitoring active</span>
+          <div id="eventLog" class="list"><p class="monitoring-empty">No integrity warnings recorded.</p></div>
         </div>
       </aside>
     </section>
 
+    <!-- Comprehensive End-of-Interview AI Feedback Modal/Panel -->
     <section id="completionPanel" class="card completion-card hidden" role="status" aria-live="polite">
       <span class="completion-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg></span>
-      <p class="eyebrow">Interview submitted</p>
-      <h2>Thank you for completing your interview.</h2>
-      <p id="completionMessage" class="subtitle">Your answers have been submitted for faculty review.</p>
-      <div class="completion-stats" id="completionStats"></div>
-      <a class="btn primary" href="/pages/interviews.html">Back to interviews</a>
+      <p class="eyebrow">Interview Completed &amp; Evaluated</p>
+      <h2>Executive AI HR Interview Report</h2>
+      <p id="completionMessage" class="subtitle">Your interview has been thoroughly evaluated across all core placement dimensions.</p>
+
+      <div id="feedbackReportContainer" class="feedback-report-wrapper">
+        <!-- Dynamically rendered feedback cards -->
+      </div>
+
+      <div class="toolbar" style="margin-top:24px; justify-content:center;">
+        <button class="btn primary" id="retakeInterviewBtn" type="button">Practice Again</button>
+        <a class="btn" href="/pages/interviews.html">Back to Interview Studio</a>
+      </div>
     </section>
   </main>
   <script src="/socket.io/socket.io.js"></script>

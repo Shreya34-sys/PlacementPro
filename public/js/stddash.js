@@ -117,6 +117,8 @@ function handleStudentLogout() {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
+  const urlToken = new URLSearchParams(window.location.search).get('token');
+  if (urlToken) localStorage.setItem('token', urlToken);
   const token = localStorage.getItem('token');
   if (!token) return window.location.replace('/login');
 
