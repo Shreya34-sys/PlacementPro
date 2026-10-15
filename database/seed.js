@@ -44,6 +44,14 @@ const companies = [
     resources: ['DSA','System Design','Operating Systems','Projects']
   },
   {
+    name: 'Amazon',
+    short_name: 'Amazon',
+    overview: 'Amazon is a global technology leader focusing on e-commerce, cloud computing (AWS), digital streaming, and artificial intelligence.',
+    eligibility_rules: { minCgpa: 7.0, maxBacklogs: 0, branches: ['CSE','IT','CSBS','ECE'] },
+    rounds: ['Online Assessment','Technical Coding','System Design & Problem Solving','Leadership Principles & Bar Raiser'],
+    resources: ['Data Structures & Algorithms','Leadership Principles','OOP & Java','System Design']
+  },
+  {
     name: 'Microsoft',
     short_name: 'Microsoft',
     overview: 'Microsoft looks for developers who show strong fundamentals, product thinking, communication, and engineering ownership.',

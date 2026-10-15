@@ -202,3 +202,17 @@ document.addEventListener('DOMContentLoaded', () => {
     try { await fetch('/api/admin/ingest', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }, body: JSON.stringify({ prompt, drive: document.getElementById('ingestionDriveSelect')?.value }) }); alert('AI ingestion completed.'); } catch { alert('Unable to run AI ingestion.'); }
   });
 });
+document.addEventListener('DOMContentLoaded', () => {
+  const links = [...document.querySelectorAll('.subnav-bar a.subnav-item')];
+  const activate = () => {
+    const target = window.location.hash || '#command-center';
+    links.forEach(link => {
+      const active = link.getAttribute('href') === target;
+      link.classList.toggle('active', active);
+      if (active) link.setAttribute('aria-current', 'location');
+      else link.removeAttribute('aria-current');
+    });
+  };
+  activate();
+  window.addEventListener('hashchange', activate);
+});

@@ -26,14 +26,49 @@ const errorsPanel = document.getElementById('errorsPanel');
 const target = document.getElementById('target');
 const examId = document.getElementById('examId');
 
+function initDefaultDates() {
+  const startsAtInput = document.getElementById('startsAt');
+  const endsAtInput = document.getElementById('endsAt');
+  if (startsAtInput && !startsAtInput.value) {
+    const now = new Date();
+    now.setSeconds(0, 0);
+    const tzOffset = now.getTimezoneOffset() * 60000;
+    const localNow = new Date(now.getTime() - tzOffset);
+    startsAtInput.value = localNow.toISOString().slice(0, 16);
+  }
+  if (endsAtInput && !endsAtInput.value) {
+    const end = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+    end.setSeconds(0, 0);
+    const tzOffset = end.getTimezoneOffset() * 60000;
+    const localEnd = new Date(end.getTime() - tzOffset);
+    endsAtInput.value = localEnd.toISOString().slice(0, 16);
+  }
+}
+
+function prefillTitleFromFile(file) {
+  const titleInput = document.getElementById('title');
+  if (file && titleInput && !titleInput.value.trim()) {
+    const baseName = file.name.replace(/\.[^/.]+$/, '');
+    const cleanTitle = baseName.replace(/[_-]+/g, ' ').replace(/\s+/g, ' ').trim();
+    if (cleanTitle) {
+      titleInput.value = cleanTitle;
+    }
+  }
+}
+
 excelFile.addEventListener('change', () => {
-  fileName.textContent = excelFile.files[0] ? excelFile.files[0].name : 'No file selected';
+  const file = excelFile.files[0];
+  fileName.textContent = file ? file.name : 'No file selected';
   state.importFingerprint = '';
   state.questions = [];
   state.errors = [];
   state.fileErrors = [];
   state.emptyRowsSkipped = 0;
   state.previewStats = null;
+  if (file) {
+    prefillTitleFromFile(file);
+    initDefaultDates();
+  }
   renderSummary();
   renderErrors();
   renderPreview();
@@ -96,6 +131,10 @@ uploadForm.addEventListener('submit', async event => {
     if (data.negativeMarking !== null && data.negativeMarking !== undefined) {
       document.getElementById('negativeMarking').value = data.negativeMarking;
     }
+    if (excelFile.files[0]) {
+      prefillTitleFromFile(excelFile.files[0]);
+    }
+    initDefaultDates();
     renderSummary(data.stats);
     renderErrors();
     renderPreview();
@@ -146,6 +185,7 @@ saveButton.addEventListener('click', async () => {
     ];
     renderErrors();
     renderSummary();
+    if (errorsPanel) errorsPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     return;
   }
   state.saving = true;
@@ -164,6 +204,9 @@ saveButton.addEventListener('click', async () => {
     if (!response.ok) {
       state.errors = data.errors || [];
       renderMetadataErrors(data.metadataErrors || []);
+      if (!state.errors.length && data.message) {
+        state.errors.push({ row: 1, field: 'Import Error', message: data.message });
+      }
       renderErrors();
       renderSummary(data.stats);
       renderPreview();
@@ -171,6 +214,7 @@ saveButton.addEventListener('click', async () => {
         state.errors.push(...data.fingerprintErrors.map(message => ({ row: 1, field: 'File', message })));
         renderErrors();
       }
+      if (errorsPanel) errorsPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       return;
     }
     if (!data.duplicate && (!Number.isFinite(Number(data.importedCount)) || Number(data.importedCount) < 1)) {
@@ -178,8 +222,9 @@ saveButton.addEventListener('click', async () => {
     }
     summaryPanel.classList.remove('hidden');
     summaryPanel.textContent = data.duplicate
-      ? 'This file was already imported. No questions were added.'
-      : `${data.importedCount} questions imported; ${data.skippedRows || 0} rows skipped; ${(data.errors || []).length} validation issue${(data.errors || []).length === 1 ? '' : 's'}.`;
+      ? 'This file was already imported into this question set. No questions were added.'
+      : `Success! ${data.importedCount} questions successfully imported. Redirecting to Question Bank...`;
+    summaryPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     state.errors = data.errors || [];
     state.importFingerprint = '';
     renderErrors();
@@ -188,6 +233,7 @@ saveButton.addEventListener('click', async () => {
   } catch (error) {
     state.errors = [{ row: 1, field: 'Save', message: error.message || 'Unable to save imported questions.' }];
     renderErrors();
+    if (errorsPanel) errorsPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   } finally {
     state.saving = false;
     saveButton.textContent = 'Save Imported Questions';
@@ -236,13 +282,18 @@ function validateSaveMetadata() {
 
   const errors = [];
   const title = document.getElementById('title').value.trim();
-  const description = document.getElementById('description').value.trim();
   const duration = Number(document.getElementById('durationMinutes').value);
-  const startsAt = document.getElementById('startsAt').value;
-  const endsAt = document.getElementById('endsAt').value;
+  let startsAt = document.getElementById('startsAt').value;
+  let endsAt = document.getElementById('endsAt').value;
+
+  if (!startsAt || !endsAt) {
+    initDefaultDates();
+    startsAt = document.getElementById('startsAt').value;
+    endsAt = document.getElementById('endsAt').value;
+  }
 
   if (!title) errors.push('Question set title is required.');
-  if (!description) errors.push('Description or instructions are required.');
+  // Description is optional
   if (!Number.isFinite(duration) || duration < 1) errors.push('Duration must be at least 1 minute.');
   if (!startsAt) errors.push('Start date and time is required.');
   if (!endsAt) errors.push('End date and time is required.');
@@ -445,4 +496,5 @@ function escapeHtml(value) {
   return div.innerHTML;
 }
 
+initDefaultDates();
 loadExistingExams();

@@ -28,7 +28,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.get('/:companyName', verifyToken, async (req, res) => {
+router.get('/:companyName', async (req, res) => {
   try {
     const companyName = decodeURIComponent(req.params.companyName)
       .trim();

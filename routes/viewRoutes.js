@@ -15,6 +15,31 @@ router.get('/admin-login', (req, res) => res.sendFile(path.join(pagesDir, 'admin
 router.get('/dashboard', (req, res) => res.sendFile(path.join(pagesDir, 'stddash.html')));
 router.get('/admin-dashboard', (req, res) => res.sendFile(path.join(pagesDir, 'admindash.html')));
 
+// Friendly URLs for existing student and faculty pages used by navigation.
+const pageRoutes = {
+  '/profile': 'stdprofile.html',
+  '/resume-analyzer': 'resume-analyzer.html',
+  '/available-exams': 'available-exams.html',
+  '/exam-guidelines': 'exam-guidelines.html',
+  '/take-exam': 'take-exam.html',
+  '/live-exam': 'live-exam.html',
+  '/exam-result': 'exam-result.html',
+  '/versant-test': 'versant-test.html',
+  '/versant-result': 'versant-result.html',
+  '/interviews': 'interviews.html',
+  '/interview-room': 'interview-room.html',
+  '/placement-workspace': 'placement-workspace.html',
+  '/admin-interviews': 'admin-interviews.html',
+  '/admin-question-import': 'admin-question-import.html',
+  '/versant-admin': 'versant-admin.html',
+  '/proctoring': 'proctoring.html',
+  '/companies': 'companies.html',
+  '/company-prep': 'company-prep.html'
+};
+for (const [route, filename] of Object.entries(pageRoutes)) {
+  router.get(route, (_req, res) => res.sendFile(path.join(pagesDir, filename)));
+}
+
 
 router.get('/admin-exams', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'public', 'pages', 'admin-exams.html'));

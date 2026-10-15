@@ -7,7 +7,7 @@ class Exam {
       `SELECT TABLE_NAME, COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS
        WHERE TABLE_SCHEMA = DATABASE()
          AND ((TABLE_NAME = 'exam_questions' AND COLUMN_NAME IN ('explanation', 'difficulty'))
-           OR (TABLE_NAME = 'exams' AND COLUMN_NAME = 'exam_type'))`
+           OR (TABLE_NAME = 'exams' AND COLUMN_NAME IN ('exam_type', 'instructions')))`
     );
     const existing = new Set(columns.map(column => `${column.TABLE_NAME}.${column.COLUMN_NAME}`));
     if (!existing.has('exam_questions.explanation')) {
@@ -18,6 +18,13 @@ class Exam {
     }
     if (!existing.has('exams.exam_type')) {
       await connection.execute("ALTER TABLE exams ADD COLUMN exam_type VARCHAR(32) NOT NULL DEFAULT 'aptitude'");
+    }
+    const [instructionsCols] = await connection.execute(
+      `SELECT IS_NULLABLE FROM INFORMATION_SCHEMA.COLUMNS
+       WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'exams' AND COLUMN_NAME = 'instructions'`
+    );
+    if (instructionsCols.length && instructionsCols[0].IS_NULLABLE === 'NO') {
+      await connection.execute('ALTER TABLE exams MODIFY COLUMN instructions TEXT NULL');
     }
   }
 
@@ -49,27 +56,53 @@ class Exam {
        FROM exam_question_imports WHERE created_by=? AND file_hash=? FOR UPDATE`,
       [adminId, payload.importFingerprint]
     );
-    await connection.rollback();
-    if (!existing || !existing.exam_id) {
-      throw new Error('The previous import with this file fingerprint is incomplete. Retry the import.');
+
+    if (existing && existing.exam_id) {
+      const [[activeExam]] = await connection.execute(
+        'SELECT id, title FROM exams WHERE id=? AND deleted_at IS NULL',
+        [existing.exam_id]
+      );
+      if (!activeExam) {
+        await connection.execute(
+          'DELETE FROM exam_question_imports WHERE created_by=? AND file_hash=?',
+          [adminId, payload.importFingerprint]
+        );
+        await connection.execute(
+          'INSERT INTO exam_question_imports (created_by, file_hash) VALUES (?, ?)',
+          [adminId, payload.importFingerprint]
+        );
+        return null;
+      }
+
+      if (payload.target === 'existing' && String(payload.examId) === String(existing.exam_id)) {
+        await connection.rollback();
+        return {
+          duplicate: true,
+          id: existing.exam_id,
+          importedCount: 0,
+          skippedRows: 0,
+          originalImportedCount: Number(existing.imported_count),
+          originalSkippedRows: Number(existing.skipped_rows)
+        };
+      }
+
+      return null;
     }
-    return {
-      duplicate: true,
-      id: existing.exam_id,
-      importedCount: 0,
-      skippedRows: 0,
-      originalImportedCount: Number(existing.imported_count),
-      originalSkippedRows: Number(existing.skipped_rows)
-    };
+
+    return null;
   }
 
   static async completeImport(connection, adminId, examId, payload) {
     if (!payload.importFingerprint) return;
     await connection.execute(
-      `UPDATE exam_question_imports
-       SET exam_id=?, imported_count=?, skipped_rows=?
-       WHERE created_by=? AND file_hash=?`,
-      [examId, payload.importedCount, payload.skippedRows || 0, adminId, payload.importFingerprint]
+      `INSERT INTO exam_question_imports (created_by, file_hash, exam_id, imported_count, skipped_rows)
+       VALUES (?, ?, ?, ?, ?)
+       ON DUPLICATE KEY UPDATE
+         exam_id = VALUES(exam_id),
+         imported_count = VALUES(imported_count),
+         skipped_rows = VALUES(skipped_rows),
+         created_at = CURRENT_TIMESTAMP`,
+      [adminId, payload.importFingerprint, examId, payload.importedCount, payload.skippedRows || 0]
     );
   }
 
@@ -88,7 +121,7 @@ class Exam {
       await connection.execute(`INSERT INTO exams
         (id, created_by, title, exam_type, instructions, duration_minutes, starts_at, ends_at, status, negative_marking)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-        [examId, adminId, payload.title, payload.examType || payload.exam_type || 'aptitude', payload.instructions, payload.durationMinutes,
+        [examId, adminId, payload.title, payload.examType || payload.exam_type || 'aptitude', payload.instructions || '', payload.durationMinutes || 20,
           payload.startsAt, payload.endsAt, payload.status || 'draft', payload.negativeMarking || 0]);
       for (const [topicIndex, topic] of payload.topics.entries()) {
         const topicId = randomUUID();

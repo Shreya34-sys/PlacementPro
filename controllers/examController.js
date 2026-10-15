@@ -20,18 +20,30 @@ function validateImportMetadata(body) {
   const status = body.status === 'published' ? 'published' : 'draft';
   const durationMinutes = numberOrDefault(body.durationMinutes, 20);
   const negativeMarking = numberOrDefault(body.negativeMarking, 0);
-  const startsAt = String(body.startsAt || '').replace('T', ' ');
-  const endsAt = String(body.endsAt || '').replace('T', ' ');
+
+  let startsAt = String(body.startsAt || '').replace('T', ' ');
+  let endsAt = String(body.endsAt || '').replace('T', ' ');
+
+  if (!startsAt) {
+    const now = new Date();
+    startsAt = now.toISOString().slice(0, 19).replace('T', ' ');
+  }
+  if (!endsAt) {
+    const end = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+    endsAt = end.toISOString().slice(0, 19).replace('T', ' ');
+  }
+
+  const title = String(body.title || '').trim();
 
   if (target === 'existing') {
     if (!body.examId) errors.push('Choose an existing question set.');
   } else {
-    if (!String(body.title || '').trim()) errors.push('Question set title is required.');
-    if (!String(body.description || body.instructions || '').trim()) errors.push('Description or instructions are required.');
+    if (!title) errors.push('Question set title is required.');
+    // Description is optional per requirements
     if (!durationMinutes || durationMinutes < 1) errors.push('Duration must be at least 1 minute.');
-    if (!startsAt) errors.push('Start date and time is required.');
-    if (!endsAt) errors.push('End date and time is required.');
-    if (startsAt && endsAt && new Date(startsAt) >= new Date(endsAt)) errors.push('End date must be after start date.');
+    if (startsAt && endsAt && new Date(startsAt) >= new Date(endsAt)) {
+      errors.push('End date must be after start date.');
+    }
   }
 
   if (negativeMarking < 0 || negativeMarking > 100) errors.push('Negative marking must be between 0 and 100.');
@@ -41,7 +53,7 @@ function validateImportMetadata(body) {
     metadata: {
       target,
       examId: body.examId,
-      title: String(body.title || '').trim(),
+      title: title || 'Aptitude Practice Set ' + new Date().toISOString().slice(0, 10),
       instructions: String(body.description || body.instructions || '').trim(),
       durationMinutes,
       startsAt: startsAt ? `${startsAt.length === 16 ? startsAt + ':00' : startsAt}` : '',
@@ -137,7 +149,7 @@ exports.saveImport = async (req, res, next) => {
       });
       return res.status(400).json({
         message: metadataErrors.length
-          ? 'Complete the required question-set fields before saving.'
+          ? metadataErrors.join('. ')
           : fingerprintError.length
             ? 'Preview the uploaded workbook again before saving.'
             : 'The spreadsheet is missing required columns or contains a file-level validation error.',

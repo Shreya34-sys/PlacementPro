@@ -8,14 +8,19 @@ const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const passport = require('./config/passport');
 const setupSockets = require('./config/socket');
+const attachCodingSockets = require('./config/codingSocket');
 
 const authRoutes = require('./routes/authRoutes');
 const viewRoutes = require('./routes/viewRoutes');
+const codingViewRoutes = require('./routes/codingViewRoutes');
 const studentRoutes = require('./routes/studentRoutes');
 const examRoutes = require('./routes/examRoutes');
 const resumeRoutes = require('./routes/resumeRoutes');
 const companyRoutes = require('./routes/companyRoutes');
+const progressRoutes = require('./routes/progressRoutes');
+const interviewRoutes = require('./routes/interviewRoutes');
 const versantRoutes = require('./routes/versantRoutes');
+const codingRoutes = require('./routes/codingRoutes');
 
 const app = express();
 const server = http.createServer(app);
@@ -60,6 +65,7 @@ v1Router.use('/companies', companyRoutes);
 v1Router.use('/versant', versantRoutes);
 v1Router.use('/progress', progressRoutes);
 v1Router.use('/interviews', interviewRoutes);
+v1Router.use('/coding', codingRoutes);
 
 app.use('/api/v1', v1Router);
 app.use('/api/exams', examRoutes);
@@ -67,8 +73,13 @@ app.use('/api/auth', authLimiter, authRoutes);
 app.use('/api/student', studentRoutes);
 app.use('/api/resume', resumeRoutes);
 app.use('/api/versant', versantRoutes);
+app.use('/api/companies', companyRoutes);
+app.use('/api/progress', progressRoutes);
+app.use('/api/interviews', interviewRoutes);
+app.use('/api/coding', codingRoutes);
 
 // Keep this last because it contains page/catch-all routes.
+app.use('/', codingViewRoutes);
 app.use('/', viewRoutes);
 
 app.use((error, req, res, next) => {

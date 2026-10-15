@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Preparation Kit · PlacementPro</title>
+
+    <script>
+        (function() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.replace('/login');
+                return;
+            }
+            if (localStorage.getItem('theme') === 'dark') {
+                document.documentElement.classList.add('dark-mode');
+            }
+        })();
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/stddash.css">
+
+    <style>
+        .prep-page-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px 24px 60px 24px;
+        }
+
+        .breadcrumb-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .breadcrumb-row a {
+            color: var(--brand-blue);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .breadcrumb-row a:hover {
+            text-decoration: underline;
+        }
+
+        .breadcrumb-row .sep {
+            color: var(--border-color);
+        }
+
+        /* Company Kit Hero Header */
+        .company-hero-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .company-hero-left {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+            max-width: 760px;
+        }
+
+        .company-avatar-box {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 800;
+            flex-shrink: 0;
+            background: #e0f2fe;
+            color: #0284c7;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .company-avatar-box.amazon {
+            background: #ffedd5;
+            color: #c2410c;
+        }
+
+        .company-hero-details h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: var(--text-primary);
+        }
+
+        .company-hero-role {
+            font-size: 14.5px;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+
+        .company-hero-desc {
+            font-size: 13.5px;
+            color: var(--text-secondary);
+            line-height: 1.55;
+            margin-bottom: 16px;
+        }
+
+        .company-stat-pills {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .stat-pill {
+            background: var(--bg-main);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 6px 12px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .stat-pill strong {
+            color: var(--text-primary);
+        }
+
+        .match-badge {
+            background: #dcfce7;
+            color: #166534;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        body.dark-mode .match-badge {
+            background: rgba(22, 101, 52, 0.3);
+            color: #4ade80;
+        }
+
+        .hero-right-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            min-width: 200px;
+        }
+
+        .hero-right-actions .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: var(--brand-blue);
+            color: #ffffff;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-primary:hover { opacity: 0.93; }
+
+        /* Progress Card */
+        .progress-tracker-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 28px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .progress-title-wrap h3 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .progress-title-wrap span {
+            font-size: 12.5px;
+            color: var(--text-secondary);
+        }
+
+        .progress-stat-number {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--brand-blue);
+        }
+
+        .progress-bar-track {
+            width: 100%;
+            height: 10px;
+            background: var(--bg-main);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            margin-bottom: 12px;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #10b981);
+            width: 0%;
+            border-radius: 20px;
+            transition: width 0.35s ease;
+        }
+
+        .progress-footer-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .reset-progress-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 11.5px;
+            cursor: pointer;
+            text-decoration: underline;
+            padding: 0;
+        }
+
+        .reset-progress-btn:hover {
+            color: #ef4444;
+        }
+
+        /* 2-Column Split: Questions & Rounds */
+        .prep-layout-grid {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr;
+            gap: 24px;
+        }
+
+        @media (max-width: 960px) {
+            .prep-layout-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .panel-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .panel-header-row h2 {
+            font-size: 17px;
+            font-weight: 700;
+        }
+
+        .filter-tags {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .filter-chip {
+            background: var(--bg-main);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 4px 10px;
+            border-radius: 14px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .filter-chip.active, .filter-chip:hover {
+            background: var(--brand-blue);
+            color: #ffffff;
+            border-color: var(--brand-blue);
+        }
+
+        /* Question Item Card */
+        .question-card-item {
+            background: var(--bg-main);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            transition: border-color 0.2s ease, transform 0.15s ease;
+        }
+
+        .question-card-item:hover {
+            border-color: var(--brand-blue);
+            transform: translateY(-1px);
+        }
+
+        .question-card-item.completed {
+            opacity: 0.75;
+            background: var(--card-bg);
+        }
+
+        .question-card-item.completed .q-title {
+            text-decoration: line-through;
+            color: var(--text-secondary);
+        }
+
+        .q-check {
+            width: 19px;
+            height: 19px;
+            accent-color: var(--brand-blue);
+            margin-top: 3px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .q-content {
+            flex-grow: 1;
+            min-width: 0;
+        }
+
+        .q-top-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+            flex-wrap: wrap;
+        }
+
+        .q-topic-badge {
+            background: rgba(59, 130, 246, 0.12);
+            color: var(--brand-blue);
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .q-diff-badge {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+        .q-diff-badge.Hard { background: rgba(239, 68, 68, 0.12); color: #ef4444; }
+        .q-diff-badge.Medium { background: rgba(245, 158, 11, 0.12); color: #f59e0b; }
+        .q-diff-badge.Easy { background: rgba(16, 185, 129, 0.12); color: #10b981; }
+
+        .q-freq {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-left: auto;
+        }
+
+        .q-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+            line-height: 1.35;
+        }
+
+        .q-desc {
+            font-size: 12.5px;
+            color: var(--text-secondary);
+            line-height: 1.45;
+            margin-bottom: 10px;
+        }
+
+        .q-action-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--brand-blue);
+            text-decoration: none;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 5px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .q-action-btn:hover {
+            border-color: var(--brand-blue);
+            background: var(--brand-blue);
+            color: #ffffff;
+        }
+
+        /* Company Rounds List */
+        .company-round-card {
+            background: var(--bg-main);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .round-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .round-number {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--brand-blue);
+        }
+
+        .round-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .round-detail-text {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.45;
+        }
+
+        .round-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--brand-blue);
+            text-decoration: none;
+            margin-top: 4px;
+        }
+
+        .round-cta:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header class="navbar">
+        <div class="nav-left">
+            <div class="brand">
+                <span class="brand-icon"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="7" width="18" height="14" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12h18M10 12v2h4v-2"/></svg></span>
+                <span class="brand-name">PlacementPro</span>
+            </div>
+        </div>
+
+        <button class="mobile-nav-toggle" id="mobileNavToggle" type="button" aria-expanded="false" aria-controls="studentNavigation" aria-label="Open navigation"><span></span><span></span><span></span></button>
+        <nav class="nav-links" id="studentNavigation" aria-label="Student navigation">
+            <a href="/dashboard" class="nav-item">Home</a>
+            <div class="dropdown mega-dropdown">
+                <button class="nav-item dropdown-toggle active" id="placementPrepToggle" type="button" aria-expanded="false" aria-haspopup="true">Placement Prep <span class="arrow">⌄</span></button>
+                <div class="nav-dropdown-menu mega-menu" id="placementPrepMenu" role="menu" aria-label="Placement Prep Navigation">
+                    <div class="mega-menu-grid">
+                        <!-- Column 1: Placement Rounds -->
+                        <div class="mega-column">
+                            <div class="mega-column-header">
+                                <span class="mega-header-icon blue"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="m9 16 2 2 4-4"/></svg></span>
+                                <div>
+                                    <h4 class="mega-column-title">Placement Rounds</h4>
+                                    <span class="mega-column-sub">Assessments & selection stages</span>
+                                </div>
+                            </div>
+                            <div class="mega-items">
+                                <a href="/available-exams" class="mega-item" role="menuitem">
+                                    <div class="mega-item-icon blue"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg></div>
+                                    <div class="mega-item-text">
+                                        <div class="mega-item-title">Aptitude Tests</div>
+                                        <div class="mega-item-desc">Quantitative, logical & verbal MCQs</div>
+                                    </div>
+                                </a>
+                                <a href="/coding-rounds" class="mega-item" role="menuitem">
+                                    <div class="mega-item-icon emerald"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+                                    <div class="mega-item-text">
+                                        <div class="mega-item-title">Coding Rounds</div>
+                                        <div class="mega-item-desc">Hands-on problems with online compiler</div>
+                                    </div>
+                                </a>
+                                <a href="/versant-test" class="mega-item" role="menuitem">
+                                    <div class="mega-item-icon indigo"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8"/></svg></div>
+                                    <div class="mega-item-text">
+                                        <div class="mega-item-title">Versant Voice Test</div>
+                                        <div class="mega-item-desc">Spoken English, fluency & pronunciation</div>
+                                    </div>
+                                </a>
+                                <a href="/interviews" class="mega-item" role="menuitem">
+                                    <div class="mega-item-icon purple"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+                                    <div class="mega-item-text">
+                                        <div class="mega-item-title">Mock Interview Round</div>
+                                        <div class="mega-item-desc">Technical & HR voice interview round</div>
+                                    </div>
+                                </a>
+                                <a href="/exam-guidelines" class="mega-item" role="menuitem">
+                                    <div class="mega-item-icon amber"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></div>
+                                    <div class="mega-item-text">
+                                        <div class="mega-item-title">Assessment Guidelines</div>
+                                        <div class="mega-item-desc">Proctoring rules & test environment</div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Column 2: Interview Preparation -->
+                        <div class="mega-column">
+                            <div class="mega-column-header">
+                                <span class="mega-header-icon purple"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
+                                <div>
+                                    <h4 class="mega-column-title">Interview Preparation</h4>
+                                    <span class="mega-column-sub">AI coaching & skill practice</span>
+                                </div>
+                            </div>
+                            <div class="mega-items">
+                                <a href="/interviews" class="mega-item" role="menuitem">
+                                    <div class="mega-item-icon purple"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></div>
+                                    <div class="mega-item-text">
+                                        <div class="mega-item-title">AI Mock Interviews</div>
+                                        <div class="mega-item-desc">Live audio interviews with AI feedback</div>
+                                    </div>
+                                </a>
+                                <a href="/versant-test" class="mega-item" role="menuitem">
+                                    <div class="mega-item-icon indigo"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></div>
+                                    <div class="mega-item-text">
+                                        <div class="mega-item-title">Spoken English Practice</div>
+                                        <div class="mega-item-desc">Fluency, sentence repeats & listening</div>
+                                    </div>
+                                </a>
+                                <a href="/resume-analyzer" class="mega-item" role="menuitem">
+                                    <div class="mega-item-icon blue"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+                                    <div class="mega-item-text">
+                                        <div class="mega-item-title">ATS Resume Analyzer</div>
+                                        <div class="mega-item-desc">Keyword match, scoring & ATS optimizer</div>
+                                    </div>
+                                </a>
+                                <a href="/placement-workspace" class="mega-item" role="menuitem">
+                                    <div class="mega-item-icon amber"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
+                                    <div class="mega-item-text">
+                                        <div class="mega-item-title">Placement Workspace</div>
+                                        <div class="mega-item-desc">Interview roadmaps, tips & master prep</div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Column 3: Company Preparation -->
+                        <div class="mega-column">
+                            <div class="mega-column-header">
+                                <span class="mega-header-icon emerald"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><line x1="9" y1="22" x2="9" y2="22.01"/><line x1="15" y1="22" x2="15" y2="22.01"/><line x1="9" y1="6" x2="9" y2="6.01"/><line x1="15" y1="6" x2="15" y2="6.01"/><line x1="9" y1="10" x2="9" y2="10.01"/><line x1="15" y1="10" x2="15" y2="10.01"/><line x1="9" y1="14" x2="9" y2="14.01"/><line x1="15" y1="14" x2="15" y2="14.01"/><line x1="9" y1="18" x2="9" y2="18.01"/><line x1="15" y1="18" x2="15" y2="18.01"/></svg></span>
+                                <div>
+                                    <h4 class="mega-column-title">Company Preparation</h4>
+                                    <span class="mega-column-sub">Recruiter profiles & roadmaps</span>
+                                </div>
+                            </div>
+                            <div class="mega-items">
+                                <a href="/companies" class="mega-item" role="menuitem">
+                                    <div class="mega-item-icon emerald"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 7v14M21 7v14M6 11h4M6 15h4M14 11h4M14 15h4M9 3l3-2 3 2v4H9z"/></svg></div>
+                                    <div class="mega-item-text">
+                                        <div class="mega-item-title">Company Directory</div>
+                                        <div class="mega-item-desc">Browse hiring partners, CTC & roles</div>
+                                    </div>
+                                </a>
+                                <a href="/companies" class="mega-item" role="menuitem">
+                                    <div class="mega-item-icon blue"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+                                    <div class="mega-item-text">
+                                        <div class="mega-item-title">Hiring Criteria & Eligibility</div>
+                                        <div class="mega-item-desc">Cutoffs, criteria & required skill sets</div>
+                                    </div>
+                                </a>
+                                <a href="/placement-workspace" class="mega-item" role="menuitem">
+                                    <div class="mega-item-icon purple"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+                                    <div class="mega-item-text">
+                                        <div class="mega-item-title">Company Roadmaps</div>
+                                        <div class="mega-item-desc">Targeted preparation modules & strategies</div>
+                                    </div>
+                                </a>
+                                <a href="/dashboard#progressSection" class="mega-item" role="menuitem">
+                                    <div class="mega-item-icon cyan"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+                                    <div class="mega-item-text">
+                                        <div class="mega-item-title">Preparation Analytics</div>
+                                        <div class="mega-item-desc">Track scores, metrics & readiness index</div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mega Menu Footer Bar -->
+                    <div class="mega-menu-footer">
+                        <div class="mega-footer-info">
+                            <span class="mega-badge">PRO TIP</span>
+                            <span>Complete Aptitude, Coding, and Voice rounds to maximize company shortlist eligibility.</span>
+                        </div>
+                        <a href="/placement-workspace" class="mega-footer-action">
+                            <span>Open Preparation Workspace</span>
+                            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="dropdown">
+                <button class="nav-item dropdown-toggle" type="button" aria-expanded="false">Practice <span class="arrow">⌄</span></button>
+                <div class="nav-dropdown-menu"><a href="/available-exams">Aptitude Tests</a><a href="/coding-rounds">Coding Rounds</a></div>
+            </div>
+            <a href="/companies" class="nav-item">Companies</a>
+            <a href="/dashboard#progressSection" class="nav-item">Analytics</a>
+        </nav>
+
+        <div class="nav-right">
+            <button class="icon-btn notification-btn">
+                <span><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg></span>
+                <span class="dot"></span>
+            </button>
+            <button class="icon-btn theme-toggle" id="themeToggleBtn"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20.5 15.5A8.5 8.5 0 0 1 8.5 3.5 8.5 8.5 0 1 0 20.5 15.5Z"/></svg></button>
+
+            <!-- Profile Widget & Dropdown Menu -->
+            <div class="profile-container" id="profileDropdownContainer">
+                <div class="user-profile" id="profileTrigger">
+                    <div class="avatar" id="navAvatar">ST</div>
+                    <div class="user-info">
+                        <span class="user-name" id="navUserName">Student</span>
+                        <span class="user-role">Student Mode</span>
+                    </div>
+                </div>
+
+                <div class="profile-menu" id="profileMenu">
+                    <div class="menu-header">
+                        <strong id="menuUserName">Student</strong>
+                        <p id="menuUserEmail">student@placementpro.edu</p>
+                    </div>
+                    <div class="menu-divider"></div>
+                    <a href="/profile" class="menu-item">
+                        <span class="icon"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span> Profile & Portfolio
+                    </a>
+                    <a href="/profile" class="menu-item">
+                        <span class="icon"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="m19 13 2-1-2-1-.5-2 1-2-2-2-2 1-2-.5-1-2-2 2 .5 2-1 2-2 1 2 2 2-.5 2 1 1 2 2-2Z"/></svg></span> Account Settings
+                    </a>
+                    <div class="menu-divider"></div>
+                    <a href="/login" class="menu-item logout" id="logoutBtn">
+                        <span class="icon"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 17l5-5-5-5M15 12H3M21 19V5a2 2 0 0 0-2-2h-5"/></svg></span> Log Out
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="prep-page-container">
+        <!-- Breadcrumb Navigation -->
+        <nav class="breadcrumb-row" aria-label="Breadcrumb">
+            <a href="/dashboard">← Back to Dashboard</a>
+            <span class="sep">/</span>
+            <a href="/companies">Company Directory</a>
+            <span class="sep">/</span>
+            <span class="current" id="breadcrumbLabel">Google Prep Kit</span>
+        </nav>
+
+        <!-- Company Hero Card -->
+        <section class="company-hero-card" id="companyHeroCard">
+            <div class="company-hero-left">
+                <div class="company-avatar-box" id="companyLogo">G</div>
+                <div class="company-hero-details">
+                    <h1 id="companyName">Google Preparation Kit</h1>
+                    <div class="company-hero-role" id="companyRole">Software Development Engineer (SDE)</div>
+                    <p class="company-hero-desc" id="companyOverview">Loading preparation kit details...</p>
+                    <div class="company-stat-pills" id="companyPills">
+                        <span class="match-badge" id="matchBadge">★ 96% Match</span>
+                        <span class="stat-pill">Target CTC: <strong id="ctcVal">28 - 45 LPA</strong></span>
+                        <span class="stat-pill">Difficulty: <strong id="diffVal" class="text-orange">Hard</strong></span>
+                        <span class="stat-pill">Hiring Process: <strong id="roundsVal">4 Rounds</strong></span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-right-actions">
+                <a href="/coding-rounds" class="btn btn-primary" id="launchCodingBtn">
+                    <span>Practice Coding Round</span>
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                </a>
+                <a href="/interviews" class="btn btn-secondary" id="launchInterviewBtn">
+                    <span>Mock Interview Round</span>
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
+                </a>
+                <a href="/resume-analyzer" class="btn btn-secondary">
+                    <span>ATS Resume Match</span>
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+                </a>
+            </div>
+        </section>
+
+        <!-- Progress Tracker Card -->
+        <section class="progress-tracker-card">
+            <div class="progress-header">
+                <div class="progress-title-wrap">
+                    <h3>Preparation Kit Progress</h3>
+                    <span id="progressSubtitle">Check off solved questions to track your interview readiness.</span>
+                </div>
+                <div class="progress-stat-number" id="progressPercentage">0%</div>
+            </div>
+            <div class="progress-bar-track">
+                <div class="progress-bar-fill" id="progressBarFill" style="width: 0%;"></div>
+            </div>
+            <div class="progress-footer-row">
+                <span id="progressCountText">0 of 6 topics & questions completed</span>
+                <button type="button" class="reset-progress-btn" id="resetProgressBtn">Reset Progress</button>
+            </div>
+        </section>
+
+        <!-- Main 2-Column Split: Questions & Selection Rounds -->
+        <div class="prep-layout-grid">
+            <!-- Left Column: Curated Question Bank -->
+            <section class="panel-box">
+                <div class="panel-header-row">
+                    <div>
+                        <h2>Curated Interview Questions</h2>
+                        <span class="small-text" style="color:var(--text-secondary);font-size:12px;">Top problems frequently asked in recent technical rounds</span>
+                    </div>
+                </div>
+
+                <div class="filter-tags" id="questionFilters">
+                    <button type="button" class="filter-chip active" data-filter="all">All Questions</button>
+                    <button type="button" class="filter-chip" data-filter="coding">Coding & Algorithms</button>
+                    <button type="button" class="filter-chip" data-filter="system">System Design</button>
+                    <button type="button" class="filter-chip" data-filter="behavioral">Behavioral / HR</button>
+                </div>
+
+                <div id="questionsList">
+                    <!-- Dynamic Questions injected here -->
+                </div>
+            </section>
+
+            <!-- Right Column: Recruitment Rounds & Key Topics -->
+            <aside class="panel-box">
+                <div class="panel-header-row">
+                    <h2>Recruitment Process & Rounds</h2>
+                </div>
+
+                <div id="roundsList">
+                    <!-- Dynamic Rounds injected here -->
+                </div>
+
+                <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border-color);">
+                    <h3 style="font-size: 14px; font-weight: 700; margin-bottom: 10px;">Core Tech Topics</h3>
+                    <div class="tech-tags" id="topicsContainer">
+                        <!-- Dynamic topics -->
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <script src="/js/app.js"></script>
+    <script src="/js/stddash.js"></script>
+
+    <script>
+        // Company Kits Data Store
+        const COMPANY_KITS = {
+            'google': {
+                name: 'Google',
+                title: 'Google Preparation Kit',
+                role: 'Software Development Engineer (SDE)',
+                logo: 'G',
+                logoClass: '',
+                overview: 'Google interview processes heavily emphasize rigorous problem-solving, algorithmic efficiency, graph traversals, distributed system design, and Googliness behavioral principles.',
+                match: '96% Match',
+                ctc: '28 - 45 LPA',
+                difficulty: 'Hard',
+                roundsCount: '4 Rounds',
+                topics: ['C++', 'Python', 'DS & Algo', 'Dynamic Programming', 'System Design', 'Googliness'],
+                rounds: [
+                    {
+                        number: 'Round 1 · Online Assessment',
+                        name: 'Aptitude & Technical OA',
+                        desc: '90-minute timed round with 2 algorithmic problems focusing on arrays, binary search, and mathematical optimizations.',
+                        link: '/available-exams',
+                        cta: 'Practice Aptitude & OA →'
+                    },
+                    {
+                        number: 'Round 2 · Technical Screening',
+                        name: 'Data Structures & Algorithms',
+                        desc: '45-minute live coding round focusing on Graphs (BFS/DFS), Dynamic Programming, and complexity analysis.',
+                        link: '/coding-rounds',
+                        cta: 'Solve Coding Challenges →'
+                    },
+                    {
+                        number: 'Round 3 · System Architecture',
+                        name: 'System Design & Scalability',
+                        desc: 'Designing distributed caching, rate limiters, load balancers, and real-time streaming architectures.',
+                        link: '/placement-workspace',
+                        cta: 'View Workspace Guides →'
+                    },
+                    {
+                        number: 'Round 4 · Onsite Behavioral',
+                        name: 'Googliness & Leadership',
+                        desc: 'Situational judgment questions, navigating ambiguity, teamwork, and product-first cultural alignment.',
+                        link: '/interviews',
+                        cta: 'Launch AI Mock Interview →'
+                    }
+                ],
+                questions: [
+                    {
+                        id: 'g_q1',
+                        type: 'coding',
+                        topic: 'Dynamic Programming',
+                        diff: 'Hard',
+                        freq: 'Asked 48+ times in Google SDE',
+                        title: 'Longest Increasing Subsequence (O(N log N))',
+                        desc: 'Given an integer array nums, return the length of the longest strictly increasing subsequence using binary search patience sort.',
+                        actionUrl: '/coding-rounds',
+                        actionLabel: 'Solve in Coding Studio'
+                    },
+                    {
+                        id: 'g_q2',
+                        type: 'coding',
+                        topic: 'Graphs & BFS',
+                        diff: 'Hard',
+                        freq: 'Asked 42+ times in Google SDE',
+                        title: 'Word Ladder II: Shortest Transformation Path',
+                        desc: 'Find all shortest transformation sequences from beginWord to endWord using words from a dictionary wordList.',
+                        actionUrl: '/coding-rounds',
+                        actionLabel: 'Solve in Coding Studio'
+                    },
+                    {
+                        id: 'g_q3',
+                        type: 'coding',
+                        topic: 'Divide & Conquer',
+                        diff: 'Hard',
+                        freq: 'Asked 50+ times in Google SDE',
+                        title: 'Median of Two Sorted Arrays in O(log(min(m, n)))',
+                        desc: 'Given two sorted arrays nums1 and nums2 of size m and n respectively, return the median of the two sorted arrays with logarithmic time complexity.',
+                        actionUrl: '/coding-rounds',
+                        actionLabel: 'Solve in Coding Studio'
+                    },
+                    {
+                        id: 'g_q4',
+                        type: 'system',
+                        topic: 'System Design',
+                        diff: 'Medium',
+                        freq: 'Google Onsite Standard',
+                        title: 'Design an LRU Cache with O(1) Get and Put',
+                        desc: 'Implement a Least Recently Used (LRU) cache using a Hash Map and a Doubly Linked List with constant time operations.',
+                        actionUrl: '/coding-rounds',
+                        actionLabel: 'Solve in Coding Studio'
+                    },
+                    {
+                        id: 'g_q5',
+                        type: 'system',
+                        topic: 'Distributed Systems',
+                        diff: 'Hard',
+                        freq: 'Google Systems Round',
+                        title: 'Design a Distributed Rate Limiter & URL Shortener',
+                        desc: 'Architect a global rate-limiting service using Token Bucket algorithm with Redis clusters, handling 100K+ RPS.',
+                        actionUrl: '/placement-workspace',
+                        actionLabel: 'Review Architecture'
+                    },
+                    {
+                        id: 'g_q6',
+                        type: 'behavioral',
+                        topic: 'Googliness & Values',
+                        diff: 'Medium',
+                        freq: 'Core Google HR Round',
+                        title: 'Navigating Ambiguity and Disagreement',
+                        desc: 'Tell me about a time when you received unclear technical requirements or had a major disagreement with a teammate. How did you resolve it?',
+                        actionUrl: '/interviews',
+                        actionLabel: 'Practice in Interview Studio'
+                    }
+                ]
+            },
+            'amazon': {
+                name: 'Amazon',
+                title: 'Amazon Preparation Kit',
+                role: 'SDE-1 (AWS & Retail Platform)',
+                logo: 'A',
+                logoClass: 'amazon',
+                overview: 'Amazon evaluations center on proficiency in Object-Oriented Programming (Java/C++), Trees & Graphs, Low-Level System Design (LLD), and strict adherence to the 16 Amazon Leadership Principles.',
+                match: '92% Match',
+                ctc: '22 - 32 LPA',
+                difficulty: 'Hard',
+                roundsCount: '4 Rounds',
+                topics: ['Java', 'Trees & Graphs', 'OOP', 'Leadership Principles', 'Low-Level Design', 'AWS'],
+                rounds: [
+                    {
+                        number: 'Round 1 · Online Assessment',
+                        name: 'Amazon OA (Coding & Work Simulation)',
+                        desc: '2 coding problems on arrays/hashing followed by work-style behavioral simulations mapping to Leadership Principles.',
+                        link: '/available-exams',
+                        cta: 'Practice Aptitude & OA →'
+                    },
+                    {
+                        number: 'Round 2 · Technical Coding',
+                        name: 'Data Structures & Problem Solving',
+                        desc: 'Live problem solving covering Binary Trees, Connected Components, Two Pointers, and Heap/Priority Queues.',
+                        link: '/coding-rounds',
+                        cta: 'Solve Coding Challenges →'
+                    },
+                    {
+                        number: 'Round 3 · Object-Oriented Design',
+                        name: 'Low-Level Design (LLD)',
+                        desc: 'Designing extensible modular systems such as an Amazon Locker Hub, Elevator System, or Parking Lot using OOP patterns.',
+                        link: '/placement-workspace',
+                        cta: 'View Workspace Guides →'
+                    },
+                    {
+                        number: 'Round 4 · Bar Raiser',
+                        name: 'Leadership Principles & Bar Raiser',
+                        desc: 'In-depth STAR method behavioral round led by a certified Amazon Bar Raiser verifying Customer Obsession & Ownership.',
+                        link: '/interviews',
+                        cta: 'Launch AI Mock Interview →'
+                    }
+                ],
+                questions: [
+                    {
+                        id: 'amz_q1',
+                        type: 'coding',
+                        topic: 'DFS / BFS & Matrix',
+                        diff: 'Medium',
+                        freq: 'Top Amazon OA Problem',
+                        title: 'Number of Islands & Grid Connectivity',
+                        desc: 'Given an m x n 2D binary grid representing a map of 1s (land) and 0s (water), return the number of islands using BFS/DFS.',
+                        actionUrl: '/coding-rounds',
+                        actionLabel: 'Solve in Coding Studio'
+                    },
+                    {
+                        id: 'amz_q2',
+                        type: 'coding',
+                        topic: 'Trees & Recursion',
+                        diff: 'Medium',
+                        freq: 'Asked in 70% Amazon Onsites',
+                        title: 'Lowest Common Ancestor in Binary Tree & BST',
+                        desc: 'Given a binary tree, find the lowest common ancestor (LCA) of two given nodes p and q with optimal traversal.',
+                        actionUrl: '/coding-rounds',
+                        actionLabel: 'Solve in Coding Studio'
+                    },
+                    {
+                        id: 'amz_q3',
+                        type: 'coding',
+                        topic: 'Two Pointers & Arrays',
+                        diff: 'Hard',
+                        freq: 'Asked 60+ times at Amazon',
+                        title: 'Trapping Rain Water in Elevation Map',
+                        desc: 'Given n non-negative integers representing an elevation map where the width of each bar is 1, compute how much water it can trap after raining.',
+                        actionUrl: '/coding-rounds',
+                        actionLabel: 'Solve in Coding Studio'
+                    },
+                    {
+                        id: 'amz_q4',
+                        type: 'system',
+                        topic: 'Object-Oriented Design',
+                        diff: 'Medium',
+                        freq: 'Amazon LLD Onsite Standard',
+                        title: 'Design an Amazon Locker Delivery System',
+                        desc: 'Design the classes, interfaces, and state transitions for package drop-off, size allocation, code generation, and customer retrieval.',
+                        actionUrl: '/placement-workspace',
+                        actionLabel: 'Review LLD Blueprint'
+                    },
+                    {
+                        id: 'amz_q5',
+                        type: 'behavioral',
+                        topic: 'Customer Obsession (LP 1)',
+                        diff: 'Medium',
+                        freq: 'Amazon Bar Raiser Core',
+                        title: 'Customer Obsession & Compromise',
+                        desc: 'Tell me about a time when you went above and beyond for a customer/user, or decided against a short-term metric to protect customer trust.',
+                        actionUrl: '/interviews',
+                        actionLabel: 'Practice in Interview Studio'
+                    },
+                    {
+                        id: 'amz_q6',
+                        type: 'behavioral',
+                        topic: 'Ownership & Bias for Action',
+                        diff: 'Medium',
+                        freq: 'Amazon Onsite Behavioral',
+                        title: 'Ownership When It Was Not Your Job',
+                        desc: 'Describe a situation where a critical problem occurred outside your immediate area of responsibility, and how you stepped up to resolve it.',
+                        actionUrl: '/interviews',
+                        actionLabel: 'Practice in Interview Studio'
+                    }
+                ]
+            }
+        };
+
+        // Initialize Kit
+        document.addEventListener('DOMContentLoaded', async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            let companyParam = (urlParams.get('company') || 'Google').trim();
+            let key = companyParam.toLowerCase();
+
+            // Fallback to Google if unknown
+            let kit = COMPANY_KITS[key];
+
+            // If not Google or Amazon, try fetching from /api/companies/:name or build standard kit
+            if (!kit) {
+                try {
+                    const res = await fetch(`/api/companies/${encodeURIComponent(companyParam)}`);
+                    if (res.ok) {
+                        const json = await res.json();
+                        const c = json.data;
+                        kit = {
+                            name: c.name,
+                            title: `${c.name} Preparation Kit`,
+                            role: 'Software Engineer',
+                            logo: (c.short_name || c.name)[0].toUpperCase(),
+                            logoClass: '',
+                            overview: c.overview || 'Comprehensive recruitment preparation modules for target placement drives.',
+                            match: '90% Match',
+                            ctc: '12 - 25 LPA',
+                            difficulty: 'Medium-Hard',
+                            roundsCount: `${(c.rounds || []).length || 4} Rounds`,
+                            topics: c.resources && c.resources.length ? c.resources : ['Aptitude', 'Coding', 'DSA', 'OOP'],
+                            rounds: (c.rounds && c.rounds.length ? c.rounds : ['Aptitude', 'Coding', 'Technical', 'HR']).map((r, i) => ({
+                                number: `Round ${i + 1}`,
+                                name: typeof r === 'string' ? r : (r.name || 'Placement Round'),
+                                desc: `Standard evaluation round testing key requirements for ${c.name}.`,
+                                link: i === 0 ? '/available-exams' : (i === 1 ? '/coding-rounds' : '/interviews'),
+                                cta: 'Practice This Round →'
+                            })),
+                            questions: [
+                                {
+                                    id: `${key}_q1`,
+                                    type: 'coding',
+                                    topic: 'Data Structures',
+                                    diff: 'Medium',
+                                    freq: `Frequent in ${c.name} rounds`,
+                                    title: 'Binary Search & Array Optimization',
+                                    desc: 'Implement optimal search algorithms on sorted sequences with edge case validation.',
+                                    actionUrl: '/coding-rounds',
+                                    actionLabel: 'Solve in Coding Studio'
+                                },
+                                {
+                                    id: `${key}_q2`,
+                                    type: 'behavioral',
+                                    topic: 'HR & Technical Fit',
+                                    diff: 'Medium',
+                                    freq: 'Mandatory Selection Round',
+                                    title: 'Introduce Yourself & Career Ambitions',
+                                    desc: 'Walk through your technical journey, past academic projects, and why you want to work at this company.',
+                                    actionUrl: '/interviews',
+                                    actionLabel: 'Practice in Interview Studio'
+                                }
+                            ]
+                        };
+                    }
+                } catch (e) {
+                    console.warn('Fallback error:', e);
+                }
+            }
+
+            if (!kit) kit = COMPANY_KITS['google'];
+
+            renderCompanyKit(kit, key);
+        });
+
+        function renderCompanyKit(kit, key) {
+            document.title = `${kit.name} Preparation Kit · PlacementPro`;
+            document.getElementById('breadcrumbLabel').textContent = `${kit.name} Prep Kit`;
+            document.getElementById('companyName').textContent = kit.title;
+            document.getElementById('companyRole').textContent = kit.role;
+            document.getElementById('companyOverview').textContent = kit.overview;
+            document.getElementById('matchBadge').textContent = `★ ${kit.match}`;
+            document.getElementById('ctcVal').textContent = kit.ctc;
+            document.getElementById('diffVal').textContent = kit.difficulty;
+            document.getElementById('roundsVal').textContent = kit.roundsCount;
+
+            const logoEl = document.getElementById('companyLogo');
+            logoEl.textContent = kit.logo;
+            if (kit.logoClass) logoEl.className = `company-avatar-box ${kit.logoClass}`;
+
+            // Render Topics
+            const topicsContainer = document.getElementById('topicsContainer');
+            topicsContainer.innerHTML = kit.topics.map(t => `<span>${escapeText(t)}</span>`).join('');
+
+            // Render Rounds
+            const roundsList = document.getElementById('roundsList');
+            roundsList.innerHTML = kit.rounds.map(r => `
+                <div class="company-round-card">
+                    <div class="round-head">
+                        <span class="round-number">${escapeText(r.number)}</span>
+                    </div>
+                    <div class="round-name">${escapeText(r.name)}</div>
+                    <div class="round-detail-text">${escapeText(r.desc)}</div>
+                    <a href="${r.link}" class="round-cta">${escapeText(r.cta)}</a>
+                </div>
+            `).join('');
+
+            // Render Questions & Progress
+            renderQuestionsAndProgress(kit, key);
+        }
+
+        function renderQuestionsAndProgress(kit, key) {
+            const storageKey = `company_prep_progress_${key}`;
+            let completedIds = JSON.parse(localStorage.getItem(storageKey) || '[]');
+
+            const questionsContainer = document.getElementById('questionsList');
+
+            function updateUI() {
+                const total = kit.questions.length;
+                const completedCount = kit.questions.filter(q => completedIds.includes(q.id)).length;
+                const pct = total ? Math.round((completedCount / total) * 100) : 0;
+
+                document.getElementById('progressPercentage').textContent = `${pct}%`;
+                document.getElementById('progressBarFill').style.width = `${pct}%`;
+                document.getElementById('progressCountText').textContent = `${completedCount} of ${total} problems & topics completed`;
+            }
+
+            function drawQuestions(filter = 'all') {
+                const filtered = filter === 'all' 
+                    ? kit.questions 
+                    : kit.questions.filter(q => q.type === filter);
+
+                questionsContainer.innerHTML = filtered.map(q => {
+                    const isDone = completedIds.includes(q.id);
+                    return `
+                        <div class="question-card-item ${isDone ? 'completed' : ''}" id="card_${q.id}">
+                            <input type="checkbox" class="q-check" data-id="${q.id}" ${isDone ? 'checked' : ''} aria-label="Mark ${escapeText(q.title)} as solved">
+                            <div class="q-content">
+                                <div class="q-top-row">
+                                    <span class="q-topic-badge">${escapeText(q.topic)}</span>
+                                    <span class="q-diff-badge ${q.diff}">${escapeText(q.diff)}</span>
+                                    <span class="q-freq">${escapeText(q.freq)}</span>
+                                </div>
+                                <div class="q-title">${escapeText(q.title)}</div>
+                                <div class="q-desc">${escapeText(q.desc)}</div>
+                                <a href="${q.actionUrl}" class="q-action-btn">${escapeText(q.actionLabel)} →</a>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                // Checkbox change handlers
+                questionsContainer.querySelectorAll('.q-check').forEach(cb => {
+                    cb.addEventListener('change', (e) => {
+                        const id = e.target.dataset.id;
+                        if (e.target.checked) {
+                            if (!completedIds.includes(id)) completedIds.push(id);
+                        } else {
+                            completedIds = completedIds.filter(x => x !== id);
+                        }
+                        localStorage.setItem(storageKey, JSON.stringify(completedIds));
+                        const card = document.getElementById(`card_${id}`);
+                        if (card) card.classList.toggle('completed', e.target.checked);
+                        updateUI();
+                    });
+                });
+            }
+
+            // Question filter buttons
+            document.querySelectorAll('#questionFilters .filter-chip').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('#questionFilters .filter-chip').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    drawQuestions(btn.dataset.filter);
+                });
+            });
+
+            // Reset Button
+            document.getElementById('resetProgressBtn').addEventListener('click', () => {
+                if (confirm('Are you sure you want to reset your question progress for this kit?')) {
+                    completedIds = [];
+                    localStorage.removeItem(storageKey);
+                    drawQuestions(document.querySelector('#questionFilters .filter-chip.active')?.dataset.filter || 'all');
+                    updateUI();
+                }
+            });
+
+            drawQuestions('all');
+            updateUI();
+        }
+
+        function escapeText(v) {
+            const d = document.createElement('div');
+            d.textContent = v ?? '';
+            return d.innerHTML;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Placement Workspace · PlacementPro</title>
+
+    <script>
+        (function() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.replace('/login');
+                return;
+            }
+            if (localStorage.getItem('theme') === 'dark') {
+                document.documentElement.classList.add('dark-mode');
+            }
+        })();
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/stddash.css">
+
+    <style>
+        .workspace-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 32px 24px 60px 24px;
+        }
+
+        .workspace-hero {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            color: #ffffff;
+            border-radius: 20px;
+            padding: 36px 32px;
+            margin-bottom: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .workspace-hero::after {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.25) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(59, 130, 246, 0.2);
+            color: #60a5fa;
+            font-size: 11.5px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 20px;
+            margin-bottom: 14px;
+            letter-spacing: 0.5px;
+            border: 1px solid rgba(96, 165, 250, 0.3);
+        }
+
+        .workspace-hero h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+        }
+
+        .workspace-hero p {
+            color: #cbd5e1;
+            font-size: 15px;
+            max-width: 680px;
+            line-height: 1.5;
+            margin-bottom: 22px;
+        }
+
+        .hero-quick-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .hero-action-chip {
+            background: rgba(255, 255, 255, 0.08);
+            color: #f1f5f9;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            transition: all 0.2s ease;
+        }
+
+        .hero-action-chip:hover {
+            background: rgba(255, 255, 255, 0.18);
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+
+        .section-title-wrap {
+            margin-bottom: 20px;
+        }
+
+        .section-title-wrap h2 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .section-title-wrap p {
+            font-size: 13.5px;
+            color: var(--text-secondary);
+        }
+
+        /* 4-Round Grid */
+        .rounds-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            margin-bottom: 36px;
+        }
+
+        .round-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .round-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .round-step-tag {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            margin-bottom: 12px;
+            display: inline-block;
+        }
+        .round-step-tag.blue { color: var(--brand-blue); }
+        .round-step-tag.emerald { color: #10b981; }
+        .round-step-tag.indigo { color: #6366f1; }
+        .round-step-tag.purple { color: #a855f7; }
+
+        .round-card h3 {
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .round-card p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-bottom: 16px;
+            flex-grow: 1;
+        }
+
+        .round-topics {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 20px;
+        }
+
+        .topic-pill {
+            background: var(--bg-main);
+            color: var(--text-secondary);
+            font-size: 11.5px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+        }
+
+        .round-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: var(--brand-blue);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            transition: opacity 0.2s ease;
+        }
+
+        .round-btn:hover {
+            opacity: 0.92;
+        }
+
+        /* 2-Column Split: Checklist & Accelerators */
+        .workspace-split {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 24px;
+        }
+
+        @media (max-width: 860px) {
+            .workspace-split {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .checklist-item:last-child {
+            border-bottom: none;
+        }
+
+        .checklist-item input[type="checkbox"] {
+            margin-top: 3px;
+            width: 17px;
+            height: 17px;
+            cursor: pointer;
+            accent-color: var(--brand-blue);
+        }
+
+        .checklist-text strong {
+            display: block;
+            font-size: 13.5px;
+            color: var(--text-primary);
+        }
+
+        .checklist-text span {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .toolkit-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .toolkit-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 16px;
+            background: var(--bg-main);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: border-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .toolkit-item:hover {
+            border-color: var(--brand-blue);
+            transform: translateX(3px);
+        }
+
+        .toolkit-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .toolkit-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .toolkit-icon.blue { background: rgba(59, 130, 246, 0.15); color: #2563eb; }
+        .toolkit-icon.emerald { background: rgba(16, 185, 129, 0.15); color: #059669; }
+        .toolkit-icon.amber { background: rgba(245, 158, 11, 0.15); color: #d97706; }
+
+        .toolkit-info strong {
+            display: block;
+            font-size: 13.5px;
+        }
+
+        .toolkit-info span {
+            font-size: 11.5px;
+            color: var(--text-secondary);
+        }
+
+        .toolkit-arrow {
+            color: var(--text-secondary);
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header class="navbar">
+        <div class="nav-left">
+            <div class="brand">
+                <span class="brand-icon"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="7" width="18" height="14" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12h18M10 12v2h4v-2"/></svg></span>
+                <span class="brand-name">PlacementPro</span>
+            </div>
+        </div>
+
+        <button class="mobile-nav-toggle" id="mobileNavToggle" type="button" aria-expanded="false" aria-controls="studentNavigation" aria-label="Open navigation"><span></span><span></span><span></span></button>
+        <nav class="nav-links" id="studentNavigation" aria-label="Student navigation">
+            <a href="/dashboard" class="nav-item">Home</a>
+            <div class="dropdown mega-dropdown">
+                <button class="nav-item dropdown-toggle active" id="placementPrepToggle" type="button" aria-expanded="false" aria-haspopup="true">Placement Prep <span class="arrow">⌄</span></button>
+                <div class="nav-dropdown-menu mega-menu" id="placementPrepMenu" role="menu" aria-label="Placement Prep Navigation">
+                    <div class="mega-menu-grid">
+                        <!-- Column 1: Placement Rounds -->
+                        <div class="mega-column">
+                            <div class="mega-column-header">
+                                <span class="mega-header-icon blue"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="m9 16 2 2 4-4"/></svg></span>
+                                <div>
+                                    <h4 class="mega-column-title">Placement Rounds</h4>
+                                    <span class="mega-column-sub">Assessments & selection stages</span>
+                                </div>
+                            </div>
+                            <div class="mega-items">
+                                <a href="/available-exams" class="mega-item" role="menuitem">
+                                    <div class="mega-item-icon blue"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg></div>
+                                    <div class="mega-item-text">
+                                        <div class="mega-item-title">Aptitude Tests</div>
+                                        <div class="mega-item-desc">Quantitative, logical & verbal MCQs</div>
+                                    </div>
+                                </a>
+                                <a href="/coding-rounds" class="mega-item" role="menuitem">
+                                    <div class="mega-item-icon emerald"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+                                    <div class="mega-item-text">
+                                        <div class="mega-item-title">Coding Rounds</div>
+                                        <div class="mega-item-desc">Hands-on problems with online compiler</div>
+                                    </div>
+                                </a>
+                                <a href="/versant-test" class="mega-item" role="menuitem">
+                                    <div class="mega-item-icon indigo"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8"/></svg></div>
+                                    <div class="mega-item-text">
+                                        <div class="mega-item-title">Versant Voice Test</div>
+                                        <div class="mega-item-desc">Spoken English, fluency & pronunciation</div>
+                                    </div>
+                                </a>
+                                <a href="/interviews" class="mega-item" role="menuitem">
+                                    <div class="mega-item-icon purple"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+                                    <div class="mega-item-text">
+                                        <div class="mega-item-title">Mock Interview Round</div>
+                                        <div class="mega-item-desc">Technical & HR voice interview round</div>
+                                    </div>
+                                </a>
+                                <a href="/exam-guidelines" class="mega-item" role="menuitem">
+                                    <div class="mega-item-icon amber"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></div>
+                                    <div class="mega-item-text">
+                                        <div class="mega-item-title">Assessment Guidelines</div>
+                                        <div class="mega-item-desc">Proctoring rules & test environment</div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Column 2: Interview Preparation -->
+                        <div class="mega-column">
+                            <div class="mega-column-header">
+                                <span class="mega-header-icon purple"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
+                                <div>
+                                    <h4 class="mega-column-title">Interview Preparation</h4>
+                                    <span class="mega-column-sub">AI coaching & skill practice</span>
+                                </div>
+                            </div>
+                            <div class="mega-items">
+                                <a href="/interviews" class="mega-item" role="menuitem">
+                                    <div class="mega-item-icon purple"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></div>
+                                    <div class="mega-item-text">
+                                        <div class="mega-item-title">AI Mock Interviews</div>
+                                        <div class="mega-item-desc">Live audio interviews with AI feedback</div>
+                                    </div>
+                                </a>
+                                <a href="/versant-test" class="mega-item" role="menuitem">
+                                    <div class="mega-item-icon indigo"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></div>
+                                    <div class="mega-item-text">
+                                        <div class="mega-item-title">Spoken English Practice</div>
+                                        <div class="mega-item-desc">Fluency, sentence repeats & listening</div>
+                                    </div>
+                                </a>
+                                <a href="/resume-analyzer" class="mega-item" role="menuitem">
+                                    <div class="mega-item-icon blue"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+                                    <div class="mega-item-text">
+                                        <div class="mega-item-title">ATS Resume Analyzer</div>
+                                        <div class="mega-item-desc">Keyword match, scoring & ATS optimizer</div>
+                                    </div>
+                                </a>
+                                <a href="/placement-workspace" class="mega-item" role="menuitem">
+                                    <div class="mega-item-icon amber"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
+                                    <div class="mega-item-text">
+                                        <div class="mega-item-title">Placement Workspace</div>
+                                        <div class="mega-item-desc">Interview roadmaps, tips & master prep</div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Column 3: Company Preparation -->
+                        <div class="mega-column">
+                            <div class="mega-column-header">
+                                <span class="mega-header-icon emerald"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><line x1="9" y1="22" x2="9" y2="22.01"/><line x1="15" y1="22" x2="15" y2="22.01"/><line x1="9" y1="6" x2="9" y2="6.01"/><line x1="15" y1="6" x2="15" y2="6.01"/><line x1="9" y1="10" x2="9" y2="10.01"/><line x1="15" y1="10" x2="15" y2="10.01"/><line x1="9" y1="14" x2="9" y2="14.01"/><line x1="15" y1="14" x2="15" y2="14.01"/><line x1="9" y1="18" x2="9" y2="18.01"/><line x1="15" y1="18" x2="15" y2="18.01"/></svg></span>
+                                <div>
+                                    <h4 class="mega-column-title">Company Preparation</h4>
+                                    <span class="mega-column-sub">Recruiter profiles & roadmaps</span>
+                                </div>
+                            </div>
+                            <div class="mega-items">
+                                <a href="/companies" class="mega-item" role="menuitem">
+                                    <div class="mega-item-icon emerald"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 7v14M21 7v14M6 11h4M6 15h4M14 11h4M14 15h4M9 3l3-2 3 2v4H9z"/></svg></div>
+                                    <div class="mega-item-text">
+                                        <div class="mega-item-title">Company Directory</div>
+                                        <div class="mega-item-desc">Browse hiring partners, CTC & roles</div>
+                                    </div>
+                                </a>
+                                <a href="/companies" class="mega-item" role="menuitem">
+                                    <div class="mega-item-icon blue"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+                                    <div class="mega-item-text">
+                                        <div class="mega-item-title">Hiring Criteria & Eligibility</div>
+                                        <div class="mega-item-desc">Cutoffs, criteria & required skill sets</div>
+                                    </div>
+                                </a>
+                                <a href="/placement-workspace" class="mega-item" role="menuitem">
+                                    <div class="mega-item-icon purple"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+                                    <div class="mega-item-text">
+                                        <div class="mega-item-title">Company Roadmaps</div>
+                                        <div class="mega-item-desc">Targeted preparation modules & strategies</div>
+                                    </div>
+                                </a>
+                                <a href="/dashboard#progressSection" class="mega-item" role="menuitem">
+                                    <div class="mega-item-icon cyan"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+                                    <div class="mega-item-text">
+                                        <div class="mega-item-title">Preparation Analytics</div>
+                                        <div class="mega-item-desc">Track scores, metrics & readiness index</div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mega Menu Footer Bar -->
+                    <div class="mega-menu-footer">
+                        <div class="mega-footer-info">
+                            <span class="mega-badge">PRO TIP</span>
+                            <span>Complete Aptitude, Coding, and Voice rounds to maximize company shortlist eligibility.</span>
+                        </div>
+                        <a href="/placement-workspace" class="mega-footer-action">
+                            <span>Open Preparation Workspace</span>
+                            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="dropdown">
+                <button class="nav-item dropdown-toggle" type="button" aria-expanded="false">Practice <span class="arrow">⌄</span></button>
+                <div class="nav-dropdown-menu"><a href="/available-exams">Aptitude Tests</a><a href="/coding-rounds">Coding Rounds</a></div>
+            </div>
+            <a href="/companies" class="nav-item">Companies</a>
+            <a href="/dashboard#progressSection" class="nav-item">Analytics</a>
+        </nav>
+
+        <div class="nav-right">
+            <button class="icon-btn notification-btn">
+                <span><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg></span>
+                <span class="dot"></span>
+            </button>
+            <button class="icon-btn theme-toggle" id="themeToggleBtn"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20.5 15.5A8.5 8.5 0 0 1 8.5 3.5 8.5 8.5 0 1 0 20.5 15.5Z"/></svg></button>
+
+            <!-- Profile Widget & Dropdown Menu -->
+            <div class="profile-container" id="profileDropdownContainer">
+                <div class="user-profile" id="profileTrigger">
+                    <div class="avatar" id="navAvatar">ST</div>
+                    <div class="user-info">
+                        <span class="user-name" id="navUserName">Student</span>
+                        <span class="user-role">Student Mode</span>
+                    </div>
+                </div>
+
+                <div class="profile-menu" id="profileMenu">
+                    <div class="menu-header">
+                        <strong id="menuUserName">Student</strong>
+                        <p id="menuUserEmail">student@placementpro.edu</p>
+                    </div>
+                    <div class="menu-divider"></div>
+                    <a href="/profile" class="menu-item">
+                        <span class="icon"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span> Profile & Portfolio
+                    </a>
+                    <a href="/profile" class="menu-item">
+                        <span class="icon"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="m19 13 2-1-2-1-.5-2 1-2-2-2-2 1-2-.5-1-2-2 2 .5 2-1 2-2 1 2 2 2-.5 2 1 1 2 2-2Z"/></svg></span> Account Settings
+                    </a>
+                    <div class="menu-divider"></div>
+                    <a href="/login" class="menu-item logout" id="logoutBtn">
+                        <span class="icon"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 17l5-5-5-5M15 12H3M21 19V5a2 2 0 0 0-2-2h-5"/></svg></span> Log Out
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="workspace-container">
+        <!-- Hero Banner -->
+        <section class="workspace-hero">
+            <span class="hero-badge">PLACEMENT READINESS HUB</span>
+            <h1>Placement Preparation Master Workspace</h1>
+            <p>Master every phase of the recruitment lifecycle. Practice aptitude exams, real-time coding rounds, spoken English tests, and AI mock interviews.</p>
+            <div class="hero-quick-actions">
+                <a href="/available-exams" class="hero-action-chip">📝 Aptitude Tests</a>
+                <a href="/coding-rounds" class="hero-action-chip">💻 Coding Challenges</a>
+                <a href="/versant-test" class="hero-action-chip">🎙️ Versant Voice Round</a>
+                <a href="/interviews" class="hero-action-chip">🤖 AI Mock Interviews</a>
+                <a href="/resume-analyzer" class="hero-action-chip">📄 ATS Resume Scan</a>
+                <a href="/companies" class="hero-action-chip">🏢 Company Directory</a>
+            </div>
+        </section>
+
+        <!-- 4 Placement Rounds Section -->
+        <div class="section-title-wrap">
+            <h2>Core Placement Stages</h2>
+            <p>Targeted preparation modules mapped to corporate campus hiring processes.</p>
+        </div>
+
+        <section class="rounds-grid">
+            <!-- Round 1 -->
+            <article class="round-card">
+                <div>
+                    <span class="round-step-tag blue">Stage 1 · Assessment</span>
+                    <h3>Online Aptitude Round</h3>
+                    <p>Quantitative aptitude, logical reasoning, data interpretation, and verbal comprehension tests with automated scoring and timer controls.</p>
+                    <div class="round-topics">
+                        <span class="topic-pill">Quantitative</span>
+                        <span class="topic-pill">Logical</span>
+                        <span class="topic-pill">Verbal</span>
+                        <span class="topic-pill">Data Interpretation</span>
+                    </div>
+                </div>
+                <a href="/available-exams" class="round-btn">
+                    <span>Take Aptitude Tests</span>
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </a>
+            </article>
+
+            <!-- Round 2 -->
+            <article class="round-card">
+                <div>
+                    <span class="round-step-tag emerald">Stage 2 · Technical</span>
+                    <h3>Coding & Problem Solving</h3>
+                    <p>Solve data structures and algorithmic challenges in Python, Java, C++, and JavaScript with automated test case validation.</p>
+                    <div class="round-topics">
+                        <span class="topic-pill">Arrays & Strings</span>
+                        <span class="topic-pill">HashMaps</span>
+                        <span class="topic-pill">Trees & Graphs</span>
+                        <span class="topic-pill">Dynamic Prog.</span>
+                    </div>
+                </div>
+                <a href="/coding-rounds" class="round-btn">
+                    <span>Solve Coding Rounds</span>
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </a>
+            </article>
+
+            <!-- Round 3 -->
+            <article class="round-card">
+                <div>
+                    <span class="round-step-tag indigo">Stage 3 · Communication</span>
+                    <h3>Versant Spoken English</h3>
+                    <p>Evaluate voice clarity, listening comprehension, sentence repeats, passage reading, and speaking confidence under corporate standards.</p>
+                    <div class="round-topics">
+                        <span class="topic-pill">Reading Aloud</span>
+                        <span class="topic-pill">Repeats</span>
+                        <span class="topic-pill">Short Answers</span>
+                        <span class="topic-pill">Fluency Score</span>
+                    </div>
+                </div>
+                <a href="/versant-test" class="round-btn">
+                    <span>Practice Versant Test</span>
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </a>
+            </article>
+
+            <!-- Round 4 -->
+            <article class="round-card">
+                <div>
+                    <span class="round-step-tag purple">Stage 4 · Interview</span>
+                    <h3>AI Mock Interviews</h3>
+                    <p>Experience real-time interactive technical and HR voice interview simulations with instant AI grading and actionable feedback.</p>
+                    <div class="round-topics">
+                        <span class="topic-pill">Core CS</span>
+                        <span class="topic-pill">System Design</span>
+                        <span class="topic-pill">Behavioral STAR</span>
+                        <span class="topic-pill">HR Rounds</span>
+                    </div>
+                </div>
+                <a href="/interviews" class="round-btn">
+                    <span>Launch Interview Studio</span>
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </a>
+            </article>
+        </section>
+
+        <!-- 2-Column Split: Checklist & Accelerators -->
+        <div class="workspace-split">
+            <!-- Preparation Checklist -->
+            <section class="panel-card">
+                <div class="section-title-wrap">
+                    <h2>Placement Readiness Checklist</h2>
+                    <p>Track your essential milestones before company drive registration.</p>
+                </div>
+
+                <div id="prepChecklist">
+                    <label class="checklist-item">
+                        <input type="checkbox" data-key="chk_resume">
+                        <div class="checklist-text">
+                            <strong>Optimize Resume on ATS Analyzer</strong>
+                            <span>Achieve an 80%+ match score for target job descriptions.</span>
+                        </div>
+                    </label>
+
+                    <label class="checklist-item">
+                        <input type="checkbox" data-key="chk_aptitude">
+                        <div class="checklist-text">
+                            <strong>Complete 5+ Aptitude Assessments</strong>
+                            <span>Score above 75% in Quantitative and Logical Reasoning.</span>
+                        </div>
+                    </label>
+
+                    <label class="checklist-item">
+                        <input type="checkbox" data-key="chk_coding">
+                        <div class="checklist-text">
+                            <strong>Solve 10+ Technical Coding Challenges</strong>
+                            <span>Practice Arrays, HashMaps, and Tree traversal algorithms.</span>
+                        </div>
+                    </label>
+
+                    <label class="checklist-item">
+                        <input type="checkbox" data-key="chk_versant">
+                        <div class="checklist-text">
+                            <strong>Take the Versant Voice Assessment</strong>
+                            <span>Ensure pronunciation and sentence clarity meet B2/C1 CEFR benchmarks.</span>
+                        </div>
+                    </label>
+
+                    <label class="checklist-item">
+                        <input type="checkbox" data-key="chk_interview">
+                        <div class="checklist-text">
+                            <strong>Complete 2 AI Mock Interviews</strong>
+                            <span>Review spoken audio recordings, strengths, and areas to improve.</span>
+                        </div>
+                    </label>
+
+                    <label class="checklist-item">
+                        <input type="checkbox" data-key="chk_companies">
+                        <div class="checklist-text">
+                            <strong>Check Target Company Eligibility</strong>
+                            <span>Verify CGPA, backlog rules, and criteria in the Company Directory.</span>
+                        </div>
+                    </label>
+                </div>
+            </section>
+
+            <!-- Prep Toolkit & Quick Links -->
+            <section class="panel-card">
+                <div class="section-title-wrap">
+                    <h2>Prep Accelerators & Guides</h2>
+                    <p>Quick access to specialized career and placement utilities.</p>
+                </div>
+
+                <div class="toolkit-list">
+                    <a href="/resume-analyzer" class="toolkit-item">
+                        <div class="toolkit-left">
+                            <span class="toolkit-icon blue"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span>
+                            <div class="toolkit-info">
+                                <strong>ATS Resume Analyzer</strong>
+                                <span>Check keyword match & format compatibility</span>
+                            </div>
+                        </div>
+                        <span class="toolkit-arrow">→</span>
+                    </a>
+
+                    <a href="/companies" class="toolkit-item">
+                        <div class="toolkit-left">
+                            <span class="toolkit-icon emerald"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 7v14M21 7v14M6 11h4M6 15h4M14 11h4M14 15h4M9 3l3-2 3 2v4H9z"/></svg></span>
+                            <div class="toolkit-info">
+                                <strong>Company Directory</strong>
+                                <span>CTC packages, roles & recruiter profiles</span>
+                            </div>
+                        </div>
+                        <span class="toolkit-arrow">→</span>
+                    </a>
+
+                    <a href="/exam-guidelines" class="toolkit-item">
+                        <div class="toolkit-left">
+                            <span class="toolkit-icon amber"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></span>
+                            <div class="toolkit-info">
+                                <strong>Assessment Guidelines</strong>
+                                <span>Proctoring instructions & compliance policy</span>
+                            </div>
+                        </div>
+                        <span class="toolkit-arrow">→</span>
+                    </a>
+
+                    <a href="/dashboard#progressSection" class="toolkit-item">
+                        <div class="toolkit-left">
+                            <span class="toolkit-icon blue"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>
+                            <div class="toolkit-info">
+                                <strong>Preparation Analytics</strong>
+                                <span>Track progress scores & readiness gauge</span>
+                            </div>
+                        </div>
+                        <span class="toolkit-arrow">→</span>
+                    </a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="/js/app.js"></script>
+    <script src="/js/stddash.js"></script>
+    <script>
+        // Interactive Checklist Persistence
+        document.addEventListener('DOMContentLoaded', () => {
+            const checkboxes = document.querySelectorAll('#prepChecklist input[type="checkbox"]');
+            checkboxes.forEach(cb => {
+                const key = 'placement_prep_' + cb.dataset.key;
+                if (localStorage.getItem(key) === 'true') {
+                    cb.checked = true;
+                }
+                cb.addEventListener('change', () => {
+                    localStorage.setItem(key, String(cb.checked));
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -157,3 +157,97 @@ document.addEventListener('DOMContentLoaded', async () => {
     [['navAvatar', initials], ['bodyAvatar', initials], ['navUserName', name], ['menuUserName', name], ['menuUserEmail', email], ['welcomeHeading', `Welcome back, ${name}`]].forEach(([id, value]) => { const el = document.getElementById(id); if (el) el.textContent = value; });
   } catch (error) { console.error('Unable to load student profile:', error); }
 });
+document.addEventListener('DOMContentLoaded', () => {
+  const nav = document.getElementById('studentNavigation');
+  const navToggle = document.getElementById('mobileNavToggle');
+  const path = window.location.pathname.replace(/\/$/, '') || '/';
+  document.querySelectorAll('.nav-links a[href]').forEach(link => {
+    const href = new URL(link.href, window.location.origin);
+    if (href.pathname.replace(/\/$/, '') === path) {
+      link.classList.add('active');
+      link.setAttribute('aria-current', 'page');
+      link.closest('.dropdown')?.querySelector('.dropdown-toggle')?.classList.add('active');
+    }
+  });
+  navToggle?.addEventListener('click', () => {
+    const open = nav?.classList.toggle('open') || false;
+    navToggle.setAttribute('aria-expanded', String(open));
+    navToggle.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
+  });
+  function alignMegaMenu(megaMenu) {
+    if (!megaMenu || window.innerWidth <= 680) {
+      if (megaMenu) megaMenu.style.left = '';
+      return;
+    }
+    megaMenu.style.left = '0px';
+    const rect = megaMenu.getBoundingClientRect();
+    const rightOverflow = rect.right - (window.innerWidth - 16);
+    if (rightOverflow > 0) {
+      megaMenu.style.left = `${-rightOverflow}px`;
+    }
+    const updated = megaMenu.getBoundingClientRect();
+    if (updated.left < 16) {
+      megaMenu.style.left = `${16 - rect.left}px`;
+    }
+  }
+
+  function closeAllDropdowns() {
+    document.querySelectorAll('.dropdown.open').forEach(dropdown => {
+      dropdown.classList.remove('open');
+      dropdown.querySelector('.dropdown-toggle')?.setAttribute('aria-expanded', 'false');
+    });
+  }
+
+  document.querySelectorAll('.dropdown-toggle').forEach(button => {
+    button.addEventListener('click', event => {
+      event.stopPropagation();
+      const dropdown = button.closest('.dropdown');
+      const wasOpen = dropdown.classList.contains('open');
+
+      closeAllDropdowns();
+      document.getElementById('profileMenu')?.classList.remove('show', 'active');
+
+      if (!wasOpen) {
+        dropdown.classList.add('open');
+        button.setAttribute('aria-expanded', 'true');
+        const mega = dropdown.querySelector('.mega-menu');
+        if (mega) alignMegaMenu(mega);
+      } else {
+        dropdown.classList.remove('open');
+        button.setAttribute('aria-expanded', 'false');
+      }
+    });
+  });
+
+  document.addEventListener('click', event => {
+    if (!event.target.closest('.dropdown')) {
+      closeAllDropdowns();
+    }
+    if (nav && navToggle && !nav.contains(event.target) && !navToggle.contains(event.target)) {
+      nav.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' || event.key === 'Esc') {
+      closeAllDropdowns();
+      document.getElementById('profileMenu')?.classList.remove('show', 'active');
+      if (nav && navToggle && nav.classList.contains('open')) {
+        nav.classList.remove('open');
+        navToggle.setAttribute('aria-expanded', 'false');
+      }
+    }
+  });
+
+  window.addEventListener('resize', () => {
+    const openMega = document.querySelector('.dropdown.open > .mega-menu');
+    if (openMega) alignMegaMenu(openMega);
+  });
+
+  document.querySelectorAll('.nav-dropdown-menu a').forEach(link => {
+    link.addEventListener('click', () => {
+      closeAllDropdowns();
+    });
+  });
+});
