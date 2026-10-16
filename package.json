@@ -33,6 +33,8 @@
   "scripts": {
     "dev": "nodemon server.js",
     "db:seed": "node database/seed.js",
-    "test:excel-import": "node --test services/excelQuestionImportService.test.js models/examModel.test.js"
+    "test:excel-import": "node --test services/excelQuestionImportService.test.js models/examModel.test.js",
+    "test:compiler": "node --test tests/compilerIntegration.test.js",
+    "test": "node --test services/excelQuestionImportService.test.js models/examModel.test.js tests/compilerIntegration.test.js"
   }
 }

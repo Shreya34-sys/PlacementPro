@@ -1,10 +1,11 @@
+require('dotenv').config();
 const puppeteer = require('puppeteer-core');
 const jwt = require('jsonwebtoken');
 
 (async () => {
-  const secret = 'placementpro_secret_key_@987#';
+  const secret = process.env.JWT_SECRET || 'placementpro_secret_key_@987#';
   const token = jwt.sign(
-    { id: 1, email: 'pproadmin@gmail.com', name: 'Dr. S. Patil', role: 'admin' },
+    { id: '8b964856-ee3c-45cd-a048-7d4a991734c3', email: 'pproadmin@gmail.com', name: 'Dr. S. Patil', role: 'admin' },
     secret,
     { expiresIn: '1d' }
   );
@@ -16,10 +17,28 @@ const jwt = require('jsonwebtoken');
   });
 
   const page = await browser.newPage();
+  page.on('console', msg => console.log('PAGE LOG:', msg.text()));
+  page.on('pageerror', err => console.log('PAGE ERROR:', err.message));
+  page.on('request', req => {
+    if (req.url().includes('intelligence-stats')) {
+      console.log('REQ HEADERS:', JSON.stringify(req.headers(), null, 2));
+    }
+  });
+  page.on('response', async res => {
+    if (res.status() >= 400) {
+      console.log('FAILED RESPONSE:', res.status(), res.url());
+      try { console.log('BODY:', await res.text()); } catch {}
+    }
+  });
 
   // 1. Desktop View
   await page.setViewport({ width: 1400, height: 900 });
-  await page.goto(`http://localhost:5000/pages/admindash.html?token=${token}&type=admin`, {
+  await page.goto('http://localhost:5000/admin-login');
+  await page.evaluate((tok) => {
+    localStorage.setItem('adminToken', tok);
+    localStorage.setItem('token', tok);
+  }, token);
+  await page.goto('http://localhost:5000/pages/admindash.html', {
     waitUntil: 'networkidle2'
   });
   await new Promise(r => setTimeout(r, 800));

@@ -1,0 +1,315 @@
+/* Visualizations & Phase Views Styling */
+.visualizer-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  background-color: var(--secondary-bg);
+}
+
+/* Pipeline Stepper / Phase Tabs */
+.phase-pipeline {
+  display: flex;
+  background-color: var(--main-bg);
+  border-bottom: 1px solid var(--border-color);
+  padding: 0 10px;
+  overflow-x: auto;
+  flex-shrink: 0;
+  gap: 4px;
+}
+
+.phase-tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--secondary-text);
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--transition-fast);
+  background: transparent;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+}
+.phase-tab:hover {
+  color: var(--primary-blue);
+  background-color: var(--light-blue);
+}
+.phase-tab.active {
+  color: var(--primary-blue);
+  border-bottom-color: var(--primary-blue);
+  background-color: var(--light-blue);
+  font-weight: 600;
+}
+
+.phase-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background-color: var(--border-color);
+  color: var(--secondary-text);
+  font-size: 10px;
+  font-weight: 700;
+}
+.phase-tab.active .phase-number {
+  background-color: var(--primary-blue);
+  color: #fff;
+}
+
+.phase-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+.phase-status-dot.success { background-color: var(--success); }
+.phase-status-dot.failed { background-color: var(--error); }
+.phase-status-dot.blocked { background-color: var(--muted-text); }
+
+/* Phase View Content Container */
+.phase-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: none;
+}
+.phase-container.active {
+  display: block;
+}
+
+/* Phase Header Card */
+.phase-intro-card {
+  background: var(--main-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow-sm);
+}
+.phase-intro-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+.phase-intro-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--primary-text);
+}
+.phase-intro-desc {
+  font-size: 13px;
+  color: var(--secondary-text);
+  line-height: 1.5;
+}
+.phase-provenance {
+  margin-top: 8px;
+  font-size: 11px;
+  color: var(--muted-text);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Phase 1: Tokens Table */
+.token-filter-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.token-search-input {
+  max-width: 240px;
+}
+.token-category-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.category-pill {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-color);
+  background: var(--main-bg);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+.category-pill:hover, .category-pill.active {
+  background: var(--primary-blue);
+  color: #fff;
+  border-color: var(--primary-blue);
+}
+
+.table-responsive {
+  background: var(--main-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+.c-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  text-align: left;
+}
+.c-table th {
+  background-color: var(--secondary-bg);
+  padding: 8px 12px;
+  font-weight: 600;
+  color: var(--secondary-text);
+  border-bottom: 1px solid var(--border-color);
+}
+.c-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border-light);
+  color: var(--primary-text);
+}
+.c-table tr:hover td {
+  background-color: var(--light-blue);
+  cursor: pointer;
+}
+.token-val {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: var(--primary-blue);
+}
+
+/* Phase 2: AST Tree View */
+.ast-canvas-container {
+  background: var(--main-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  min-height: 420px;
+  position: relative;
+  overflow: auto;
+  padding: 16px;
+}
+
+.ast-tree-node {
+  margin-left: 20px;
+  position: relative;
+  padding-left: 14px;
+  border-left: 1px dashed #CBD5E1;
+}
+.ast-node-header {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--secondary-bg);
+  border: 1px solid var(--border-color);
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  margin: 3px 0;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-size: 12px;
+}
+.ast-node-header:hover {
+  background: var(--light-blue);
+  border-color: var(--primary-blue);
+}
+.ast-node-type {
+  font-weight: 600;
+  color: var(--primary-blue);
+}
+.ast-node-name {
+  font-family: var(--font-mono);
+  color: var(--primary-text);
+}
+.ast-node-badge {
+  font-size: 10px;
+  color: var(--secondary-text);
+  background: #E2E8F0;
+  padding: 1px 5px;
+  border-radius: var(--radius-sm);
+}
+
+/* Phase 4 & 6: Code Viewers */
+.code-viewer-card {
+  background: var(--main-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+.code-viewer-header {
+  background: var(--secondary-bg);
+  padding: 8px 14px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.code-pre {
+  margin: 0;
+  padding: 14px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.6;
+  background: var(--main-bg);
+  overflow-x: auto;
+  color: #1E293B;
+  white-space: pre;
+}
+
+/* Phase 5: Optimization Diff */
+.opt-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.opt-metric-card {
+  background: var(--main-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+}
+.opt-metric-val {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--primary-blue);
+}
+.opt-metric-label {
+  font-size: 12px;
+  color: var(--secondary-text);
+}
+
+.diff-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.diff-pane {
+  background: var(--main-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+.diff-title {
+  padding: 8px 12px;
+  background: var(--secondary-bg);
+  border-bottom: 1px solid var(--border-color);
+  font-weight: 600;
+  font-size: 12px;
+}
+
+/* Supporting tabs: Preprocessing and Linking */
+.supporting-badge {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  background: #E2E8F0;
+  color: #475569;
+}

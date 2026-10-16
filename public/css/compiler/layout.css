@@ -1,0 +1,166 @@
+/* Main Application Layout (Header, 3-Column Workspace, Panels) */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  background-color: var(--secondary-bg);
+}
+
+/* App Header */
+.app-header {
+  height: 52px;
+  background-color: var(--main-bg);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  flex-shrink: 0;
+  z-index: 10;
+}
+
+.brand-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--primary-blue);
+  letter-spacing: -0.3px;
+}
+.brand-logo svg {
+  width: 22px;
+  height: 22px;
+  fill: var(--primary-blue);
+}
+
+.compiler-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 8px;
+  background-color: var(--light-blue);
+  border: 1px solid #BFDBFE;
+  border-radius: var(--radius-full);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--dark-blue);
+}
+.status-indicator {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--success);
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* 3-Column Workspace */
+.workspace-main {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Panels */
+.panel {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--main-bg);
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  transition: width var(--transition-normal);
+}
+
+.panel-editor {
+  flex: 0 0 35%;
+  min-width: 280px;
+  border-right: 1px solid var(--border-color);
+}
+
+.panel-visualizer {
+  flex: 1 1 40%;
+  min-width: 340px;
+  background-color: var(--secondary-bg);
+}
+
+.panel-output {
+  flex: 0 0 25%;
+  min-width: 260px;
+  border-left: 1px solid var(--border-color);
+}
+
+/* Panel Header */
+.panel-header {
+  height: 44px;
+  padding: 0 14px;
+  background-color: var(--main-bg);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+.panel-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--primary-text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.panel-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Panel Content */
+.panel-content {
+  flex: 1;
+  overflow: auto;
+  position: relative;
+}
+
+/* App Footer / Status Bar */
+.app-statusbar {
+  height: 26px;
+  background-color: var(--main-bg);
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 14px;
+  font-size: 11px;
+  color: var(--secondary-text);
+  flex-shrink: 0;
+  user-select: none;
+}
+.statusbar-left, .statusbar-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.statusbar-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlacementPro - Theory Tutorial Reader</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/study-materials.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body class="reader-shell" id="readerShell">
+
+    <!-- Top Action Bar -->
+    <header class="reader-topbar">
+        <div style="display: flex; align-items: center; gap: 12px; min-width: 0;">
+            <button type="button" class="btn-sidebar-toggle" id="sidebarToggleBtn" aria-label="Toggle Syllabus Outline">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+                <span>Syllabus</span>
+            </button>
+
+            <div class="reader-breadcrumbs" id="breadcrumbsNav">
+                <a href="/dashboard">Home</a>
+                <span class="sep">&rsaquo;</span>
+                <a href="/study-materials">Study Materials</a>
+                <span class="sep">&rsaquo;</span>
+                <span class="current" id="breadSubject">Loading Subject...</span>
+            </div>
+        </div>
+
+        <div class="reader-actions">
+            <!-- Subject Navigation Mode (Theory vs Practice) -->
+            <div class="subject-mode-nav" id="subjectModeNav" style="display: none; align-items: center; gap: 4px; background: rgba(37, 99, 235, 0.08); padding: 3px; border-radius: 8px; border: 1px solid rgba(37, 99, 235, 0.2);">
+                <a href="#" class="mode-nav-btn active" id="btnModeTheory" style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; font-size: 0.8rem; font-weight: 600; color: #1e40af; background: #ffffff; border-radius: 6px; text-decoration: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                    <span>Theory</span>
+                </a>
+                <a href="/compiler-practice?subject=compiler-design" class="mode-nav-btn" id="btnModePractice" style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; font-size: 0.8rem; font-weight: 600; color: #2563eb; text-decoration: none; border-radius: 6px;">
+                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                    <span>Practice (C-Visualize)</span>
+                </a>
+            </div>
+
+            <!-- Bookmark Button -->
+            <button type="button" class="btn-reader-action" id="bookmarkBtn">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="bookmarkIcon">
+                    <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path>
+                </svg>
+                <span id="bookmarkText">Bookmark</span>
+            </button>
+
+            <!-- Complete Reading Button -->
+            <button type="button" class="btn-reader-action" id="markCompletedBtn" style="background: rgba(16, 185, 129, 0.08); border-color: rgba(16, 185, 129, 0.4); color: #059669;">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                <span id="completedBtnText">Mark as Read</span>
+            </button>
+
+            <!-- Back to Hub -->
+            <a href="/study-materials" class="btn-reader-action" style="text-decoration: none;">
+                &larr; Subjects
+            </a>
+        </div>
+    </header>
+
+    <!-- Reading Layout: 3-Column Grid on Desktop -->
+    <div class="reader-layout">
+
+        <!-- Left Column: Chapter & Topic Navigation Sidebar -->
+        <aside class="reader-sidebar" id="readerSidebar">
+            <div class="sidebar-subject-title" id="sidebarSubjectTitle">
+                <span id="sidebarSubjectIcon" style="display: inline-flex; align-items: center; color: var(--study-primary);">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                    </svg>
+                </span>
+                <span id="sidebarSubjectName">Subject Curricula</span>
+            </div>
+
+            <div class="sidebar-search-box">
+                <input type="text" id="sidebarSearch" class="sidebar-search-input" placeholder="Filter chapter topics...">
+            </div>
+
+            <div id="sidebarChaptersList">
+                <div style="padding: 24px; text-align: center; color: var(--study-text-muted); font-size: 0.85rem;">
+                    Loading syllabus...
+                </div>
+            </div>
+        </aside>
+
+        <!-- Center Column: Readable Article Pane -->
+        <main class="reader-content-pane">
+
+            <!-- Reading Header -->
+            <article>
+                <header class="reader-article-header">
+                    <span class="article-category-pill" id="articleCategoryPill">Theory Tutorial</span>
+                    <h1 class="article-title" id="articleTitle">Loading Theory Topic...</h1>
+                    <div class="article-meta">
+                        <span class="article-meta-item" id="articleReadTime">
+                            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                            <span id="articleReadTimeText">5 min read</span>
+                        </span>
+                        <span>•</span>
+                        <span id="articleAuthor">PlacementPro Faculty</span>
+                        <span>•</span>
+                        <span id="articleViews">0 views</span>
+                    </div>
+                </header>
+
+                <!-- Article Body Content -->
+                <div class="reader-body" id="articleBody">
+                    <div style="padding: 40px 0; text-align: center; color: var(--study-text-muted);">
+                        Fetching tutorial content...
+                    </div>
+                </div>
+
+                <!-- Verified Educational Video Lecture Section -->
+                <section class="video-lecture-panel" id="videoLectureSection" style="display: none;">
+                    <div class="video-panel-header">
+                        <div class="video-panel-badge">
+                            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                            </svg>
+                            <span id="videoSourceBadge">Curriculum Video Lecture</span>
+                        </div>
+                        <span class="video-academic-tag" id="videoChannelTag">NPTEL / University</span>
+                    </div>
+
+                    <h3 class="video-panel-title" id="videoTitle">Lecture Title</h3>
+                    <p class="video-panel-objective" id="videoObjective">Learning Objective: Step-by-step conceptual walkthrough.</p>
+
+                    <div class="video-player-container" id="videoPlayerContainer">
+                        <!-- Dynamic responsive player or watch link -->
+                    </div>
+                </section>
+
+                <!-- Lecture Notes & Attachments Section if uploaded by faculty -->
+                <section class="notes-download-section" id="topicAttachmentsSection" style="display: none;">
+                    <h3 class="notes-section-title">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                        </svg>
+                        Lecture Notes &amp; Handouts (Downloadable)
+                    </h3>
+                    <div id="topicAttachmentsList"></div>
+                </section>
+
+                <!-- Bottom Navigation: Previous and Next Topic -->
+                <footer class="reader-bottom-nav">
+                    <a href="#" class="nav-direction-link prev" id="prevTopicLink" style="display: none;">
+                        <span class="nav-dir-label">&larr; Previous Topic</span>
+                        <span class="nav-dir-title" id="prevTopicTitle">Previous</span>
+                    </a>
+
+                    <a href="#" class="nav-direction-link next" id="nextTopicLink" style="display: none;">
+                        <span class="nav-dir-label">Next Topic &rarr;</span>
+                        <span class="nav-dir-title" id="nextTopicTitle">Next</span>
+                    </a>
+                </footer>
+            </article>
+
+        </main>
+
+        <!-- Right Column: Table of Contents / On this page -->
+        <aside class="reader-toc" id="readerToc">
+            <div class="toc-header">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="21" y1="10" x2="7" y2="10"></line>
+                    <line x1="21" y1="6" x2="3" y2="6"></line>
+                    <line x1="21" y1="14" x2="3" y2="14"></line>
+                    <line x1="21" y1="18" x2="7" y2="18"></line>
+                </svg>
+                <span>On this page</span>
+            </div>
+            <nav class="toc-nav" id="articleTocNav">
+                <!-- Dynamically populated from h2/h3 -->
+            </nav>
+        </aside>
+
+    </div>
+
+    <script src="/js/study-reader.js"></script>
+</body>
+
+</html>

@@ -252,4 +252,183 @@ document.addEventListener('DOMContentLoaded', () => {
       closeAllDropdowns();
     });
   });
+
+  // Initialize Upcoming Interviews
+  loadUpcomingInterviews();
+
+  // Socket.IO real-time refresh
+  if (typeof window.io === 'function') {
+    try {
+      const socket = window.io({ auth: { token }, reconnection: true });
+      socket.on('interview:changed', () => {
+        loadUpcomingInterviews();
+      });
+    } catch (_) {}
+  }
+
+  // Periodic fallback refresh
+  window.setInterval(loadUpcomingInterviews, 15000);
 });
+
+// --- Dynamic Real Upcoming Interviews Loader ---
+function escapeHtml(str) {
+  if (!str) return '';
+  const d = document.createElement('div');
+  d.textContent = str;
+  return d.innerHTML;
+}
+
+function formatInterviewSchedule(deadline) {
+  if (!deadline) {
+    return {
+      badgeClass: 'badge blue-bg-badge',
+      badgeText: 'Flexible Schedule'
+    };
+  }
+
+  const d = new Date(deadline);
+  const now = new Date();
+  const timeStr = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  const isToday = d.toDateString() === now.toDateString();
+
+  const tomorrow = new Date(now);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const isTomorrow = d.toDateString() === tomorrow.toDateString();
+
+  let badgeText = '';
+  let badgeClass = 'badge blue-bg-badge';
+
+  if (isToday) {
+    badgeText = `Today • ${timeStr}`;
+    badgeClass = 'badge orange-bg-badge';
+  } else if (isTomorrow) {
+    badgeText = `Tomorrow • ${timeStr}`;
+    badgeClass = 'badge blue-bg-badge';
+  } else {
+    badgeText = `${d.toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' })} • ${timeStr}`;
+    badgeClass = 'badge blue-bg-badge';
+  }
+
+  return { badgeClass, badgeText };
+}
+
+function getCompanyInitial(name, category) {
+  if (name && name.trim()) {
+    return name.trim().charAt(0).toUpperCase();
+  }
+  if (category === 'technical') return 'T';
+  if (category === 'behavioral') return 'B';
+  return 'AI';
+}
+
+async function loadUpcomingInterviews() {
+  const container = document.getElementById('upcomingInterviewsList');
+  const badge = document.getElementById('upcomingInterviewsBadge');
+  if (!container) return;
+
+  const token = localStorage.getItem('token');
+  if (!token) return;
+
+  try {
+    const res = await fetch('/api/interviews/student', {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+
+    if (!res.ok) {
+      throw new Error(`HTTP ${res.status}`);
+    }
+
+    const data = await res.json();
+    const assignments = Array.isArray(data.assignments) ? data.assignments : [];
+
+    // Filter only real, active, upcoming scheduled interviews for this student:
+    // 1. availability must be 'available' (not expired, not completed, not deleted, not draft)
+    // 2. exclude the generic on-demand sandbox practice unless specifically scheduled with a deadline
+    const upcoming = assignments.filter(item => {
+      if (item.availability !== 'available') return false;
+      if (item.title === 'AI HR Interactive Mock Interview' && !item.deadline) return false;
+      return true;
+    });
+
+    if (badge) {
+      badge.textContent = `${upcoming.length} Scheduled`;
+      badge.className = upcoming.length > 0 ? 'badge blue-badge' : 'badge grey-bg';
+    }
+
+    if (upcoming.length === 0) {
+      container.innerHTML = `
+        <div class="card empty-state-card" style="text-align: center; padding: 28px 16px; border: 1px dashed var(--border-color); border-radius: 12px; background: var(--bg-surface);">
+          <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.75" style="margin: 0 auto 10px; opacity: 0.6; display: block; color: var(--text-secondary);">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+          <p style="font-weight: 600; margin: 0; font-size: 14px; color: var(--text-primary);">No upcoming interviews scheduled.</p>
+          <p style="font-size: 12px; margin-top: 4px; margin-bottom: 0; color: var(--text-secondary);">Interviews published by faculty or recruiters will appear here.</p>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = upcoming.map(item => {
+      const schedule = formatInterviewSchedule(item.deadline);
+      const estMinutes = Math.max(15, Math.round(((item.default_preparation_seconds || 30) + (item.default_answer_seconds || 180)) * (item.question_count || 3) / 60));
+      const initial = getCompanyInitial(item.company_name, item.category);
+      const isAi = item.category === 'hr' || (item.title && item.title.toLowerCase().includes('ai'));
+      const roomUrl = `/pages/interview-room.html?assignment=${encodeURIComponent(item.assignment_id)}${isAi ? '&ai=true' : ''}`;
+      const subtitle = (item.company_name ? `${escapeHtml(item.company_name)} • ` : '') +
+        `${escapeHtml(item.category ? item.category.toUpperCase() : 'GENERAL')} (${item.question_count || 0} questions)`;
+
+      return `
+        <div class="card interview-card">
+          <div class="interview-meta">
+            <span class="${schedule.badgeClass}">${escapeHtml(schedule.badgeText)}</span>
+            <span class="time-left">
+              <svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <circle cx="12" cy="13" r="8"/>
+                <path d="M12 9v4l3 2M9 2h6"/>
+              </svg> ${estMinutes} mins
+            </span>
+          </div>
+          <div class="interview-details">
+            <div class="company-icon-box" style="font-size: 15px; font-weight: 700; color: var(--primary); background: rgba(59, 130, 246, 0.1);">
+              ${escapeHtml(initial)}
+            </div>
+            <div>
+              <h3>${escapeHtml(item.title)}</h3>
+              <p>${subtitle}</p>
+            </div>
+          </div>
+          <div class="interview-footer">
+            <span>
+              <svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <rect x="3" y="7" width="18" height="14" rx="3"/>
+                <path d="M12 3v4M8 13h.01M16 13h.01M8 17h8"/>
+              </svg> ${isAi ? 'AI Voice Interviewer' : 'Interview Room'}
+            </span>
+            <a class="btn btn-secondary-sm" href="${roomUrl}" style="text-decoration:none;">Join Room</a>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    // Update NEXT UP in Overview Card if exists
+    const nextUpTitle = document.getElementById('overviewNextUpTitle');
+    const nextUpSub = document.getElementById('overviewNextUpSub');
+    if (nextUpTitle && upcoming[0]) {
+      nextUpTitle.textContent = upcoming[0].title;
+      if (nextUpSub) {
+        nextUpSub.textContent = `${upcoming[0].company_name ? upcoming[0].company_name + ' • ' : ''}${upcoming[0].category.toUpperCase()} interview`;
+      }
+    }
+  } catch (err) {
+    console.error('Error loading upcoming interviews:', err);
+    container.innerHTML = `
+      <div class="card empty-state-card" style="text-align: center; padding: 20px 16px;">
+        <p style="font-size: 13px; color: #ef4444; margin-bottom: 8px;">Unable to load upcoming interviews.</p>
+        <button class="btn btn-secondary-sm" onclick="loadUpcomingInterviews()">Retry</button>
+      </div>
+    `;
+  }
+}

@@ -1,0 +1,67 @@
+/* C-Visualize: White and Blue Theme Design System Tokens */
+:root {
+  --primary-blue: #2563EB;
+  --dark-blue: #1D4ED8;
+  --hover-blue: #1E40AF;
+  --light-blue: #EFF6FF;
+  --light-blue-hover: #DBEAFE;
+  --accent-blue: #3B82F6;
+
+  --main-bg: #FFFFFF;
+  --secondary-bg: #F8FAFC;
+  --tertiary-bg: #F1F5F9;
+  --card-bg: #FFFFFF;
+  --overlay-bg: rgba(15, 23, 42, 0.45);
+
+  --primary-text: #0F172A;
+  --secondary-text: #475569;
+  --muted-text: #64748B;
+  --inverse-text: #FFFFFF;
+
+  --border-color: #E2E8F0;
+  --border-light: #F1F5F9;
+  --border-focus: #2563EB;
+
+  --success: #16A34A;
+  --success-bg: #F0FDF4;
+  --success-border: #BBF7D0;
+
+  --error: #DC2626;
+  --error-bg: #FEF2F2;
+  --error-border: #FECACA;
+
+  --warning: #D97706;
+  --warning-bg: #FFFBEB;
+  --warning-border: #FDE68A;
+
+  --info: #0284C7;
+  --info-bg: #F0F9FF;
+  --info-border: #BAE6FD;
+
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', 'Courier New', monospace;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+  --transition-fast: 150ms ease;
+  --transition-normal: 160ms ease;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+}
+
+/* Optional Dark Editor Theme (only inside editor container) */
+.editor-theme-dark {
+  --editor-bg: #1E1E1E;
+  --editor-text: #D4D4D4;
+  --editor-gutter: #252526;
+  --editor-line-number: #858585;
+}

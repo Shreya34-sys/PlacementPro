@@ -234,7 +234,20 @@ exports.open = async (req, res, next) => {
     res.json({ exam: exam[0], questions: await Exam.studentExam(req.params.examId) });
   } catch (error) { next(error); }
 };
-exports.remove = async (req, res, next) => { try { const removed = await Exam.remove(req.params.examId, req.user.id); if (!removed) return res.status(404).json({ message: 'Exam not found.' }); res.sendStatus(204); } catch (error) { next(error); } };
+exports.remove = async (req, res, next) => { try { const removed = await Exam.remove(req.params.examId, req.user.id); if (!removed) return res.status(404).json({ message: 'Exam not found.' }); const io = req.app.get('io'); if (io) { io.emit('exam:changed', { action: 'deleted', examId: req.params.examId }); } res.sendStatus(204); } catch (error) { next(error); } };
+
+exports.updateStatus = async (req, res, next) => {
+  try {
+    const status = req.body.status === 'published' ? 'published' : 'draft';
+    const updated = await Exam.updateStatus(req.params.examId, req.user.id, status);
+    if (!updated) return res.status(404).json({ message: 'Exam not found.' });
+    const io = req.app.get('io');
+    if (io) {
+      io.emit('exam:changed', { action: 'status_updated', examId: req.params.examId, status });
+    }
+    res.json({ message: `Exam status updated to ${status}.` });
+  } catch (error) { next(error); }
+};
 
 exports.start = async (req, res, next) => {
   try {

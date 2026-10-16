@@ -191,6 +191,16 @@ class Interview {
         ]);
         await connection.execute('INSERT INTO interview_set_questions (set_id, question_id, display_order) VALUES (?, ?, ?)', [setId, q.id, index + 1]);
       }
+
+      if (payload.status === 'published') {
+        const assignmentId = randomUUID();
+        await connection.execute(`INSERT INTO interview_assignments
+          (id, set_id, assigned_by, target_type, deadline, max_attempts, status)
+          VALUES (?, ?, ?, 'all', ?, ?, 'published')`, [
+          assignmentId, setId, adminId, datetime(payload.deadline), number(payload.maxAttempts, 1)
+        ]);
+      }
+
       await connection.commit();
       return setId;
     } catch (error) {
@@ -203,26 +213,72 @@ class Interview {
 
   static async updateSet(adminId, setId, payload) {
     await Interview.ensureTables();
-    const [result] = await db.execute(`UPDATE interview_sets SET title=?, description=?, category=?, company_name=?, status=?,
-      default_preparation_seconds=?, default_answer_seconds=?, max_attempts=?, deadline=?,
-      first_warning_action=?, second_warning_action=?, third_warning_action=?
-      WHERE id=? AND created_by=? AND deleted_at IS NULL`, [
-      String(payload.title || '').trim(), payload.description || null, category(payload.category), payload.companyName || null,
-      ['draft', 'published', 'closed'].includes(payload.status) ? payload.status : 'draft',
-      number(payload.defaultPreparationSeconds, 30), number(payload.defaultAnswerSeconds, 180), number(payload.maxAttempts, 1),
-      datetime(payload.deadline),
-      warningAction(payload.firstWarningAction, 'notify'),
-      warningAction(payload.secondWarningAction, 'fullscreen'),
-      warningAction(payload.thirdWarningAction, 'terminate'),
-      setId, adminId
-    ]);
-    return result.affectedRows === 1;
+    const connection = await db.getConnection();
+    try {
+      await connection.beginTransaction();
+      const status = ['draft', 'published', 'closed'].includes(payload.status) ? payload.status : 'draft';
+      const [result] = await connection.execute(`UPDATE interview_sets SET title=?, description=?, category=?, company_name=?, status=?,
+        default_preparation_seconds=?, default_answer_seconds=?, max_attempts=?, deadline=?,
+        first_warning_action=?, second_warning_action=?, third_warning_action=?
+        WHERE id=? AND created_by=? AND deleted_at IS NULL`, [
+        String(payload.title || '').trim(), payload.description || null, category(payload.category), payload.companyName || null,
+        status,
+        number(payload.defaultPreparationSeconds, 30), number(payload.defaultAnswerSeconds, 180), number(payload.maxAttempts, 1),
+        datetime(payload.deadline),
+        warningAction(payload.firstWarningAction, 'notify'),
+        warningAction(payload.secondWarningAction, 'fullscreen'),
+        warningAction(payload.thirdWarningAction, 'terminate'),
+        setId, adminId
+      ]);
+      if (result.affectedRows === 0) {
+        await connection.rollback();
+        return false;
+      }
+
+      if (status === 'published') {
+        const [[existing]] = await connection.execute('SELECT id FROM interview_assignments WHERE set_id=? LIMIT 1', [setId]);
+        if (existing) {
+          await connection.execute(`UPDATE interview_assignments SET status='published', deadline=?, max_attempts=? WHERE set_id=?`, [
+            datetime(payload.deadline), number(payload.maxAttempts, 1), setId
+          ]);
+        } else {
+          await connection.execute(`INSERT INTO interview_assignments
+            (id, set_id, assigned_by, target_type, deadline, max_attempts, status)
+            VALUES (?, ?, ?, 'all', ?, ?, 'published')`, [
+            randomUUID(), setId, adminId, datetime(payload.deadline), number(payload.maxAttempts, 1)
+          ]);
+        }
+      } else if (status === 'draft' || status === 'closed') {
+        await connection.execute('UPDATE interview_assignments SET status=? WHERE set_id=?', [status, setId]);
+      }
+
+      await connection.commit();
+      return true;
+    } catch (error) {
+      await connection.rollback();
+      throw error;
+    } finally {
+      connection.release();
+    }
   }
 
   static async removeSet(adminId, setId) {
     await Interview.ensureTables();
-    const [result] = await db.execute('UPDATE interview_sets SET deleted_at=NOW() WHERE id=? AND created_by=?', [setId, adminId]);
-    return result.affectedRows === 1;
+    const connection = await db.getConnection();
+    try {
+      await connection.beginTransaction();
+      const [result] = await connection.execute('UPDATE interview_sets SET deleted_at=NOW() WHERE id=? AND created_by=?', [setId, adminId]);
+      if (result.affectedRows === 1) {
+        await connection.execute("UPDATE interview_assignments SET status='closed' WHERE set_id=?", [setId]);
+      }
+      await connection.commit();
+      return result.affectedRows === 1;
+    } catch (error) {
+      await connection.rollback();
+      throw error;
+    } finally {
+      connection.release();
+    }
   }
 
   static async addQuestions(adminId, setId, questions) {
@@ -270,11 +326,14 @@ class Interview {
 
   static async studentDashboard(studentId) {
     await Interview.ensureTables();
-    const [assignments] = await db.execute(`SELECT a.id assignment_id, a.deadline, a.max_attempts, s.id set_id, s.title, s.description,
-      s.category, s.company_name, COUNT(q.question_id) question_count, COUNT(at.id) attempts_used,
+    const [assignments] = await db.execute(`SELECT a.id assignment_id, COALESCE(a.deadline, s.deadline) AS deadline, a.max_attempts,
+      a.created_at AS assigned_at, s.id set_id, s.title, s.description,
+      s.category, s.company_name, s.default_preparation_seconds, s.default_answer_seconds,
+      s.created_at AS set_created_at,
+      COUNT(q.question_id) question_count, COUNT(at.id) attempts_used,
       MAX(at.submitted_at) last_submitted_at,
-      CASE WHEN a.deadline IS NOT NULL AND NOW()>a.deadline THEN 'expired'
-           WHEN COUNT(at.id)>=a.max_attempts THEN 'completed' ELSE 'available' END availability
+      CASE WHEN COALESCE(a.deadline, s.deadline) IS NOT NULL AND NOW() > COALESCE(a.deadline, s.deadline) THEN 'expired'
+           WHEN COUNT(at.id) >= a.max_attempts THEN 'completed' ELSE 'available' END availability
       FROM interview_assignments a JOIN interview_sets s ON s.id=a.set_id
       JOIN students st ON st.std_id=?
       LEFT JOIN interview_set_questions q ON q.set_id=s.id

@@ -21,6 +21,9 @@ const progressRoutes = require('./routes/progressRoutes');
 const interviewRoutes = require('./routes/interviewRoutes');
 const versantRoutes = require('./routes/versantRoutes');
 const codingRoutes = require('./routes/codingRoutes');
+const adminRoutes = require('./routes/adminRoutes');
+const studyRoutes = require('./routes/studyRoutes');
+const compilerRoutes = require('./routes/compilerRoutes');
 
 const app = express();
 const server = http.createServer(app);
@@ -68,6 +71,10 @@ v1Router.use('/versant', versantRoutes);
 v1Router.use('/progress', progressRoutes);
 v1Router.use('/interviews', interviewRoutes);
 v1Router.use('/coding', codingRoutes);
+v1Router.use('/admin', adminRoutes);
+v1Router.use('/study', studyRoutes);
+v1Router.use('/compiler', compilerRoutes);
+v1Router.use('/', compilerRoutes);
 
 app.use('/api/v1', v1Router);
 app.use('/api/exams', examRoutes);
@@ -79,6 +86,10 @@ app.use('/api/companies', companyRoutes);
 app.use('/api/progress', progressRoutes);
 app.use('/api/interviews', interviewRoutes);
 app.use('/api/coding', codingRoutes);
+app.use('/api/admin', adminRoutes);
+app.use('/api/study', studyRoutes);
+app.use('/api/compiler', compilerRoutes);
+app.use('/api', compilerRoutes);
 
 // Keep this last because it contains page/catch-all routes.
 app.use('/', codingViewRoutes);

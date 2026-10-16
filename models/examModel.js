@@ -4,7 +4,7 @@ const { randomUUID } = require('crypto');
 class Exam {
   static async ensureImportColumns(connection = db) {
     const [columns] = await connection.execute(
-      `SELECT TABLE_NAME, COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS
+      `SELECT TABLE_NAME, COLUMN_NAME, IS_NULLABLE FROM INFORMATION_SCHEMA.COLUMNS
        WHERE TABLE_SCHEMA = DATABASE()
          AND ((TABLE_NAME = 'exam_questions' AND COLUMN_NAME IN ('explanation', 'difficulty'))
            OR (TABLE_NAME = 'exams' AND COLUMN_NAME IN ('exam_type', 'instructions')))`
@@ -19,11 +19,8 @@ class Exam {
     if (!existing.has('exams.exam_type')) {
       await connection.execute("ALTER TABLE exams ADD COLUMN exam_type VARCHAR(32) NOT NULL DEFAULT 'aptitude'");
     }
-    const [instructionsCols] = await connection.execute(
-      `SELECT IS_NULLABLE FROM INFORMATION_SCHEMA.COLUMNS
-       WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'exams' AND COLUMN_NAME = 'instructions'`
-    );
-    if (instructionsCols.length && instructionsCols[0].IS_NULLABLE === 'NO') {
+    const instructionsCol = columns.find(c => c.TABLE_NAME === 'exams' && c.COLUMN_NAME === 'instructions');
+    if (instructionsCol && instructionsCol.IS_NULLABLE === 'NO') {
       await connection.execute('ALTER TABLE exams MODIFY COLUMN instructions TEXT NULL');
     }
   }
@@ -255,6 +252,12 @@ class Exam {
 
  static async remove(examId, adminId) {
     const [result] = await db.execute('UPDATE exams SET deleted_at=NOW() WHERE id=? AND created_by=? AND deleted_at IS NULL', [examId, adminId]);
+    return result.affectedRows === 1;
+  }
+
+  static async updateStatus(examId, adminId, status) {
+    const safeStatus = status === 'published' ? 'published' : 'draft';
+    const [result] = await db.execute('UPDATE exams SET status=?, updated_at=NOW() WHERE id=? AND created_by=? AND deleted_at IS NULL', [safeStatus, examId, adminId]);
     return result.affectedRows === 1;
   }
 

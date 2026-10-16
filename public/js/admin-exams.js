@@ -61,6 +61,9 @@
           </div>
 
           <div class="exam-card-actions">
+            <button class="outline toggle-status-btn" data-exam-id="${exam.id}" data-status="${exam.status}" style="font-size:12px;padding:4px 8px;cursor:pointer;">
+              ${exam.status === 'published' ? 'Move to Draft' : 'Publish Test'}
+            </button>
             <a class="outline action-link" href="/pages/proctoring.html?exam=${encodeURIComponent(exam.id)}">
               Open Proctoring
             </a>
@@ -71,6 +74,23 @@
         </article>
       `;
     }).join('');
+
+    root.querySelectorAll('.toggle-status-btn').forEach(button => {
+      button.onclick = async () => {
+        const current = button.dataset.status;
+        const nextStatus = current === 'published' ? 'draft' : 'published';
+        const result = await fetch(`/api/exams/${button.dataset.examId}/status`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+          },
+          body: JSON.stringify({ status: nextStatus })
+        });
+        if (!result.ok) return alert('Could not update test status.');
+        location.reload();
+      };
+    });
 
     root.querySelectorAll('.delete-exam').forEach(button => {
       button.onclick = async () => {

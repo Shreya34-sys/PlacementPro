@@ -1,3 +1,4 @@
+@import '/css/style.css';
 :root {
     --bg-main: #f4f6f9;
     --card-bg: #ffffff;
@@ -202,17 +203,9 @@ body.dark-mode .nav-item.active {
 }
 
 /* Custom Scrollbar for Mega-Menu */
-.nav-dropdown-menu.mega-menu::-webkit-scrollbar {
-    width: 6px;
-}
-.nav-dropdown-menu.mega-menu::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.03);
-    border-radius: 8px;
-}
-.nav-dropdown-menu.mega-menu::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 8px;
-}
+.nav-dropdown-menu.mega-menu::-webkit-scrollbar { display: none !important; width: 0 !important; height: 0 !important; background: transparent !important; }
+.nav-dropdown-menu.mega-menu::-webkit-scrollbar-track { display: none !important; background: transparent !important; }
+.nav-dropdown-menu.mega-menu::-webkit-scrollbar-thumb { display: none !important; background: transparent !important; }
 
 /* 3-Column Grid */
 .mega-menu-grid {
@@ -1353,9 +1346,7 @@ body.dark-mode .purple-bg { background-color: rgba(147, 51, 234, 0.2); }
         scrollbar-width: none;
     }
 
-    .nav-links::-webkit-scrollbar {
-        display: none;
-    }
+    .nav-links::-webkit-scrollbar { display: none !important; width: 0 !important; height: 0 !important; background: transparent !important; }
 
     .nav-item {
         flex: 0 0 auto;

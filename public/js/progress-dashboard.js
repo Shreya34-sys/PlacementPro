@@ -56,9 +56,32 @@ document.addEventListener('DOMContentLoaded', () => {
       animateValue(document.getElementById('progressLatestScore'), summary.score.latest, '%');
       animateValue(document.getElementById('progressBestScore'), summary.score.best, '%');
       animateValue(document.getElementById('progressAverageScore'), summary.score.average, '%');
+
+      const readinessScore = summary.score.average !== undefined ? Math.round(summary.score.average) : 0;
+      const readinessVal = document.getElementById('overviewReadinessVal');
+      const progressFill = document.getElementById('overviewProgressFill');
+      const readinessHeading = document.getElementById('overviewReadinessHeading');
+      const readinessStatus = document.getElementById('overviewReadinessStatus');
+      const readinessSub = document.getElementById('overviewReadinessSub');
+      if (readinessVal) animateValue(readinessVal, readinessScore);
+      if (progressFill) progressFill.style.width = `${Math.min(100, Math.max(0, readinessScore))}%`;
+      if (readinessHeading) {
+        readinessHeading.textContent = readinessScore >= 75 ? 'Placement Ready' : readinessScore >= 40 ? "Making Great Progress" : 'Performance Overview';
+      }
+      if (readinessStatus) {
+        readinessStatus.textContent = readinessScore >= 75 ? 'Strong Profile' : readinessScore >= 40 ? 'Keep Going' : 'Start Practice';
+      }
+      if (readinessSub) {
+        readinessSub.textContent = readinessScore > 0 ? `Based on ${summary.modules?.completed || 0} completed assessment modules.` : 'Complete assessments to calculate your readiness.';
+      }
     }
     if (summary.modules) {
       animateValue(document.getElementById('progressSolvedModules'), summary.modules.completed);
+      const goalPct = summary.modules.percentage !== undefined ? Math.round(summary.modules.percentage) : 0;
+      const goalPercentEl = document.getElementById('weeklyGoalPercent');
+      const goalPathEl = document.getElementById('weeklyGoalCirclePath');
+      if (goalPercentEl) animateValue(goalPercentEl, goalPct, '%');
+      if (goalPathEl) goalPathEl.setAttribute('stroke-dasharray', `${goalPct}, 100`);
     }
 
     const latestTrend = document.getElementById('progressLatestScore')?.parentElement.querySelector('.stat-trend');

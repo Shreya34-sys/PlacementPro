@@ -12,6 +12,11 @@ class User {   //Organizes all database queries related to the users table into 
         return rows[0] || null;
     }
 
+    static async findByUsernameOrEmail(identifier) {
+        const [rows] = await db.execute('SELECT * FROM users WHERE email = ? OR fullName = ?', [identifier, identifier]);
+        return rows[0] || null;
+    }
+
     static async createStudent({ fullName, email, password }) {
         const userId = crypto.randomUUID();   //Generates a unique 36-character string ID (e.g., 123e4567-e89b-12d3-a456-426614174000).
         await db.execute(

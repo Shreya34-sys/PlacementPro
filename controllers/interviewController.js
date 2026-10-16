@@ -50,7 +50,12 @@ exports.listSets = async (req, res, next) => {
 exports.createSet = async (req, res, next) => {
   try {
     if (!String(req.body.title || '').trim()) return res.status(400).json({ message: 'Interview set title is required.' });
-    res.status(201).json({ id: await Interview.createSet(req.user.id, req.body) });
+    const id = await Interview.createSet(req.user.id, req.body);
+    const io = req.app.get('io');
+    if (io) {
+      io.emit('interview:changed', { action: 'created', setId: id, status: req.body.status });
+    }
+    res.status(201).json({ id, message: 'Interview set created successfully.' });
   } catch (error) { next(error); }
 };
 
@@ -58,7 +63,11 @@ exports.updateSet = async (req, res, next) => {
   try {
     const updated = await Interview.updateSet(req.user.id, req.params.setId, req.body);
     if (!updated) return res.status(404).json({ message: 'Interview set not found.' });
-    res.sendStatus(204);
+    const io = req.app.get('io');
+    if (io) {
+      io.emit('interview:changed', { action: 'updated', setId: req.params.setId, status: req.body.status });
+    }
+    res.json({ message: 'Interview set updated successfully.' });
   } catch (error) { next(error); }
 };
 
@@ -66,7 +75,11 @@ exports.removeSet = async (req, res, next) => {
   try {
     const removed = await Interview.removeSet(req.user.id, req.params.setId);
     if (!removed) return res.status(404).json({ message: 'Interview set not found.' });
-    res.sendStatus(204);
+    const io = req.app.get('io');
+    if (io) {
+      io.emit('interview:changed', { action: 'deleted', setId: req.params.setId });
+    }
+    res.json({ message: 'Interview set deleted successfully.' });
   } catch (error) { next(error); }
 };
 
@@ -94,7 +107,12 @@ exports.addQuestions = async (req, res, next) => {
 
 exports.assign = async (req, res, next) => {
   try {
-    res.status(201).json({ id: await Interview.assign(req.user.id, req.params.setId, req.body) });
+    const id = await Interview.assign(req.user.id, req.params.setId, req.body);
+    const io = req.app.get('io');
+    if (io) {
+      io.emit('interview:changed', { action: 'assigned', assignmentId: id, setId: req.params.setId });
+    }
+    res.status(201).json({ id, message: 'Interview assigned successfully.' });
   } catch (error) { next(error); }
 };
 

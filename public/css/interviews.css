@@ -1,3 +1,4 @@
+@import '/css/style.css';
 :root {
   --primary: #2563eb;
   --primary-dark: #1d4ed8;
@@ -579,8 +580,8 @@ body.interview-room-page {
 }
 @media (max-height: 760px) and (min-width: 801px) {
   .consent-card {
-    scrollbar-width: thin;
-    scrollbar-color: #9aacc8 #e7edf6;
+    scrollbar-width: none !important;
+    scrollbar-width: none !important;
   }
   .consent-card::-webkit-scrollbar { width: 8px; }
   .consent-card::-webkit-scrollbar-track { background: #e7edf6; }
@@ -649,8 +650,8 @@ body.interview-room-page {
 }
 @media (max-width: 800px) {
   html, body {
-    scrollbar-width: thin;
-    scrollbar-color: #9aacc8 #e7edf6;
+    scrollbar-width: none !important;
+    scrollbar-width: none !important;
   }
   html::-webkit-scrollbar, body::-webkit-scrollbar { width: 8px; height: 8px; }
   html::-webkit-scrollbar-track, body::-webkit-scrollbar-track { background: #e7edf6; }

@@ -64,6 +64,6 @@ router.get('/:examId/proctoring/active-attempts',auth,adminOnly,proctor.activeAt
 router.get('/:examId/proctoring/flags',auth,adminOnly,proctor.liveFlags);
 router.patch('/proctoring/flags/:flagId/resolve',auth,adminOnly,proctor.resolve);
 router.patch('/proctoring/students/:studentId/remove',auth,adminOnly,proctor.removeStudent);
-router.delete('/:examId',auth,adminOnly,exam.remove); router.get('/:examId',auth,exam.open); router.post('/:examId/attempts',auth,exam.start);
+router.delete('/:examId',auth,adminOnly,exam.remove); router.patch('/:examId/status',auth,adminOnly,exam.updateStatus); router.get('/:examId',auth,exam.open); router.post('/:examId/attempts',auth,exam.start);
 router.put('/attempts/:attemptId/answers',auth,exam.answer); router.post('/attempts/:attemptId/submit',auth,exam.submit); router.get('/attempts/:attemptId/result',auth,exam.result); router.post('/attempts/:attemptId/flags',auth,proctor.flag);
 module.exports=router;

@@ -1,3 +1,4 @@
+@import '/css/style.css';
 *{box-sizing:border-box}
 :root{--ink:#172033;--muted:#687386;--line:#dfe5ee;--surface:#fff;--page:#f3f5f8;--accent:#243b80;--danger:#c92828;--success:#16834b}
 body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--page);color:var(--ink)}

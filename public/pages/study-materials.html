@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlacementPro - CS Study Materials & Theory Tutorials</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/stddash.css">
+    <link rel="stylesheet" href="/css/study-materials.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Global Header & Navbar -->
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <a href="/dashboard" class="logo" style="text-decoration: none; color: inherit;">
+                    <div class="logo-icon">
+                        <svg viewBox="0 0 24 24" width="1.2em" height="1.2em" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+                            focusable="false">
+                            <rect width="20" height="14" x="2" y="7" rx="2" ry="2" />
+                            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+                        </svg>
+                    </div>
+                    <span>PlacementPro</span>
+                </a>
+            </div>
+
+            <!-- Main Navigation Links -->
+            <nav class="nav-links" id="studentNavigation">
+                <a href="/dashboard" class="nav-item">Home</a>
+                <a href="/placement-workspace" class="nav-item">Placement Prep</a>
+                <a href="/available-exams" class="nav-item">Practice</a>
+                <a href="/companies" class="nav-item">Companies</a>
+                <a href="/study-materials" class="nav-item active" aria-current="page">Study Materials</a>
+                <a href="/dashboard#progressSection" class="nav-item">Analytics</a>
+            </nav>
+
+            <div class="nav-right">
+                <button class="icon-btn theme-toggle" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                    <svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M20.5 15.5A8.5 8.5 0 0 1 8.5 3.5 8.5 8.5 0 1 0 20.5 15.5Z" />
+                    </svg>
+                </button>
+
+                <!-- Profile Widget -->
+                <div class="profile-container" id="profileDropdownContainer">
+                    <div class="user-profile" id="profileTrigger">
+                        <div class="avatar" id="navAvatar">ST</div>
+                        <div class="user-info">
+                            <span class="user-name" id="navUserName">Student</span>
+                            <span class="user-role">Student Mode</span>
+                        </div>
+                    </div>
+
+                    <div class="profile-menu" id="profileMenu">
+                        <div class="menu-header">
+                            <strong id="menuUserName">Student</strong>
+                            <p id="menuUserEmail">student@placementpro.edu</p>
+                        </div>
+                        <div class="menu-divider"></div>
+                        <a href="/profile" class="menu-item">Profile &amp; Portfolio</a>
+                        <a href="/study-materials" class="menu-item">Study Materials</a>
+                        <div class="menu-divider"></div>
+                        <a href="/login" class="menu-item logout" id="logoutBtn">Log Out</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="study-container">
+
+        <!-- Compact Enterprise Header Card -->
+        <section class="study-hero-card">
+            <div class="study-hero-header">
+                <div class="study-hero-header-left">
+                    <span class="study-badge-tag">
+                        <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                        </svg>
+                        Curriculum Repository
+                    </span>
+                    <h1>Core Computer Science Study Materials</h1>
+                    <p>Structured theory tutorials, architectural concepts, placement notes, and chapter-wise references.</p>
+                </div>
+            </div>
+
+            <!-- Subtle KPI Row -->
+            <div class="study-stats-grid">
+                <div class="study-stat-card">
+                    <div class="study-stat-icon">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                    </div>
+                    <div class="study-stat-info">
+                        <span class="study-stat-label">Topics Read</span>
+                        <span class="study-stat-value" id="statTopicsCompleted">0</span>
+                    </div>
+                </div>
+
+                <div class="study-stat-card">
+                    <div class="study-stat-icon">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path>
+                        </svg>
+                    </div>
+                    <div class="study-stat-info">
+                        <span class="study-stat-label">Saved Bookmarks</span>
+                        <span class="study-stat-value" id="statBookmarksCount">0</span>
+                    </div>
+                </div>
+
+                <div class="study-stat-card">
+                    <div class="study-stat-icon">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                        </svg>
+                    </div>
+                    <div class="study-stat-info">
+                        <span class="study-stat-label">Total Curricula</span>
+                        <span class="study-stat-value" id="statTotalTopics">0</span>
+                    </div>
+                </div>
+
+                <div class="study-stat-card">
+                    <div class="study-stat-icon">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="m9 12 2 2 4-4"></path>
+                        </svg>
+                    </div>
+                    <div class="study-stat-info">
+                        <span class="study-stat-label">Overall Progress</span>
+                        <span class="study-stat-value" id="statOverallProgress">0%</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recently Read Topics Ribbon -->
+        <div id="recentTopicsSection" style="display: none;">
+            <div class="section-heading-row">
+                <h2 class="section-heading">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                    Continue Reading (Recently Viewed)
+                </h2>
+            </div>
+            <div class="recent-strip" id="recentTopicsList">
+                <!-- Dynamically rendered -->
+            </div>
+        </div>
+
+        <!-- Bookmarks Section -->
+        <div id="bookmarksSection" style="display: none;">
+            <div class="section-heading-row">
+                <h2 class="section-heading">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path>
+                    </svg>
+                    Saved Bookmarks
+                </h2>
+            </div>
+            <div class="recent-strip" id="bookmarksList">
+                <!-- Dynamically rendered -->
+            </div>
+        </div>
+
+        <!-- Search & Category Filters -->
+        <div class="study-controls">
+            <div class="search-wrapper">
+                <span class="search-icon">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </span>
+                <input type="text" id="subjectSearchInput" class="search-input" placeholder="Search subjects, topics, or key concepts (e.g. ACID, Deadlocks)..." autocomplete="off">
+            </div>
+
+            <div class="category-chips" id="categoryChips">
+                <button class="category-chip active" data-category="All">All Subjects</button>
+                <button class="category-chip" data-category="Core CS">Core CS</button>
+                <button class="category-chip" data-category="Programming">Programming</button>
+                <button class="category-chip" data-category="Database">Database</button>
+                <button class="category-chip" data-category="Systems">Systems</button>
+                <button class="category-chip" data-category="Theory">Theory</button>
+                <button class="category-chip" data-category="Web">Web Dev</button>
+            </div>
+        </div>
+
+        <!-- Live Search Results Dropdown/Card if query active -->
+        <div id="liveSearchResults" style="display: none; margin-bottom: 24px;">
+            <div class="section-heading-row">
+                <h3 class="section-heading" id="searchResultsHeading">Search Results</h3>
+            </div>
+            <div class="recent-strip" id="searchResultsList"></div>
+        </div>
+
+        <!-- Subject Cards Grid -->
+        <div class="subjects-grid" id="subjectsGrid">
+            <div style="grid-column: 1 / -1; padding: 48px; text-align: center; color: var(--study-text-muted);">
+                Loading comprehensive study materials...
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer-bar" style="text-align: center; padding: 24px; color: var(--study-text-muted); font-size: 0.85rem; border-top: 1px solid var(--study-border);">
+        <strong>PlacementPro</strong> • Department of Computer Science &amp; Business Systems (CSBS)
+    </footer>
+
+    <script src="/js/study-materials.js"></script>
+</body>
+
+</html>

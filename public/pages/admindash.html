@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PlacementPro - Faculty Intelligence Hub</title>
+    <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/admindash.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -167,6 +168,17 @@
             <span class="blue-dot"></span>
         </a>
 
+        <a href="/admin-study-materials" class="subnav-item">
+            <span class="icon">
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z" />
+                    <path d="M6 6h10M6 10h10" />
+                </svg>
+            </span>
+            <span>Study Materials Studio</span>
+            <span class="blue-dot"></span>
+        </a>
+
         <a href="/versant-admin" class="subnav-item">
             <span class="icon">
                 <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -229,6 +241,7 @@
                 </div>
                 <div class="hero-action-buttons">
                     <a class="btn btn-secondary" id="manageDrivesBtn" href="/admin-exams">Manage Aptitude Tests</a>
+                    <a class="btn btn-secondary" href="/admin-study-materials">Study Materials Studio</a>
                     <a class="btn btn-primary" href="/admin-interviews">Manage Interviews</a>
                 </div>
             </div>
@@ -246,8 +259,8 @@
                         </svg>
                     </div>
                 </div>
-                <div class="stat-card-value">2</div>
-                <div class="stat-card-meta">470 Registrations Total</div>
+                <div class="stat-card-value" id="adminStatActiveDrives">0</div>
+                <div class="stat-card-meta" id="adminStatDrivesMeta">0 Registrations Total</div>
             </div>
 
             <div class="stat-card">
@@ -259,8 +272,8 @@
                         </svg>
                     </div>
                 </div>
-                <div class="stat-card-value text-orange">2</div>
-                <div class="stat-card-meta">Pending AI Approvals</div>
+                <div class="stat-card-value text-orange" id="adminStatMarketAlerts">0</div>
+                <div class="stat-card-meta" id="adminStatAlertsMeta">Pending AI Approvals</div>
             </div>
 
             <div class="stat-card">
@@ -273,8 +286,8 @@
                         </svg>
                     </div>
                 </div>
-                <div class="stat-card-value">4</div>
-                <div class="stat-card-meta highlight-blue">Vector Store Operational</div>
+                <div class="stat-card-value" id="adminStatRagChunks">0</div>
+                <div class="stat-card-meta highlight-blue" id="adminStatRagMeta">RAG Knowledge Engine</div>
             </div>
 
             <div class="stat-card">
@@ -287,8 +300,8 @@
                         </svg>
                     </div>
                 </div>
-                <div class="stat-card-value text-green">88.5%</div>
-                <div class="stat-card-meta">KIT TY CSBS Batch</div>
+                <div class="stat-card-value text-green" id="adminStatAvgReadiness">0%</div>
+                <div class="stat-card-meta" id="adminStatBatchMeta">CSBS Batch Average</div>
             </div>
         </section>
 
@@ -368,62 +381,9 @@
                         <a href="/admin-exams" class="sec-link">View All &amp; Create &rarr;</a>
                     </div>
 
-                    <div class="drives-list">
-                        <!-- Drive 1: TCS -->
-                        <div class="drive-item-row">
-                            <div class="drive-icon-box blue">
-                                <span>TCS</span>
-                            </div>
-                            <div class="drive-details">
-                                <div class="drive-title-line">
-                                    <span class="company-name">Tata Consultancy Services (TCS)</span>
-                                    <span class="status-tag active">ACTIVE</span>
-                                </div>
-                                <div class="drive-sub">TCS Digital / Ninja Campus Drive 2026 • 7.5 LPA (Avg)</div>
-                                <div class="drive-eligibility">Eligibility: Min CGPA 6.5 | CSBS, CSE, IT, ENTC, Electrical</div>
-                            </div>
-                            <div class="drive-stats-right">
-                                <span class="reg-count">218 <small>registered</small></span>
-                                <span class="eval-rounds">4 Evaluated Rounds</span>
-                            </div>
-                        </div>
-
-                        <!-- Drive 2: Persistent -->
-                        <div class="drive-item-row">
-                            <div class="drive-icon-box orange">
-                                <span>PS</span>
-                            </div>
-                            <div class="drive-details">
-                                <div class="drive-title-line">
-                                    <span class="company-name">Persistent Systems</span>
-                                    <span class="status-tag active">ACTIVE</span>
-                                </div>
-                                <div class="drive-sub">Software Product Engineer (SPE) • 8.5 LPA</div>
-                                <div class="drive-eligibility">Eligibility: Min CGPA 7.0 | CSBS, CSE, IT</div>
-                            </div>
-                            <div class="drive-stats-right">
-                                <span class="reg-count">164 <small>registered</small></span>
-                                <span class="eval-rounds">3 Evaluated Rounds</span>
-                            </div>
-                        </div>
-
-                        <!-- Drive 3: Google -->
-                        <div class="drive-item-row">
-                            <div class="drive-icon-box indigo">
-                                <span>G</span>
-                            </div>
-                            <div class="drive-details">
-                                <div class="drive-title-line">
-                                    <span class="company-name">Google India</span>
-                                    <span class="status-tag draft">DRAFT</span>
-                                </div>
-                                <div class="drive-sub">Software Engineer - Early Career 2026 • 32.0 LPA</div>
-                                <div class="drive-eligibility">Eligibility: Min CGPA 8.5 | CSBS, CSE, IT</div>
-                            </div>
-                            <div class="drive-stats-right">
-                                <span class="reg-count">88 <small>registered</small></span>
-                                <span class="eval-rounds">2 Evaluated Rounds</span>
-                            </div>
+                    <div class="drives-list" id="adminDrivesList">
+                        <div class="drive-item-row" style="padding: 24px; text-align: center; color: var(--text-muted, #64748b);">
+                            Loading active placement drives...
                         </div>
                     </div>
                 </div>
@@ -447,43 +407,9 @@
                     </div>
                     <p class="sec-subtext">AI agents monitor live recruiter hiring benchmarks and propose instant syllabus or test rubric updates.</p>
 
-                    <div class="alerts-wrapper">
-                        <!-- Alert 1 -->
-                        <div class="alert-box-item" id="alert-1">
-                            <div class="alert-item-header">
-                                <span class="alert-comp">Tata Consultancy Services (TCS)</span>
-                                <span class="conf-badge">97% Confidence</span>
-                            </div>
-                            <div class="alert-headline">Auto-Upgrade TCS Digital Coding Pool to Include TAC Verification</div>
-                            <p class="alert-desc">TCS Digital 2026 exam benchmarks demonstrate a 25% higher candidate rejection rate for unoptimized intermediate memory code. Recruiter rubric prioritizes TAC verification.</p>
-                            <div class="alert-action-buttons">
-                                <button type="button" class="btn btn-ghost-sm" onclick="rejectAlert('alert-1')">Reject</button>
-                                <button type="button" class="btn btn-green-sm" onclick="approveAlert('alert-1')">
-                                    <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                        <polyline points="20 6 9 17 4 12"></polyline>
-                                    </svg>
-                                    <span>Approve &amp; Sync</span>
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Alert 2 -->
-                        <div class="alert-box-item" id="alert-2">
-                            <div class="alert-item-header">
-                                <span class="alert-comp">Persistent Systems</span>
-                                <span class="conf-badge">93% Confidence</span>
-                            </div>
-                            <div class="alert-headline">Stricter Memory & System Architecture Thresholds</div>
-                            <p class="alert-desc">Persistent remote screening drives have updated their evaluation standards, prioritizing multi-threaded logic and optimized SQL joins.</p>
-                            <div class="alert-action-buttons">
-                                <button type="button" class="btn btn-ghost-sm" onclick="rejectAlert('alert-2')">Reject</button>
-                                <button type="button" class="btn btn-green-sm" onclick="approveAlert('alert-2')">
-                                    <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                        <polyline points="20 6 9 17 4 12"></polyline>
-                                    </svg>
-                                    <span>Approve &amp; Sync</span>
-                                </button>
-                            </div>
+                    <div class="alerts-wrapper" id="adminAlertsWrapper">
+                        <div style="padding: 24px; text-align: center; color: var(--text-muted, #64748b); font-size: 0.875rem;">
+                            No pending market alerts at this time.
                         </div>
                     </div>
 

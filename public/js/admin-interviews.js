@@ -121,7 +121,12 @@ function renderSets() {
           <h3 style="margin-top:8px">${escapeHtml(set.title)}</h3>
           <p class="subtitle">${escapeHtml(set.description || 'No description')}</p>
         </div>
-        <button class="btn danger delete-set" data-id="${escapeHtml(set.id)}">Delete</button>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <button class="btn toggle-set" data-id="${escapeHtml(set.id)}" data-status="${escapeHtml(set.status)}">
+            ${set.status === 'published' ? 'Move to Draft' : 'Publish & Schedule'}
+          </button>
+          <button class="btn danger delete-set" data-id="${escapeHtml(set.id)}">Delete</button>
+        </div>
       </div>
       <div class="meta">
         <span>${labelCategory(set.category)}</span>
@@ -131,10 +136,39 @@ function renderSets() {
       </div>
     </article>
   `).join('');
+
+  root.querySelectorAll('.toggle-set').forEach(button => button.addEventListener('click', async () => {
+    const id = button.dataset.id;
+    const current = button.dataset.status;
+    const nextStatus = current === 'published' ? 'draft' : 'published';
+    const setObj = state.sets.find(s => s.id === id) || {};
+    const response = await api(`/api/interviews/admin/sets/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        title: setObj.title,
+        description: setObj.description,
+        category: setObj.category,
+        companyName: setObj.company_name,
+        status: nextStatus,
+        defaultPreparationSeconds: setObj.default_preparation_seconds,
+        defaultAnswerSeconds: setObj.default_answer_seconds,
+        maxAttempts: setObj.max_attempts,
+        deadline: setObj.deadline,
+        firstWarningAction: setObj.first_warning_action,
+        secondWarningAction: setObj.second_warning_action,
+        thirdWarningAction: setObj.third_warning_action
+      })
+    });
+    if (!response.ok) return showStatus('Unable to update set status.', 'error');
+    showStatus(`Interview set moved to ${nextStatus}.`, 'success');
+    await loadSets();
+  }));
+
   root.querySelectorAll('.delete-set').forEach(button => button.addEventListener('click', async () => {
     if (!confirm('Delete this interview set?')) return;
     const response = await api(`/api/interviews/admin/sets/${button.dataset.id}`, { method: 'DELETE' });
     if (!response.ok) return showStatus('Unable to delete set.', 'error');
+    showStatus('Interview set deleted.', 'success');
     await loadSets();
   }));
 }

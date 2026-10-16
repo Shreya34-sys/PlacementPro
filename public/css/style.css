@@ -1,0 +1,114 @@
+/* ==========================================================================
+   PlacementPro - Global Cross-Browser Scrollbar Removal & Base Responsive Normalization
+   Removes visible scrollbars everywhere (Chrome, Edge, Firefox, Safari, Opera)
+   while strictly preserving mouse-wheel, trackpad, touch swipe, and keyboard scrolling.
+   Prevents unintended horizontal overflow without using breaking overflow:hidden.
+   ========================================================================== */
+
+/* Universal Box Sizing */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Document Root Viewport Safety */
+html,
+body {
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  scrollbar-width: none !important; /* Firefox */
+  -ms-overflow-style: none !important; /* IE & Edge Legacy */
+}
+
+/* Universal Scrollbar Elimination for WebKit Browsers (Chrome, Edge, Safari, iOS, Android) */
+*::-webkit-scrollbar,
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  background: transparent !important;
+  -webkit-appearance: none !important;
+}
+
+/* Universal Scrollbar Elimination for Firefox and Standards-Compliant Engines */
+* {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Media Safety - Prevent Image and SVG Blowout */
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Responsive Containers: Tables, Pre/Code Blocks, Sidebars & Drawers */
+/* Retains horizontal/vertical scrollability without showing visual scrollbars */
+pre,
+code,
+table,
+.table-responsive,
+.code-block,
+.reader-sidebar,
+.reader-toc,
+.reader-content-pane,
+.curriculum-list,
+.modal-content,
+.modal-body,
+.nav-links,
+.subnav-bar,
+.study-controls,
+.study-breadcrumbs,
+.reader-breadcrumbs,
+.reader-actions,
+.tags-scroll,
+.dropdown-menu,
+.nav-dropdown-menu,
+.mega-menu,
+.offcanvas,
+.sheet-content {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+pre::-webkit-scrollbar,
+code::-webkit-scrollbar,
+table::-webkit-scrollbar,
+.table-responsive::-webkit-scrollbar,
+.code-block::-webkit-scrollbar,
+.reader-sidebar::-webkit-scrollbar,
+.reader-toc::-webkit-scrollbar,
+.reader-content-pane::-webkit-scrollbar,
+.curriculum-list::-webkit-scrollbar,
+.modal-content::-webkit-scrollbar,
+.modal-body::-webkit-scrollbar,
+.nav-links::-webkit-scrollbar,
+.subnav-bar::-webkit-scrollbar,
+.study-controls::-webkit-scrollbar,
+.study-breadcrumbs::-webkit-scrollbar,
+.reader-breadcrumbs::-webkit-scrollbar,
+.reader-actions::-webkit-scrollbar,
+.tags-scroll::-webkit-scrollbar,
+.dropdown-menu::-webkit-scrollbar,
+.nav-dropdown-menu::-webkit-scrollbar,
+.mega-menu::-webkit-scrollbar,
+.offcanvas::-webkit-scrollbar,
+.sheet-content::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  background: transparent !important;
+  -webkit-appearance: none !important;
+}
