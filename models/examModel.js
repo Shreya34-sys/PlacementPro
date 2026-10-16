@@ -106,8 +106,9 @@ class Exam {
   static async create(adminId, payload) {
     const connection = await db.getConnection();
     try {
-      const hasImportMetadata = payload.topics.some(topic =>
-        topic.questions.some(question => question.explanation || question.difficulty)
+      const topics = Array.isArray(payload.topics) ? payload.topics : [];
+      const hasImportMetadata = topics.some(topic =>
+        Array.isArray(topic?.questions) && topic.questions.some(question => question.explanation || question.difficulty)
       );
       if (hasImportMetadata) await Exam.ensureImportColumns(connection);
       if (payload.importFingerprint) await Exam.ensureImportTable(connection);
@@ -115,15 +116,19 @@ class Exam {
       const duplicate = await Exam.claimImport(connection, adminId, payload);
       if (duplicate) return duplicate;
       const examId = randomUUID();
+      const now = new Date();
+      const startsAt = payload.startsAt || now.toISOString().slice(0, 19).replace('T', ' ');
+      const endsAt = payload.endsAt || new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 19).replace('T', ' ');
       await connection.execute(`INSERT INTO exams
         (id, created_by, title, exam_type, instructions, duration_minutes, starts_at, ends_at, status, negative_marking)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         [examId, adminId, payload.title, payload.examType || payload.exam_type || 'aptitude', payload.instructions || '', payload.durationMinutes || 20,
-          payload.startsAt, payload.endsAt, payload.status || 'draft', payload.negativeMarking || 0]);
-      for (const [topicIndex, topic] of payload.topics.entries()) {
+          startsAt, endsAt, payload.status || 'draft', payload.negativeMarking || 0]);
+      for (const [topicIndex, topic] of topics.entries()) {
         const topicId = randomUUID();
-        await connection.execute('INSERT INTO exam_topics (id, exam_id, name, display_order) VALUES (?, ?, ?, ?)', [topicId, examId, topic.name, topicIndex + 1]);
-        for (const [questionIndex, question] of topic.questions.entries()) {
+        await connection.execute('INSERT INTO exam_topics (id, exam_id, name, display_order) VALUES (?, ?, ?, ?)', [topicId, examId, topic.name || 'General', topicIndex + 1]);
+        const questions = Array.isArray(topic.questions) ? topic.questions : [];
+        for (const [questionIndex, question] of questions.entries()) {
           const questionId = randomUUID();
           if (hasImportMetadata) {
             await connection.execute(`INSERT INTO exam_questions (id, exam_id, topic_id, question_text, explanation, difficulty, marks, display_order)
@@ -134,16 +139,17 @@ class Exam {
               question.text,
               question.explanation || null,
               question.difficulty || 'medium',
-              question.marks,
+              question.marks || 1,
               question.displayOrder || questionIndex + 1
             ]);
           } else {
             await connection.execute(`INSERT INTO exam_questions (id, exam_id, topic_id, question_text, marks, display_order)
-              VALUES (?, ?, ?, ?, ?, ?)`, [questionId, examId, topicId, question.text, question.marks, question.displayOrder || questionIndex + 1]);
+              VALUES (?, ?, ?, ?, ?, ?)`, [questionId, examId, topicId, question.text, question.marks || 1, question.displayOrder || questionIndex + 1]);
           }
-          const correctCount = question.options.filter(option => option.isCorrect).length;
+          const options = Array.isArray(question.options) ? question.options : [];
+          const correctCount = options.filter(option => option.isCorrect).length;
           if (correctCount !== 1) throw new Error('Each MCQ must have exactly one correct option.');
-          for (const [optionIndex, option] of question.options.entries()) {
+          for (const [optionIndex, option] of options.entries()) {
             await connection.execute('INSERT INTO question_options (id, question_id, option_text, is_correct, display_order) VALUES (?, ?, ?, ?, ?)',
               [randomUUID(), questionId, option.text, option.isCorrect, optionIndex + 1]);
           }

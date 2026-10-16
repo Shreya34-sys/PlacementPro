@@ -27,8 +27,16 @@ exports.adminList = async (req, res, next) => {
 
 exports.adminCreate = async (req, res, next) => {
   try {
-    const required = ['title', 'startsAt', 'endsAt'];
-    if (required.some(k => !req.body[k])) return res.status(400).json({ message: 'Title, start time and end time are required.' });
+    if (!req.body || !req.body.title || !String(req.body.title).trim()) {
+      return res.status(400).json({ message: 'Title is required.' });
+    }
+    if (!req.body.startsAt) {
+      req.body.startsAt = new Date().toISOString().slice(0, 19).replace('T', ' ');
+    }
+    if (!req.body.endsAt) {
+      const duration = Number(req.body.durationMinutes) || 60;
+      req.body.endsAt = new Date(Date.now() + duration * 60 * 1000).toISOString().slice(0, 19).replace('T', ' ');
+    }
     res.status(201).json(await CodingRound.create(req.user.id, req.body));
   } catch (e) { next(e); }
 };

@@ -104,7 +104,12 @@ function rowsFromSubmittedQuestions(questions) {
 }
 
 exports.create = async (req, res, next) => {
-  try { res.status(201).json({ id: await Exam.create(req.user.id, req.body) }); } catch (error) { next(error); }
+  try {
+    if (!req.body || !req.body.title || !String(req.body.title).trim()) {
+      return res.status(400).json({ success: false, message: 'Exam title is required.' });
+    }
+    res.status(201).json({ id: await Exam.create(req.user.id, req.body) });
+  } catch (error) { next(error); }
 };
 
 exports.template = async (req, res, next) => {

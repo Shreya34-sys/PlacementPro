@@ -1,0 +1,835 @@
+{
+  "pages": [
+    {
+      "route": "/",
+      "status": 200,
+      "ok": true,
+      "brokenAssets": [],
+      "placeholderLinks": [
+        {
+          "text": "College Support",
+          "href": "#"
+        },
+        {
+          "text": "Find us online",
+          "href": "#"
+        },
+        {
+          "text": "DSA Preparation",
+          "href": "#"
+        },
+        {
+          "text": "Aptitude & Reasoning",
+          "href": "#"
+        },
+        {
+          "text": "Programming",
+          "href": "#"
+        },
+        {
+          "text": "Core CS Subjects",
+          "href": "#"
+        },
+        {
+          "text": "Web Development",
+          "href": "#"
+        },
+        {
+          "text": "Placement Preparation",
+          "href": "#"
+        },
+        {
+          "text": "Interview Preparation",
+          "href": "#"
+        },
+        {
+          "text": "Resume Building",
+          "href": "#"
+        },
+        {
+          "text": "Mock Interviews",
+          "href": "#"
+        },
+        {
+          "text": "Company Preparation",
+          "href": "#"
+        },
+        {
+          "text": "About Us",
+          "href": "#"
+        },
+        {
+          "text": "For Students",
+          "href": "#"
+        },
+        {
+          "text": "For Colleges",
+          "href": "#"
+        },
+        {
+          "text": "Contact Us",
+          "href": "#"
+        },
+        {
+          "text": "Privacy Policy",
+          "href": "#"
+        },
+        {
+          "text": "Terms & Conditions",
+          "href": "#"
+        },
+        {
+          "text": "Placement Roadmaps",
+          "href": "#"
+        },
+        {
+          "text": "Practice Tests",
+          "href": "#"
+        },
+        {
+          "text": "Coding Resources",
+          "href": "#"
+        },
+        {
+          "text": "Interview Questions",
+          "href": "#"
+        },
+        {
+          "text": "Placement Blogs",
+          "href": "#"
+        },
+        {
+          "text": "FAQs",
+          "href": "#"
+        },
+        {
+          "text": "LinkedIn",
+          "href": "#"
+        },
+        {
+          "text": "GitHub",
+          "href": "#"
+        },
+        {
+          "text": "Instagram",
+          "href": "#"
+        }
+      ],
+      "forms": [],
+      "buttonsCount": 0
+    },
+    {
+      "route": "/login",
+      "status": 200,
+      "ok": true,
+      "brokenAssets": [],
+      "placeholderLinks": [
+        {
+          "text": "Forgot Password?",
+          "href": "#"
+        }
+      ],
+      "forms": [
+        {
+          "action": "(none/JS handler)",
+          "method": "GET"
+        }
+      ],
+      "buttonsCount": 2
+    },
+    {
+      "route": "/signup",
+      "status": 200,
+      "ok": true,
+      "brokenAssets": [],
+      "placeholderLinks": [
+        {
+          "text": "Terms & Conditions",
+          "href": "#"
+        },
+        {
+          "text": "Privacy Policy",
+          "href": "#"
+        }
+      ],
+      "forms": [
+        {
+          "action": "(none/JS handler)",
+          "method": "GET"
+        }
+      ],
+      "buttonsCount": 3
+    },
+    {
+      "route": "/admin-login",
+      "status": 200,
+      "ok": true,
+      "brokenAssets": [],
+      "placeholderLinks": [],
+      "forms": [
+        {
+          "action": "(none/JS handler)",
+          "method": "GET"
+        }
+      ],
+      "buttonsCount": 2
+    },
+    {
+      "route": "/dashboard",
+      "status": 200,
+      "ok": true,
+      "brokenAssets": [],
+      "placeholderLinks": [],
+      "forms": [],
+      "buttonsCount": 8
+    },
+    {
+      "route": "/admindash",
+      "status": 200,
+      "ok": true,
+      "brokenAssets": [],
+      "placeholderLinks": [],
+      "forms": [],
+      "buttonsCount": 7
+    },
+    {
+      "route": "/profile",
+      "status": 200,
+      "ok": true,
+      "brokenAssets": [],
+      "placeholderLinks": [],
+      "forms": [
+        {
+          "action": "(none/JS handler)",
+          "method": "GET"
+        }
+      ],
+      "buttonsCount": 5
+    },
+    {
+      "route": "/resume-analyzer",
+      "status": 200,
+      "ok": true,
+      "brokenAssets": [],
+      "placeholderLinks": [],
+      "forms": [
+        {
+          "action": "(none/JS handler)",
+          "method": "GET"
+        }
+      ],
+      "buttonsCount": 3
+    },
+    {
+      "route": "/available-exams",
+      "status": 200,
+      "ok": true,
+      "brokenAssets": [],
+      "placeholderLinks": [],
+      "forms": [],
+      "buttonsCount": 0
+    },
+    {
+      "route": "/exam-guidelines",
+      "status": 200,
+      "ok": true,
+      "brokenAssets": [],
+      "placeholderLinks": [],
+      "forms": [],
+      "buttonsCount": 2
+    },
+    {
+      "route": "/take-exam",
+      "status": 200,
+      "ok": true,
+      "brokenAssets": [],
+      "placeholderLinks": [],
+      "forms": [],
+      "buttonsCount": 3
+    },
+    {
+      "route": "/live-exam",
+      "status": 200,
+      "ok": true,
+      "brokenAssets": [],
+      "placeholderLinks": [],
+      "forms": [],
+      "buttonsCount": 7
+    },
+    {
+      "route": "/exam-result",
+      "status": 200,
+      "ok": true,
+      "brokenAssets": [],
+      "placeholderLinks": [],
+      "forms": [],
+      "buttonsCount": 0
+    },
+    {
+      "route": "/versant-test",
+      "status": 200,
+      "ok": true,
+      "brokenAssets": [],
+      "placeholderLinks": [],
+      "forms": [],
+      "buttonsCount": 2
+    },
+    {
+      "route": "/versant-result",
+      "status": 200,
+      "ok": true,
+      "brokenAssets": [],
+      "placeholderLinks": [],
+      "forms": [],
+      "buttonsCount": 0
+    },
+    {
+      "route": "/interviews",
+      "status": 200,
+      "ok": true,
+      "brokenAssets": [],
+      "placeholderLinks": [],
+      "forms": [],
+      "buttonsCount": 2
+    },
+    {
+      "route": "/interview-room",
+      "status": 200,
+      "ok": true,
+      "brokenAssets": [],
+      "placeholderLinks": [],
+      "forms": [],
+      "buttonsCount": 12
+    },
+    {
+      "route": "/placement-workspace",
+      "status": 200,
+      "ok": true,
+      "brokenAssets": [],
+      "placeholderLinks": [],
+      "forms": [],
+      "buttonsCount": 5
+    },
+    {
+      "route": "/admin-interviews",
+      "status": 200,
+      "ok": true,
+      "brokenAssets": [],
+      "placeholderLinks": [],
+      "forms": [
+        {
+          "action": "(none/JS handler)",
+          "method": "GET"
+        },
+        {
+          "action": "(none/JS handler)",
+          "method": "GET"
+        }
+      ],
+      "buttonsCount": 9
+    },
+    {
+      "route": "/admin-question-import",
+      "status": 200,
+      "ok": true,
+      "brokenAssets": [],
+      "placeholderLinks": [],
+      "forms": [
+        {
+          "action": "(none/JS handler)",
+          "method": "GET"
+        }
+      ],
+      "buttonsCount": 3
+    },
+    {
+      "route": "/versant-admin",
+      "status": 200,
+      "ok": true,
+      "brokenAssets": [],
+      "placeholderLinks": [],
+      "forms": [
+        {
+          "action": "(none/JS handler)",
+          "method": "GET"
+        },
+        {
+          "action": "(none/JS handler)",
+          "method": "GET"
+        }
+      ],
+      "buttonsCount": 9
+    },
+    {
+      "route": "/proctoring",
+      "status": 200,
+      "ok": true,
+      "brokenAssets": [],
+      "placeholderLinks": [],
+      "forms": [],
+      "buttonsCount": 0
+    },
+    {
+      "route": "/companies",
+      "status": 200,
+      "ok": true,
+      "brokenAssets": [],
+      "placeholderLinks": [],
+      "forms": [],
+      "buttonsCount": 5
+    },
+    {
+      "route": "/company-prep",
+      "status": 200,
+      "ok": true,
+      "brokenAssets": [],
+      "placeholderLinks": [],
+      "forms": [],
+      "buttonsCount": 10
+    },
+    {
+      "route": "/study-materials",
+      "status": 200,
+      "ok": true,
+      "brokenAssets": [],
+      "placeholderLinks": [],
+      "forms": [],
+      "buttonsCount": 8
+    },
+    {
+      "route": "/study-reader",
+      "status": 200,
+      "ok": true,
+      "brokenAssets": [],
+      "placeholderLinks": [
+        {
+          "text": "Theory",
+          "href": "#"
+        },
+        {
+          "text": "&larr; Previous Topic\n        ",
+          "href": "#"
+        },
+        {
+          "text": "Next Topic &rarr;\n            ",
+          "href": "#"
+        }
+      ],
+      "forms": [],
+      "buttonsCount": 3
+    },
+    {
+      "route": "/admin-study-materials",
+      "status": 200,
+      "ok": true,
+      "brokenAssets": [],
+      "placeholderLinks": [],
+      "forms": [
+        {
+          "action": "(none/JS handler)",
+          "method": "GET"
+        },
+        {
+          "action": "(none/JS handler)",
+          "method": "GET"
+        },
+        {
+          "action": "(none/JS handler)",
+          "method": "GET"
+        },
+        {
+          "action": "(none/JS handler)",
+          "method": "GET"
+        }
+      ],
+      "buttonsCount": 35
+    },
+    {
+      "route": "/compiler-practice",
+      "status": 200,
+      "ok": true,
+      "brokenAssets": [],
+      "placeholderLinks": [],
+      "forms": [],
+      "buttonsCount": 47
+    },
+    {
+      "route": "/admin-exams",
+      "status": 200,
+      "ok": true,
+      "brokenAssets": [],
+      "placeholderLinks": [],
+      "forms": [],
+      "buttonsCount": 0
+    },
+    {
+      "route": "/admin-exam-builder",
+      "status": 200,
+      "ok": true,
+      "brokenAssets": [],
+      "placeholderLinks": [],
+      "forms": [
+        {
+          "action": "(none/JS handler)",
+          "method": "GET"
+        },
+        {
+          "action": "(none/JS handler)",
+          "method": "GET"
+        }
+      ],
+      "buttonsCount": 4
+    },
+    {
+      "route": "/live-proctoring",
+      "status": 200,
+      "ok": true,
+      "brokenAssets": [],
+      "placeholderLinks": [],
+      "forms": [],
+      "buttonsCount": 0
+    },
+    {
+      "route": "/admin-coding-rounds",
+      "status": 200,
+      "ok": true,
+      "brokenAssets": [],
+      "placeholderLinks": [],
+      "forms": [],
+      "buttonsCount": 0
+    },
+    {
+      "route": "/admin-coding-builder",
+      "status": 200,
+      "ok": true,
+      "brokenAssets": [],
+      "placeholderLinks": [],
+      "forms": [],
+      "buttonsCount": 6
+    },
+    {
+      "route": "/admin-coding-monitor",
+      "status": 200,
+      "ok": true,
+      "brokenAssets": [],
+      "placeholderLinks": [],
+      "forms": [],
+      "buttonsCount": 0
+    },
+    {
+      "route": "/admin-coding-results",
+      "status": 200,
+      "ok": true,
+      "brokenAssets": [],
+      "placeholderLinks": [],
+      "forms": [],
+      "buttonsCount": 0
+    },
+    {
+      "route": "/coding-rounds",
+      "status": 200,
+      "ok": true,
+      "brokenAssets": [],
+      "placeholderLinks": [],
+      "forms": [],
+      "buttonsCount": 0
+    },
+    {
+      "route": "/coding-round",
+      "status": 200,
+      "ok": true,
+      "brokenAssets": [],
+      "placeholderLinks": [],
+      "forms": [],
+      "buttonsCount": 4
+    },
+    {
+      "route": "/coding-result",
+      "status": 200,
+      "ok": true,
+      "brokenAssets": [],
+      "placeholderLinks": [],
+      "forms": [],
+      "buttonsCount": 0
+    }
+  ],
+  "deadLinks": [
+    {
+      "page": "/",
+      "text": "College Support",
+      "href": "#"
+    },
+    {
+      "page": "/",
+      "text": "Find us online",
+      "href": "#"
+    },
+    {
+      "page": "/",
+      "text": "DSA Preparation",
+      "href": "#"
+    },
+    {
+      "page": "/",
+      "text": "Aptitude & Reasoning",
+      "href": "#"
+    },
+    {
+      "page": "/",
+      "text": "Programming",
+      "href": "#"
+    },
+    {
+      "page": "/",
+      "text": "Core CS Subjects",
+      "href": "#"
+    },
+    {
+      "page": "/",
+      "text": "Web Development",
+      "href": "#"
+    },
+    {
+      "page": "/",
+      "text": "Placement Preparation",
+      "href": "#"
+    },
+    {
+      "page": "/",
+      "text": "Interview Preparation",
+      "href": "#"
+    },
+    {
+      "page": "/",
+      "text": "Resume Building",
+      "href": "#"
+    },
+    {
+      "page": "/",
+      "text": "Mock Interviews",
+      "href": "#"
+    },
+    {
+      "page": "/",
+      "text": "Company Preparation",
+      "href": "#"
+    },
+    {
+      "page": "/",
+      "text": "About Us",
+      "href": "#"
+    },
+    {
+      "page": "/",
+      "text": "For Students",
+      "href": "#"
+    },
+    {
+      "page": "/",
+      "text": "For Colleges",
+      "href": "#"
+    },
+    {
+      "page": "/",
+      "text": "Contact Us",
+      "href": "#"
+    },
+    {
+      "page": "/",
+      "text": "Privacy Policy",
+      "href": "#"
+    },
+    {
+      "page": "/",
+      "text": "Terms & Conditions",
+      "href": "#"
+    },
+    {
+      "page": "/",
+      "text": "Placement Roadmaps",
+      "href": "#"
+    },
+    {
+      "page": "/",
+      "text": "Practice Tests",
+      "href": "#"
+    },
+    {
+      "page": "/",
+      "text": "Coding Resources",
+      "href": "#"
+    },
+    {
+      "page": "/",
+      "text": "Interview Questions",
+      "href": "#"
+    },
+    {
+      "page": "/",
+      "text": "Placement Blogs",
+      "href": "#"
+    },
+    {
+      "page": "/",
+      "text": "FAQs",
+      "href": "#"
+    },
+    {
+      "page": "/",
+      "text": "LinkedIn",
+      "href": "#"
+    },
+    {
+      "page": "/",
+      "text": "GitHub",
+      "href": "#"
+    },
+    {
+      "page": "/",
+      "text": "Instagram",
+      "href": "#"
+    },
+    {
+      "page": "/login",
+      "text": "Forgot Password?",
+      "href": "#"
+    },
+    {
+      "page": "/signup",
+      "text": "Terms & Conditions",
+      "href": "#"
+    },
+    {
+      "page": "/signup",
+      "text": "Privacy Policy",
+      "href": "#"
+    },
+    {
+      "page": "/study-reader",
+      "text": "Theory",
+      "href": "#"
+    },
+    {
+      "page": "/study-reader",
+      "text": "&larr; Previous Topic\n        ",
+      "href": "#"
+    },
+    {
+      "page": "/study-reader",
+      "text": "Next Topic &rarr;\n            ",
+      "href": "#"
+    }
+  ],
+  "missingAssets": [],
+  "brokenButtons": [],
+  "apiEndpoints": [
+    {
+      "name": "Compiler Info",
+      "path": "/api/v1/compiler/info",
+      "status": 200,
+      "ok": true,
+      "json": true
+    },
+    {
+      "name": "Study Subjects",
+      "path": "/api/v1/study/subjects",
+      "status": 200,
+      "ok": true,
+      "json": true
+    },
+    {
+      "name": "Companies Catalog",
+      "path": "/api/companies",
+      "status": 200,
+      "ok": true,
+      "json": true
+    },
+    {
+      "name": "Available Exams",
+      "path": "/api/exams/available",
+      "status": 200,
+      "ok": true,
+      "json": true
+    },
+    {
+      "name": "Coding Rounds Catalog",
+      "path": "/api/coding/rounds",
+      "status": 404,
+      "ok": false,
+      "json": false
+    },
+    {
+      "name": "Interviews Available",
+      "path": "/api/interviews/available",
+      "status": 404,
+      "ok": false,
+      "json": false
+    },
+    {
+      "name": "Versant Available Tests",
+      "path": "/api/versant/tests",
+      "status": 404,
+      "ok": false,
+      "json": false
+    },
+    {
+      "name": "Student Progress Overview",
+      "path": "/api/progress/overview",
+      "status": 404,
+      "ok": false,
+      "json": false
+    },
+    {
+      "name": "Admin Exam List",
+      "path": "/api/exams",
+      "status": 404,
+      "ok": false,
+      "json": false
+    },
+    {
+      "name": "Admin Interview Questions",
+      "path": "/api/interviews/admin/questions",
+      "status": 404,
+      "ok": false,
+      "json": false
+    }
+  ],
+  "authChecks": [
+    {
+      "check": "Student Registration",
+      "pass": true,
+      "details": 201
+    },
+    {
+      "check": "Student Login (/api/v1/auth/login)",
+      "pass": true,
+      "details": 200
+    },
+    {
+      "check": "Admin Login (/api/auth/admin-login)",
+      "pass": true,
+      "details": 200
+    },
+    {
+      "check": "Auth Me endpoint",
+      "pass": true,
+      "details": 200
+    },
+    {
+      "check": "Unauthenticated API rejection",
+      "pass": true,
+      "details": 401
+    }
+  ],
+  "dbIntegrity": {
+    "usersCount": 9,
+    "examsCount": 9,
+    "questionsCount": 14,
+    "subjectsCount": 16,
+    "topicsCount": 32,
+    "companiesCount": 8,
+    "interviewQuestionsCount": 24,
+    "codingQuestionsCount": 0,
+    "compilerJobsCount": 8
+  }
+}

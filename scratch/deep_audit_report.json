@@ -1,0 +1,426 @@
+{
+  "auth": [
+    {
+      "category": "Auth",
+      "item": "Admin Login",
+      "endpoint": "/api/auth/admin-login",
+      "expected": "Returns 200 with JWT token for admin",
+      "actual": "Admin authenticated with valid JWT",
+      "status": "PASS",
+      "severity": "Critical"
+    },
+    {
+      "category": "Auth",
+      "item": "Student Registration",
+      "endpoint": "/api/v1/auth/register",
+      "expected": "Returns 201 with created student profile & JWT",
+      "actual": "Student registered with valid JWT",
+      "status": "PASS",
+      "severity": "Critical"
+    },
+    {
+      "category": "Auth Guard",
+      "item": "Role Permission Isolation (Student -> Admin Exams)",
+      "endpoint": "/api/exams/admin",
+      "expected": "Returns 403 Forbidden",
+      "actual": "Correctly rejected with 403 Forbidden",
+      "status": "PASS",
+      "severity": "High"
+    }
+  ],
+  "crud": [
+    {
+      "category": "CRUD",
+      "item": "Exam Creation (Admin)",
+      "endpoint": "/api/exams",
+      "expected": "Creates exam in MySQL and returns 200/201",
+      "actual": "HTTP 500: {\"success\":false,\"message\":\"Cannot read properties of undefined (reading 'some')",
+      "status": "FAIL",
+      "severity": "Critical"
+    },
+    {
+      "category": "CRUD",
+      "item": "Interview Set Creation (Admin)",
+      "endpoint": "/api/interviews/admin/sets",
+      "expected": "Creates interview set and returns 200/201",
+      "actual": "Interview Set created with ID e6371781-58fb-461e-9d3c-8046bd0e920b",
+      "status": "PASS",
+      "severity": "High"
+    },
+    {
+      "category": "CRUD",
+      "item": "Interview Set Deletion (Admin Cleanup)",
+      "endpoint": "/api/interviews/admin/sets/e6371781-58fb-461e-9d3c-8046bd0e920b",
+      "expected": "Deletes interview set and returns 200",
+      "actual": "Set deleted successfully",
+      "status": "PASS",
+      "severity": "Medium"
+    },
+    {
+      "category": "CRUD",
+      "item": "Coding Round Creation (Admin)",
+      "endpoint": "/api/coding/admin/rounds",
+      "expected": "Creates coding round and returns 200/201",
+      "actual": "HTTP 400",
+      "status": "FAIL",
+      "severity": "High"
+    },
+    {
+      "category": "CRUD",
+      "item": "C-Visualize Project Creation (Student)",
+      "endpoint": "/api/v1/projects",
+      "expected": "Creates project and returns 201 with project ID",
+      "actual": "Project created with ID 4",
+      "status": "PASS",
+      "severity": "High"
+    },
+    {
+      "category": "CRUD",
+      "item": "C-Visualize Version Commit",
+      "endpoint": "/api/v1/projects/4/versions",
+      "expected": "Creates version 2 and returns 201",
+      "actual": "Version 2 created",
+      "status": "PASS",
+      "severity": "Medium"
+    },
+    {
+      "category": "CRUD",
+      "item": "C-Visualize Project Deletion",
+      "endpoint": "/api/v1/projects/4",
+      "expected": "Deletes project and returns 200",
+      "actual": "Project deleted",
+      "status": "PASS",
+      "severity": "Medium"
+    }
+  ],
+  "endpoints": [
+    {
+      "category": "Exams",
+      "item": "Student Available Exams",
+      "endpoint": "/api/exams/available",
+      "expected": "Returns HTTP 200",
+      "actual": "Received HTTP 200",
+      "status": "PASS",
+      "severity": "Low"
+    },
+    {
+      "category": "Exams",
+      "item": "Admin Exams Listing",
+      "endpoint": "/api/exams/admin",
+      "expected": "Returns HTTP 200",
+      "actual": "Received HTTP 200",
+      "status": "PASS",
+      "severity": "Low"
+    },
+    {
+      "category": "Interviews",
+      "item": "Student Dashboard Interviews",
+      "endpoint": "/api/interviews/student",
+      "expected": "Returns HTTP 200",
+      "actual": "Received HTTP 200",
+      "status": "PASS",
+      "severity": "Low"
+    },
+    {
+      "category": "Interviews",
+      "item": "Admin Interview Sets",
+      "endpoint": "/api/interviews/admin/sets",
+      "expected": "Returns HTTP 200",
+      "actual": "Received HTTP 200",
+      "status": "PASS",
+      "severity": "Low"
+    },
+    {
+      "category": "Interviews",
+      "item": "AI HR Default Assignment",
+      "endpoint": "/api/interviews/ai/default-assignment",
+      "expected": "Returns HTTP 200",
+      "actual": "Received HTTP 200",
+      "status": "PASS",
+      "severity": "Low"
+    },
+    {
+      "category": "Coding",
+      "item": "Student Coding Rounds",
+      "endpoint": "/api/coding/student/rounds",
+      "expected": "Returns HTTP 200",
+      "actual": "Received HTTP 200",
+      "status": "PASS",
+      "severity": "Low"
+    },
+    {
+      "category": "Coding",
+      "item": "Admin Coding Rounds",
+      "endpoint": "/api/coding/admin/rounds",
+      "expected": "Returns HTTP 200",
+      "actual": "Received HTTP 200",
+      "status": "PASS",
+      "severity": "Low"
+    },
+    {
+      "category": "Versant",
+      "item": "Student Versant Tests",
+      "endpoint": "/api/versant/student/tests",
+      "expected": "Returns HTTP 200",
+      "actual": "Received HTTP 200",
+      "status": "PASS",
+      "severity": "Low"
+    },
+    {
+      "category": "Versant",
+      "item": "Admin Versant Tests",
+      "endpoint": "/api/versant/admin/tests",
+      "expected": "Returns HTTP 200",
+      "actual": "Received HTTP 200",
+      "status": "PASS",
+      "severity": "Low"
+    },
+    {
+      "category": "Companies",
+      "item": "Companies Catalog",
+      "endpoint": "/api/companies",
+      "expected": "Returns HTTP 200",
+      "actual": "Received HTTP 200",
+      "status": "PASS",
+      "severity": "Low"
+    },
+    {
+      "category": "Study",
+      "item": "Study Subjects Catalog",
+      "endpoint": "/api/v1/study/subjects",
+      "expected": "Returns HTTP 200",
+      "actual": "Received HTTP 200",
+      "status": "PASS",
+      "severity": "Low"
+    },
+    {
+      "category": "Progress",
+      "item": "Student Progress Summary",
+      "endpoint": "/api/progress/summary",
+      "expected": "Returns HTTP 200",
+      "actual": "Received HTTP 200",
+      "status": "PASS",
+      "severity": "Low"
+    },
+    {
+      "category": "Compiler",
+      "item": "Compiler Toolchain Info",
+      "endpoint": "/api/v1/compiler/info",
+      "expected": "Returns HTTP 200",
+      "actual": "Received HTTP 200",
+      "status": "PASS",
+      "severity": "Low"
+    },
+    {
+      "category": "Compiler",
+      "item": "Compiler Sample Exercises",
+      "endpoint": "/api/v1/compiler/exercises",
+      "expected": "Returns HTTP 200",
+      "actual": "Received HTTP 200",
+      "status": "PASS",
+      "severity": "Low"
+    }
+  ],
+  "buttonAnalysis": [
+    {
+      "file": "admin-coding-builder.js",
+      "boundElements": 0,
+      "sampleIds": []
+    },
+    {
+      "file": "admin-coding-monitor.js",
+      "boundElements": 0,
+      "sampleIds": []
+    },
+    {
+      "file": "admin-coding-results.js",
+      "boundElements": 0,
+      "sampleIds": []
+    },
+    {
+      "file": "admin-coding-rounds.js",
+      "boundElements": 0,
+      "sampleIds": []
+    },
+    {
+      "file": "admin-exam-builder.js",
+      "boundElements": 0,
+      "sampleIds": []
+    },
+    {
+      "file": "admin-exams.js",
+      "boundElements": 0,
+      "sampleIds": []
+    },
+    {
+      "file": "admin-interviews.js",
+      "boundElements": 9,
+      "sampleIds": [
+        "addQuestionBtn",
+        "setForm",
+        "reloadSetsBtn",
+        "reloadSubmissionsBtn",
+        "assignBtn"
+      ]
+    },
+    {
+      "file": "admin-question-import.js",
+      "boundElements": 0,
+      "sampleIds": []
+    },
+    {
+      "file": "admin-study-materials.js",
+      "boundElements": 0,
+      "sampleIds": []
+    },
+    {
+      "file": "admindash.js",
+      "boundElements": 0,
+      "sampleIds": []
+    },
+    {
+      "file": "app.js",
+      "boundElements": 0,
+      "sampleIds": []
+    },
+    {
+      "file": "auth.js",
+      "boundElements": 0,
+      "sampleIds": []
+    },
+    {
+      "file": "available-exams.js",
+      "boundElements": 0,
+      "sampleIds": []
+    },
+    {
+      "file": "coding-proctor.js",
+      "boundElements": 0,
+      "sampleIds": []
+    },
+    {
+      "file": "coding-result.js",
+      "boundElements": 0,
+      "sampleIds": []
+    },
+    {
+      "file": "coding-round.js",
+      "boundElements": 0,
+      "sampleIds": []
+    },
+    {
+      "file": "coding-rounds.js",
+      "boundElements": 0,
+      "sampleIds": []
+    },
+    {
+      "file": "companies.js",
+      "boundElements": 0,
+      "sampleIds": []
+    },
+    {
+      "file": "compiler-practice.js",
+      "boundElements": 0,
+      "sampleIds": []
+    },
+    {
+      "file": "exam-client.js",
+      "boundElements": 0,
+      "sampleIds": []
+    },
+    {
+      "file": "exam-result.js",
+      "boundElements": 0,
+      "sampleIds": []
+    },
+    {
+      "file": "interview-room.js",
+      "boundElements": 5,
+      "sampleIds": [
+        "previewMediaBtn",
+        "exitInterviewBtn",
+        "rulesAcknowledged",
+        "startConfirmation",
+        "startBtn"
+      ]
+    },
+    {
+      "file": "interviews.js",
+      "boundElements": 1,
+      "sampleIds": [
+        "refreshBtn"
+      ]
+    },
+    {
+      "file": "placement-workspace.js",
+      "boundElements": 0,
+      "sampleIds": []
+    },
+    {
+      "file": "proctoring-dashboard.js",
+      "boundElements": 0,
+      "sampleIds": []
+    },
+    {
+      "file": "progress-dashboard.js",
+      "boundElements": 0,
+      "sampleIds": []
+    },
+    {
+      "file": "resume-analyzer.js",
+      "boundElements": 0,
+      "sampleIds": []
+    },
+    {
+      "file": "stddash.js",
+      "boundElements": 0,
+      "sampleIds": []
+    },
+    {
+      "file": "stdprofile.js",
+      "boundElements": 0,
+      "sampleIds": []
+    },
+    {
+      "file": "student-proctor.js",
+      "boundElements": 0,
+      "sampleIds": []
+    },
+    {
+      "file": "study-materials.js",
+      "boundElements": 0,
+      "sampleIds": []
+    },
+    {
+      "file": "study-reader.js",
+      "boundElements": 0,
+      "sampleIds": []
+    },
+    {
+      "file": "take-exam.js",
+      "boundElements": 0,
+      "sampleIds": []
+    },
+    {
+      "file": "versant-admin.js",
+      "boundElements": 0,
+      "sampleIds": []
+    },
+    {
+      "file": "versant-result.js",
+      "boundElements": 0,
+      "sampleIds": []
+    },
+    {
+      "file": "versant-test.js",
+      "boundElements": 0,
+      "sampleIds": []
+    }
+  ],
+  "summary": {
+    "passed": 22,
+    "failed": 2,
+    "blocked": 0,
+    "notTested": 0
+  }
+}
