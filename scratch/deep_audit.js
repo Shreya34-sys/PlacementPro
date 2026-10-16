@@ -146,13 +146,25 @@ async function deepAudit() {
         description: 'Audit test exam',
         durationMinutes: 30,
         passingPercentage: 60,
+        status: 'published',
         topic: 'Aptitude',
-        questions: [
+        topics: [
           {
-            text: 'What is 10 + 10?',
-            options: ['10', '20', '30', '40'],
-            correctOption: 1,
-            explanation: '10 + 10 = 20'
+            name: 'Aptitude',
+            questions: [
+              {
+                text: 'What is 10 + 10?',
+                options: [
+                  { text: '10', isCorrect: false },
+                  { text: '20', isCorrect: true },
+                  { text: '30', isCorrect: false },
+                  { text: '40', isCorrect: false }
+                ],
+                explanation: '10 + 10 = 20',
+                difficulty: 'easy',
+                marks: 1
+              }
+            ]
           }
         ]
       }
@@ -201,13 +213,14 @@ async function deepAudit() {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${adminToken}` }
       });
+      const isDeleted = delExam.statusCode === 200 || delExam.statusCode === 204;
       report.crud.push(record({
         category: 'CRUD',
         item: 'Exam Deletion (Admin Cleanup)',
         endpoint: `/api/exams/${createdExamId}`,
-        expected: 'Deletes exam and returns 200',
-        actual: delExam.statusCode === 200 ? 'Exam deleted successfully' : `HTTP ${delExam.statusCode}`,
-        status: delExam.statusCode === 200 ? 'PASS' : 'FAIL',
+        expected: 'Deletes exam and returns 200/204',
+        actual: isDeleted ? 'Exam deleted successfully' : `HTTP ${delExam.statusCode}`,
+        status: isDeleted ? 'PASS' : 'FAIL',
         severity: 'Medium'
       }));
     }

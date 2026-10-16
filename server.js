@@ -104,4 +104,11 @@ app.use((error, req, res, next) => {
 });
 
 const PORT = process.env.PORT || 5000;
-server.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+server.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+  // Automated startup routine: Ensure isolated Docker compiler worker is running
+  const workerManager = require('./services/compiler/workerManager');
+  workerManager.ensureWorkerRunning().catch(err => {
+    console.warn('[Startup] Compiler worker check failed:', err.message);
+  });
+});

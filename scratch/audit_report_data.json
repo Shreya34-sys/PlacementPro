@@ -5,116 +5,7 @@
       "status": 200,
       "ok": true,
       "brokenAssets": [],
-      "placeholderLinks": [
-        {
-          "text": "College Support",
-          "href": "#"
-        },
-        {
-          "text": "Find us online",
-          "href": "#"
-        },
-        {
-          "text": "DSA Preparation",
-          "href": "#"
-        },
-        {
-          "text": "Aptitude & Reasoning",
-          "href": "#"
-        },
-        {
-          "text": "Programming",
-          "href": "#"
-        },
-        {
-          "text": "Core CS Subjects",
-          "href": "#"
-        },
-        {
-          "text": "Web Development",
-          "href": "#"
-        },
-        {
-          "text": "Placement Preparation",
-          "href": "#"
-        },
-        {
-          "text": "Interview Preparation",
-          "href": "#"
-        },
-        {
-          "text": "Resume Building",
-          "href": "#"
-        },
-        {
-          "text": "Mock Interviews",
-          "href": "#"
-        },
-        {
-          "text": "Company Preparation",
-          "href": "#"
-        },
-        {
-          "text": "About Us",
-          "href": "#"
-        },
-        {
-          "text": "For Students",
-          "href": "#"
-        },
-        {
-          "text": "For Colleges",
-          "href": "#"
-        },
-        {
-          "text": "Contact Us",
-          "href": "#"
-        },
-        {
-          "text": "Privacy Policy",
-          "href": "#"
-        },
-        {
-          "text": "Terms & Conditions",
-          "href": "#"
-        },
-        {
-          "text": "Placement Roadmaps",
-          "href": "#"
-        },
-        {
-          "text": "Practice Tests",
-          "href": "#"
-        },
-        {
-          "text": "Coding Resources",
-          "href": "#"
-        },
-        {
-          "text": "Interview Questions",
-          "href": "#"
-        },
-        {
-          "text": "Placement Blogs",
-          "href": "#"
-        },
-        {
-          "text": "FAQs",
-          "href": "#"
-        },
-        {
-          "text": "LinkedIn",
-          "href": "#"
-        },
-        {
-          "text": "GitHub",
-          "href": "#"
-        },
-        {
-          "text": "Instagram",
-          "href": "#"
-        }
-      ],
+      "placeholderLinks": [],
       "forms": [],
       "buttonsCount": 0
     },
@@ -404,15 +295,15 @@
       "placeholderLinks": [
         {
           "text": "Theory",
-          "href": "#"
+          "href": "javascript:void(0)"
         },
         {
           "text": "&larr; Previous Topic\n        ",
-          "href": "#"
+          "href": "javascript:void(0)"
         },
         {
           "text": "Next Topic &rarr;\n            ",
-          "href": "#"
+          "href": "javascript:void(0)"
         }
       ],
       "forms": [],
@@ -555,141 +446,6 @@
   ],
   "deadLinks": [
     {
-      "page": "/",
-      "text": "College Support",
-      "href": "#"
-    },
-    {
-      "page": "/",
-      "text": "Find us online",
-      "href": "#"
-    },
-    {
-      "page": "/",
-      "text": "DSA Preparation",
-      "href": "#"
-    },
-    {
-      "page": "/",
-      "text": "Aptitude & Reasoning",
-      "href": "#"
-    },
-    {
-      "page": "/",
-      "text": "Programming",
-      "href": "#"
-    },
-    {
-      "page": "/",
-      "text": "Core CS Subjects",
-      "href": "#"
-    },
-    {
-      "page": "/",
-      "text": "Web Development",
-      "href": "#"
-    },
-    {
-      "page": "/",
-      "text": "Placement Preparation",
-      "href": "#"
-    },
-    {
-      "page": "/",
-      "text": "Interview Preparation",
-      "href": "#"
-    },
-    {
-      "page": "/",
-      "text": "Resume Building",
-      "href": "#"
-    },
-    {
-      "page": "/",
-      "text": "Mock Interviews",
-      "href": "#"
-    },
-    {
-      "page": "/",
-      "text": "Company Preparation",
-      "href": "#"
-    },
-    {
-      "page": "/",
-      "text": "About Us",
-      "href": "#"
-    },
-    {
-      "page": "/",
-      "text": "For Students",
-      "href": "#"
-    },
-    {
-      "page": "/",
-      "text": "For Colleges",
-      "href": "#"
-    },
-    {
-      "page": "/",
-      "text": "Contact Us",
-      "href": "#"
-    },
-    {
-      "page": "/",
-      "text": "Privacy Policy",
-      "href": "#"
-    },
-    {
-      "page": "/",
-      "text": "Terms & Conditions",
-      "href": "#"
-    },
-    {
-      "page": "/",
-      "text": "Placement Roadmaps",
-      "href": "#"
-    },
-    {
-      "page": "/",
-      "text": "Practice Tests",
-      "href": "#"
-    },
-    {
-      "page": "/",
-      "text": "Coding Resources",
-      "href": "#"
-    },
-    {
-      "page": "/",
-      "text": "Interview Questions",
-      "href": "#"
-    },
-    {
-      "page": "/",
-      "text": "Placement Blogs",
-      "href": "#"
-    },
-    {
-      "page": "/",
-      "text": "FAQs",
-      "href": "#"
-    },
-    {
-      "page": "/",
-      "text": "LinkedIn",
-      "href": "#"
-    },
-    {
-      "page": "/",
-      "text": "GitHub",
-      "href": "#"
-    },
-    {
-      "page": "/",
-      "text": "Instagram",
-      "href": "#"
-    },
-    {
       "page": "/login",
       "text": "Forgot Password?",
       "href": "#"
@@ -707,17 +463,17 @@
     {
       "page": "/study-reader",
       "text": "Theory",
-      "href": "#"
+      "href": "javascript:void(0)"
     },
     {
       "page": "/study-reader",
       "text": "&larr; Previous Topic\n        ",
-      "href": "#"
+      "href": "javascript:void(0)"
     },
     {
       "page": "/study-reader",
       "text": "Next Topic &rarr;\n            ",
-      "href": "#"
+      "href": "javascript:void(0)"
     }
   ],
   "missingAssets": [],
@@ -823,12 +579,12 @@
   ],
   "dbIntegrity": {
     "usersCount": 9,
-    "examsCount": 9,
+    "examsCount": 11,
     "questionsCount": 14,
     "subjectsCount": 16,
     "topicsCount": 32,
     "companiesCount": 8,
-    "interviewQuestionsCount": 24,
+    "interviewQuestionsCount": 27,
     "codingQuestionsCount": 0,
     "compilerJobsCount": 8
   }

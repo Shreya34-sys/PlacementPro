@@ -173,9 +173,11 @@ test('Educational Practice: Exercises list includes beginner, intermediate, and 
 test('Sandbox Security: Worker fail-closed behavior when worker is unconfigured or offline', async () => {
   // worker.compile must throw or reject cleanly when worker is offline/unreachable
   // and MUST NOT compile or execute code on the host machine.
+  const originalUrl = process.env.COMPILER_WORKER_URL;
   try {
+    process.env.COMPILER_WORKER_URL = 'http://127.0.0.1:59999';
     await worker.compile({
-      jobId: 'test-job',
+      jobId: '12345678-1234-1234-1234-123456789abc',
       sourceCode: 'int main() { return 0; }',
       standard: 'c11',
       optimization: '-O0'
@@ -189,6 +191,8 @@ test('Sandbox Security: Worker fail-closed behavior when worker is unconfigured 
       err.message.toLowerCase().includes('refus'),
       `Expected fail-closed error message, got: ${err.message}`
     );
+  } finally {
+    process.env.COMPILER_WORKER_URL = originalUrl;
   }
 });
 

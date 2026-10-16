@@ -144,6 +144,7 @@ class CompilerService {
     let versionInfo;
     let gccResult;
     try {
+      const originalServiceUrl = process.env.ORIGINAL_COMPILER_SERVICE_URL;
       if (originalServiceUrl) {
         try {
           const resp = await fetch(`${originalServiceUrl.replace(/\/+$/, '')}/api/v1/compile`, {

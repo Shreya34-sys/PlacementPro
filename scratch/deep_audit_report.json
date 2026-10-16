@@ -34,23 +34,41 @@
       "item": "Exam Creation (Admin)",
       "endpoint": "/api/exams",
       "expected": "Creates exam in MySQL and returns 200/201",
-      "actual": "HTTP 500: {\"success\":false,\"message\":\"Cannot read properties of undefined (reading 'some')",
-      "status": "FAIL",
+      "actual": "Exam created with ID 0f7ce00a-0691-478a-abc6-ccbd8caa625a",
+      "status": "PASS",
       "severity": "Critical"
+    },
+    {
+      "category": "CRUD",
+      "item": "Student Exam Visibility",
+      "endpoint": "/api/exams/available",
+      "expected": "Created exam appears in student available exams",
+      "actual": "Exam visible to student",
+      "status": "PASS",
+      "severity": "High"
+    },
+    {
+      "category": "CRUD",
+      "item": "Exam Deletion (Admin Cleanup)",
+      "endpoint": "/api/exams/0f7ce00a-0691-478a-abc6-ccbd8caa625a",
+      "expected": "Deletes exam and returns 200/204",
+      "actual": "Exam deleted successfully",
+      "status": "PASS",
+      "severity": "Medium"
     },
     {
       "category": "CRUD",
       "item": "Interview Set Creation (Admin)",
       "endpoint": "/api/interviews/admin/sets",
       "expected": "Creates interview set and returns 200/201",
-      "actual": "Interview Set created with ID e6371781-58fb-461e-9d3c-8046bd0e920b",
+      "actual": "Interview Set created with ID 6907c52e-d64e-4c78-93f9-01c27899ba84",
       "status": "PASS",
       "severity": "High"
     },
     {
       "category": "CRUD",
       "item": "Interview Set Deletion (Admin Cleanup)",
-      "endpoint": "/api/interviews/admin/sets/e6371781-58fb-461e-9d3c-8046bd0e920b",
+      "endpoint": "/api/interviews/admin/sets/6907c52e-d64e-4c78-93f9-01c27899ba84",
       "expected": "Deletes interview set and returns 200",
       "actual": "Set deleted successfully",
       "status": "PASS",
@@ -61,23 +79,32 @@
       "item": "Coding Round Creation (Admin)",
       "endpoint": "/api/coding/admin/rounds",
       "expected": "Creates coding round and returns 200/201",
-      "actual": "HTTP 400",
-      "status": "FAIL",
+      "actual": "Round created with ID 7482fb5e-5117-40dd-a8ea-565745b2f2a1",
+      "status": "PASS",
       "severity": "High"
+    },
+    {
+      "category": "CRUD",
+      "item": "Coding Round Deletion (Admin Cleanup)",
+      "endpoint": "/api/coding/admin/rounds/7482fb5e-5117-40dd-a8ea-565745b2f2a1",
+      "expected": "Deletes coding round and returns 200",
+      "actual": "Round deleted successfully",
+      "status": "PASS",
+      "severity": "Medium"
     },
     {
       "category": "CRUD",
       "item": "C-Visualize Project Creation (Student)",
       "endpoint": "/api/v1/projects",
       "expected": "Creates project and returns 201 with project ID",
-      "actual": "Project created with ID 4",
+      "actual": "Project created with ID 6",
       "status": "PASS",
       "severity": "High"
     },
     {
       "category": "CRUD",
       "item": "C-Visualize Version Commit",
-      "endpoint": "/api/v1/projects/4/versions",
+      "endpoint": "/api/v1/projects/6/versions",
       "expected": "Creates version 2 and returns 201",
       "actual": "Version 2 created",
       "status": "PASS",
@@ -86,7 +113,7 @@
     {
       "category": "CRUD",
       "item": "C-Visualize Project Deletion",
-      "endpoint": "/api/v1/projects/4",
+      "endpoint": "/api/v1/projects/6",
       "expected": "Deletes project and returns 200",
       "actual": "Project deleted",
       "status": "PASS",
@@ -418,8 +445,8 @@
     }
   ],
   "summary": {
-    "passed": 22,
-    "failed": 2,
+    "passed": 27,
+    "failed": 0,
     "blocked": 0,
     "notTested": 0
   }

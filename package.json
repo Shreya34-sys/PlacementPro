@@ -32,6 +32,9 @@
   },
   "scripts": {
     "dev": "nodemon server.js",
+    "worker:up": "node scripts/manage-worker.js up",
+    "worker:down": "node scripts/manage-worker.js down",
+    "worker:status": "node scripts/manage-worker.js status",
     "db:seed": "node database/seed.js",
     "test:excel-import": "node --test services/excelQuestionImportService.test.js models/examModel.test.js",
     "test:compiler": "node --test tests/compilerIntegration.test.js",
