@@ -99,6 +99,8 @@ function setupHealthRoute(app) {
       }
     });
   });
+
+  app.get(['/favicon.ico', '/favicon.png'], (req, res) => res.status(204).end());
 }
 
 // ==========================================
