@@ -16,55 +16,51 @@ const transporter = nodemailer.createTransport({
 });
 
 // --- GOOGLE STRATEGY ---
-passport.use(new GoogleStrategy({
-    clientID: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL:
-        process.env.GOOGLE_CALLBACK_URL ||
-        `http://localhost:${process.env.PORT || 5000}/api/auth/google/callback`
-}, async (accessToken, refreshToken, profile, done) => {
+if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
+    passport.use(new GoogleStrategy({
+        clientID: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        callbackURL:
+            process.env.GOOGLE_CALLBACK_URL ||
+            `http://localhost:${process.env.PORT || 5000}/api/auth/google/callback`
+    }, async (accessToken, refreshToken, profile, done) => {
+        try {
+            const email =
+                profile.emails && profile.emails[0]
+                    ? profile.emails[0].value
+                    : null;
 
-    try {
+            if (!email) {
+                return done(new Error('No email found in Google profile'), null);
+            }
 
-        const email =
-            profile.emails && profile.emails[0]
-                ? profile.emails[0].value
-                : null;
+            console.log('Google authentication successful for:', email);
 
-        if (!email) {
-            return done(new Error('No email found in Google profile'), null);
+            let user = await User.findByEmail(email);
+
+            if (!user) {
+                user = await User.createGoogleUser({
+                    fullName: profile.displayName,
+                    email: email,
+                    googleId: profile.id
+                });
+            } else {
+                // Existing student account
+                if (!user.googleId) {
+                    await User.linkGoogleAccount(user.id, profile.id);
+                    user.googleId = profile.id;
+                }
+            }
+
+            return done(null, user);
+        } catch (err) {
+            console.error('GOOGLE AUTH ERROR:', err);
+            return done(err, null);
         }
-
-        console.log('Google authentication successful for:', email);
-
-        let user = await User.findByEmail(email);
-
-if (!user) {
-
-    user = await User.createGoogleUser({
-        fullName: profile.displayName,
-        email: email,
-        googleId: profile.id
-    });
-
+    }));
 } else {
-
-    // Existing student account
-    if (!user.googleId) {
-        await User.linkGoogleAccount(user.id, profile.id);
-        user.googleId = profile.id;
-    }
+    console.log('[Passport] Google OAuth strategy skipped: GOOGLE_CLIENT_ID or GOOGLE_CLIENT_SECRET is missing. Standard email/password authentication remains active.');
 }
-
-return done(null, user);
-
-    } catch (err) {
-
-        console.error('GOOGLE AUTH ERROR:', err);
-
-        return done(err, null);
-    }
-}));
 // --- JWT STRATEGY (ADD THIS SECTION) ---
 const jwtOpts = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),

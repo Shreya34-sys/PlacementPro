@@ -6,6 +6,9 @@ const pagesDir = path.join(__dirname, '../public/pages');
 
 // Middleware: Intercept ANY admin pages accessed on Student port and return 403 Forbidden
 router.use((req, res, next) => {
+  if (req.app.get('isUnified') || process.env.VERCEL) {
+    return next();
+  }
   const p = req.path;
   if (
     p.startsWith('/admin') ||

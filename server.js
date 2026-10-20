@@ -72,6 +72,35 @@ const authLimiter = rateLimit({
   skip: (req) => req.ip === '127.0.0.1' || req.ip === '::1' || req.ip === '::ffff:127.0.0.1'
 });
 
+// Safe Health Check Helper
+function setupHealthRoute(app) {
+  app.get(['/api/health', '/health'], async (req, res) => {
+    let dbStatus = 'untested';
+    try {
+      const pool = require('./config/db');
+      await Promise.race([
+        pool.query('SELECT 1'),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 2500))
+      ]);
+      dbStatus = 'connected';
+    } catch (_) {
+      dbStatus = 'disconnected';
+    }
+
+    res.status(200).json({
+      status: 'ok',
+      timestamp: new Date().toISOString(),
+      uptime: Math.floor(process.uptime()),
+      environment: process.env.NODE_ENV || 'production',
+      serverless: Boolean(process.env.VERCEL),
+      database: dbStatus,
+      auth: {
+        googleConfigured: Boolean(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET)
+      }
+    });
+  });
+}
+
 // ==========================================
 // 1. STUDENT APPLICATION (PORT 5000)
 // ==========================================
@@ -84,11 +113,15 @@ function createStudentApp() {
   }));
   app.use(cors(corsOptions));
   app.use(generalLimiter);
+  setupHealthRoute(app);
   app.use('/vendor/mediapipe', express.static(path.join(__dirname, 'node_modules/@mediapipe/tasks-vision')));
   app.use(express.json({ limit: '2mb' }));
   app.use(express.urlencoded({ extended: true, limit: '2mb' }));
   // Security Guard: Intercept ANY admin pages, APIs, or static admin HTML on Student Server
   app.use((req, res, next) => {
+    if (app.get('isUnified') || process.env.VERCEL) {
+      return next();
+    }
     const p = req.path;
     if (
       p.startsWith('/admin') ||
@@ -253,6 +286,7 @@ function createAdminApp() {
   }));
   app.use(cors(corsOptions));
   app.use(generalLimiter);
+  setupHealthRoute(app);
   app.use('/vendor/mediapipe', express.static(path.join(__dirname, 'node_modules/@mediapipe/tasks-vision')));
   app.use(express.json({ limit: '2mb' }));
   app.use(express.urlencoded({ extended: true, limit: '2mb' }));
@@ -336,7 +370,23 @@ function createAdminApp() {
 }
 
 // ==========================================
-// 3. SERVER INITIALIZATION & LIFECYCLE
+// 3. UNIFIED APPLICATION (SERVERLESS / VERCEL)
+// ==========================================
+function createUnifiedApp() {
+  const app = createStudentApp();
+  app.set('isUnified', true);
+
+  // Mount Admin API routes
+  app.use('/api/admin', adminRoutes);
+
+  // Mount Admin View routes
+  app.use('/', adminViewRoutes);
+
+  return app;
+}
+
+// ==========================================
+// 4. SERVER INITIALIZATION & LIFECYCLE
 // ==========================================
 let sharedIo = null;
 
@@ -348,26 +398,35 @@ function checkCompilerWorker() {
   });
 }
 
-if (runBoth || runStudentOnly) {
-  const studentApp = createStudentApp();
-  const studentServer = http.createServer(studentApp);
-  sharedIo = setupSockets(studentServer, studentApp, sharedIo);
-  attachCodingSockets(studentApp.get('io'));
+if (require.main === module && !process.env.VERCEL) {
+  if (runBoth || runStudentOnly) {
+    const studentApp = createStudentApp();
+    const studentServer = http.createServer(studentApp);
+    sharedIo = setupSockets(studentServer, studentApp, sharedIo);
+    attachCodingSockets(studentApp.get('io'));
 
-  studentServer.listen(STUDENT_PORT, () => {
-    console.log(`[Student Server] Running on http://localhost:${STUDENT_PORT}`);
-    checkCompilerWorker();
-  });
+    studentServer.listen(STUDENT_PORT, () => {
+      console.log(`[Student Server] Running on http://localhost:${STUDENT_PORT}`);
+      checkCompilerWorker();
+    });
+  }
+
+  if (runBoth || runAdminOnly) {
+    const adminApp = createAdminApp();
+    const adminServer = http.createServer(adminApp);
+    sharedIo = setupSockets(adminServer, adminApp, sharedIo);
+    attachCodingSockets(adminApp.get('io'));
+
+    adminServer.listen(ADMIN_PORT, () => {
+      console.log(`[Admin Server] Running on http://localhost:${ADMIN_PORT}`);
+      console.log(`[Admin Portal] Access at http://localhost:${ADMIN_PORT}/admin-login`);
+    });
+  }
 }
 
-if (runBoth || runAdminOnly) {
-  const adminApp = createAdminApp();
-  const adminServer = http.createServer(adminApp);
-  sharedIo = setupSockets(adminServer, adminApp, sharedIo);
-  attachCodingSockets(adminApp.get('io'));
+const defaultApp = (process.env.VERCEL || process.env.UNIFIED_SERVER) ? createUnifiedApp() : createStudentApp();
 
-  adminServer.listen(ADMIN_PORT, () => {
-    console.log(`[Admin Server] Running on http://localhost:${ADMIN_PORT}`);
-    console.log(`[Admin Portal] Access at http://localhost:${ADMIN_PORT}/admin-login`);
-  });
-}
+module.exports = defaultApp;
+module.exports.createStudentApp = createStudentApp;
+module.exports.createAdminApp = createAdminApp;
+module.exports.createUnifiedApp = createUnifiedApp;

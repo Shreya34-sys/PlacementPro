@@ -36,16 +36,28 @@ function adminPageGuard(req, res, next) {
   next();
 }
 
-// Root of Admin Panel redirects to admin-login
-router.get('/', (req, res) => res.redirect('/admin-login'));
+// Root of Admin Panel redirects to admin-login only when on dedicated admin port
+router.get('/', (req, res, next) => {
+  const adminPort = String(process.env.ADMIN_PORT || '5001');
+  const host = req.headers.host || '';
+  if (host.includes(`:${adminPort}`)) {
+    return res.redirect('/admin-login');
+  }
+  next();
+});
 
 // Admin Login Page
 router.get('/admin-login', (req, res) => res.sendFile(path.join(pagesDir, 'adminlogin.html')));
 
-// Backwards-compatible /login redirect to student portal
-router.get('/login', (req, res) => {
-  const studentPort = process.env.STUDENT_PORT || process.env.PORT || 5000;
-  res.redirect(`http://localhost:${studentPort}/login`);
+// Backwards-compatible /login redirect to student portal when on dedicated admin port
+router.get('/login', (req, res, next) => {
+  const adminPort = String(process.env.ADMIN_PORT || '5001');
+  const host = req.headers.host || '';
+  if (host.includes(`:${adminPort}`)) {
+    const studentPort = process.env.STUDENT_PORT || process.env.PORT || 5000;
+    return res.redirect(`http://localhost:${studentPort}/login`);
+  }
+  next();
 });
 
 // Admin Dashboard Pages

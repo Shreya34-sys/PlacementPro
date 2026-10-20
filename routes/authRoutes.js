@@ -21,20 +21,40 @@ router.post('/logout', (req, res) => cvisualizeAuth.logout(req, res));
 router.get('/me', verifyToken, (req, res) => cvisualizeAuth.me(req, res));
 
 // Google OAuth
+const isGoogleAuthConfigured = Boolean(
+    process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET
+);
+
 router.get(
     '/google',
-    passport.authenticate('google', {
-        scope: ['profile', 'email'],
-        session: false
-    })
+    (req, res, next) => {
+        if (!isGoogleAuthConfigured) {
+            if (req.accepts('html')) {
+                return res.redirect('/login?error=' + encodeURIComponent('Google login is currently unavailable. Please sign in with your email and password.'));
+            }
+            return res.status(503).json({
+                success: false,
+                message: 'Google login is currently unavailable. Please sign in with your email and password.'
+            });
+        }
+        return passport.authenticate('google', {
+            scope: ['profile', 'email'],
+            session: false
+        })(req, res, next);
+    }
 );
 
 router.get(
     '/google/callback',
-    passport.authenticate('google', {
-        session: false,
-        failureRedirect: '/login?googleError=1'
-    }),
+    (req, res, next) => {
+        if (!isGoogleAuthConfigured) {
+            return res.redirect('/login?error=' + encodeURIComponent('Google authentication is not configured.'));
+        }
+        return passport.authenticate('google', {
+            session: false,
+            failureRedirect: '/login?googleError=1'
+        })(req, res, next);
+    },
     (req, res) => {
         try {
             const secret = process.env.JWT_SECRET;
@@ -65,17 +85,19 @@ router.get(
             ) {
                 console.log('Google Admin login:', req.user.email);
                 const adminPort = process.env.ADMIN_PORT || 5001;
-                return res.redirect(
-                    `http://localhost:${adminPort}/admin-dashboard?token=${encodeURIComponent(token)}&type=admin`
-                );
+                const adminRedirect = process.env.VERCEL
+                    ? `/admin-dashboard?token=${encodeURIComponent(token)}&type=admin`
+                    : `http://localhost:${adminPort}/admin-dashboard?token=${encodeURIComponent(token)}&type=admin`;
+                return res.redirect(adminRedirect);
             }
 
             // STUDENT GOOGLE LOGIN
             console.log('Google Student login:', req.user.email);
             const studentPort = process.env.STUDENT_PORT || process.env.PORT || 5000;
-            return res.redirect(
-                `http://localhost:${studentPort}/dashboard?token=${encodeURIComponent(token)}&type=student`
-            );
+            const studentRedirect = process.env.VERCEL
+                ? `/dashboard?token=${encodeURIComponent(token)}&type=student`
+                : `http://localhost:${studentPort}/dashboard?token=${encodeURIComponent(token)}&type=student`;
+            return res.redirect(studentRedirect);
 
         } catch (error) {
             console.error('GOOGLE CALLBACK ERROR:', error);

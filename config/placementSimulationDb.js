@@ -1,6 +1,17 @@
 const mysql = require('mysql2/promise');
 require('dotenv').config();
 
+function getSimSslConfig() {
+  const useSsl = process.env.SIM_DB_SSL === 'true' || process.env.DB_SSL === 'true' || process.env.TIDB_ENABLE_SSL === 'true';
+  if (useSsl) {
+    const ssl = { rejectUnauthorized: (process.env.SIM_DB_SSL_REJECT_UNAUTHORIZED || process.env.DB_SSL_REJECT_UNAUTHORIZED) !== 'false' };
+    const ca = process.env.SIM_DB_CA || process.env.DB_CA;
+    if (ca) ssl.ca = ca;
+    return ssl;
+  }
+  return undefined;
+}
+
 // Intentionally separate from the existing PlacementPro database.
 const pool = mysql.createPool({
   host: process.env.SIM_DB_HOST || process.env.DB_HOST || 'localhost',
@@ -11,7 +22,8 @@ const pool = mysql.createPool({
   waitForConnections: true,
   connectionLimit: 8,
   queueLimit: 0,
-  charset: 'utf8mb4'
+  charset: 'utf8mb4',
+  ssl: getSimSslConfig()
 });
 
 // Auto-check and initialize database schema if missing
@@ -22,6 +34,7 @@ const pool = mysql.createPool({
       port: Number(process.env.SIM_DB_PORT || process.env.DB_PORT || 3306),
       user: process.env.SIM_DB_USER || process.env.DB_USER || 'root',
       password: process.env.SIM_DB_PASSWORD ?? process.env.DB_PASSWORD ?? '',
+      ssl: getSimSslConfig(),
       multipleStatements: true
     });
     const dbName = process.env.SIM_DB_NAME || 'placementpro_simulation';
