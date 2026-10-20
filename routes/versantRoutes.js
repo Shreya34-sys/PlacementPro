@@ -5,9 +5,16 @@ const multer = require('multer');
 const { verifyToken, verifyAdmin } = require('../middleware/authMiddleware');
 const c = require('../controllers/versantController');
 
-const router = express.Router();
-const uploadDir = path.join(__dirname, '..', 'public', 'uploads', 'versant');
-fs.mkdirSync(uploadDir, { recursive: true });
+const os = require('os');
+const uploadDir = process.env.VERCEL
+  ? path.join(os.tmpdir(), 'versant')
+  : path.join(__dirname, '..', 'public', 'uploads', 'versant');
+
+try {
+  fs.mkdirSync(uploadDir, { recursive: true });
+} catch (e) {
+  // Non-fatal if filesystem is read-only
+}
 
 const storage = multer.diskStorage({
   destination: (_req, _file, cb) => cb(null, uploadDir),

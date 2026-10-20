@@ -8,7 +8,17 @@ const studyController = require('../controllers/studyController');
 const { verifyToken, verifyAdmin } = require('../middleware/authMiddleware');
 
 // Storage configuration for study material notes (PDF, DOCX, PPTX)
-const uploadDir = path.join(__dirname, '../public/uploads/study-materials');
+const os = require('os');
+const uploadDir = process.env.VERCEL
+  ? path.join(os.tmpdir(), 'study-materials')
+  : path.join(__dirname, '../public/uploads/study-materials');
+
+try {
+  const fs = require('fs');
+  if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+  }
+} catch (_) {}
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, uploadDir);

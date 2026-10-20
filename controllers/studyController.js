@@ -2,9 +2,17 @@ const path = require('path');
 const fs = require('fs');
 const StudyModel = require('../models/studyModel');
 
-const UPLOAD_DIR = path.join(__dirname, '../public/uploads/study-materials');
-if (!fs.existsSync(UPLOAD_DIR)) {
-  fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+const os = require('os');
+const UPLOAD_DIR = process.env.VERCEL
+  ? path.join(os.tmpdir(), 'study-materials')
+  : path.join(__dirname, '../public/uploads/study-materials');
+
+try {
+  if (!fs.existsSync(UPLOAD_DIR)) {
+    fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+  }
+} catch (e) {
+  // Non-fatal if filesystem is read-only
 }
 
 // Helper to determine if user has elevated admin/faculty management permissions
