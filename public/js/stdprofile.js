@@ -18,6 +18,51 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         });
     }
+    
+    // 3b. Attach Upload Resume Button Listener
+    const uploadResumeBtn = document.getElementById('uploadResumeBtn');
+    if (uploadResumeBtn) {
+        uploadResumeBtn.addEventListener('click', async () => {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.replace('/login');
+                return;
+            }
+            const fileInput = document.getElementById('resumeFile');
+            if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
+                alert('Please select a PDF resume file first.');
+                return;
+            }
+            const formData = new FormData();
+            formData.append('resumeFile', fileInput.files[0]);
+
+            uploadResumeBtn.disabled = true;
+            const originalText = uploadResumeBtn.innerHTML;
+            uploadResumeBtn.textContent = 'Uploading...';
+
+            try {
+                const response = await fetch('/api/student/resume', {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}` },
+                    body: formData
+                });
+                const result = await response.json();
+                if (response.ok && result.success) {
+                    alert('Resume uploaded and set as active profile resume successfully!');
+                    const fileNameDisplay = document.getElementById('fileNameDisplay');
+                    if (fileNameDisplay) fileNameDisplay.textContent = fileInput.files[0].name;
+                } else {
+                    alert(result.message || 'Failed to upload resume.');
+                }
+            } catch (err) {
+                console.error('Resume upload error:', err);
+                alert('Error uploading resume to server.');
+            } finally {
+                uploadResumeBtn.disabled = false;
+                uploadResumeBtn.innerHTML = originalText;
+            }
+        });
+    }
 
     // 4. Attach Logout Button Listener
     const logoutBtn = document.getElementById('logoutBtn');

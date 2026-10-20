@@ -64,15 +64,17 @@ router.get(
                 req.user.email === process.env.ADMIN_EMAIL
             ) {
                 console.log('Google Admin login:', req.user.email);
+                const adminPort = process.env.ADMIN_PORT || 5001;
                 return res.redirect(
-                    `/admin-dashboard?token=${encodeURIComponent(token)}&type=admin`
+                    `http://localhost:${adminPort}/admin-dashboard?token=${encodeURIComponent(token)}&type=admin`
                 );
             }
 
             // STUDENT GOOGLE LOGIN
             console.log('Google Student login:', req.user.email);
+            const studentPort = process.env.STUDENT_PORT || process.env.PORT || 5000;
             return res.redirect(
-                `/dashboard?token=${encodeURIComponent(token)}&type=student`
+                `http://localhost:${studentPort}/dashboard?token=${encodeURIComponent(token)}&type=student`
             );
 
         } catch (error) {

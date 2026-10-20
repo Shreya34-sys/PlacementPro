@@ -41,7 +41,8 @@ const pageRoutes = {
   '/compiler-practice': 'compiler-practice.html',
   '/study-practice': 'compiler-practice.html',
   '/compiler.html': 'compiler-practice.html',
-  '/compiler': 'compiler-practice.html'
+  '/compiler': 'compiler-practice.html',
+  '/analytics': 'analytics.html'
 };
 for (const [route, filename] of Object.entries(pageRoutes)) {
   router.get(route, (_req, res) => res.sendFile(path.join(pagesDir, filename)));

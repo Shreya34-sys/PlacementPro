@@ -50,7 +50,7 @@
           </div>
 
           ${canOpen ? 
-            `<a class="primary" href="/pages/exam-guidelines.html?exam=${exam.id}">
+            `<a class="primary" href="/exam-guidelines?exam=${exam.id}">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
               View Rules &amp; Start
             </a>` : 

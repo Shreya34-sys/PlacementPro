@@ -418,7 +418,11 @@ window.startPublishedTest = async (testId) => {
             testId +
             '/start',
             {
-                method: 'POST'
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    simulationRoundAttemptId: new URLSearchParams(location.search).get('simulationRoundAttemptId') || undefined
+                })
             }
         );
 
@@ -1714,3 +1718,13 @@ function esc(value) {
    ========================================================= */
 
 loadPublishedTests();
+
+// Company simulation adapter: only auto-start when a simulation attempt ID is present.
+// Ordinary individual Versant practice remains unchanged.
+window.addEventListener('load', () => {
+    const params = new URLSearchParams(location.search);
+    const testId = Number(params.get('test'));
+    if (params.get('simulationRoundAttemptId') && Number.isInteger(testId) && testId > 0) {
+        window.startPublishedTest(testId);
+    }
+}, { once: true });

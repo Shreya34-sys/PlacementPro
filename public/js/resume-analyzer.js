@@ -22,6 +22,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const formData = new FormData();
         formData.append('resume', fileInput.files[0]);
         formData.append('jobDescription', document.getElementById('jobDescription').value);
+        const simulationRoundAttemptId = new URLSearchParams(location.search).get('simulationRoundAttemptId');
+        if (simulationRoundAttemptId) formData.append('simulationRoundAttemptId', simulationRoundAttemptId);
 
         analyzeBtn.disabled = true;
         analyzeBtn.textContent = 'Analyzing...';

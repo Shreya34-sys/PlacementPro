@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Company Placement Simulation | PlacementPro</title>
+    <link rel="stylesheet" href="/css/company-placement.css">
+</head>
+
+<body class="cp-student">
+    <header class="topbar">
+        <div><span class="eyebrow">PLACEMENTPRO · PRACTICE</span>
+            <h1>Company Placement Simulation</h1>
+            <p>Choose a company and complete its configured rounds in order.</p>
+        </div><a class="top-link" href="/dashboard">Student dashboard ↗</a>
+    </header>
+    <main class="student-main">
+        <div class="student-intro">
+            <h2>Available company simulations</h2>
+            <p>Individual practice modules remain separate. A result counts toward a simulation only when recorded by
+                the trusted assessment integration.</p>
+        </div>
+        <div id="companyCards" class="student-grid">
+            <p class="muted">Loading simulations…</p>
+        </div>
+        <section id="progressPanel" class="panel progress-panel" hidden></section>
+        <section class="panel history-section">
+            <div class="section-heading">
+                <div><span class="step">02</span>
+                    <h2>Your saved simulation history</h2>
+                </div>
+            </div>
+            <div id="studentHistory">
+                <p class="muted">Loading your history…</p>
+            </div>
+        </section>
+    </main>
+    <div id="toast" class="toast" role="status"></div>
+    <script src="/js/company-placement-student.js"></script>
+</body>
+
+</html>

@@ -31,6 +31,8 @@
 // Parse query parameters and retrieve authorization token
 const qs = new URLSearchParams(location.search);
 const examId = qs.get('exam');
+const simulationRoundAttemptId = qs.get('simulationRoundAttemptId');
+const simulationId = qs.get('simulationId');
 const token = localStorage.getItem('token');
 
 // Utility API wrapper
@@ -96,14 +98,18 @@ async function begin() {
     return;
 }
 
-  const r = await api(`/api/exams/${examId}/attempts`, { method: 'POST' });
+  const r = await api(`/api/exams/${examId}/attempts`, {
+    method: 'POST',
+    body: JSON.stringify(simulationRoundAttemptId ? { simulationRoundAttemptId } : {})
+  });
   const data = await r.json().catch(() => ({}));
   if (!r.ok || !data.id) {
     alert(data.message || 'Could not start assessment attempt.');
     return;
   }
   attempt = data;
-  location.href = `/pages/live-exam.html?exam=${examId}&attempt=${attempt.id}`;
+  const context = simulationRoundAttemptId ? `&simulationRoundAttemptId=${encodeURIComponent(simulationRoundAttemptId)}&simulationId=${encodeURIComponent(simulationId || '')}` : '';
+  location.href = `/pages/live-exam.html?exam=${examId}&attempt=${attempt.id}${context}`;
 }
 
 /**
@@ -141,7 +147,7 @@ async function submit(forced = false) {
   });
   const result = await r.json();
 
-  window.location.replace(`/pages/exam-result.html?attempt=${result.id || attempt.id}`);
+  window.location.replace(`/pages/exam-result.html?attempt=${result.id || attempt.id}${simulationId ? `&simulationId=${encodeURIComponent(simulationId)}` : ''}`);
 }
 
 /**

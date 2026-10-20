@@ -1,0 +1,4902 @@
+[
+  {
+    "role": "Admin",
+    "page": "admin-coding-builder.html",
+    "type": "Link",
+    "target": "Back",
+    "href": "/admin-coding-rounds",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-coding-builder.html",
+    "type": "Button",
+    "target": "Create round",
+    "href": "",
+    "id": "createRound",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-coding-builder.html",
+    "type": "Button",
+    "target": "+ Add case",
+    "href": "",
+    "id": "addCase",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-coding-builder.html",
+    "type": "Button",
+    "target": "Add Question",
+    "href": "",
+    "id": "addQuestion",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-coding-builder.html",
+    "type": "Button",
+    "target": "+ New Question",
+    "href": "",
+    "id": "newQuestion",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-coding-builder.html",
+    "type": "Button",
+    "target": "Publish Round",
+    "href": "",
+    "id": "publishRound",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-coding-builder.html",
+    "type": "Button",
+    "target": "Generate Student Access Codes",
+    "href": "",
+    "id": "assignStudents",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-coding-monitor.html",
+    "type": "Link",
+    "target": "Back",
+    "href": "/admin-coding-rounds",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-coding-results.html",
+    "type": "Link",
+    "target": "Back",
+    "href": "/admin-coding-rounds",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-coding-rounds.html",
+    "type": "Link",
+    "target": "Dashboard",
+    "href": "/admin-dashboard",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-coding-rounds.html",
+    "type": "Link",
+    "target": "+ Create Coding Round",
+    "href": "/admin-coding-builder",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-exam-builder.html",
+    "type": "Link",
+    "target": "← Back to tests",
+    "href": "/pages/admin-exams.html",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-exam-builder.html",
+    "type": "Link",
+    "target": "Home / Dashboard",
+    "href": "/pages/admindash.html",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-exam-builder.html",
+    "type": "Link",
+    "target": "Back to Tests",
+    "href": "/pages/admin-exams.html",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-exam-builder.html",
+    "type": "Button",
+    "target": "＋ Add topic",
+    "href": "",
+    "id": "addTopic",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-exam-builder.html",
+    "type": "Button",
+    "target": "Save Aptitude Test",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-exam-builder.html",
+    "type": "Button",
+    "target": "Add Topic Module",
+    "href": "",
+    "id": "addTopic",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-exam-builder.html",
+    "type": "Button",
+    "target": "Save Aptitude Test",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-exam-builder.html",
+    "type": "Form",
+    "target": "examForm",
+    "href": "",
+    "id": "examForm",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-exam-builder.html",
+    "type": "Form",
+    "target": "examForm",
+    "href": "",
+    "id": "examForm",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-exams.html",
+    "type": "Link",
+    "target": "＋ Create Aptitude Test",
+    "href": "/pages/admin-exam-builder.html",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-exams.html",
+    "type": "Link",
+    "target": "▣ Live Proctoring",
+    "href": "/pages/proctoring.html",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-exams.html",
+    "type": "Link",
+    "target": "Home / Dashboard",
+    "href": "/pages/admindash.html",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-exams.html",
+    "type": "Link",
+    "target": "Create Aptitude Test",
+    "href": "/pages/admin-exam-builder.html",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-exams.html",
+    "type": "Link",
+    "target": "Import Questions from Excel",
+    "href": "/pages/admin-question-import.html",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-interviews.html",
+    "type": "Link",
+    "target": "PlacementPro",
+    "href": "/pages/admindash.html",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-interviews.html",
+    "type": "Link",
+    "target": "Dashboard",
+    "href": "/pages/admindash.html",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-interviews.html",
+    "type": "Button",
+    "target": "Download Excel template",
+    "href": "",
+    "id": "templateBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-interviews.html",
+    "type": "Button",
+    "target": "Add question",
+    "href": "",
+    "id": "addQuestionBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-interviews.html",
+    "type": "Button",
+    "target": "Save interview set",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-interviews.html",
+    "type": "Button",
+    "target": "Preview questions",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-interviews.html",
+    "type": "Button",
+    "target": "Save imported questions",
+    "href": "",
+    "id": "saveImportBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-interviews.html",
+    "type": "Button",
+    "target": "Reload sets",
+    "href": "",
+    "id": "reloadSetsBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-interviews.html",
+    "type": "Button",
+    "target": "Refresh live grid",
+    "href": "",
+    "id": "reloadLiveBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-interviews.html",
+    "type": "Button",
+    "target": "Assign interview",
+    "href": "",
+    "id": "assignBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-interviews.html",
+    "type": "Button",
+    "target": "Reload",
+    "href": "",
+    "id": "reloadSubmissionsBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-interviews.html",
+    "type": "Form",
+    "target": "setForm",
+    "href": "",
+    "id": "setForm",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-interviews.html",
+    "type": "Form",
+    "target": "importForm",
+    "href": "",
+    "id": "importForm",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-question-import.html",
+    "type": "Link",
+    "target": "Home / Dashboard",
+    "href": "/pages/admindash.html",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-question-import.html",
+    "type": "Link",
+    "target": "Back to Tests",
+    "href": "/pages/admin-exams.html",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-question-import.html",
+    "type": "Button",
+    "target": "Download Excel Template",
+    "href": "",
+    "id": "templateButton",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-question-import.html",
+    "type": "Button",
+    "target": "Preview Questions",
+    "href": "",
+    "id": "previewButton",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-question-import.html",
+    "type": "Button",
+    "target": "Save Imported Questions",
+    "href": "",
+    "id": "saveButton",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-question-import.html",
+    "type": "Form",
+    "target": "uploadForm",
+    "href": "",
+    "id": "uploadForm",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-study-materials.html",
+    "type": "Link",
+    "target": "icon/image",
+    "href": "/admin-dashboard",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-study-materials.html",
+    "type": "Link",
+    "target": "Live Student View &nearr;",
+    "href": "/study-materials",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-study-materials.html",
+    "type": "Link",
+    "target": "Command Center",
+    "href": "/admin-dashboard",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-study-materials.html",
+    "type": "Link",
+    "target": "Question Bank &amp; Tests",
+    "href": "/admin-exams",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-study-materials.html",
+    "type": "Link",
+    "target": "Study Materials Studio",
+    "href": "/admin-study-materials",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-study-materials.html",
+    "type": "Link",
+    "target": "Mock Interviews",
+    "href": "/admin-interviews",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-study-materials.html",
+    "type": "Button",
+    "target": "Toggle Theme",
+    "href": "",
+    "id": "themeToggle",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-study-materials.html",
+    "type": "Button",
+    "target": "Logout",
+    "href": "",
+    "id": "logoutBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-study-materials.html",
+    "type": "Button",
+    "target": "+ New Subject",
+    "href": "",
+    "id": "openNewSubjectBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-study-materials.html",
+    "type": "Button",
+    "target": "Write Topic",
+    "href": "",
+    "id": "openNewTopicTabBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-study-materials.html",
+    "type": "Button",
+    "target": "Curriculum Hierarchy\n                0",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-study-materials.html",
+    "type": "Button",
+    "target": "Topic Content Studio",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-study-materials.html",
+    "type": "Button",
+    "target": "Lecture Notes &amp; Handouts\n                0",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-study-materials.html",
+    "type": "Button",
+    "target": "Refresh",
+    "href": "",
+    "id": "btnRefreshCurriculum",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-study-materials.html",
+    "type": "Button",
+    "target": "+ Add Subject",
+    "href": "",
+    "id": "btnCreateSubjectModal",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-study-materials.html",
+    "type": "Button",
+    "target": "Clear / New Topic",
+    "href": "",
+    "id": "btnResetTopicForm",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-study-materials.html",
+    "type": "Button",
+    "target": "H2",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-study-materials.html",
+    "type": "Button",
+    "target": "H3",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-study-materials.html",
+    "type": "Button",
+    "target": "B",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-study-materials.html",
+    "type": "Button",
+    "target": "I",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-study-materials.html",
+    "type": "Button",
+    "target": "&bull; List",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-study-materials.html",
+    "type": "Button",
+    "target": "1. List",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-study-materials.html",
+    "type": "Button",
+    "target": "Definition",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-study-materials.html",
+    "type": "Button",
+    "target": "Key Points",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-study-materials.html",
+    "type": "Button",
+    "target": "Table",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-study-materials.html",
+    "type": "Button",
+    "target": "Code",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-study-materials.html",
+    "type": "Button",
+    "target": "Link",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-study-materials.html",
+    "type": "Button",
+    "target": "Image",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-study-materials.html",
+    "type": "Button",
+    "target": "Save as Draft",
+    "href": "",
+    "id": "btnSaveTopicDraft",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-study-materials.html",
+    "type": "Button",
+    "target": "Publish Topic",
+    "href": "",
+    "id": "btnSaveTopicSubmit",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-study-materials.html",
+    "type": "Button",
+    "target": "Upload Handout",
+    "href": "",
+    "id": "btnUploadAttachment",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-study-materials.html",
+    "type": "Button",
+    "target": "Refresh",
+    "href": "",
+    "id": "btnRefreshAttachments",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-study-materials.html",
+    "type": "Button",
+    "target": "&times;",
+    "href": "",
+    "id": "",
+    "status": "WARN",
+    "issue": "Potential orphan button (no id listener, onclick, or submit form binding)"
+  },
+  {
+    "role": "Admin",
+    "page": "admin-study-materials.html",
+    "type": "Button",
+    "target": "Cancel",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-study-materials.html",
+    "type": "Button",
+    "target": "Save Subject",
+    "href": "",
+    "id": "btnSaveSubject",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-study-materials.html",
+    "type": "Button",
+    "target": "&times;",
+    "href": "",
+    "id": "",
+    "status": "WARN",
+    "issue": "Potential orphan button (no id listener, onclick, or submit form binding)"
+  },
+  {
+    "role": "Admin",
+    "page": "admin-study-materials.html",
+    "type": "Button",
+    "target": "Cancel",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-study-materials.html",
+    "type": "Button",
+    "target": "Save Chapter",
+    "href": "",
+    "id": "btnSaveChapter",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-study-materials.html",
+    "type": "Button",
+    "target": "&times;",
+    "href": "",
+    "id": "",
+    "status": "WARN",
+    "issue": "Potential orphan button (no id listener, onclick, or submit form binding)"
+  },
+  {
+    "role": "Admin",
+    "page": "admin-study-materials.html",
+    "type": "Button",
+    "target": "Cancel",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-study-materials.html",
+    "type": "Button",
+    "target": "Delete Permanently",
+    "href": "",
+    "id": "btnConfirmDelete",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-study-materials.html",
+    "type": "Form",
+    "target": "topicEditorForm",
+    "href": "",
+    "id": "topicEditorForm",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-study-materials.html",
+    "type": "Form",
+    "target": "attachmentUploadForm",
+    "href": "",
+    "id": "attachmentUploadForm",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-study-materials.html",
+    "type": "Form",
+    "target": "subjectModalForm",
+    "href": "",
+    "id": "subjectModalForm",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admin-study-materials.html",
+    "type": "Form",
+    "target": "chapterModalForm",
+    "href": "",
+    "id": "chapterModalForm",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admindash.html",
+    "type": "Link",
+    "target": "Assessments\n                Active",
+    "href": "/admin-exams",
+    "id": "navAssessmentsBadge",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admindash.html",
+    "type": "Link",
+    "target": "Command Center",
+    "href": "#command-center",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admindash.html",
+    "type": "Link",
+    "target": "Practice AI Studio",
+    "href": "#practice-ai-studio",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admindash.html",
+    "type": "Link",
+    "target": "Coding Practice",
+    "href": "/admin-coding-rounds",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admindash.html",
+    "type": "Link",
+    "target": "Question Bank &amp; Tests",
+    "href": "/admin-exams",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admindash.html",
+    "type": "Link",
+    "target": "Study Materials Studio",
+    "href": "/admin-study-materials",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admindash.html",
+    "type": "Link",
+    "target": "Versant Rounds",
+    "href": "/versant-admin",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admindash.html",
+    "type": "Link",
+    "target": "Mock Interviews",
+    "href": "/admin-interviews",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admindash.html",
+    "type": "Link",
+    "target": "Student Readiness",
+    "href": "#student-readiness",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admindash.html",
+    "type": "Link",
+    "target": "Analytics Hub",
+    "href": "/analytics",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admindash.html",
+    "type": "Link",
+    "target": "Manage Aptitude Tests",
+    "href": "/admin-exams",
+    "id": "manageDrivesBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admindash.html",
+    "type": "Link",
+    "target": "Manage Coding Practice",
+    "href": "/admin-coding-rounds",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admindash.html",
+    "type": "Link",
+    "target": "Study Materials Studio",
+    "href": "/admin-study-materials",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admindash.html",
+    "type": "Link",
+    "target": "Mock Interviews",
+    "href": "/admin-interviews",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admindash.html",
+    "type": "Link",
+    "target": "Manage Question Banks &rarr;",
+    "href": "/admin-exams",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admindash.html",
+    "type": "Link",
+    "target": "Create Aptitude Test\n                                Configure timed MCQs, sections, and passing thresholds\n                            \n                            &rarr;",
+    "href": "/admin-exam-builder",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admindash.html",
+    "type": "Link",
+    "target": "Create Coding Round\n                                Add coding problems, test cases, and language templates\n                            \n                            &rarr;",
+    "href": "/admin-coding-builder",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admindash.html",
+    "type": "Link",
+    "target": "Excel Question Import\n                                Bulk upload questions via standard spreadsheet template\n                            \n                            &rarr;",
+    "href": "/admin-question-import",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admindash.html",
+    "type": "Link",
+    "target": "Mock Interview Sets\n                                Configure AI interview questions and review student attempts\n                            \n                            &rarr;",
+    "href": "/admin-interviews",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admindash.html",
+    "type": "Link",
+    "target": "Study Materials Studio\n                                Publish subject notes, reference guides, and cheat-sheets\n                            \n                            &rarr;",
+    "href": "/admin-study-materials",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admindash.html",
+    "type": "Link",
+    "target": "Live Assessment Proctoring\n                                Real-time monitoring, integrity flags, and face-detection logs\n                            \n                            &rarr;",
+    "href": "/proctoring",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admindash.html",
+    "type": "Link",
+    "target": "Open Student Practice Analytics &rarr;",
+    "href": "/analytics",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admindash.html",
+    "type": "Button",
+    "target": "Toggle Theme",
+    "href": "",
+    "id": "themeToggle",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admindash.html",
+    "type": "Button",
+    "target": "Logout",
+    "href": "",
+    "id": "logoutBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admindash.html",
+    "type": "Button",
+    "target": "TCS Practice Pattern",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admindash.html",
+    "type": "Button",
+    "target": "Persistent Core CS",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admindash.html",
+    "type": "Button",
+    "target": "Infosys Aptitude &amp; Logic",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "admindash.html",
+    "type": "Button",
+    "target": "Run AI Ingestion",
+    "href": "",
+    "id": "runIngestionBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "adminlogin.html",
+    "type": "Link",
+    "target": "&larr; Back to Student Login",
+    "href": "/login",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "adminlogin.html",
+    "type": "Button",
+    "target": "Login with Password",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "adminlogin.html",
+    "type": "Button",
+    "target": "Login with Magic Email Link",
+    "href": "",
+    "id": "btnMagicLink",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "adminlogin.html",
+    "type": "Form",
+    "target": "adminLoginForm",
+    "href": "",
+    "id": "adminLoginForm",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "analytics.html",
+    "type": "Link",
+    "target": "Home",
+    "href": "/dashboard",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "analytics.html",
+    "type": "Link",
+    "target": "Placement Prep",
+    "href": "/placement-workspace",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "analytics.html",
+    "type": "Link",
+    "target": "Aptitude Tests",
+    "href": "/available-exams",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "analytics.html",
+    "type": "Link",
+    "target": "Coding Rounds",
+    "href": "/coding-rounds",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "analytics.html",
+    "type": "Link",
+    "target": "C-Visualize Compiler",
+    "href": "/compiler-practice",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "analytics.html",
+    "type": "Link",
+    "target": "Companies",
+    "href": "/companies",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "analytics.html",
+    "type": "Link",
+    "target": "Study Materials",
+    "href": "/study-materials",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "analytics.html",
+    "type": "Link",
+    "target": "Analytics",
+    "href": "/analytics",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "analytics.html",
+    "type": "Link",
+    "target": "My Profile",
+    "href": "/profile",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "analytics.html",
+    "type": "Link",
+    "target": "Dashboard",
+    "href": "/dashboard",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "analytics.html",
+    "type": "Button",
+    "target": "Practice ⌄",
+    "href": "",
+    "id": "",
+    "status": "WARN",
+    "issue": "Potential orphan button (no id listener, onclick, or submit form binding)"
+  },
+  {
+    "role": "Student",
+    "page": "analytics.html",
+    "type": "Button",
+    "target": "Toggle Theme",
+    "href": "",
+    "id": "themeToggleBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "analytics.html",
+    "type": "Button",
+    "target": "Logout",
+    "href": "",
+    "id": "logoutBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "analytics.html",
+    "type": "Button",
+    "target": "Refresh",
+    "href": "",
+    "id": "btnRefresh",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "available-exams.html",
+    "type": "Link",
+    "target": "Home / Dashboard",
+    "href": "/pages/stddash.html",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "coding-result.html",
+    "type": "Link",
+    "target": "Coding Rounds",
+    "href": "/coding-rounds",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "coding-round.html",
+    "type": "Button",
+    "target": "Run Code",
+    "href": "",
+    "id": "runBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "coding-round.html",
+    "type": "Button",
+    "target": "Submit Problem",
+    "href": "",
+    "id": "submitQuestionBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "coding-round.html",
+    "type": "Button",
+    "target": "Finish\r\n                    Round",
+    "href": "",
+    "id": "finalSubmitBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "coding-round.html",
+    "type": "Button",
+    "target": "Share screen with proctor",
+    "href": "",
+    "id": "shareScreenBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "coding-rounds.html",
+    "type": "Link",
+    "target": "Dashboard",
+    "href": "/dashboard",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "companies.html",
+    "type": "Link",
+    "target": "Home",
+    "href": "/dashboard",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "companies.html",
+    "type": "Link",
+    "target": "Aptitude Tests\n                                      Quantitative, logical & verbal MCQs",
+    "href": "/available-exams",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "companies.html",
+    "type": "Link",
+    "target": "Coding Rounds\n                                      Hands-on problems with online compiler",
+    "href": "/coding-rounds",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "companies.html",
+    "type": "Link",
+    "target": "Versant Voice Test\n                                      Spoken English, fluency & pronunciation",
+    "href": "/versant-test",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "companies.html",
+    "type": "Link",
+    "target": "Mock Interview Round\n                                      Technical & HR voice interview round",
+    "href": "/interviews",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "companies.html",
+    "type": "Link",
+    "target": "Assessment Guidelines\n                                      Proctoring rules & test environment",
+    "href": "/exam-guidelines",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "companies.html",
+    "type": "Link",
+    "target": "AI Mock Interviews\n                                      Live audio interviews with AI feedback",
+    "href": "/interviews",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "companies.html",
+    "type": "Link",
+    "target": "Spoken English Practice\n                                      Fluency, sentence repeats & listening",
+    "href": "/versant-test",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "companies.html",
+    "type": "Link",
+    "target": "ATS Resume Analyzer\n                                      Keyword match, scoring & ATS optimizer",
+    "href": "/resume-analyzer",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "companies.html",
+    "type": "Link",
+    "target": "Placement Workspace\n                                      Interview roadmaps, tips & master prep",
+    "href": "/placement-workspace",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "companies.html",
+    "type": "Link",
+    "target": "Company Directory\n                                      Browse hiring partners, CTC & roles",
+    "href": "/companies",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "companies.html",
+    "type": "Link",
+    "target": "Hiring Criteria & Eligibility\n                                      Cutoffs, criteria & required skill sets",
+    "href": "/companies",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "companies.html",
+    "type": "Link",
+    "target": "Company Roadmaps\n                                      Targeted preparation modules & strategies",
+    "href": "/placement-workspace",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "companies.html",
+    "type": "Link",
+    "target": "Preparation Analytics\n                                      Track scores, metrics & readiness index",
+    "href": "/analytics",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "companies.html",
+    "type": "Link",
+    "target": "Open Preparation Workspace",
+    "href": "/placement-workspace",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "companies.html",
+    "type": "Link",
+    "target": "Aptitude Tests",
+    "href": "/available-exams",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "companies.html",
+    "type": "Link",
+    "target": "Coding Rounds",
+    "href": "/coding-rounds",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "companies.html",
+    "type": "Link",
+    "target": "Companies",
+    "href": "/companies",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "companies.html",
+    "type": "Link",
+    "target": "Analytics",
+    "href": "/analytics",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "companies.html",
+    "type": "Link",
+    "target": "Profile & Portfolio",
+    "href": "/profile",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "companies.html",
+    "type": "Link",
+    "target": "Account Settings",
+    "href": "/profile",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "companies.html",
+    "type": "Link",
+    "target": "Log Out",
+    "href": "/login",
+    "id": "logoutBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "companies.html",
+    "type": "Button",
+    "target": "mobileNavToggle",
+    "href": "",
+    "id": "mobileNavToggle",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "companies.html",
+    "type": "Button",
+    "target": "Placement Prep ⌄",
+    "href": "",
+    "id": "placementPrepToggle",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "companies.html",
+    "type": "Button",
+    "target": "Practice ⌄",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "companies.html",
+    "type": "Button",
+    "target": "unlabeled button",
+    "href": "",
+    "id": "",
+    "status": "WARN",
+    "issue": "Potential orphan button (no id listener, onclick, or submit form binding)"
+  },
+  {
+    "role": "Student",
+    "page": "companies.html",
+    "type": "Button",
+    "target": "themeToggleBtn",
+    "href": "",
+    "id": "themeToggleBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "company-prep.html",
+    "type": "Link",
+    "target": "Home",
+    "href": "/dashboard",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "company-prep.html",
+    "type": "Link",
+    "target": "Aptitude Tests\n                                        Quantitative, logical & verbal MCQs",
+    "href": "/available-exams",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "company-prep.html",
+    "type": "Link",
+    "target": "Coding Rounds\n                                        Hands-on problems with online compiler",
+    "href": "/coding-rounds",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "company-prep.html",
+    "type": "Link",
+    "target": "Versant Voice Test\n                                        Spoken English, fluency & pronunciation",
+    "href": "/versant-test",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "company-prep.html",
+    "type": "Link",
+    "target": "Mock Interview Round\n                                        Technical & HR voice interview round",
+    "href": "/interviews",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "company-prep.html",
+    "type": "Link",
+    "target": "Assessment Guidelines\n                                        Proctoring rules & test environment",
+    "href": "/exam-guidelines",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "company-prep.html",
+    "type": "Link",
+    "target": "AI Mock Interviews\n                                        Live audio interviews with AI feedback",
+    "href": "/interviews",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "company-prep.html",
+    "type": "Link",
+    "target": "Spoken English Practice\n                                        Fluency, sentence repeats & listening",
+    "href": "/versant-test",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "company-prep.html",
+    "type": "Link",
+    "target": "ATS Resume Analyzer\n                                        Keyword match, scoring & ATS optimizer",
+    "href": "/resume-analyzer",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "company-prep.html",
+    "type": "Link",
+    "target": "Placement Workspace\n                                        Interview roadmaps, tips & master prep",
+    "href": "/placement-workspace",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "company-prep.html",
+    "type": "Link",
+    "target": "Company Directory\n                                        Browse hiring partners, CTC & roles",
+    "href": "/companies",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "company-prep.html",
+    "type": "Link",
+    "target": "Hiring Criteria & Eligibility\n                                        Cutoffs, criteria & required skill sets",
+    "href": "/companies",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "company-prep.html",
+    "type": "Link",
+    "target": "Company Roadmaps\n                                        Targeted preparation modules & strategies",
+    "href": "/placement-workspace",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "company-prep.html",
+    "type": "Link",
+    "target": "Preparation Analytics\n                                        Track scores, metrics & readiness index",
+    "href": "/analytics",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "company-prep.html",
+    "type": "Link",
+    "target": "Open Preparation Workspace",
+    "href": "/placement-workspace",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "company-prep.html",
+    "type": "Link",
+    "target": "Aptitude Tests",
+    "href": "/available-exams",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "company-prep.html",
+    "type": "Link",
+    "target": "Coding Rounds",
+    "href": "/coding-rounds",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "company-prep.html",
+    "type": "Link",
+    "target": "Companies",
+    "href": "/companies",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "company-prep.html",
+    "type": "Link",
+    "target": "Analytics",
+    "href": "/analytics",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "company-prep.html",
+    "type": "Link",
+    "target": "Profile & Portfolio",
+    "href": "/profile",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "company-prep.html",
+    "type": "Link",
+    "target": "Account Settings",
+    "href": "/profile",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "company-prep.html",
+    "type": "Link",
+    "target": "Log Out",
+    "href": "/login",
+    "id": "logoutBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "company-prep.html",
+    "type": "Link",
+    "target": "← Back to Dashboard",
+    "href": "/dashboard",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "company-prep.html",
+    "type": "Link",
+    "target": "Company Directory",
+    "href": "/companies",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "company-prep.html",
+    "type": "Link",
+    "target": "Practice Coding Round",
+    "href": "/coding-rounds",
+    "id": "launchCodingBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "company-prep.html",
+    "type": "Link",
+    "target": "Mock Interview Round",
+    "href": "/interviews",
+    "id": "launchInterviewBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "company-prep.html",
+    "type": "Link",
+    "target": "ATS Resume Match",
+    "href": "/resume-analyzer",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "company-prep.html",
+    "type": "Link",
+    "target": "${escapeText(r.cta)}",
+    "href": "${r.link}",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "company-prep.html",
+    "type": "Link",
+    "target": "${escapeText(q.actionLabel)} →",
+    "href": "${q.actionUrl}",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "company-prep.html",
+    "type": "Button",
+    "target": "mobileNavToggle",
+    "href": "",
+    "id": "mobileNavToggle",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "company-prep.html",
+    "type": "Button",
+    "target": "Placement Prep ⌄",
+    "href": "",
+    "id": "placementPrepToggle",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "company-prep.html",
+    "type": "Button",
+    "target": "Practice ⌄",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "company-prep.html",
+    "type": "Button",
+    "target": "unlabeled button",
+    "href": "",
+    "id": "",
+    "status": "WARN",
+    "issue": "Potential orphan button (no id listener, onclick, or submit form binding)"
+  },
+  {
+    "role": "Student",
+    "page": "company-prep.html",
+    "type": "Button",
+    "target": "themeToggleBtn",
+    "href": "",
+    "id": "themeToggleBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "company-prep.html",
+    "type": "Button",
+    "target": "Reset Progress",
+    "href": "",
+    "id": "resetProgressBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "company-prep.html",
+    "type": "Button",
+    "target": "All Questions",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "company-prep.html",
+    "type": "Button",
+    "target": "Coding & Algorithms",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "company-prep.html",
+    "type": "Button",
+    "target": "System Design",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "company-prep.html",
+    "type": "Button",
+    "target": "Behavioral / HR",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "compiler-practice.html",
+    "type": "Link",
+    "target": "Back to Theory",
+    "href": "/study-reader?subject=compiler-design",
+    "id": "sidebar-back-to-theory",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "compiler-practice.html",
+    "type": "Link",
+    "target": "Back to Theory",
+    "href": "/study-reader?subject=compiler-design",
+    "id": "btn-back-to-theory",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "compiler-practice.html",
+    "type": "Button",
+    "target": "‹",
+    "href": "",
+    "id": "sidebar-toggle",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "compiler-practice.html",
+    "type": "Button",
+    "target": "Compiler",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "compiler-practice.html",
+    "type": "Button",
+    "target": "My Projects",
+    "href": "",
+    "id": "sidebar-projects",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "compiler-practice.html",
+    "type": "Button",
+    "target": "Save current project",
+    "href": "",
+    "id": "sidebar-save-project",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "compiler-practice.html",
+    "type": "Button",
+    "target": "Compilation History—",
+    "href": "",
+    "id": "sidebar-history",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "compiler-practice.html",
+    "type": "Button",
+    "target": "+",
+    "href": "",
+    "id": "sidebar-new-project",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "compiler-practice.html",
+    "type": "Button",
+    "target": "Cmain.c",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "compiler-practice.html",
+    "type": "Button",
+    "target": "☰",
+    "href": "",
+    "id": "sidebar-toggle-top",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "compiler-practice.html",
+    "type": "Button",
+    "target": "New",
+    "href": "",
+    "id": "btn-new-project",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "compiler-practice.html",
+    "type": "Button",
+    "target": "Open",
+    "href": "",
+    "id": "btn-open-project",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "compiler-practice.html",
+    "type": "Button",
+    "target": "Save",
+    "href": "",
+    "id": "btn-save-project",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "compiler-practice.html",
+    "type": "Button",
+    "target": "1. Code Editor",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "compiler-practice.html",
+    "type": "Button",
+    "target": "2. 6-Phase Visualizer",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "compiler-practice.html",
+    "type": "Button",
+    "target": "3. Diagnostics &amp; Run",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "compiler-practice.html",
+    "type": "Button",
+    "target": "A-",
+    "href": "",
+    "id": "btn-font-dec",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "compiler-practice.html",
+    "type": "Button",
+    "target": "13",
+    "href": "",
+    "id": "btn-font-reset",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "compiler-practice.html",
+    "type": "Button",
+    "target": "A+",
+    "href": "",
+    "id": "btn-font-inc",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "compiler-practice.html",
+    "type": "Button",
+    "target": "Compile &amp; Visualize",
+    "href": "",
+    "id": "btn-compile-visualize",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "compiler-practice.html",
+    "type": "Button",
+    "target": "Run Program",
+    "href": "",
+    "id": "btn-run-program",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "compiler-practice.html",
+    "type": "Button",
+    "target": "1\n              Lexical",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "compiler-practice.html",
+    "type": "Button",
+    "target": "2\n              Syntax (AST)",
+    "href": "",
+    "id": "",
+    "status": "WARN",
+    "issue": "Potential orphan button (no id listener, onclick, or submit form binding)"
+  },
+  {
+    "role": "Student",
+    "page": "compiler-practice.html",
+    "type": "Button",
+    "target": "3\n              Semantic",
+    "href": "",
+    "id": "",
+    "status": "WARN",
+    "issue": "Potential orphan button (no id listener, onclick, or submit form binding)"
+  },
+  {
+    "role": "Student",
+    "page": "compiler-practice.html",
+    "type": "Button",
+    "target": "4\n              Intermediate (IR)",
+    "href": "",
+    "id": "",
+    "status": "WARN",
+    "issue": "Potential orphan button (no id listener, onclick, or submit form binding)"
+  },
+  {
+    "role": "Student",
+    "page": "compiler-practice.html",
+    "type": "Button",
+    "target": "5\n              Optimization",
+    "href": "",
+    "id": "",
+    "status": "WARN",
+    "issue": "Potential orphan button (no id listener, onclick, or submit form binding)"
+  },
+  {
+    "role": "Student",
+    "page": "compiler-practice.html",
+    "type": "Button",
+    "target": "6\n              Target Assembly",
+    "href": "",
+    "id": "",
+    "status": "WARN",
+    "issue": "Potential orphan button (no id listener, onclick, or submit form binding)"
+  },
+  {
+    "role": "Student",
+    "page": "compiler-practice.html",
+    "type": "Button",
+    "target": "Build\n              Preprocessing",
+    "href": "",
+    "id": "",
+    "status": "WARN",
+    "issue": "Potential orphan button (no id listener, onclick, or submit form binding)"
+  },
+  {
+    "role": "Student",
+    "page": "compiler-practice.html",
+    "type": "Button",
+    "target": "Build\n              Linking",
+    "href": "",
+    "id": "",
+    "status": "WARN",
+    "issue": "Potential orphan button (no id listener, onclick, or submit form binding)"
+  },
+  {
+    "role": "Student",
+    "page": "compiler-practice.html",
+    "type": "Button",
+    "target": "Next: Phase 2 (Syntax Analysis) &rarr;",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "compiler-practice.html",
+    "type": "Button",
+    "target": "&larr; Previous: Phase 1",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "compiler-practice.html",
+    "type": "Button",
+    "target": "Next: Phase 3 (Semantic Analysis) &rarr;",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "compiler-practice.html",
+    "type": "Button",
+    "target": "&larr; Previous: Phase 2",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "compiler-practice.html",
+    "type": "Button",
+    "target": "Next: Phase 4 (Intermediate Code) &rarr;",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "compiler-practice.html",
+    "type": "Button",
+    "target": "Copy GIMPLE",
+    "href": "",
+    "id": "btn-copy-ir",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "compiler-practice.html",
+    "type": "Button",
+    "target": "&larr; Previous: Phase 3",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "compiler-practice.html",
+    "type": "Button",
+    "target": "Next: Phase 5 (Optimization) &rarr;",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "compiler-practice.html",
+    "type": "Button",
+    "target": "&larr; Previous: Phase 4",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "compiler-practice.html",
+    "type": "Button",
+    "target": "Next: Phase 6 (Target Assembly) &rarr;",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "compiler-practice.html",
+    "type": "Button",
+    "target": "Copy Assembly",
+    "href": "",
+    "id": "btn-copy-assembly",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "compiler-practice.html",
+    "type": "Button",
+    "target": "&larr; Previous: Phase 5",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "compiler-practice.html",
+    "type": "Button",
+    "target": "Run Compiled Binary &rarr;",
+    "href": "",
+    "id": "btn-quick-run",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "compiler-practice.html",
+    "type": "Button",
+    "target": "Output",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "compiler-practice.html",
+    "type": "Button",
+    "target": "Diagnostics",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "compiler-practice.html",
+    "type": "Button",
+    "target": "Terminal / Input",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "compiler-practice.html",
+    "type": "Button",
+    "target": "Build Log",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "compiler-practice.html",
+    "type": "Button",
+    "target": "Clear",
+    "href": "",
+    "id": "btn-clear-console",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "compiler-practice.html",
+    "type": "Button",
+    "target": "⌄",
+    "href": "",
+    "id": "output-collapse",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "compiler-practice.html",
+    "type": "Button",
+    "target": "&times;",
+    "href": "",
+    "id": "project-modal-close",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "exam-guidelines.html",
+    "type": "Link",
+    "target": "Back to Assessments",
+    "href": "/pages/available-exams.html",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "exam-guidelines.html",
+    "type": "Button",
+    "target": "Start Proctored Test Now",
+    "href": "",
+    "id": "start",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "exam-guidelines.html",
+    "type": "Button",
+    "target": "Start Proctored Test Now",
+    "href": "",
+    "id": "start",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "exam-result.html",
+    "type": "Link",
+    "target": "Back to assessments",
+    "href": "/pages/available-exams.html",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "exam-result.html",
+    "type": "Link",
+    "target": "Back to assessments",
+    "href": "/pages/available-exams.html",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "interview-room.html",
+    "type": "Link",
+    "target": "Exit interview",
+    "href": "/pages/interviews.html",
+    "id": "exitInterviewBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "interview-room.html",
+    "type": "Link",
+    "target": "Back to Interview Studio",
+    "href": "/pages/interviews.html",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "interview-room.html",
+    "type": "Button",
+    "target": "Start interview",
+    "href": "",
+    "id": "startBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "interview-room.html",
+    "type": "Button",
+    "target": "Request required camera access",
+    "href": "",
+    "id": "previewMediaBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "interview-room.html",
+    "type": "Button",
+    "target": "Repeat Question",
+    "href": "",
+    "id": "repeatQuestionBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "interview-room.html",
+    "type": "Button",
+    "target": "Skip Question",
+    "href": "",
+    "id": "skipQuestionBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "interview-room.html",
+    "type": "Button",
+    "target": "AI Voice: On",
+    "href": "",
+    "id": "voiceToggleBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "interview-room.html",
+    "type": "Button",
+    "target": "Done Speaking (Process Answer)",
+    "href": "",
+    "id": "doneSpeakingBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "interview-room.html",
+    "type": "Button",
+    "target": "Save Answer Audio",
+    "href": "",
+    "id": "saveAnswerBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "interview-room.html",
+    "type": "Button",
+    "target": "Type Answer Instead",
+    "href": "",
+    "id": "toggleTextInputBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "interview-room.html",
+    "type": "Button",
+    "target": "End Interview &amp; Get Feedback",
+    "href": "",
+    "id": "submitBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "interview-room.html",
+    "type": "Button",
+    "target": "Previous question",
+    "href": "",
+    "id": "prevBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "interview-room.html",
+    "type": "Button",
+    "target": "Next question",
+    "href": "",
+    "id": "nextBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "interview-room.html",
+    "type": "Button",
+    "target": "Practice Again",
+    "href": "",
+    "id": "retakeInterviewBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "interviews.html",
+    "type": "Link",
+    "target": "PlacementPro",
+    "href": "/dashboard",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "interviews.html",
+    "type": "Link",
+    "target": "Dashboard",
+    "href": "/dashboard",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "interviews.html",
+    "type": "Link",
+    "target": "Aptitude tests",
+    "href": "/pages/available-exams.html",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "interviews.html",
+    "type": "Button",
+    "target": "Start AI HR Interview Now",
+    "href": "",
+    "id": "startLiveAiBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "interviews.html",
+    "type": "Button",
+    "target": "Refresh",
+    "href": "",
+    "id": "refreshBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "landing.html",
+    "type": "Link",
+    "target": "Log in",
+    "href": "/login",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "landing.html",
+    "type": "Link",
+    "target": "Get started",
+    "href": "/signup",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "landing.html",
+    "type": "Link",
+    "target": "Start preparing &rarr;",
+    "href": "/login",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "landing.html",
+    "type": "Link",
+    "target": "See how it works",
+    "href": "#how-it-works",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "landing.html",
+    "type": "Link",
+    "target": "Learn more",
+    "href": "/login",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "landing.html",
+    "type": "Link",
+    "target": "Learn more",
+    "href": "/login",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "landing.html",
+    "type": "Link",
+    "target": "Learn more",
+    "href": "/login",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "landing.html",
+    "type": "Link",
+    "target": "Create your free account &rarr;",
+    "href": "/login",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "landing.html",
+    "type": "Link",
+    "target": "College Support",
+    "href": "mailto:placementpro01@gmail.com",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "landing.html",
+    "type": "Link",
+    "target": "placementpro01@gmail.com",
+    "href": "mailto:placementpro01@gmail.com",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "landing.html",
+    "type": "Link",
+    "target": "Support Portal",
+    "href": "/login",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "landing.html",
+    "type": "Link",
+    "target": "DSA Preparation",
+    "href": "/study-materials",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "landing.html",
+    "type": "Link",
+    "target": "Aptitude &amp; Reasoning",
+    "href": "/study-materials",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "landing.html",
+    "type": "Link",
+    "target": "Programming",
+    "href": "/coding-rounds",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "landing.html",
+    "type": "Link",
+    "target": "Core CS Subjects",
+    "href": "/study-materials",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "landing.html",
+    "type": "Link",
+    "target": "Compiler Design (C-Visualize)",
+    "href": "/compiler-practice?subject=compiler-design",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "landing.html",
+    "type": "Link",
+    "target": "Placement Preparation",
+    "href": "/login",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "landing.html",
+    "type": "Link",
+    "target": "Interview Preparation",
+    "href": "/interviews",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "landing.html",
+    "type": "Link",
+    "target": "Resume Building",
+    "href": "/resume-analyzer",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "landing.html",
+    "type": "Link",
+    "target": "Mock Interviews",
+    "href": "/interviews",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "landing.html",
+    "type": "Link",
+    "target": "Company Preparation",
+    "href": "/companies",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "landing.html",
+    "type": "Link",
+    "target": "About Us",
+    "href": "#how-it-works",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "landing.html",
+    "type": "Link",
+    "target": "For Students",
+    "href": "/signup",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "landing.html",
+    "type": "Link",
+    "target": "Admin Portal",
+    "href": "/admin-login",
+    "id": "",
+    "status": "PASS",
+    "issue": "Student page links to Admin URL (will be blocked with 403 on port 5000 unless cross-port)"
+  },
+  {
+    "role": "Student",
+    "page": "landing.html",
+    "type": "Link",
+    "target": "Contact Us",
+    "href": "mailto:placementpro01@gmail.com",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "landing.html",
+    "type": "Link",
+    "target": "Terms &amp; Conditions",
+    "href": "/login",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "landing.html",
+    "type": "Link",
+    "target": "Curriculum Roadmaps",
+    "href": "/study-materials",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "landing.html",
+    "type": "Link",
+    "target": "Practice Tests",
+    "href": "/available-exams",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "landing.html",
+    "type": "Link",
+    "target": "Coding Rounds",
+    "href": "/coding-rounds",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "landing.html",
+    "type": "Link",
+    "target": "AI Interview Simulator",
+    "href": "/interviews",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "landing.html",
+    "type": "Link",
+    "target": "Versant Voice Tests",
+    "href": "/versant-tests",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "landing.html",
+    "type": "Link",
+    "target": "GitHub",
+    "href": "https://github.com",
+    "id": "",
+    "status": "PASS",
+    "issue": "External URL or full origin"
+  },
+  {
+    "role": "Student",
+    "page": "landing.html",
+    "type": "Link",
+    "target": "LinkedIn",
+    "href": "https://linkedin.com",
+    "id": "",
+    "status": "PASS",
+    "issue": "External URL or full origin"
+  },
+  {
+    "role": "Student",
+    "page": "landing.html",
+    "type": "Link",
+    "target": "Direct Inquiry",
+    "href": "mailto:placementpro01@gmail.com",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "live-exam.html",
+    "type": "Button",
+    "target": "Enter Fullscreen",
+    "href": "",
+    "id": "fullscreenBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "live-exam.html",
+    "type": "Button",
+    "target": "Submit Test",
+    "href": "",
+    "id": "submit",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "live-exam.html",
+    "type": "Button",
+    "target": "← Previous",
+    "href": "",
+    "id": "previous",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "live-exam.html",
+    "type": "Button",
+    "target": "Mark for Review &amp; Next",
+    "href": "",
+    "id": "mark",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "live-exam.html",
+    "type": "Button",
+    "target": "Save &amp; Next →",
+    "href": "",
+    "id": "next",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "live-exam.html",
+    "type": "Button",
+    "target": "Finalize Assessment",
+    "href": "",
+    "id": "finalize",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "live-exam.html",
+    "type": "Button",
+    "target": "Retry Camera",
+    "href": "",
+    "id": "retryCamera",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "placement-workspace.html",
+    "type": "Link",
+    "target": "Home",
+    "href": "/dashboard",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "placement-workspace.html",
+    "type": "Link",
+    "target": "Aptitude Tests\n                                        Quantitative, logical & verbal MCQs",
+    "href": "/available-exams",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "placement-workspace.html",
+    "type": "Link",
+    "target": "Coding Rounds\n                                        Hands-on problems with online compiler",
+    "href": "/coding-rounds",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "placement-workspace.html",
+    "type": "Link",
+    "target": "Versant Voice Test\n                                        Spoken English, fluency & pronunciation",
+    "href": "/versant-test",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "placement-workspace.html",
+    "type": "Link",
+    "target": "Mock Interview Round\n                                        Technical & HR voice interview round",
+    "href": "/interviews",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "placement-workspace.html",
+    "type": "Link",
+    "target": "Assessment Guidelines\n                                        Proctoring rules & test environment",
+    "href": "/exam-guidelines",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "placement-workspace.html",
+    "type": "Link",
+    "target": "AI Mock Interviews\n                                        Live audio interviews with AI feedback",
+    "href": "/interviews",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "placement-workspace.html",
+    "type": "Link",
+    "target": "Spoken English Practice\n                                        Fluency, sentence repeats & listening",
+    "href": "/versant-test",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "placement-workspace.html",
+    "type": "Link",
+    "target": "ATS Resume Analyzer\n                                        Keyword match, scoring & ATS optimizer",
+    "href": "/resume-analyzer",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "placement-workspace.html",
+    "type": "Link",
+    "target": "Placement Workspace\n                                        Interview roadmaps, tips & master prep",
+    "href": "/placement-workspace",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "placement-workspace.html",
+    "type": "Link",
+    "target": "Company Directory\n                                        Browse hiring partners, CTC & roles",
+    "href": "/companies",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "placement-workspace.html",
+    "type": "Link",
+    "target": "Hiring Criteria & Eligibility\n                                        Cutoffs, criteria & required skill sets",
+    "href": "/companies",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "placement-workspace.html",
+    "type": "Link",
+    "target": "Company Roadmaps\n                                        Targeted preparation modules & strategies",
+    "href": "/placement-workspace",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "placement-workspace.html",
+    "type": "Link",
+    "target": "Preparation Analytics\n                                        Track scores, metrics & readiness index",
+    "href": "/analytics",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "placement-workspace.html",
+    "type": "Link",
+    "target": "Open Preparation Workspace",
+    "href": "/placement-workspace",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "placement-workspace.html",
+    "type": "Link",
+    "target": "Aptitude Tests",
+    "href": "/available-exams",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "placement-workspace.html",
+    "type": "Link",
+    "target": "Coding Rounds",
+    "href": "/coding-rounds",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "placement-workspace.html",
+    "type": "Link",
+    "target": "Companies",
+    "href": "/companies",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "placement-workspace.html",
+    "type": "Link",
+    "target": "Analytics",
+    "href": "/analytics",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "placement-workspace.html",
+    "type": "Link",
+    "target": "Profile & Portfolio",
+    "href": "/profile",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "placement-workspace.html",
+    "type": "Link",
+    "target": "Account Settings",
+    "href": "/profile",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "placement-workspace.html",
+    "type": "Link",
+    "target": "Log Out",
+    "href": "/login",
+    "id": "logoutBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "placement-workspace.html",
+    "type": "Link",
+    "target": "📝 Aptitude Tests",
+    "href": "/available-exams",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "placement-workspace.html",
+    "type": "Link",
+    "target": "💻 Coding Challenges",
+    "href": "/coding-rounds",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "placement-workspace.html",
+    "type": "Link",
+    "target": "🎙️ Versant Voice Round",
+    "href": "/versant-test",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "placement-workspace.html",
+    "type": "Link",
+    "target": "🤖 AI Mock Interviews",
+    "href": "/interviews",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "placement-workspace.html",
+    "type": "Link",
+    "target": "📄 ATS Resume Scan",
+    "href": "/resume-analyzer",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "placement-workspace.html",
+    "type": "Link",
+    "target": "🏢 Company Directory",
+    "href": "/companies",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "placement-workspace.html",
+    "type": "Link",
+    "target": "Take Aptitude Tests",
+    "href": "/available-exams",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "placement-workspace.html",
+    "type": "Link",
+    "target": "Solve Coding Rounds",
+    "href": "/coding-rounds",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "placement-workspace.html",
+    "type": "Link",
+    "target": "Practice Versant Test",
+    "href": "/versant-test",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "placement-workspace.html",
+    "type": "Link",
+    "target": "Launch Interview Studio",
+    "href": "/interviews",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "placement-workspace.html",
+    "type": "Link",
+    "target": "ATS Resume Analyzer\n                                Check keyword match & format compatibility\n                            \n                        \n                        →",
+    "href": "/resume-analyzer",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "placement-workspace.html",
+    "type": "Link",
+    "target": "Company Directory\n                                CTC packages, roles & recruiter profiles\n                            \n                        \n                        →",
+    "href": "/companies",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "placement-workspace.html",
+    "type": "Link",
+    "target": "Assessment Guidelines\n                                Proctoring instructions & compliance policy\n                            \n                        \n                        →",
+    "href": "/exam-guidelines",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "placement-workspace.html",
+    "type": "Link",
+    "target": "Preparation Analytics\n                                Track progress scores & readiness gauge\n                            \n                        \n                        →",
+    "href": "/analytics",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "placement-workspace.html",
+    "type": "Button",
+    "target": "mobileNavToggle",
+    "href": "",
+    "id": "mobileNavToggle",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "placement-workspace.html",
+    "type": "Button",
+    "target": "Placement Prep ⌄",
+    "href": "",
+    "id": "placementPrepToggle",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "placement-workspace.html",
+    "type": "Button",
+    "target": "Practice ⌄",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "placement-workspace.html",
+    "type": "Button",
+    "target": "unlabeled button",
+    "href": "",
+    "id": "",
+    "status": "WARN",
+    "issue": "Potential orphan button (no id listener, onclick, or submit form binding)"
+  },
+  {
+    "role": "Student",
+    "page": "placement-workspace.html",
+    "type": "Button",
+    "target": "themeToggleBtn",
+    "href": "",
+    "id": "themeToggleBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "proctoring.html",
+    "type": "Link",
+    "target": "Dashboard",
+    "href": "/pages/admindash.html",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "resume-analyzer.html",
+    "type": "Link",
+    "target": "Home",
+    "href": "/dashboard",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "resume-analyzer.html",
+    "type": "Link",
+    "target": "Resume AI",
+    "href": "/resume-analyzer",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "resume-analyzer.html",
+    "type": "Button",
+    "target": "Browse File",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "resume-analyzer.html",
+    "type": "Button",
+    "target": "Analyze Resume",
+    "href": "",
+    "id": "analyzeBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "resume-analyzer.html",
+    "type": "Button",
+    "target": "Get 100% Optimized Resume Text",
+    "href": "",
+    "id": "downloadOptimizedBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "resume-analyzer.html",
+    "type": "Form",
+    "target": "resumeForm",
+    "href": "",
+    "id": "resumeForm",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stddash.html",
+    "type": "Link",
+    "target": "Home",
+    "href": "/dashboard",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stddash.html",
+    "type": "Link",
+    "target": "Aptitude Tests\r\n                                        Quantitative, logical & verbal MCQs",
+    "href": "/available-exams",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stddash.html",
+    "type": "Link",
+    "target": "Coding Rounds\r\n                                        Hands-on problems with online compiler",
+    "href": "/coding-rounds",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stddash.html",
+    "type": "Link",
+    "target": "Versant Voice Test\r\n                                        Spoken English, fluency & pronunciation",
+    "href": "/versant-test",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stddash.html",
+    "type": "Link",
+    "target": "Mock Interview Round\r\n                                        Technical & HR voice interview round",
+    "href": "/interviews",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stddash.html",
+    "type": "Link",
+    "target": "Assessment Guidelines\r\n                                        Proctoring rules & test environment",
+    "href": "/exam-guidelines",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stddash.html",
+    "type": "Link",
+    "target": "AI Mock Interviews\r\n                                        Live audio interviews with AI feedback",
+    "href": "/interviews",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stddash.html",
+    "type": "Link",
+    "target": "Spoken English Practice\r\n                                        Fluency, sentence repeats & listening",
+    "href": "/versant-test",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stddash.html",
+    "type": "Link",
+    "target": "ATS Resume Analyzer\r\n                                        Keyword match, scoring & ATS optimizer",
+    "href": "/resume-analyzer",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stddash.html",
+    "type": "Link",
+    "target": "Placement Workspace\r\n                                        Interview roadmaps, tips & master prep",
+    "href": "/placement-workspace",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stddash.html",
+    "type": "Link",
+    "target": "Company Directory\r\n                                        Browse hiring partners, CTC & roles",
+    "href": "/companies",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stddash.html",
+    "type": "Link",
+    "target": "Hiring Criteria & Eligibility\r\n                                        Cutoffs, criteria & required skill sets",
+    "href": "/companies",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stddash.html",
+    "type": "Link",
+    "target": "Company Roadmaps\r\n                                        Targeted preparation modules & strategies",
+    "href": "/placement-workspace",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stddash.html",
+    "type": "Link",
+    "target": "Preparation Analytics\r\n                                        Track scores, metrics & readiness index",
+    "href": "/analytics",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stddash.html",
+    "type": "Link",
+    "target": "Open Preparation Workspace",
+    "href": "/placement-workspace",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stddash.html",
+    "type": "Link",
+    "target": "Aptitude Tests",
+    "href": "/available-exams",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stddash.html",
+    "type": "Link",
+    "target": "Coding Rounds",
+    "href": "/coding-rounds",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stddash.html",
+    "type": "Link",
+    "target": "Companies",
+    "href": "/companies",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stddash.html",
+    "type": "Link",
+    "target": "Study Materials",
+    "href": "/study-materials",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stddash.html",
+    "type": "Link",
+    "target": "Analytics",
+    "href": "/analytics",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stddash.html",
+    "type": "Link",
+    "target": "Profile & Portfolio",
+    "href": "/profile",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stddash.html",
+    "type": "Link",
+    "target": "Study Materials",
+    "href": "/study-materials",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stddash.html",
+    "type": "Link",
+    "target": "Account Settings",
+    "href": "/profile",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stddash.html",
+    "type": "Link",
+    "target": "Log Out",
+    "href": "/login",
+    "id": "logoutBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stddash.html",
+    "type": "Link",
+    "target": "Launch Mock\r\n                        Interview",
+    "href": "/pages/interviews.html",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stddash.html",
+    "type": "Link",
+    "target": "View Practice Tests &rsaquo;",
+    "href": "/available-exams",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stddash.html",
+    "type": "Link",
+    "target": "Company-Wise Preparation\r\n                    Prepare for company-specific placement rounds and interviews\r\n                \r\n                &rsaquo;",
+    "href": "/company-prep",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stddash.html",
+    "type": "Link",
+    "target": "Study Materials\r\n                    Theory tutorials, DBMS, DSA, OS &amp; notes\r\n                \r\n                &rsaquo;",
+    "href": "/study-materials",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stddash.html",
+    "type": "Link",
+    "target": "&lt;/&gt;\r\n                \r\n                    Coding Rounds\r\n                    Open assigned programming assessments\r\n                &rsaquo;",
+    "href": "/coding-rounds",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stddash.html",
+    "type": "Link",
+    "target": "🕮\r\n                \r\n                    Aptitude Practice\r\n                    Quantitative and logical speed tests\r\n                &rsaquo;",
+    "href": "/available-exams",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stddash.html",
+    "type": "Link",
+    "target": "Resume AI Analyzer\r\n                    ATS keyword & match score check\r\n                \r\n                &rsaquo;",
+    "href": "/resume-analyzer",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stddash.html",
+    "type": "Link",
+    "target": "Versant Speech Test\r\n                    Fluency &amp; voice evaluation\r\n                \r\n                &rsaquo;",
+    "href": "/pages/versant-test.html",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stddash.html",
+    "type": "Link",
+    "target": "🗣\r\n                \r\n                    Mock Interviews\r\n                    HR, technical and company-specific practice\r\n                &rsaquo;",
+    "href": "/pages/interviews.html",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stddash.html",
+    "type": "Link",
+    "target": "View Company Directory &rsaquo;",
+    "href": "/companies",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stddash.html",
+    "type": "Button",
+    "target": "mobileNavToggle",
+    "href": "",
+    "id": "mobileNavToggle",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stddash.html",
+    "type": "Button",
+    "target": "Placement Prep ⌄",
+    "href": "",
+    "id": "placementPrepToggle",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stddash.html",
+    "type": "Button",
+    "target": "Practice ⌄",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stddash.html",
+    "type": "Button",
+    "target": "unlabeled button",
+    "href": "",
+    "id": "",
+    "status": "WARN",
+    "issue": "Potential orphan button (no id listener, onclick, or submit form binding)"
+  },
+  {
+    "role": "Student",
+    "page": "stddash.html",
+    "type": "Button",
+    "target": "themeToggleBtn",
+    "href": "",
+    "id": "themeToggleBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stddash.html",
+    "type": "Button",
+    "target": "Continue Learning Journey",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stddash.html",
+    "type": "Button",
+    "target": "Start Google Prep Kit",
+    "href": "",
+    "id": "startGooglePrepBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stddash.html",
+    "type": "Button",
+    "target": "Start Amazon Prep Kit",
+    "href": "",
+    "id": "startAmazonPrepBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stdlogin.html",
+    "type": "Link",
+    "target": "Forgot Password?",
+    "href": "#",
+    "id": "",
+    "status": "FAIL",
+    "issue": "Dead link (# or javascript:void(0) without click handler or ID listener)"
+  },
+  {
+    "role": "Student",
+    "page": "stdlogin.html",
+    "type": "Link",
+    "target": "Continue with Google",
+    "href": "/api/auth/google",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stdlogin.html",
+    "type": "Link",
+    "target": "Register Now",
+    "href": "/signup",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stdlogin.html",
+    "type": "Button",
+    "target": "unlabeled button",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stdlogin.html",
+    "type": "Button",
+    "target": "Log In to Dashboard &rarr;",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stdlogin.html",
+    "type": "Form",
+    "target": "loginForm",
+    "href": "",
+    "id": "loginForm",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stdprofile.html",
+    "type": "Link",
+    "target": "&larr; Back to Dashboard",
+    "href": "/dashboard",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stdprofile.html",
+    "type": "Button",
+    "target": "Logout",
+    "href": "",
+    "id": "logoutBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stdprofile.html",
+    "type": "Button",
+    "target": "Save Profile Changes",
+    "href": "",
+    "id": "saveBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stdprofile.html",
+    "type": "Button",
+    "target": "Upload & Set Active Resume",
+    "href": "",
+    "id": "uploadResumeBtn",
+    "status": "WARN",
+    "issue": "Potential orphan button (no id listener, onclick, or submit form binding)"
+  },
+  {
+    "role": "Student",
+    "page": "stdprofile.html",
+    "type": "Button",
+    "target": "&larr; Prev",
+    "href": "",
+    "id": "",
+    "status": "WARN",
+    "issue": "Potential orphan button (no id listener, onclick, or submit form binding)"
+  },
+  {
+    "role": "Student",
+    "page": "stdprofile.html",
+    "type": "Button",
+    "target": "Next &rarr;",
+    "href": "",
+    "id": "",
+    "status": "WARN",
+    "issue": "Potential orphan button (no id listener, onclick, or submit form binding)"
+  },
+  {
+    "role": "Student",
+    "page": "stdprofile.html",
+    "type": "Form",
+    "target": "profileForm",
+    "href": "",
+    "id": "profileForm",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stdsignup.html",
+    "type": "Link",
+    "target": "Continue with Google",
+    "href": "/api/auth/google",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stdsignup.html",
+    "type": "Link",
+    "target": "Terms & Conditions",
+    "href": "#",
+    "id": "",
+    "status": "FAIL",
+    "issue": "Dead link (# or javascript:void(0) without click handler or ID listener)"
+  },
+  {
+    "role": "Student",
+    "page": "stdsignup.html",
+    "type": "Link",
+    "target": "Privacy Policy",
+    "href": "#",
+    "id": "",
+    "status": "FAIL",
+    "issue": "Dead link (# or javascript:void(0) without click handler or ID listener)"
+  },
+  {
+    "role": "Student",
+    "page": "stdsignup.html",
+    "type": "Link",
+    "target": "Login",
+    "href": "/login",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stdsignup.html",
+    "type": "Button",
+    "target": "unlabeled button",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stdsignup.html",
+    "type": "Button",
+    "target": "unlabeled button",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stdsignup.html",
+    "type": "Button",
+    "target": "Create Account &rarr;",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "stdsignup.html",
+    "type": "Form",
+    "target": "signupForm",
+    "href": "",
+    "id": "signupForm",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "study-materials.html",
+    "type": "Link",
+    "target": "PlacementPro",
+    "href": "/dashboard",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "study-materials.html",
+    "type": "Link",
+    "target": "Home",
+    "href": "/dashboard",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "study-materials.html",
+    "type": "Link",
+    "target": "Placement Prep",
+    "href": "/placement-workspace",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "study-materials.html",
+    "type": "Link",
+    "target": "Practice",
+    "href": "/available-exams",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "study-materials.html",
+    "type": "Link",
+    "target": "Companies",
+    "href": "/companies",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "study-materials.html",
+    "type": "Link",
+    "target": "Study Materials",
+    "href": "/study-materials",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "study-materials.html",
+    "type": "Link",
+    "target": "Analytics",
+    "href": "/analytics",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "study-materials.html",
+    "type": "Link",
+    "target": "Profile &amp; Portfolio",
+    "href": "/profile",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "study-materials.html",
+    "type": "Link",
+    "target": "Study Materials",
+    "href": "/study-materials",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "study-materials.html",
+    "type": "Link",
+    "target": "Log Out",
+    "href": "/login",
+    "id": "logoutBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "study-materials.html",
+    "type": "Button",
+    "target": "themeToggleBtn",
+    "href": "",
+    "id": "themeToggleBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "study-materials.html",
+    "type": "Button",
+    "target": "All Subjects",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "study-materials.html",
+    "type": "Button",
+    "target": "Core CS",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "study-materials.html",
+    "type": "Button",
+    "target": "Programming",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "study-materials.html",
+    "type": "Button",
+    "target": "Database",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "study-materials.html",
+    "type": "Button",
+    "target": "Systems",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "study-materials.html",
+    "type": "Button",
+    "target": "Theory",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "study-materials.html",
+    "type": "Button",
+    "target": "Web Dev",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "study-reader.html",
+    "type": "Link",
+    "target": "Home",
+    "href": "/dashboard",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "study-reader.html",
+    "type": "Link",
+    "target": "Study Materials",
+    "href": "/study-materials",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "study-reader.html",
+    "type": "Link",
+    "target": "Theory",
+    "href": "javascript:void(0)",
+    "id": "btnModeTheory",
+    "status": "FAIL",
+    "issue": "Dead link (# or javascript:void(0) without click handler or ID listener)"
+  },
+  {
+    "role": "Student",
+    "page": "study-reader.html",
+    "type": "Link",
+    "target": "Practice (C-Visualize)",
+    "href": "/compiler-practice?subject=compiler-design",
+    "id": "btnModePractice",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "study-reader.html",
+    "type": "Link",
+    "target": "&larr; Subjects",
+    "href": "/study-materials",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "study-reader.html",
+    "type": "Link",
+    "target": "&larr; Previous Topic\n                        Previous",
+    "href": "javascript:void(0)",
+    "id": "prevTopicLink",
+    "status": "PASS",
+    "issue": "Action trigger link (handled via JS event listener or onclick)"
+  },
+  {
+    "role": "Student",
+    "page": "study-reader.html",
+    "type": "Link",
+    "target": "Next Topic &rarr;\n                        Next",
+    "href": "javascript:void(0)",
+    "id": "nextTopicLink",
+    "status": "PASS",
+    "issue": "Action trigger link (handled via JS event listener or onclick)"
+  },
+  {
+    "role": "Student",
+    "page": "study-reader.html",
+    "type": "Button",
+    "target": "Syllabus",
+    "href": "",
+    "id": "sidebarToggleBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "study-reader.html",
+    "type": "Button",
+    "target": "Bookmark",
+    "href": "",
+    "id": "bookmarkBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "study-reader.html",
+    "type": "Button",
+    "target": "Mark as Read",
+    "href": "",
+    "id": "markCompletedBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "take-exam.html",
+    "type": "Button",
+    "target": "Previous",
+    "href": "",
+    "id": "prevBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "take-exam.html",
+    "type": "Button",
+    "target": "Next Question",
+    "href": "",
+    "id": "nextBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "take-exam.html",
+    "type": "Button",
+    "target": "Submit Assessment",
+    "href": "",
+    "id": "submitBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "versant-admin.html",
+    "type": "Link",
+    "target": "Market Alerts\n                2",
+    "href": "/pages/admindash.html#rag-market-ai",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "versant-admin.html",
+    "type": "Link",
+    "target": "Command Center",
+    "href": "/pages/admindash.html#command-center",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "versant-admin.html",
+    "type": "Link",
+    "target": "Practice AI Studio",
+    "href": "/admin-dashboard#practice-ai-studio",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "versant-admin.html",
+    "type": "Link",
+    "target": "Coding Practice",
+    "href": "/admin-coding-rounds",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "versant-admin.html",
+    "type": "Link",
+    "target": "Question Bank &amp; Tests",
+    "href": "/admin-exams",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "versant-admin.html",
+    "type": "Link",
+    "target": "Versant Rounds",
+    "href": "/versant-admin",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "versant-admin.html",
+    "type": "Link",
+    "target": "Mock Interviews",
+    "href": "/admin-interviews",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "versant-admin.html",
+    "type": "Link",
+    "target": "Student Readiness",
+    "href": "/pages/admindash.html#student-readiness",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "versant-admin.html",
+    "type": "Link",
+    "target": "Dashboard",
+    "href": "/pages/admindash.html",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "versant-admin.html",
+    "type": "Button",
+    "target": "Toggle Theme",
+    "href": "",
+    "id": "themeToggle",
+    "status": "WARN",
+    "issue": "Potential orphan button (no id listener, onclick, or submit form binding)"
+  },
+  {
+    "role": "Admin",
+    "page": "versant-admin.html",
+    "type": "Button",
+    "target": "Logout",
+    "href": "",
+    "id": "logoutBtn",
+    "status": "WARN",
+    "issue": "Potential orphan button (no id listener, onclick, or submit form binding)"
+  },
+  {
+    "role": "Admin",
+    "page": "versant-admin.html",
+    "type": "Button",
+    "target": "Create Test",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "versant-admin.html",
+    "type": "Button",
+    "target": "Back to Tests",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "versant-admin.html",
+    "type": "Button",
+    "target": "Publish Test for All Students",
+    "href": "",
+    "id": "publishBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "versant-admin.html",
+    "type": "Button",
+    "target": "Refresh Attempts",
+    "href": "",
+    "id": "refreshAttemptsBtn",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "versant-admin.html",
+    "type": "Button",
+    "target": "Add Question",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "versant-admin.html",
+    "type": "Button",
+    "target": "&times;",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "versant-admin.html",
+    "type": "Button",
+    "target": "Close",
+    "href": "",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "versant-admin.html",
+    "type": "Form",
+    "target": "createTestForm",
+    "href": "",
+    "id": "createTestForm",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Admin",
+    "page": "versant-admin.html",
+    "type": "Form",
+    "target": "questionForm",
+    "href": "",
+    "id": "questionForm",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "versant-result.html",
+    "type": "Link",
+    "target": "← Back to Versant Tests",
+    "href": "/pages/versant-test.html",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "versant-result.html",
+    "type": "Link",
+    "target": "Home",
+    "href": "/pages/stddash.html",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "versant-test.html",
+    "type": "Link",
+    "target": "← Back to Home",
+    "href": "/pages/stddash.html",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "versant-test.html",
+    "type": "Link",
+    "target": "← Home",
+    "href": "/",
+    "id": "",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "versant-test.html",
+    "type": "Button",
+    "target": "Start Answer",
+    "href": "",
+    "id": "startAnswer",
+    "status": "PASS",
+    "issue": ""
+  },
+  {
+    "role": "Student",
+    "page": "versant-test.html",
+    "type": "Button",
+    "target": "Submit &amp; Next",
+    "href": "",
+    "id": "next",
+    "status": "PASS",
+    "issue": ""
+  }
+]

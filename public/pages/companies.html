@@ -7,6 +7,12 @@
   
   <script>
     (function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const urlToken = urlParams.get('token');
+      if (urlToken) {
+        localStorage.setItem('token', urlToken);
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
       const token = localStorage.getItem('token');
       if (!token) {
         window.location.replace('/login');
@@ -214,7 +220,7 @@
                                       <div class="mega-item-desc">Targeted preparation modules & strategies</div>
                                   </div>
                               </a>
-                              <a href="/dashboard#progressSection" class="mega-item" role="menuitem">
+                              <a href="/analytics" class="mega-item" role="menuitem">
                                   <div class="mega-item-icon cyan"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
                                   <div class="mega-item-text">
                                       <div class="mega-item-title">Preparation Analytics</div>
@@ -243,7 +249,7 @@
               <div class="nav-dropdown-menu"><a href="/available-exams">Aptitude Tests</a><a href="/coding-rounds">Coding Rounds</a></div>
           </div>
           <a href="/companies" class="nav-item active" aria-current="page">Companies</a>
-          <a href="/dashboard#progressSection" class="nav-item">Analytics</a>
+          <a href="/analytics" class="nav-item">Analytics</a>
       </nav>
 
       <div class="nav-right">
@@ -285,7 +291,12 @@
   </header>
 
   <main class="company-page">
-    <h1>Company Directory</h1>
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:6px;">
+      <h1 style="margin-bottom:0;">Company Directory</h1>
+      <a href="/company-placement" style="background:var(--brand-blue);color:#ffffff;padding:8px 16px;border-radius:8px;font-size:13px;text-decoration:none;font-weight:600;display:inline-flex;align-items:center;gap:6px;">
+        <span>Company Placement Simulation</span> →
+      </a>
+    </div>
     <p>Explore visiting recruiters, placement eligibility, selection rounds, and company preparation kits.</p>
     <div class="company-status" id="companyStatus" role="status">Loading companies…</div>
     <section class="company-grid" id="companyGrid" aria-live="polite"></section>

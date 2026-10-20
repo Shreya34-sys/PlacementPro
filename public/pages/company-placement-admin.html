@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Company Placement Manager | PlacementPro</title>
+  <link rel="stylesheet" href="/css/company-placement.css">
+</head>
+<body class="cp-admin">
+  <header class="topbar"><div><span class="eyebrow">PLACEMENTPRO · ADMIN</span><h1>Company Placement Manager</h1><p>Build company-specific rounds using your existing assessment modules.</p></div><a class="top-link" href="/admin-dashboard">Admin dashboard ↗</a></header>
+  <main class="layout">
+    <section class="panel">
+      <div class="section-heading"><div><span class="step">01</span><h2>Create a company</h2></div></div>
+      <form id="companyForm" class="stack-form">
+        <label>Company name<input id="companyName" required maxlength="160" placeholder="e.g. XYZ Technologies"></label>
+        <label>Description (optional)<textarea id="companyDescription" rows="2" placeholder="Role, campus drive, notes..."></textarea></label>
+        <button class="btn primary" type="submit">Create company</button>
+      </form>
+      <div id="companyList" class="company-list"><p class="muted">Loading companies…</p></div>
+    </section>
+
+    <section class="panel editor-panel">
+      <div class="section-heading"><div><span class="step">02</span><h2>Configure placement rounds</h2></div><span id="selectedStatus" class="badge">No company selected</span></div>
+      <div id="emptyEditor" class="empty-state">Create or select a company to start configuring its rounds.</div>
+      <div id="editor" hidden>
+        <div class="selected-company"><div><h3 id="selectedCompanyName"></h3><p id="selectedCompanyDescription" class="muted"></p></div><div class="toolbar"><button id="publishBtn" class="btn primary" type="button">Publish simulation</button><button id="unpublishBtn" class="btn secondary" type="button" hidden>Unpublish</button></div></div>
+        <div class="ai-box"><div><strong>AI Placement Assistant</strong><p>Draft suggested rounds, then review them. Suggestions are not verified company policy.</p></div><div class="ai-controls"><input id="roleInput" placeholder="Role (e.g. Graduate Engineer)"><button id="aiSuggestBtn" class="btn ai" type="button">Suggest with AI</button></div><div id="aiNote" class="muted small"></div></div>
+        <div id="suggestionBox" class="suggestion-box" hidden></div>
+        <h3 class="subheading">Add a round</h3>
+        <form id="roundForm" class="round-form">
+          <label>Round title<input id="roundTitle" required maxlength="160" placeholder="e.g. Online Aptitude"></label>
+          <label>Module<select id="moduleType" required><option value="aptitude">Proctored Aptitude</option><option value="coding">Proctored Coding</option><option value="resume">Resume ATS Scanner</option><option value="versant">Versant English Test</option><option value="interview">Interview (future module)</option><option value="gd">Group Discussion (future module)</option><option value="essay">Essay Writing (future module)</option><option value="pseudocode">Pseudocode (future module)</option><option value="puzzle">Puzzle Solving (future module)</option><option value="custom">Custom (future module)</option></select></label>
+          <label>Round availability<select id="roundScope" required><option value="company">Company-Wise Placement Only</option><option value="individual">Individual Round Only</option><option value="both">Both (Independent Attempts)</option></select></label>
+          <label>Order<input id="roundOrder" type="number" min="1" value="1" required></label>
+          <label>Pass score (%)<input id="passingPercent" type="number" min="0" max="100" value="60" required></label>
+          <label>Existing assessment <select id="assessmentId"><option value="">Select module first</option></select></label>
+          <label>Maximum attempts<input id="maxAttempts" type="number" min="1" max="10" value="1" required></label>
+          <label class="wide">Instructions (optional)<textarea id="roundInstructions" rows="2" placeholder="Rules or preparation instructions"></textarea></label>
+          <button class="btn primary wide" type="submit">Add round</button>
+        </form>
+        <div class="notice">Round availability controls whether this configured round participates in the company simulation: Company-Wise Only and Both are included; Individual Only is excluded from company progression. Existing individual module pages continue to work independently. For clean attempt histories, use a dedicated assessment for a company simulation when the module restricts students to one attempt per assessment. Resume ATS uses the current resume upload flow. Interview/GD/Essay remain unavailable until their modules are implemented.</div>
+        <div id="roundList" class="round-list"></div>
+      </div>
+    </section>
+  </main>
+  <section class="panel history-section admin-history-section">
+    <div class="section-heading"><div><span class="step">03</span><h2>Student simulation history</h2></div><button id="refreshHistoryBtn" class="btn secondary" type="button">Refresh history</button></div>
+    <p class="muted">Persistent records of each student's company simulation, round outcomes, scores, and completion time. Deleting a company with history archives it to protect these records.</p>
+    <div id="simulationHistory"><p class="muted">Loading student history…</p></div>
+  </section>
+  <div id="toast" class="toast" role="status"></div>
+  <script src="/js/company-placement-admin.js"></script>
+</body></html>

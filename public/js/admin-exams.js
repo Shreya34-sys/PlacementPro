@@ -64,7 +64,7 @@
             <button class="outline toggle-status-btn" data-exam-id="${exam.id}" data-status="${exam.status}" style="font-size:12px;padding:4px 8px;cursor:pointer;">
               ${exam.status === 'published' ? 'Move to Draft' : 'Publish Test'}
             </button>
-            <a class="outline action-link" href="/pages/proctoring.html?exam=${encodeURIComponent(exam.id)}">
+            <a class="outline action-link" href="/proctoring?exam=${encodeURIComponent(exam.id)}">
               Open Proctoring
             </a>
             <button class="delete-exam" data-exam-id="${exam.id}">

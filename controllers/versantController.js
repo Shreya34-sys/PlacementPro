@@ -166,6 +166,19 @@ exports.startTest = async (req, res, next) => {
     }
 
     await model.startAssignment(a.id, sid);
+    if (req.body?.simulationRoundAttemptId) {
+      try {
+        const { bindModuleAttempt } = require('../services/placementSimulationService');
+        await bindModuleAttempt({
+          simulationRoundAttemptId: req.body.simulationRoundAttemptId,
+          studentId: sid,
+          sourceModuleAttemptId: a.id,
+          moduleType: 'versant'
+        });
+      } catch (simErr) {
+        console.warn('[Versant Simulation Bind]', simErr.message);
+      }
+    }
     const questions = await model.getQuestionsForAssignment(a.id);
 
     res.json({
@@ -266,6 +279,16 @@ exports.submit = async (req, res, next) => {
       vocabulary, sentenceMastery, coherence, wpm, hesitations, cefr, passed
     });
     await model.submitAssignment(a.id, studentId(req));
+    try {
+      const { recordVerifiedRoundResultForSource } = require('../services/placementSimulationService');
+      await recordVerifiedRoundResultForSource({
+        sourceModuleAttemptId: a.id,
+        studentId: studentId(req),
+        score: Number(overall || 0)
+      });
+    } catch (simErr) {
+      // Non-fatal if independent practice
+    }
     await progressService.emitProgress(req.app.get('io'), studentId(req));
     res.json({ message: 'Versant test submitted.', result: { overall, cefr, passed, questions: questions.length, answered: responses.length } });
   } catch (e) { next(e); }

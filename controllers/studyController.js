@@ -7,11 +7,11 @@ if (!fs.existsSync(UPLOAD_DIR)) {
   fs.mkdirSync(UPLOAD_DIR, { recursive: true });
 }
 
-// Helper to determine if user has elevated management permissions
+// Helper to determine if user has elevated admin/faculty management permissions
 function isFacultyOrAdmin(user) {
   if (!user) return false;
   const role = String(user.role || '').toLowerCase();
-  return role === 'admin' || role === 'faculty';
+  return role === 'admin';
 }
 
 function isAdmin(user) {

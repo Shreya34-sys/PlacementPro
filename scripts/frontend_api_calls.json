@@ -1,0 +1,514 @@
+[
+  {
+    "file": "js/admin-coding-builder.js",
+    "endpoint": "/api/coding/admin/rounds/:param"
+  },
+  {
+    "file": "js/admin-coding-builder.js",
+    "endpoint": "/api/coding/admin/rounds/:param"
+  },
+  {
+    "file": "js/admin-coding-builder.js",
+    "endpoint": "/api/coding/admin/rounds/:param"
+  },
+  {
+    "file": "js/admin-coding-builder.js",
+    "endpoint": "/api/coding/admin/rounds/:param"
+  },
+  {
+    "file": "js/admin-coding-builder.js",
+    "endpoint": "/api/coding/admin/rounds/:param"
+  },
+  {
+    "file": "js/admin-coding-monitor.js",
+    "endpoint": "/api/coding/admin/rounds/${roundId}/monitor"
+  },
+  {
+    "file": "js/admin-coding-monitor.js",
+    "endpoint": "/api/coding/admin/flags/${b.dataset.flag}/resolve"
+  },
+  {
+    "file": "js/admin-coding-monitor.js",
+    "endpoint": "/api/coding/admin/rounds/:param"
+  },
+  {
+    "file": "js/admin-coding-monitor.js",
+    "endpoint": "/api/coding/admin/flags/:param"
+  },
+  {
+    "file": "js/admin-coding-results.js",
+    "endpoint": "/api/coding/admin/rounds/${roundId}/results"
+  },
+  {
+    "file": "js/admin-coding-results.js",
+    "endpoint": "/api/coding/admin/rounds/:param"
+  },
+  {
+    "file": "js/admin-coding-rounds.js",
+    "endpoint": "/api/coding/admin/rounds"
+  },
+  {
+    "file": "js/admin-coding-rounds.js",
+    "endpoint": "/api/coding/admin/rounds/${b.dataset.id}"
+  },
+  {
+    "file": "js/admin-coding-rounds.js",
+    "endpoint": "/api/coding/admin/rounds/:param"
+  },
+  {
+    "file": "js/admin-exam-builder.js",
+    "endpoint": "/api/exams"
+  },
+  {
+    "file": "js/admin-exams.js",
+    "endpoint": "/api/exams/admin"
+  },
+  {
+    "file": "js/admin-exams.js",
+    "endpoint": "/api/exams/${button.dataset.examId}"
+  },
+  {
+    "file": "js/admin-exams.js",
+    "endpoint": "/api/exams/admin"
+  },
+  {
+    "file": "js/admin-exams.js",
+    "endpoint": "/api/exams/${button.dataset.examId}/status"
+  },
+  {
+    "file": "js/admin-exams.js",
+    "endpoint": "/api/exams/${button.dataset.examId}"
+  },
+  {
+    "file": "js/admin-exams.js",
+    "endpoint": "/api/exams/:param"
+  },
+  {
+    "file": "js/admin-exams.js",
+    "endpoint": "/api/exams/:param"
+  },
+  {
+    "file": "js/admin-exams.js",
+    "endpoint": "/api/exams/:param"
+  },
+  {
+    "file": "js/admin-interviews.js",
+    "endpoint": "/api/interviews/template"
+  },
+  {
+    "file": "js/admin-interviews.js",
+    "endpoint": "/api/interviews/import/preview"
+  },
+  {
+    "file": "js/admin-interviews.js",
+    "endpoint": "/api/interviews/admin/sets/:param"
+  },
+  {
+    "file": "js/admin-interviews.js",
+    "endpoint": "/api/interviews/admin/sets/:param"
+  },
+  {
+    "file": "js/admin-interviews.js",
+    "endpoint": "/api/interviews/admin/sets/:param"
+  },
+  {
+    "file": "js/admin-interviews.js",
+    "endpoint": "/api/interviews/admin/sets/:param"
+  },
+  {
+    "file": "js/admin-interviews.js",
+    "endpoint": "/api/interviews/admin/attempts/:param"
+  },
+  {
+    "file": "js/admin-interviews.js",
+    "endpoint": "/api/interviews/admin/attempts/:param"
+  },
+  {
+    "file": "js/admin-interviews.js",
+    "endpoint": "/api/interviews/admin/attempts/:param"
+  },
+  {
+    "file": "js/admin-question-import.js",
+    "endpoint": "/api/exams/import/template"
+  },
+  {
+    "file": "js/admin-question-import.js",
+    "endpoint": "/api/exams/import/preview"
+  },
+  {
+    "file": "js/admin-question-import.js",
+    "endpoint": "/api/exams/import/save"
+  },
+  {
+    "file": "js/admin-question-import.js",
+    "endpoint": "/api/exams/admin"
+  },
+  {
+    "file": "js/admin-study-materials.js",
+    "endpoint": "/api/study/subjects/:param"
+  },
+  {
+    "file": "js/admin-study-materials.js",
+    "endpoint": "/api/study/subjects/:param"
+  },
+  {
+    "file": "js/admin-study-materials.js",
+    "endpoint": "/api/study/subjects/:param"
+  },
+  {
+    "file": "js/admin-study-materials.js",
+    "endpoint": "/api/study/topics/:param"
+  },
+  {
+    "file": "js/admin-study-materials.js",
+    "endpoint": "/api/study/topics/:param"
+  },
+  {
+    "file": "js/admin-study-materials.js",
+    "endpoint": "/api/study/topics/:param"
+  },
+  {
+    "file": "js/admin-study-materials.js",
+    "endpoint": "/api/study/attachments/:param"
+  },
+  {
+    "file": "js/admin-study-materials.js",
+    "endpoint": "/api/study/subjects/:param"
+  },
+  {
+    "file": "js/admin-study-materials.js",
+    "endpoint": "/api/study/chapters/:param"
+  },
+  {
+    "file": "js/admin-study-materials.js",
+    "endpoint": "/api/study/subjects/:param"
+  },
+  {
+    "file": "js/admin-study-materials.js",
+    "endpoint": "/api/study/chapters/:param"
+  },
+  {
+    "file": "js/admin-study-materials.js",
+    "endpoint": "/api/study/topics/:param"
+  },
+  {
+    "file": "js/admin-study-materials.js",
+    "endpoint": "/api/study/attachments/:param"
+  },
+  {
+    "file": "js/admindash.js",
+    "endpoint": "/api/admin/intelligence-stats"
+  },
+  {
+    "file": "js/admindash.js",
+    "endpoint": "/api/admin/ingest"
+  },
+  {
+    "file": "js/analytics.js",
+    "endpoint": "/api/analytics/overview"
+  },
+  {
+    "file": "js/available-exams.js",
+    "endpoint": "/api/exams/available"
+  },
+  {
+    "file": "js/coding-proctor.js",
+    "endpoint": "/api/coding/student/rounds/${encodeURIComponent(roundId)}"
+  },
+  {
+    "file": "js/coding-proctor.js",
+    "endpoint": "/api/coding/student/attempts/${encodeURIComponent(attemptId)}/flag"
+  },
+  {
+    "file": "js/coding-proctor.js",
+    "endpoint": "/api/coding/student/rounds/:param"
+  },
+  {
+    "file": "js/coding-proctor.js",
+    "endpoint": "/api/coding/student/attempts/:param"
+  },
+  {
+    "file": "js/coding-result.js",
+    "endpoint": "/api/coding/admin/attempts/:param"
+  },
+  {
+    "file": "js/coding-result.js",
+    "endpoint": "/api/coding/student/attempts/:param"
+  },
+  {
+    "file": "js/coding-round.js",
+    "endpoint": "/api/coding/student/rounds/${encodeURIComponent(roundId)}"
+  },
+  {
+    "file": "js/coding-round.js",
+    "endpoint": "/api/coding/student/rounds/${encodeURIComponent(roundId)}/start"
+  },
+  {
+    "file": "js/coding-round.js",
+    "endpoint": "/api/coding/student/attempts/${encodeURIComponent(attempt.id)}/${mode === "
+  },
+  {
+    "file": "js/coding-round.js",
+    "endpoint": "/api/coding/student/attempts/${encodeURIComponent(attempt.id)}/submit"
+  },
+  {
+    "file": "js/coding-round.js",
+    "endpoint": "/api/coding/student/attempts/${encodeURIComponent(attempt.id)}/snapshot"
+  },
+  {
+    "file": "js/coding-round.js",
+    "endpoint": "/api/coding/student/rounds/:param"
+  },
+  {
+    "file": "js/coding-round.js",
+    "endpoint": "/api/coding/student/rounds/:param"
+  },
+  {
+    "file": "js/coding-round.js",
+    "endpoint": "/api/coding/student/attempts/:param"
+  },
+  {
+    "file": "js/coding-round.js",
+    "endpoint": "/api/coding/student/attempts/:param"
+  },
+  {
+    "file": "js/coding-round.js",
+    "endpoint": "/api/coding/student/attempts/:param"
+  },
+  {
+    "file": "js/coding-rounds.js",
+    "endpoint": "/api/coding/student/rounds"
+  },
+  {
+    "file": "js/companies.js",
+    "endpoint": "/api/companies/:param"
+  },
+  {
+    "file": "js/exam-client.js",
+    "endpoint": "/api/exams/:param"
+  },
+  {
+    "file": "js/exam-client.js",
+    "endpoint": "/api/exams/:param"
+  },
+  {
+    "file": "js/exam-client.js",
+    "endpoint": "/api/exams/attempts/:param"
+  },
+  {
+    "file": "js/exam-client.js",
+    "endpoint": "/api/exams/attempts/:param"
+  },
+  {
+    "file": "js/exam-client.js",
+    "endpoint": "/api/exams/attempts/:param"
+  },
+  {
+    "file": "js/exam-client.js",
+    "endpoint": "/api/exams/:param"
+  },
+  {
+    "file": "js/exam-client.js",
+    "endpoint": "/api/exams/:param"
+  },
+  {
+    "file": "js/exam-client.js",
+    "endpoint": "/api/exams/attempts/:param"
+  },
+  {
+    "file": "js/exam-client.js",
+    "endpoint": "/api/exams/attempts/:param"
+  },
+  {
+    "file": "js/exam-client.js",
+    "endpoint": "/api/exams/attempts/:param"
+  },
+  {
+    "file": "js/exam-result.js",
+    "endpoint": "/api/exams/attempts/${id}/result"
+  },
+  {
+    "file": "js/exam-result.js",
+    "endpoint": "/api/exams/attempts/:param"
+  },
+  {
+    "file": "js/interview-room.js",
+    "endpoint": "/api/interviews/assignments/:param"
+  },
+  {
+    "file": "js/interview-room.js",
+    "endpoint": "/api/interviews/attempts/:param"
+  },
+  {
+    "file": "js/interview-room.js",
+    "endpoint": "/api/interviews/attempts/:param"
+  },
+  {
+    "file": "js/interview-room.js",
+    "endpoint": "/api/interviews/attempts/:param"
+  },
+  {
+    "file": "js/proctoring-dashboard.js",
+    "endpoint": "/api/exams/:param"
+  },
+  {
+    "file": "js/proctoring-dashboard.js",
+    "endpoint": "/api/exams/:param"
+  },
+  {
+    "file": "js/proctoring-dashboard.js",
+    "endpoint": "/api/exams/proctoring/flags/:param"
+  },
+  {
+    "file": "js/proctoring-dashboard.js",
+    "endpoint": "/api/exams/proctoring/students/:param"
+  },
+  {
+    "file": "js/progress-dashboard.js",
+    "endpoint": "/api/progress/summary"
+  },
+  {
+    "file": "js/resume-analyzer.js",
+    "endpoint": "/api/resume/analyze"
+  },
+  {
+    "file": "js/stddash.js",
+    "endpoint": "/api/student/profile"
+  },
+  {
+    "file": "js/stddash.js",
+    "endpoint": "/api/student/profile"
+  },
+  {
+    "file": "js/stddash.js",
+    "endpoint": "/api/interviews/student"
+  },
+  {
+    "file": "js/stdprofile.js",
+    "endpoint": "/api/student/profile"
+  },
+  {
+    "file": "js/stdprofile.js",
+    "endpoint": "/api/student/profile"
+  },
+  {
+    "file": "js/student-proctor.js",
+    "endpoint": "/api/exams/attempts/${attemptId}/submit"
+  },
+  {
+    "file": "js/student-proctor.js",
+    "endpoint": "/api/exams/attempts/${attemptId}/flags"
+  },
+  {
+    "file": "js/student-proctor.js",
+    "endpoint": "/api/exams/attempts/:param"
+  },
+  {
+    "file": "js/student-proctor.js",
+    "endpoint": "/api/exams/attempts/:param"
+  },
+  {
+    "file": "js/study-materials.js",
+    "endpoint": "/api/study/stats"
+  },
+  {
+    "file": "js/study-materials.js",
+    "endpoint": "/api/study/recently-viewed"
+  },
+  {
+    "file": "js/study-materials.js",
+    "endpoint": "/api/study/bookmarks"
+  },
+  {
+    "file": "js/study-materials.js",
+    "endpoint": "/api/study/subjects"
+  },
+  {
+    "file": "js/study-materials.js",
+    "endpoint": "/api/study/search"
+  },
+  {
+    "file": "js/study-materials.js",
+    "endpoint": "/api/student/profile"
+  },
+  {
+    "file": "js/study-reader.js",
+    "endpoint": "/api/study/subjects/${encodeURIComponent(subjectParam)}"
+  },
+  {
+    "file": "js/study-reader.js",
+    "endpoint": "/api/study/topics/${encodeURIComponent(topicSlugOrId)}"
+  },
+  {
+    "file": "js/study-reader.js",
+    "endpoint": "/api/study/bookmarks/${encodeURIComponent(currentTopicData.id)}"
+  },
+  {
+    "file": "js/study-reader.js",
+    "endpoint": "/api/study/progress/${encodeURIComponent(currentTopicData.id)}"
+  },
+  {
+    "file": "js/study-reader.js",
+    "endpoint": "/api/study/subjects/:param"
+  },
+  {
+    "file": "js/study-reader.js",
+    "endpoint": "/api/study/topics/:param"
+  },
+  {
+    "file": "js/study-reader.js",
+    "endpoint": "/api/study/attachments/:param"
+  },
+  {
+    "file": "js/study-reader.js",
+    "endpoint": "/api/study/bookmarks/:param"
+  },
+  {
+    "file": "js/study-reader.js",
+    "endpoint": "/api/study/progress/:param"
+  },
+  {
+    "file": "js/take-exam.js",
+    "endpoint": "/api/exams/${examId}"
+  },
+  {
+    "file": "js/take-exam.js",
+    "endpoint": "/api/exams/${examId}/submit"
+  },
+  {
+    "file": "js/take-exam.js",
+    "endpoint": "/api/exams/:param"
+  },
+  {
+    "file": "js/take-exam.js",
+    "endpoint": "/api/exams/:param"
+  },
+  {
+    "file": "js/versant-result.js",
+    "endpoint": "/api/versant/student/assignments/${id}/result"
+  },
+  {
+    "file": "js/versant-result.js",
+    "endpoint": "/api/versant/student/assignments/:param"
+  },
+  {
+    "file": "js/versant-test.js",
+    "endpoint": "/api/versant/student/assignments/:param"
+  },
+  {
+    "file": "js/versant-test.js",
+    "endpoint": "/api/versant/student/assignments/:param"
+  },
+  {
+    "file": "js/versant-test.js",
+    "endpoint": "/api/versant/student/assignments/:param"
+  },
+  {
+    "file": "pages/company-prep.html",
+    "endpoint": "/api/companies/${encodeURIComponent(companyParam)}"
+  },
+  {
+    "file": "pages/company-prep.html",
+    "endpoint": "/api/companies/:param"
+  }
+]

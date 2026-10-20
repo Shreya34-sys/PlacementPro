@@ -257,6 +257,19 @@ exports.updateStatus = async (req, res, next) => {
 exports.start = async (req, res, next) => {
   try {
     const attempt = await Attempt.start(req.params.examId, req.user.id);
+    if (req.body?.simulationRoundAttemptId) {
+      try {
+        const { bindModuleAttempt } = require('../services/placementSimulationService');
+        await bindModuleAttempt({
+          simulationRoundAttemptId: req.body.simulationRoundAttemptId,
+          studentId: req.user.id,
+          sourceModuleAttemptId: attempt.id,
+          moduleType: 'aptitude'
+        });
+      } catch (simErr) {
+        console.warn('[Exam Simulation Bind]', simErr.message);
+      }
+    }
     const io = req.app.get('io');
     if (io) {
       io.to(`admin:exam:${req.params.examId}`).emit('proctor:student-joined', {
@@ -290,6 +303,20 @@ exports.submit = async (req, res, next) => {
   try {
     const result = await Attempt.submitForUser(req.params.attemptId, req.user.id, Boolean(req.body.forced));
     if (result && result.state !== 'started') {
+      try {
+        const { recordVerifiedRoundResultForSource } = require('../services/placementSimulationService');
+        const [totals] = await db.execute('SELECT COALESCE(SUM(marks),0) AS max_marks FROM exam_questions WHERE exam_id=?', [result.exam_id]);
+        const maxMarks = Number(totals[0]?.max_marks || 0);
+        const percent = maxMarks > 0 ? Math.max(0, Math.min(100, Number(((Number(result.score || 0) / maxMarks) * 100).toFixed(2)))) : 0;
+        await recordVerifiedRoundResultForSource({
+          sourceModuleAttemptId: req.params.attemptId,
+          studentId: req.user.id,
+          score: percent
+        });
+      } catch (simErr) {
+        // Non-fatal if this was an independent exam attempt without a simulation
+      }
+
       await progressService.emitProgress(req.app.get('io'), req.user.id);
       const io = req.app.get('io');
       if (io && result.exam_id) {

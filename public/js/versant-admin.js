@@ -199,4 +199,29 @@ window.viewResult=async id=>{
 };
 
 function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+
+// Theme Toggle Handler
+const themeToggleBtn = $('themeToggle');
+if (themeToggleBtn) {
+  themeToggleBtn.addEventListener('click', () => {
+    document.body.classList.toggle('dark-theme');
+    const isDark = document.body.classList.contains('dark-theme');
+    localStorage.setItem('admin_theme', isDark ? 'dark' : 'light');
+  });
+  if (localStorage.getItem('admin_theme') === 'dark') {
+    document.body.classList.add('dark-theme');
+  }
+}
+
+// Logout Button Handler
+const logoutBtn = $('logoutBtn');
+if (logoutBtn) {
+  logoutBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    localStorage.removeItem('adminToken');
+    document.cookie = 'adminToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    window.location.href = '/admin-login';
+  });
+}
+
 loadTests();

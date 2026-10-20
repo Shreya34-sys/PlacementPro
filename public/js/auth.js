@@ -198,6 +198,33 @@ if (authToken) {
         });
     }
 
+    // ==========================================
+    // 6. Informative Auth Links (Forgot, Terms, Privacy)
+    // ==========================================
+    const forgotLinks = document.querySelectorAll('.forgot-link');
+    forgotLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            alert('Password Reset Notice: Please reach out to your college placement administrator or faculty coordinator to reset your student portal credentials.');
+        });
+    });
+
+    const termsLinks = document.querySelectorAll('.terms-link');
+    termsLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            alert('PlacementPro Terms & Conditions:\n\n1. PlacementPro is strictly an educational placement preparation and practice platform.\n2. All tests, assessments, and coding problems are intended for skill building and readiness benchmarking.\n3. Students agree to uphold integrity during proctored practice sessions.');
+        });
+    });
+
+    const privacyLinks = document.querySelectorAll('.privacy-link');
+    privacyLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            alert('PlacementPro Privacy Policy:\n\nYour profile details, code submissions, assessment scores, and mock interview recordings are encrypted and retained solely for personal readiness progress tracking and permitted faculty guidance.');
+        });
+    });
+
 }); // Properly closes DOMContentLoaded listener
 
 

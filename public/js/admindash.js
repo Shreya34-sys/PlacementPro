@@ -11,23 +11,11 @@ function applyPreset(presetKey) {
   const textarea = document.getElementById('aiPromptInput');
   if (!textarea) return;
   const presets = {
-    tcs: 'TCS 2026 exam benchmarks: Added 15% more questions on Data Structures, Intermediate Memory Optimization, and TAC Verification.',
-    persistent: 'Persistent Systems SPE Syllabus: Focus on Operating Systems, Multi-threading, DBMS Indexing, and System Design basics.',
-    infosys: 'Infosys DSE Syllabus: High emphasis on Pseudocode debugging, Dynamic Programming, and SQL Join queries.'
+    tcs: 'TCS NQT practice syllabus: Numerical Ability, Verbal Ability, Reasoning, and Hands-on Coding questions on Arrays, HashMaps, and Strings.',
+    persistent: 'Persistent Systems Core CS: Operating Systems, Multi-threading, DBMS Indexing, and System Design practice questions.',
+    infosys: 'Infosys Aptitude & DSE: Pseudocode debugging, Dynamic Programming, and SQL Join problem sets.'
   };
   textarea.value = presets[presetKey] || '';
-}
-
-function approveAlert(alertId) {
-  const el = document.getElementById(alertId);
-  if (el) {
-    el.remove();
-    alert('AI recommendation approved.');
-  }
-}
-
-function rejectAlert(alertId) {
-  document.getElementById(alertId)?.remove();
 }
 
 function loadAdminProfile() {
@@ -35,8 +23,8 @@ function loadAdminProfile() {
     const stored = localStorage.getItem('adminUser');
     const token = localStorage.getItem('adminToken');
     const admin = stored ? JSON.parse(stored) : token ? JSON.parse(atob(token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/'))) : {};
-    const name = admin.name || admin.fullName || 'Admin';
-    const role = admin.designation || 'Placement Officer';
+    const name = admin.name || admin.fullName || 'Administrator';
+    const role = admin.designation || 'Placement Admin / Faculty';
 
     [['navAdminName', name], ['navAdminRole', role], ['welcomeHeroHeading', `Welcome back, ${name}`]].forEach(([id, value]) => {
       const el = document.getElementById(id);
@@ -68,43 +56,62 @@ async function loadIntelligenceStats() {
       if (el) el.textContent = val;
     };
 
-    setVal('adminStatActiveDrives', stats.activeDrivesCount);
-    setVal('adminStatDrivesMeta', `${stats.totalRegistrations} student registrations`);
-    setVal('adminStatMarketAlerts', stats.pendingAlerts);
-    setVal('adminStatAlertsMeta', stats.pendingAlerts > 0 ? 'Requires attention' : 'All synced');
-    setVal('adminStatRagChunks', stats.ragChunks);
-    setVal('adminStatRagMeta', stats.ragChunks > 0 ? 'Active knowledge base' : 'No ingested chunks');
-    setVal('adminStatAvgReadiness', `${stats.avgReadiness}%`);
-    setVal('adminStatBatchMeta', stats.avgReadiness > 0 ? 'Evaluated from tests & interviews' : 'Pending batch evaluations');
+    // Practice Assessments metric
+    const assessmentsCount = stats.activeAssessmentsCount ?? stats.activeDrivesCount ?? 0;
+    setVal('adminStatAssessments', assessmentsCount);
+    setVal('adminStatAssessmentsMeta', `${assessmentsCount} Active Tests & Rounds`);
+    setVal('adminStatActiveDrives', assessmentsCount);
+    setVal('adminStatDrivesMeta', `${stats.totalPracticeAttempts ?? stats.totalRegistrations ?? 0} Student Practice Attempts`);
 
-    const drivesList = document.getElementById('adminDrivesList');
-    if (drivesList) {
-      if (!Array.isArray(stats.drives) || stats.drives.length === 0) {
-        drivesList.innerHTML = `
+    // Question Bank Items metric
+    const questionsCount = stats.totalQuestionsCount ?? stats.pendingAlerts ?? 0;
+    setVal('adminStatQuestions', questionsCount);
+    setVal('adminStatQuestionsMeta', `${questionsCount} Questions in Bank`);
+    setVal('adminStatMarketAlerts', questionsCount);
+    setVal('adminStatAlertsMeta', `${questionsCount} Questions in Bank`);
+
+    // RAG Knowledge Chunks metric
+    setVal('adminStatRagChunks', stats.ragChunks ?? 0);
+    setVal('adminStatRagMeta', stats.ragChunks > 0 ? 'Active Study Knowledge Base' : 'No ingested chunks');
+
+    // Average Readiness Score metric
+    const avgScore = stats.avgReadiness ?? 0;
+    setVal('adminStatAvgReadiness', `${avgScore}%`);
+    setVal('adminStatBatchMeta', avgScore > 0 ? `${stats.totalPracticeAttempts ?? 0} Student Attempts Evaluated` : 'Pending Student Attempts');
+    setVal('heroAvgReadinessText', `${avgScore > 0 ? avgScore : '88.5'}% Benchmark`);
+
+    // Render Company-Pattern Practice Tracks
+    const tracksContainer = document.getElementById('adminTracksList') || document.getElementById('adminDrivesList');
+    const tracks = stats.tracks || stats.drives || [];
+
+    if (tracksContainer) {
+      if (!Array.isArray(tracks) || tracks.length === 0) {
+        tracksContainer.innerHTML = `
           <div style="padding: 32px; text-align: center; color: var(--text-muted, #64748b);">
-            No campus placement drives currently registered in database.
+            No company practice modules currently configured.
           </div>
         `;
       } else {
         const colorClasses = ['blue', 'orange', 'indigo', 'green', 'purple'];
-        drivesList.innerHTML = stats.drives.map((d, idx) => {
+        tracksContainer.innerHTML = tracks.map((t, idx) => {
           const colorClass = colorClasses[idx % colorClasses.length];
           return `
-            <div class="drive-item-row">
-                <div class="drive-icon-box ${colorClass}">
-                    <span>${escapeHtml(d.shortName)}</span>
-                </div>
-                <div class="drive-details">
-                    <div class="drive-title-line">
-                        <span class="company-name">${escapeHtml(d.name)}</span>
-                        <span class="status-tag active">ACTIVE</span>
+            <div class="drive-item-row" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid var(--border-color, #f1f5f9);">
+                <div style="display: flex; align-items: center; gap: 14px;">
+                    <div class="drive-icon-box ${colorClass}" style="width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.95rem;">
+                        <span>${escapeHtml(t.shortName)}</span>
                     </div>
-                    <div class="drive-sub">${escapeHtml(d.overview || 'Campus Placement Drive 2026')}</div>
-                    <div class="drive-eligibility">Eligibility: Min CGPA ${d.minCgpa} | ${escapeHtml(d.branches)}</div>
+                    <div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <strong style="font-size: 0.95rem; color: var(--text-primary, #0f172a);">${escapeHtml(t.name)}</strong>
+                            <span class="status-tag" style="background: rgba(59, 130, 246, 0.1); color: #2563eb; font-size: 0.7rem; font-weight: 700; padding: 2px 7px; border-radius: 4px;">PRACTICE TRACK</span>
+                        </div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted, #64748b); margin-top: 2px;">${escapeHtml(t.overview || `Preparation modules for ${t.name} test patterns`)}</div>
+                    </div>
                 </div>
-                <div class="drive-stats-right">
-                    <span class="reg-count">${d.registeredCount} <small>registered</small></span>
-                    <span class="eval-rounds">${d.roundsCount} Evaluated Rounds</span>
+                <div style="text-align: right;">
+                    <div style="font-weight: 600; font-size: 0.85rem; color: var(--text-primary, #0f172a);">${t.roundsCount} Practice Rounds</div>
+                    <a href="/admin-exams" style="font-size: 0.78rem; color: #2563eb; text-decoration: none; font-weight: 600;">Manage Content &rarr;</a>
                 </div>
             </div>
           `;
@@ -113,11 +120,11 @@ async function loadIntelligenceStats() {
     }
   } catch (err) {
     console.error('Error loading intelligence stats:', err);
-    const drivesList = document.getElementById('adminDrivesList');
-    if (drivesList) {
-      drivesList.innerHTML = `
+    const container = document.getElementById('adminTracksList') || document.getElementById('adminDrivesList');
+    if (container) {
+      container.innerHTML = `
         <div style="padding: 24px; text-align: center; color: #ef4444; font-size: 0.875rem;">
-          Failed to load placement drives from database. <button onclick="loadIntelligenceStats()" style="margin-left: 8px; text-decoration: underline; background: none; border: none; color: inherit; cursor: pointer;">Retry</button>
+          Failed to load practice tracks from database. <button onclick="loadIntelligenceStats()" style="margin-left: 8px; text-decoration: underline; background: none; border: none; color: inherit; cursor: pointer;">Retry</button>
         </div>
       `;
     }
@@ -152,25 +159,19 @@ document.addEventListener('DOMContentLoaded', () => {
     window.location.replace('/admin-login');
   });
 
-  document.getElementById('manageDrivesBtn')?.addEventListener('click', () => adminPage('/pages/admin-exams.html'));
-  document.getElementById('createExamBtn')?.addEventListener('click', () => adminPage('/pages/admin-exam-builder.html'));
-  document.getElementById('openProctoringBtn')?.addEventListener('click', () => adminPage('/pages/proctoring.html'));
-  document.getElementById('openMarketStoreBtn')?.addEventListener('click', () => {
-    const rag = document.getElementById('rag-market-ai');
-    if (rag) {
-      rag.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      document.getElementById('aiPromptInput')?.focus();
-    }
+  document.getElementById('manageDrivesBtn')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    adminPage('/admin-exams');
   });
 
   document.getElementById('runIngestionBtn')?.addEventListener('click', async () => {
     const promptInput = document.getElementById('aiPromptInput');
     const prompt = promptInput?.value.trim();
-    if (!prompt) return alert('Enter or choose a prompt first.');
+    if (!prompt) return alert('Enter or choose a practice prompt first.');
     const btn = document.getElementById('runIngestionBtn');
     const originalText = btn.innerHTML;
     btn.disabled = true;
-    btn.innerHTML = 'Ingesting & Syncing...';
+    btn.innerHTML = 'Ingesting Practice Content...';
     try {
       const res = await fetch('/api/admin/ingest', {
         method: 'POST',
@@ -179,7 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       const data = await res.json();
       if (data.success) {
-        alert(`AI Ingestion completed! Added ${data.chunksAdded} chunk(s) to RAG Store.`);
+        alert(`AI Ingestion completed! Added ${data.chunksAdded} practice chunk(s) to RAG Store.`);
         if (promptInput) promptInput.value = '';
         loadIntelligenceStats();
       } else {

@@ -1,7 +1,9 @@
 let token = localStorage.getItem('token');
 if (!token) location.replace('/login');
 
-const roundId = new URLSearchParams(location.search).get('round');
+const roundParams = new URLSearchParams(location.search);
+const roundId = roundParams.get('round');
+const simulationRoundAttemptId = roundParams.get('simulationRoundAttemptId');
 let data = null;
 let attempt = null;
 let editor = null;
@@ -41,14 +43,15 @@ const $ = id => document.getElementById(id);
       return;
     }
 
-    if (data.attempt_id && data.attempt_state === 'started') {
+    if (data.attempt_id && data.attempt_state === 'started' && !simulationRoundAttemptId) {
       attempt = { id: data.attempt_id };
     } else {
       const startResponse = await fetch(
         `/api/coding/student/rounds/${encodeURIComponent(roundId)}/start`,
         {
           method: 'POST',
-          headers: { Authorization: `Bearer ${token}` }
+          headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify(simulationRoundAttemptId ? { simulationRoundAttemptId } : {})
         }
       );
       const started = await startResponse.json().catch(() => ({}));

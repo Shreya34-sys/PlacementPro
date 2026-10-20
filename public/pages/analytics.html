@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlacementPro — Student Preparation Analytics</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/stddash.css">
+    <link rel="stylesheet" href="/css/analytics.css">
+
+    <!-- Auth Validation Guard -->
+    <script>
+        function checkAnalyticsAuth() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const urlToken = urlParams.get('token');
+            if (urlToken) {
+                localStorage.setItem('token', urlToken);
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+            const studentToken = localStorage.getItem('token');
+            const adminToken = localStorage.getItem('adminToken');
+            if (!studentToken && !adminToken) {
+                window.location.replace('/login');
+                return false;
+            }
+            return true;
+        }
+        checkAnalyticsAuth();
+        window.addEventListener('pageshow', (event) => {
+            if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+                checkAnalyticsAuth();
+            }
+        });
+    </script>
+</head>
+
+<body>
+    <!-- Top Header Navigation -->
+    <header class="navbar">
+        <div class="nav-left">
+            <div class="logo">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                    <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+                    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+                </svg>
+                <span>PlacementPro</span>
+            </div>
+        </div>
+
+        <nav class="nav-links" aria-label="Main Navigation">
+            <a href="/dashboard" class="nav-item">Home</a>
+            <a href="/placement-workspace" class="nav-item">Placement Prep</a>
+            <div class="dropdown">
+                <button class="nav-item dropdown-toggle" type="button" aria-expanded="false">Practice <span class="arrow">⌄</span></button>
+                <div class="nav-dropdown-menu">
+                    <a href="/available-exams">Aptitude Tests</a>
+                    <a href="/coding-rounds">Coding Rounds</a>
+                    <a href="/compiler-practice">C-Visualize Compiler</a>
+                </div>
+            </div>
+            <a href="/companies" class="nav-item">Companies</a>
+            <a href="/study-materials" class="nav-item">Study Materials</a>
+            <a href="/analytics" class="nav-item active">Analytics</a>
+        </nav>
+
+        <div class="nav-right">
+            <button class="icon-btn theme-toggle" id="themeToggleBtn" aria-label="Toggle Theme" title="Toggle Theme">
+                <svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                    <path d="M20.5 15.5A8.5 8.5 0 0 1 8.5 3.5 8.5 8.5 0 1 0 20.5 15.5Z" />
+                </svg>
+            </button>
+
+            <!-- Profile Widget -->
+            <div class="profile-container" id="profileDropdownContainer">
+                <div class="user-profile" id="profileTrigger">
+                    <div class="avatar" id="navAvatar">ST</div>
+                    <div class="user-info">
+                        <span class="user-name" id="navUserName">Student</span>
+                        <span class="user-role" id="navUserRole">Student Mode</span>
+                    </div>
+                </div>
+
+                <div class="profile-menu" id="profileMenu">
+                    <div class="menu-header">
+                        <strong id="menuUserName">Student</strong>
+                        <p id="menuUserEmail">student@placementpro.edu</p>
+                    </div>
+                    <div class="menu-divider"></div>
+                    <a href="/profile" class="menu-item">My Profile</a>
+                    <a href="/dashboard" class="menu-item">Dashboard</a>
+                    <button class="menu-item logout" id="logoutBtn">Logout</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Analytics Content -->
+    <main class="analytics-container">
+        <!-- Readiness Summary Banner -->
+        <div class="readiness-banner" id="readinessBanner">
+            <div class="readiness-info">
+                <div class="readiness-badge">
+                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                    </svg>
+                    <span>Personal Readiness Index</span>
+                </div>
+                <div class="readiness-title" id="readinessTitle">
+                    Your Placement Preparation is <span id="bannerScore">0%</span>
+                </div>
+                <p class="readiness-subtitle" id="readinessSubtitle">
+                    Multi-factor index calculated across your real progress in Proctored Exams (20%), Mock Interviews (20%), Coding Rounds (15%), Aptitude Practice (15%), Versant Speech (10%), Study Materials (10%), and Resume AI (10%).
+                </p>
+            </div>
+
+            <div class="readiness-stats">
+                <div style="display: flex; gap: 18px; text-align: left;">
+                    <div>
+                        <div style="font-size: 11px; opacity: 0.8; text-transform: uppercase;">Active Days</div>
+                        <div style="font-size: 18px; font-weight: 700;" id="bannerActiveDays">0 Days</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 11px; opacity: 0.8; text-transform: uppercase;">Current Streak</div>
+                        <div style="font-size: 18px; font-weight: 700;" id="bannerStreak">0 Days</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 11px; opacity: 0.8; text-transform: uppercase;">Last Active</div>
+                        <div style="font-size: 14px; font-weight: 600; padding-top: 3px;" id="bannerLastActivity">—</div>
+                    </div>
+                </div>
+
+                <div class="readiness-score-box">
+                    <div class="readiness-score-val" id="bannerScoreBig">0%</div>
+                    <div class="readiness-score-lbl">Readiness Score</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="analytics-header-card" style="padding: 16px 24px; margin-bottom: 20px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <span style="font-size: 13px; font-weight: 600; color: var(--text-primary);">Filter Analytics Window:</span>
+                <span class="role-badge" id="roleBadge">Student Personal Telemetry</span>
+            </div>
+
+            <div class="analytics-controls">
+                <div class="filter-group">
+                    <label class="filter-label" for="filterRange">Window:</label>
+                    <select id="filterRange" class="filter-select">
+                        <option value="7d">Last 7 Days</option>
+                        <option value="30d" selected>Last 30 Days</option>
+                        <option value="90d">Last 90 Days</option>
+                        <option value="all">All Time</option>
+                    </select>
+                </div>
+
+                <button class="btn-refresh" id="btnRefresh" title="Refresh Analytics Data">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M23 4v6h-6" />
+                        <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+                    </svg>
+                    Refresh
+                </button>
+            </div>
+        </div>
+
+        <!-- 8 Student Overview KPI Cards -->
+        <section class="overview-grid" id="overviewGrid" aria-label="Key Performance Indicators">
+            <!-- 1. Overall Readiness -->
+            <div class="metric-card">
+                <div class="metric-card-header">
+                    <span class="metric-title">Overall Readiness</span>
+                    <div class="metric-icon-wrap icon-blue">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10" />
+                            <polyline points="12 6 12 12 16 14" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="metric-value" id="valReadiness">—</div>
+                <div class="metric-footer">
+                    <span>Preparation index</span>
+                    <span class="metric-calc-pill">7 modules weighted</span>
+                </div>
+            </div>
+
+            <!-- 2. Aptitude Practice -->
+            <div class="metric-card">
+                <div class="metric-card-header">
+                    <span class="metric-title">Aptitude Practice</span>
+                    <div class="metric-icon-wrap icon-emerald">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                            <polyline points="14 2 14 8 20 8" />
+                            <line x1="16" y1="13" x2="8" y2="13" />
+                            <line x1="16" y1="17" x2="8" y2="17" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="metric-value" id="valAptitudeSolved">—</div>
+                <div class="metric-footer">
+                    <span>Unique questions solved</span>
+                    <span class="metric-calc-pill">activity.key</span>
+                </div>
+            </div>
+
+            <!-- 3. AI Proctored Exams -->
+            <div class="metric-card">
+                <div class="metric-card-header">
+                    <span class="metric-title">Proctored Exams</span>
+                    <div class="metric-icon-wrap icon-purple">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                            <polyline points="22 4 12 14.01 9 11.01" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="metric-value" id="valExamsCompleted">—</div>
+                <div class="metric-footer">
+                    <span id="subExamAvgNote">Avg score</span>
+                    <span class="metric-calc-pill">state:submitted</span>
+                </div>
+            </div>
+
+            <!-- 4. Mock Interviews -->
+            <div class="metric-card">
+                <div class="metric-card-header">
+                    <span class="metric-title">Mock Interviews</span>
+                    <div class="metric-icon-wrap icon-teal">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                            <circle cx="9" cy="7" r="4" />
+                            <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="metric-value" id="valInterviews">—</div>
+                <div class="metric-footer">
+                    <span id="subInterviewNote">Completed sessions</span>
+                    <span class="metric-calc-pill">ai_feedback</span>
+                </div>
+            </div>
+
+            <!-- 5. Coding & Compiler -->
+            <div class="metric-card">
+                <div class="metric-card-header">
+                    <span class="metric-title">Coding &amp; Compiler</span>
+                    <div class="metric-icon-wrap icon-amber">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="16 18 22 12 16 6" />
+                            <polyline points="8 6 2 12 8 18" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="metric-value" id="valCoding">—</div>
+                <div class="metric-footer">
+                    <span id="subCodingNote">C-Visualize runs</span>
+                    <span class="metric-calc-pill">compiler_jobs</span>
+                </div>
+            </div>
+
+            <!-- 6. Versant Speech Test -->
+            <div class="metric-card">
+                <div class="metric-card-header">
+                    <span class="metric-title">Versant Speech</span>
+                    <div class="metric-icon-wrap icon-rose">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="9" y="2" width="6" height="12" rx="3" />
+                            <path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3M8 22h8" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="metric-value" id="valVersant">—</div>
+                <div class="metric-footer">
+                    <span id="subVersantNote">Overall score</span>
+                    <span class="metric-calc-pill">versant_results</span>
+                </div>
+            </div>
+
+            <!-- 7. Study Materials -->
+            <div class="metric-card">
+                <div class="metric-card-header">
+                    <span class="metric-title">Study Materials</span>
+                    <div class="metric-icon-wrap icon-indigo">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z" />
+                            <path d="M6 6h10M6 10h10" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="metric-value" id="valStudy">—</div>
+                <div class="metric-footer">
+                    <span id="subStudyNote">Reading progress</span>
+                    <span class="metric-calc-pill">study_reading</span>
+                </div>
+            </div>
+
+            <!-- 8. Resume AI Analyzer -->
+            <div class="metric-card">
+                <div class="metric-card-header">
+                    <span class="metric-title">Resume AI Score</span>
+                    <div class="metric-icon-wrap icon-slate">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                            <polyline points="14 2 14 8 20 8" />
+                            <line x1="9" y1="15" x2="15" y2="15" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="metric-value" id="valResume">—</div>
+                <div class="metric-footer">
+                    <span id="subResumeNote">ATS Benchmark</span>
+                    <span class="metric-calc-pill">resumes.ats</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 1: Personalized Recommendations ("What to Practise Next") -->
+        <div class="analytics-card" style="margin-bottom: 24px;">
+            <div class="analytics-card-title">
+                <span>Personalized Recommendations: What to Practise Next</span>
+                <span class="role-badge" style="background: #FEF3C7; color: #D97706; border-color: #FDE68A;">
+                    AI Action Plan
+                </span>
+            </div>
+            <div class="analytics-card-subtitle">
+                Tailored next steps generated dynamically from your real exam scores, failed questions, incomplete reading topics, and interview feedback.
+            </div>
+            <div class="recommendations-grid" id="recommendationsContainer">
+                <!-- Rendered dynamically via JS -->
+            </div>
+        </div>
+
+        <!-- Section 2: Module-Wise Progress & Weak Topics Diagnostics -->
+        <div class="analytics-section-row">
+            <!-- Module Progress Breakdown -->
+            <div class="analytics-card">
+                <div class="analytics-card-title">
+                    <span>Module-Wise Progress Breakdown</span>
+                    <span class="role-badge">Weight Distribution</span>
+                </div>
+                <div class="analytics-card-subtitle" id="formulaSubtitle">
+                    Weighted evaluation formula: Exams (20%) + Mock Interviews (20%) + Coding (15%) + Aptitude (15%) + Versant (10%) + Study (10%) + Resume (10%).
+                </div>
+                <div class="module-progress-list" id="moduleProgressList" style="margin-top: 14px;">
+                    <!-- Rendered dynamically via JS -->
+                </div>
+            </div>
+
+            <!-- Weak Topics Based on Actual Performance -->
+            <div class="analytics-card">
+                <div class="analytics-card-title">
+                    <span>Weak Topics &amp; Performance Gaps</span>
+                    <span class="role-badge" style="background: #FEE2E2; color: #DC2626; border-color: #FECACA;">Diagnostic Review</span>
+                </div>
+                <div class="analytics-card-subtitle">
+                    Identified topics and sub-dimensions where your recent scores or accuracy fell below expected benchmarks.
+                </div>
+                <div class="weak-topics-grid" id="weakTopicsContainer">
+                    <!-- Rendered dynamically via JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3: Visualizations - Activity Over Time & Assessment Performance -->
+        <div class="analytics-section-row">
+            <!-- Student Activity Over Time -->
+            <div class="analytics-card">
+                <div class="analytics-card-title">
+                    <span>Daily Practice Activity</span>
+                    <span class="role-badge">Engagement History</span>
+                </div>
+                <div class="analytics-card-subtitle">
+                    Your recorded actions across questions answered, proctored exams submitted, and interview sessions.
+                </div>
+                <div class="chart-canvas-container" id="activityChartContainer">
+                    <canvas id="activityChart" class="analytics-chart" width="600" height="260"></canvas>
+                </div>
+            </div>
+
+            <!-- Recent Proctored Exams & Tests Table -->
+            <div class="analytics-card">
+                <div class="analytics-card-title">
+                    <span>Assessment &amp; Test Performance</span>
+                    <span class="role-badge">History &amp; Scores</span>
+                </div>
+                <div class="analytics-card-subtitle">
+                    Your completed aptitude tests, core assessments, and Versant spoken English scores with proctoring logs.
+                </div>
+                <div class="data-table-container">
+                    <table class="analytics-table">
+                        <thead>
+                            <tr>
+                                <th>Test Title</th>
+                                <th>Type</th>
+                                <th>Score</th>
+                                <th>Proctoring</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="assessmentsTableBody">
+                            <tr>
+                                <td colspan="5" style="text-align: center; padding: 24px; color: var(--text-muted);">
+                                    Loading assessment records...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 4: Module Deep-Dives (Interview AI Feedback & Versant / Resume) -->
+        <div class="analytics-section-row">
+            <!-- Mock Interview Detailed Evaluation -->
+            <div class="analytics-card">
+                <div class="analytics-card-title">
+                    <span>Latest Mock AI Interview Feedback</span>
+                    <span class="role-badge">Evaluation Matrix</span>
+                </div>
+                <div class="analytics-card-subtitle">
+                    Comprehensive speech, clarity, and structural scoring from your latest AI proctored interview attempt.
+                </div>
+                <div id="interviewFeedbackArea" style="margin-top: 14px;">
+                    <!-- Rendered dynamically via JS -->
+                </div>
+            </div>
+
+            <!-- Versant Speech & Resume AI Status -->
+            <div class="analytics-card">
+                <div class="analytics-card-title">
+                    <span>Communication &amp; Resume Readiness</span>
+                    <span class="role-badge">Profile Benchmarks</span>
+                </div>
+                <div class="analytics-card-subtitle">
+                    Spoken English competency from Versant and ATS scoring from Resume AI Analyzer.
+                </div>
+                <div id="communicationAndResumeArea" style="margin-top: 14px;">
+                    <!-- Rendered dynamically via JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 5: Recent Unified Activity Feed -->
+        <div class="analytics-card">
+            <div class="analytics-card-title">
+                <span>Recent Activities &amp; Result Timeline</span>
+                <span class="role-badge">Activity Log</span>
+            </div>
+            <div class="analytics-card-subtitle">
+                Chronological timeline of all your learning events, test submissions, interviews, and resume reviews.
+            </div>
+            <div class="activity-feed-list" id="activityFeedContainer">
+                <!-- Rendered dynamically via JS -->
+            </div>
+        </div>
+    </main>
+
+    <script src="/js/analytics.js"></script>
+</body>
+
+</html>

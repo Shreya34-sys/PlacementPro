@@ -152,6 +152,19 @@ exports.studentOpen = async (req, res, next) => {
 exports.start = async (req, res, next) => {
   try {
     const attempt = await CodingAttempt.start(req.params.roundId, req.user.id);
+    if (req.body?.simulationRoundAttemptId) {
+      try {
+        const { bindModuleAttempt } = require('../services/placementSimulationService');
+        await bindModuleAttempt({
+          simulationRoundAttemptId: req.body.simulationRoundAttemptId,
+          studentId: req.user.id,
+          sourceModuleAttemptId: attempt.id,
+          moduleType: 'coding'
+        });
+      } catch (simErr) {
+        console.warn('[Coding Simulation Bind]', simErr.message);
+      }
+    }
     res.status(201).json(attempt);
   } catch (e) { next(e); }
 };
@@ -233,6 +246,18 @@ exports.submitQuestion = async (req, res, next) => {
 exports.submitRound = async (req, res, next) => {
   try {
     const result = await CodingAttempt.submit(req.params.attemptId, req.user.id);
+    if (result && result.state !== 'started') {
+      try {
+        const { recordVerifiedRoundResultForSource } = require('../services/placementSimulationService');
+        await recordVerifiedRoundResultForSource({
+          sourceModuleAttemptId: req.params.attemptId,
+          studentId: req.user.id,
+          score: Number(result.final_score ?? 0)
+        });
+      } catch (simErr) {
+        // Non-fatal if independent attempt
+      }
+    }
     res.json(result);
   } catch (e) { next(e); }
 };

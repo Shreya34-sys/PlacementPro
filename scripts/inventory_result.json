@@ -1,0 +1,3895 @@
+[
+  {
+    "file": "admin-coding-builder.html",
+    "linkCount": 1,
+    "buttonCount": 6,
+    "formCount": 0,
+    "standaloneInputCount": 23,
+    "links": [
+      {
+        "href": "/admin-coding-rounds",
+        "text": "Back"
+      }
+    ],
+    "buttons": [
+      {
+        "id": "createRound",
+        "type": "button",
+        "text": "Create round",
+        "class": "primary"
+      },
+      {
+        "id": "addCase",
+        "type": "button",
+        "text": "+ Add case",
+        "class": "ghost"
+      },
+      {
+        "id": "addQuestion",
+        "type": "button",
+        "text": "Add Question",
+        "class": "primary"
+      },
+      {
+        "id": "newQuestion",
+        "type": "button",
+        "text": "+ New Question",
+        "class": "ghost"
+      },
+      {
+        "id": "publishRound",
+        "type": "button",
+        "text": "Publish Round",
+        "class": "secondary"
+      },
+      {
+        "id": "assignStudents",
+        "type": "button",
+        "text": "Generate Student Access Codes",
+        "class": "ghost"
+      }
+    ],
+    "forms": [],
+    "standaloneInputs": [
+      {
+        "tag": "input",
+        "id": "title",
+        "type": "input"
+      },
+      {
+        "tag": "input",
+        "id": "duration",
+        "type": "number"
+      },
+      {
+        "tag": "input",
+        "id": "startsAt",
+        "type": "datetime-local"
+      },
+      {
+        "tag": "input",
+        "id": "endsAt",
+        "type": "datetime-local"
+      },
+      {
+        "tag": "input",
+        "id": "maxWarnings",
+        "type": "number"
+      },
+      {
+        "tag": "input",
+        "id": "accessCode",
+        "type": "input"
+      },
+      {
+        "tag": "textarea",
+        "id": "description",
+        "type": "textarea"
+      },
+      {
+        "tag": "textarea",
+        "id": "instructions",
+        "type": "textarea"
+      },
+      {
+        "tag": "input",
+        "id": "face",
+        "type": "checkbox"
+      },
+      {
+        "tag": "input",
+        "id": "audio",
+        "type": "checkbox"
+      },
+      {
+        "tag": "input",
+        "id": "tab",
+        "type": "checkbox"
+      },
+      {
+        "tag": "input",
+        "id": "clipboard",
+        "type": "checkbox"
+      },
+      {
+        "tag": "input",
+        "id": "qTitle",
+        "type": "input"
+      },
+      {
+        "tag": "input",
+        "id": "qPoints",
+        "type": "number"
+      },
+      {
+        "tag": "textarea",
+        "id": "qStatement",
+        "type": "textarea"
+      },
+      {
+        "tag": "textarea",
+        "id": "qConstraints",
+        "type": "textarea"
+      },
+      {
+        "tag": "textarea",
+        "id": "qInput",
+        "type": "textarea"
+      },
+      {
+        "tag": "textarea",
+        "id": "qOutput",
+        "type": "textarea"
+      },
+      {
+        "tag": "textarea",
+        "id": "starterPython",
+        "type": "textarea"
+      },
+      {
+        "tag": "textarea",
+        "id": "starterJava",
+        "type": "textarea"
+      },
+      {
+        "tag": "textarea",
+        "id": "starterCpp",
+        "type": "textarea"
+      },
+      {
+        "tag": "textarea",
+        "id": "starterJavascript",
+        "type": "textarea"
+      },
+      {
+        "tag": "textarea",
+        "id": "inviteEmails",
+        "type": "textarea"
+      }
+    ],
+    "scripts": [
+      "/js/admin-coding-builder.js"
+    ]
+  },
+  {
+    "file": "admin-coding-monitor.html",
+    "linkCount": 1,
+    "buttonCount": 0,
+    "formCount": 0,
+    "standaloneInputCount": 0,
+    "links": [
+      {
+        "href": "/admin-coding-rounds",
+        "text": "Back"
+      }
+    ],
+    "buttons": [],
+    "forms": [],
+    "standaloneInputs": [],
+    "scripts": [
+      "/socket.io/socket.io.js",
+      "/js/admin-coding-monitor.js"
+    ]
+  },
+  {
+    "file": "admin-coding-results.html",
+    "linkCount": 1,
+    "buttonCount": 0,
+    "formCount": 0,
+    "standaloneInputCount": 0,
+    "links": [
+      {
+        "href": "/admin-coding-rounds",
+        "text": "Back"
+      }
+    ],
+    "buttons": [],
+    "forms": [],
+    "standaloneInputs": [],
+    "scripts": [
+      "/js/admin-coding-results.js"
+    ]
+  },
+  {
+    "file": "admin-coding-rounds.html",
+    "linkCount": 2,
+    "buttonCount": 0,
+    "formCount": 0,
+    "standaloneInputCount": 0,
+    "links": [
+      {
+        "href": "/admin-dashboard",
+        "text": "Dashboard"
+      },
+      {
+        "href": "/admin-coding-builder",
+        "text": "+ Create Coding Round"
+      }
+    ],
+    "buttons": [],
+    "forms": [],
+    "standaloneInputs": [],
+    "scripts": [
+      "/js/admin-coding-rounds.js"
+    ]
+  },
+  {
+    "file": "admin-exam-builder.html",
+    "linkCount": 3,
+    "buttonCount": 4,
+    "formCount": 2,
+    "standaloneInputCount": 0,
+    "links": [
+      {
+        "href": "/pages/admin-exams.html",
+        "text": "← Back to tests"
+      },
+      {
+        "href": "/pages/admindash.html",
+        "text": "Home / Dashboard"
+      },
+      {
+        "href": "/pages/admin-exams.html",
+        "text": "Back to Tests"
+      }
+    ],
+    "buttons": [
+      {
+        "id": "addTopic",
+        "type": "button",
+        "text": "＋ Add topic",
+        "class": "outline"
+      },
+      {
+        "type": "submit",
+        "text": "Save Aptitude Test",
+        "class": "primary"
+      },
+      {
+        "id": "addTopic",
+        "type": "button",
+        "text": "Add Topic Module",
+        "class": "btn btn-outline add-topic-btn"
+      },
+      {
+        "type": "submit",
+        "text": "Save Aptitude Test",
+        "class": "btn btn-primary btn-large"
+      }
+    ],
+    "forms": [
+      {
+        "id": "examForm",
+        "method": "GET",
+        "inputs": [
+          {
+            "tag": "input",
+            "id": "title",
+            "type": "text",
+            "required": true
+          },
+          {
+            "tag": "textarea",
+            "id": "instructions",
+            "type": "text",
+            "required": true
+          },
+          {
+            "tag": "input",
+            "id": "durationMinutes",
+            "type": "number",
+            "required": true
+          },
+          {
+            "tag": "input",
+            "id": "startsAt",
+            "type": "datetime-local",
+            "required": true
+          },
+          {
+            "tag": "input",
+            "id": "endsAt",
+            "type": "datetime-local",
+            "required": true
+          },
+          {
+            "tag": "input",
+            "id": "negativeMarking",
+            "type": "number",
+            "required": false
+          },
+          {
+            "tag": "select",
+            "id": "status",
+            "type": "select",
+            "required": false
+          }
+        ]
+      },
+      {
+        "id": "examForm",
+        "method": "GET",
+        "inputs": [
+          {
+            "tag": "input",
+            "id": "title",
+            "type": "text",
+            "required": true
+          },
+          {
+            "tag": "textarea",
+            "id": "instructions",
+            "type": "text",
+            "required": true
+          },
+          {
+            "tag": "input",
+            "id": "durationMinutes",
+            "type": "number",
+            "required": true
+          },
+          {
+            "tag": "input",
+            "id": "startsAt",
+            "type": "datetime-local",
+            "required": true
+          },
+          {
+            "tag": "input",
+            "id": "endsAt",
+            "type": "datetime-local",
+            "required": true
+          },
+          {
+            "tag": "input",
+            "id": "negativeMarking",
+            "type": "number",
+            "required": false
+          },
+          {
+            "tag": "select",
+            "id": "status",
+            "type": "select",
+            "required": false
+          }
+        ]
+      }
+    ],
+    "standaloneInputs": [],
+    "scripts": [
+      "/js/admin-exam-builder.js",
+      "/js/admin-exam-builder.js"
+    ]
+  },
+  {
+    "file": "admin-exams.html",
+    "linkCount": 5,
+    "buttonCount": 0,
+    "formCount": 0,
+    "standaloneInputCount": 0,
+    "links": [
+      {
+        "href": "/pages/admin-exam-builder.html",
+        "text": "＋ Create Aptitude Test"
+      },
+      {
+        "href": "/pages/proctoring.html",
+        "text": "▣ Live Proctoring"
+      },
+      {
+        "href": "/pages/admindash.html",
+        "text": "Home / Dashboard"
+      },
+      {
+        "href": "/pages/admin-exam-builder.html",
+        "text": "Create Aptitude Test"
+      },
+      {
+        "href": "/pages/admin-question-import.html",
+        "text": "Import Questions from Excel"
+      }
+    ],
+    "buttons": [],
+    "forms": [],
+    "standaloneInputs": [],
+    "scripts": [
+      "/js/admin-exams.js",
+      "/js/admin-exams.js"
+    ]
+  },
+  {
+    "file": "admin-interviews.html",
+    "linkCount": 2,
+    "buttonCount": 9,
+    "formCount": 2,
+    "standaloneInputCount": 9,
+    "links": [
+      {
+        "href": "/pages/admindash.html",
+        "text": "PlacementPro"
+      },
+      {
+        "href": "/pages/admindash.html",
+        "text": "Dashboard"
+      }
+    ],
+    "buttons": [
+      {
+        "id": "templateBtn",
+        "type": "button",
+        "text": "Download Excel template",
+        "class": "btn"
+      },
+      {
+        "id": "addQuestionBtn",
+        "type": "button",
+        "text": "Add question",
+        "class": "btn"
+      },
+      {
+        "type": "submit",
+        "text": "Save interview set",
+        "class": "btn primary"
+      },
+      {
+        "type": "submit",
+        "text": "Preview questions",
+        "class": "btn"
+      },
+      {
+        "id": "saveImportBtn",
+        "type": "button",
+        "text": "Save imported questions",
+        "class": "btn primary"
+      },
+      {
+        "id": "reloadSetsBtn",
+        "type": "button",
+        "text": "Reload sets",
+        "class": "btn"
+      },
+      {
+        "id": "reloadLiveBtn",
+        "type": "button",
+        "text": "Refresh live grid",
+        "class": "btn"
+      },
+      {
+        "id": "assignBtn",
+        "type": "button",
+        "text": "Assign interview",
+        "class": "btn primary"
+      },
+      {
+        "id": "reloadSubmissionsBtn",
+        "type": "button",
+        "text": "Reload",
+        "class": "btn"
+      }
+    ],
+    "forms": [
+      {
+        "id": "setForm",
+        "method": "GET",
+        "inputs": [
+          {
+            "tag": "input",
+            "id": "title",
+            "type": "text",
+            "required": true
+          },
+          {
+            "tag": "select",
+            "id": "category",
+            "type": "select",
+            "required": false
+          },
+          {
+            "tag": "input",
+            "id": "companyName",
+            "type": "text",
+            "required": false
+          },
+          {
+            "tag": "select",
+            "id": "statusSelect",
+            "type": "select",
+            "required": false
+          },
+          {
+            "tag": "input",
+            "id": "maxAttempts",
+            "type": "number",
+            "required": false
+          },
+          {
+            "tag": "input",
+            "id": "deadline",
+            "type": "datetime-local",
+            "required": false
+          },
+          {
+            "tag": "select",
+            "id": "firstWarningAction",
+            "type": "select",
+            "required": false
+          },
+          {
+            "tag": "select",
+            "id": "secondWarningAction",
+            "type": "select",
+            "required": false
+          },
+          {
+            "tag": "select",
+            "id": "thirdWarningAction",
+            "type": "select",
+            "required": false
+          },
+          {
+            "tag": "textarea",
+            "id": "description",
+            "type": "text",
+            "required": false
+          }
+        ]
+      },
+      {
+        "id": "importForm",
+        "method": "GET",
+        "inputs": [
+          {
+            "tag": "input",
+            "id": "excelFile",
+            "type": "file",
+            "required": true
+          }
+        ]
+      }
+    ],
+    "standaloneInputs": [
+      {
+        "tag": "select",
+        "id": "importSet",
+        "type": "select"
+      },
+      {
+        "tag": "select",
+        "id": "assignSet",
+        "type": "select"
+      },
+      {
+        "tag": "select",
+        "id": "targetType",
+        "type": "select"
+      },
+      {
+        "tag": "input",
+        "id": "targetStudentId",
+        "type": "input"
+      },
+      {
+        "tag": "input",
+        "id": "department",
+        "type": "input"
+      },
+      {
+        "tag": "input",
+        "id": "division",
+        "type": "input"
+      },
+      {
+        "tag": "input",
+        "id": "batchYear",
+        "type": "number"
+      },
+      {
+        "tag": "input",
+        "id": "assignAttempts",
+        "type": "number"
+      },
+      {
+        "tag": "input",
+        "id": "assignDeadline",
+        "type": "datetime-local"
+      }
+    ],
+    "scripts": [
+      "/socket.io/socket.io.js",
+      "/js/admin-interviews.js?v=20261013-live-monitoring"
+    ]
+  },
+  {
+    "file": "admin-question-import.html",
+    "linkCount": 2,
+    "buttonCount": 3,
+    "formCount": 1,
+    "standaloneInputCount": 9,
+    "links": [
+      {
+        "href": "/pages/admindash.html",
+        "text": "Home / Dashboard"
+      },
+      {
+        "href": "/pages/admin-exams.html",
+        "text": "Back to Tests"
+      }
+    ],
+    "buttons": [
+      {
+        "id": "templateButton",
+        "type": "button",
+        "text": "Download Excel Template",
+        "class": "btn btn-outline"
+      },
+      {
+        "id": "previewButton",
+        "type": "submit",
+        "text": "Preview Questions",
+        "class": "btn btn-primary"
+      },
+      {
+        "id": "saveButton",
+        "type": "button",
+        "text": "Save Imported Questions",
+        "class": "btn btn-primary"
+      }
+    ],
+    "forms": [
+      {
+        "id": "uploadForm",
+        "method": "GET",
+        "inputs": [
+          {
+            "tag": "input",
+            "name": "file",
+            "id": "excelFile",
+            "type": "file",
+            "required": true
+          }
+        ]
+      }
+    ],
+    "standaloneInputs": [
+      {
+        "tag": "select",
+        "id": "target",
+        "type": "select",
+        "class": "form-control"
+      },
+      {
+        "tag": "select",
+        "id": "examId",
+        "type": "select",
+        "class": "form-control"
+      },
+      {
+        "tag": "input",
+        "id": "title",
+        "type": "input",
+        "class": "form-control"
+      },
+      {
+        "tag": "select",
+        "id": "status",
+        "type": "select",
+        "class": "form-control"
+      },
+      {
+        "tag": "textarea",
+        "id": "description",
+        "type": "textarea",
+        "class": "form-control"
+      },
+      {
+        "tag": "input",
+        "id": "durationMinutes",
+        "type": "number",
+        "class": "form-control"
+      },
+      {
+        "tag": "input",
+        "id": "startsAt",
+        "type": "datetime-local",
+        "class": "form-control"
+      },
+      {
+        "tag": "input",
+        "id": "endsAt",
+        "type": "datetime-local",
+        "class": "form-control"
+      },
+      {
+        "tag": "input",
+        "id": "negativeMarking",
+        "type": "number",
+        "class": "form-control"
+      }
+    ],
+    "scripts": [
+      "/js/admin-question-import.js"
+    ]
+  },
+  {
+    "file": "admin-study-materials.html",
+    "linkCount": 6,
+    "buttonCount": 35,
+    "formCount": 4,
+    "standaloneInputCount": 3,
+    "links": [
+      {
+        "href": "/admin-dashboard",
+        "text": "icon/image"
+      },
+      {
+        "href": "/study-materials",
+        "text": "Live Student View &nearr;"
+      },
+      {
+        "href": "/admin-dashboard",
+        "text": "Command Center"
+      },
+      {
+        "href": "/admin-exams",
+        "text": "Question Bank &amp; Tests"
+      },
+      {
+        "href": "/admin-study-materials",
+        "text": "Study Materials Studio"
+      },
+      {
+        "href": "/admin-interviews",
+        "text": "Mock Interviews"
+      }
+    ],
+    "buttons": [
+      {
+        "id": "themeToggle",
+        "type": "button",
+        "text": "Toggle Theme",
+        "class": "theme-toggle-btn"
+      },
+      {
+        "id": "logoutBtn",
+        "type": "button",
+        "text": "Logout",
+        "class": "logout-icon-btn"
+      },
+      {
+        "id": "openNewSubjectBtn",
+        "type": "button",
+        "text": "+ New Subject",
+        "class": "studio-btn-white"
+      },
+      {
+        "id": "openNewTopicTabBtn",
+        "type": "button",
+        "text": "Write Topic",
+        "class": "studio-btn-glass"
+      },
+      {
+        "type": "button",
+        "text": "Curriculum Hierarchy\n                0",
+        "class": "studio-tab-btn active"
+      },
+      {
+        "type": "button",
+        "text": "Topic Content Studio",
+        "class": "studio-tab-btn"
+      },
+      {
+        "type": "button",
+        "text": "Lecture Notes &amp; Handouts\n                0",
+        "class": "studio-tab-btn"
+      },
+      {
+        "id": "btnRefreshCurriculum",
+        "type": "button",
+        "text": "Refresh",
+        "class": "action-btn-sm"
+      },
+      {
+        "id": "btnCreateSubjectModal",
+        "type": "button",
+        "text": "+ Add Subject",
+        "class": "btn btn-primary"
+      },
+      {
+        "id": "btnResetTopicForm",
+        "type": "button",
+        "text": "Clear / New Topic",
+        "class": "action-btn-sm"
+      },
+      {
+        "type": "button",
+        "text": "H2",
+        "class": "toolbar-btn"
+      },
+      {
+        "type": "button",
+        "text": "H3",
+        "class": "toolbar-btn"
+      },
+      {
+        "type": "button",
+        "text": "B",
+        "class": "toolbar-btn"
+      },
+      {
+        "type": "button",
+        "text": "I",
+        "class": "toolbar-btn"
+      },
+      {
+        "type": "button",
+        "text": "&bull; List",
+        "class": "toolbar-btn"
+      },
+      {
+        "type": "button",
+        "text": "1. List",
+        "class": "toolbar-btn"
+      },
+      {
+        "type": "button",
+        "text": "Definition",
+        "class": "toolbar-btn"
+      },
+      {
+        "type": "button",
+        "text": "Key Points",
+        "class": "toolbar-btn"
+      },
+      {
+        "type": "button",
+        "text": "Table",
+        "class": "toolbar-btn"
+      },
+      {
+        "type": "button",
+        "text": "Code",
+        "class": "toolbar-btn"
+      },
+      {
+        "type": "button",
+        "text": "Link",
+        "class": "toolbar-btn"
+      },
+      {
+        "type": "button",
+        "text": "Image",
+        "class": "toolbar-btn"
+      },
+      {
+        "id": "btnSaveTopicDraft",
+        "type": "button",
+        "text": "Save as Draft",
+        "class": "btn btn-secondary"
+      },
+      {
+        "id": "btnSaveTopicSubmit",
+        "type": "submit",
+        "text": "Publish Topic",
+        "class": "btn btn-primary"
+      },
+      {
+        "id": "btnUploadAttachment",
+        "type": "submit",
+        "text": "Upload Handout",
+        "class": "btn btn-primary"
+      },
+      {
+        "id": "btnRefreshAttachments",
+        "type": "button",
+        "text": "Refresh",
+        "class": "action-btn-sm"
+      },
+      {
+        "type": "button",
+        "text": "&times;",
+        "class": "modal-close-btn"
+      },
+      {
+        "type": "button",
+        "text": "Cancel",
+        "class": "btn btn-secondary"
+      },
+      {
+        "id": "btnSaveSubject",
+        "type": "submit",
+        "text": "Save Subject",
+        "class": "btn btn-primary"
+      },
+      {
+        "type": "button",
+        "text": "&times;",
+        "class": "modal-close-btn"
+      },
+      {
+        "type": "button",
+        "text": "Cancel",
+        "class": "btn btn-secondary"
+      },
+      {
+        "id": "btnSaveChapter",
+        "type": "submit",
+        "text": "Save Chapter",
+        "class": "btn btn-primary"
+      },
+      {
+        "type": "button",
+        "text": "&times;",
+        "class": "modal-close-btn"
+      },
+      {
+        "type": "button",
+        "text": "Cancel",
+        "class": "btn btn-secondary"
+      },
+      {
+        "id": "btnConfirmDelete",
+        "type": "button",
+        "text": "Delete Permanently",
+        "class": "btn btn-primary"
+      }
+    ],
+    "forms": [
+      {
+        "id": "topicEditorForm",
+        "method": "GET",
+        "inputs": [
+          {
+            "tag": "input",
+            "id": "editTopicId",
+            "type": "hidden",
+            "required": false
+          },
+          {
+            "tag": "select",
+            "id": "topicSubjectSelect",
+            "type": "select",
+            "required": true
+          },
+          {
+            "tag": "select",
+            "id": "topicChapterSelect",
+            "type": "select",
+            "required": true
+          },
+          {
+            "tag": "input",
+            "id": "topicTitleInput",
+            "type": "text",
+            "required": true
+          },
+          {
+            "tag": "input",
+            "id": "topicSlugInput",
+            "type": "text",
+            "required": false
+          },
+          {
+            "tag": "input",
+            "id": "topicReadTimeInput",
+            "type": "number",
+            "required": false
+          },
+          {
+            "tag": "input",
+            "id": "topicOrderInput",
+            "type": "number",
+            "required": false
+          },
+          {
+            "tag": "select",
+            "id": "topicStatusSelect",
+            "type": "select",
+            "required": false
+          },
+          {
+            "tag": "input",
+            "id": "topicSummaryInput",
+            "type": "text",
+            "required": false
+          },
+          {
+            "tag": "input",
+            "id": "topicVideoUrlInput",
+            "type": "url",
+            "required": false
+          },
+          {
+            "tag": "input",
+            "id": "topicVideoSourceInput",
+            "type": "text",
+            "required": false
+          },
+          {
+            "tag": "input",
+            "id": "topicVideoTitleInput",
+            "type": "text",
+            "required": false
+          },
+          {
+            "tag": "input",
+            "id": "topicVideoObjectiveInput",
+            "type": "text",
+            "required": false
+          },
+          {
+            "tag": "textarea",
+            "id": "topicContentTextarea",
+            "type": "text",
+            "required": false
+          }
+        ]
+      },
+      {
+        "id": "attachmentUploadForm",
+        "method": "GET",
+        "inputs": [
+          {
+            "tag": "select",
+            "id": "attachSubjectSelect",
+            "type": "select",
+            "required": true
+          },
+          {
+            "tag": "select",
+            "id": "attachTopicSelect",
+            "type": "select",
+            "required": false
+          },
+          {
+            "tag": "input",
+            "id": "attachTitleInput",
+            "type": "text",
+            "required": true
+          },
+          {
+            "tag": "input",
+            "id": "attachDescInput",
+            "type": "text",
+            "required": false
+          },
+          {
+            "tag": "input",
+            "name": "notesFile",
+            "id": "notesFileInput",
+            "type": "file",
+            "required": true
+          }
+        ]
+      },
+      {
+        "id": "subjectModalForm",
+        "method": "GET",
+        "inputs": [
+          {
+            "tag": "input",
+            "id": "modalSubjectId",
+            "type": "hidden",
+            "required": false
+          },
+          {
+            "tag": "input",
+            "id": "subjectNameInput",
+            "type": "text",
+            "required": true
+          },
+          {
+            "tag": "input",
+            "id": "subjectCodeInput",
+            "type": "text",
+            "required": false
+          },
+          {
+            "tag": "select",
+            "id": "subjectCategorySelect",
+            "type": "select",
+            "required": false
+          },
+          {
+            "tag": "textarea",
+            "id": "subjectDescInput",
+            "type": "text",
+            "required": false
+          },
+          {
+            "tag": "input",
+            "id": "subjectIconInput",
+            "type": "text",
+            "required": false
+          },
+          {
+            "tag": "input",
+            "id": "subjectColorInput",
+            "type": "color",
+            "required": false
+          },
+          {
+            "tag": "input",
+            "id": "subjectOrderInput",
+            "type": "number",
+            "required": false
+          },
+          {
+            "tag": "select",
+            "id": "subjectStatusSelect",
+            "type": "select",
+            "required": false
+          }
+        ]
+      },
+      {
+        "id": "chapterModalForm",
+        "method": "GET",
+        "inputs": [
+          {
+            "tag": "input",
+            "id": "modalChapterId",
+            "type": "hidden",
+            "required": false
+          },
+          {
+            "tag": "input",
+            "id": "modalChapterSubjectId",
+            "type": "hidden",
+            "required": false
+          },
+          {
+            "tag": "input",
+            "id": "chapterSubjectDisplay",
+            "type": "text",
+            "required": false
+          },
+          {
+            "tag": "input",
+            "id": "chapterTitleInput",
+            "type": "text",
+            "required": true
+          },
+          {
+            "tag": "textarea",
+            "id": "chapterDescInput",
+            "type": "text",
+            "required": false
+          },
+          {
+            "tag": "input",
+            "id": "chapterOrderInput",
+            "type": "number",
+            "required": false
+          },
+          {
+            "tag": "select",
+            "id": "chapterStatusSelect",
+            "type": "select",
+            "required": false
+          }
+        ]
+      }
+    ],
+    "standaloneInputs": [
+      {
+        "tag": "input",
+        "id": "curriculumSearchInput",
+        "type": "text"
+      },
+      {
+        "tag": "select",
+        "id": "curriculumCategoryFilter",
+        "type": "select",
+        "class": "toolbar-select"
+      },
+      {
+        "tag": "select",
+        "id": "curriculumStatusFilter",
+        "type": "select",
+        "class": "toolbar-select"
+      }
+    ],
+    "scripts": [
+      "/js/admin-study-materials.js"
+    ]
+  },
+  {
+    "file": "admindash.html",
+    "linkCount": 22,
+    "buttonCount": 6,
+    "formCount": 0,
+    "standaloneInputCount": 2,
+    "links": [
+      {
+        "href": "/admin-exams",
+        "text": "Assessments\n                Active",
+        "id": "navAssessmentsBadge"
+      },
+      {
+        "href": "#command-center",
+        "text": "Command Center"
+      },
+      {
+        "href": "#practice-ai-studio",
+        "text": "Practice AI Studio"
+      },
+      {
+        "href": "/admin-coding-rounds",
+        "text": "Coding Practice"
+      },
+      {
+        "href": "/admin-exams",
+        "text": "Question Bank &amp; Tests"
+      },
+      {
+        "href": "/admin-study-materials",
+        "text": "Study Materials Studio"
+      },
+      {
+        "href": "/versant-admin",
+        "text": "Versant Rounds"
+      },
+      {
+        "href": "/admin-interviews",
+        "text": "Mock Interviews"
+      },
+      {
+        "href": "#student-readiness",
+        "text": "Student Readiness"
+      },
+      {
+        "href": "/analytics",
+        "text": "Analytics Hub"
+      },
+      {
+        "href": "/admin-exams",
+        "text": "Manage Aptitude Tests",
+        "id": "manageDrivesBtn"
+      },
+      {
+        "href": "/admin-coding-rounds",
+        "text": "Manage Coding Practice"
+      },
+      {
+        "href": "/admin-study-materials",
+        "text": "Study Materials Studio"
+      },
+      {
+        "href": "/admin-interviews",
+        "text": "Mock Interviews"
+      },
+      {
+        "href": "/admin-exams",
+        "text": "Manage Question Banks &rarr;"
+      },
+      {
+        "href": "/admin-exam-builder",
+        "text": "Create Aptitude Test\n                                Configure timed MCQs, sections, and passing thresholds\n                            \n                            &rarr;"
+      },
+      {
+        "href": "/admin-coding-builder",
+        "text": "Create Coding Round\n                                Add coding problems, test cases, and language templates\n                            \n                            &rarr;"
+      },
+      {
+        "href": "/admin-question-import",
+        "text": "Excel Question Import\n                                Bulk upload questions via standard spreadsheet template\n                            \n                            &rarr;"
+      },
+      {
+        "href": "/admin-interviews",
+        "text": "Mock Interview Sets\n                                Configure AI interview questions and review student attempts\n                            \n                            &rarr;"
+      },
+      {
+        "href": "/admin-study-materials",
+        "text": "Study Materials Studio\n                                Publish subject notes, reference guides, and cheat-sheets\n                            \n                            &rarr;"
+      },
+      {
+        "href": "/proctoring",
+        "text": "Live Assessment Proctoring\n                                Real-time monitoring, integrity flags, and face-detection logs\n                            \n                            &rarr;"
+      },
+      {
+        "href": "/analytics",
+        "text": "Open Student Practice Analytics &rarr;"
+      }
+    ],
+    "buttons": [
+      {
+        "id": "themeToggle",
+        "type": "button",
+        "text": "Toggle Theme",
+        "class": "theme-toggle-btn"
+      },
+      {
+        "id": "logoutBtn",
+        "type": "button",
+        "text": "Logout",
+        "class": "logout-icon-btn"
+      },
+      {
+        "type": "button",
+        "onclick": "applyPreset(",
+        "text": "TCS Practice Pattern",
+        "class": "preset-chip"
+      },
+      {
+        "type": "button",
+        "onclick": "applyPreset(",
+        "text": "Persistent Core CS",
+        "class": "preset-chip"
+      },
+      {
+        "type": "button",
+        "onclick": "applyPreset(",
+        "text": "Infosys Aptitude &amp; Logic",
+        "class": "preset-chip"
+      },
+      {
+        "id": "runIngestionBtn",
+        "type": "button",
+        "text": "Run AI Ingestion",
+        "class": "btn btn-primary"
+      }
+    ],
+    "forms": [],
+    "standaloneInputs": [
+      {
+        "tag": "select",
+        "id": "ingestionDriveSelect",
+        "type": "select",
+        "class": "drive-select-dropdown"
+      },
+      {
+        "tag": "textarea",
+        "id": "aiPromptInput",
+        "type": "textarea",
+        "class": "ai-textarea"
+      }
+    ],
+    "scripts": [
+      "/js/admindash.js"
+    ]
+  },
+  {
+    "file": "adminlogin.html",
+    "linkCount": 1,
+    "buttonCount": 2,
+    "formCount": 1,
+    "standaloneInputCount": 0,
+    "links": [
+      {
+        "href": "/login",
+        "text": "&larr; Back to Student Login"
+      }
+    ],
+    "buttons": [
+      {
+        "type": "submit",
+        "text": "Login with Password",
+        "class": "btn-admin-submit"
+      },
+      {
+        "id": "btnMagicLink",
+        "type": "button",
+        "text": "Login with Magic Email Link",
+        "class": "btn-magic-link"
+      }
+    ],
+    "forms": [
+      {
+        "id": "adminLoginForm",
+        "method": "GET",
+        "inputs": [
+          {
+            "tag": "input",
+            "id": "adminEmail",
+            "type": "email",
+            "required": true
+          },
+          {
+            "tag": "input",
+            "id": "adminPassword",
+            "type": "password",
+            "required": true
+          }
+        ]
+      }
+    ],
+    "standaloneInputs": [],
+    "scripts": [
+      "/js/app.js",
+      "/js/auth.js"
+    ]
+  },
+  {
+    "file": "analytics.html",
+    "linkCount": 10,
+    "buttonCount": 4,
+    "formCount": 0,
+    "standaloneInputCount": 1,
+    "links": [
+      {
+        "href": "/dashboard",
+        "text": "Home"
+      },
+      {
+        "href": "/placement-workspace",
+        "text": "Placement Prep"
+      },
+      {
+        "href": "/available-exams",
+        "text": "Aptitude Tests"
+      },
+      {
+        "href": "/coding-rounds",
+        "text": "Coding Rounds"
+      },
+      {
+        "href": "/compiler-practice",
+        "text": "C-Visualize Compiler"
+      },
+      {
+        "href": "/companies",
+        "text": "Companies"
+      },
+      {
+        "href": "/study-materials",
+        "text": "Study Materials"
+      },
+      {
+        "href": "/analytics",
+        "text": "Analytics"
+      },
+      {
+        "href": "/profile",
+        "text": "My Profile"
+      },
+      {
+        "href": "/dashboard",
+        "text": "Dashboard"
+      }
+    ],
+    "buttons": [
+      {
+        "type": "button",
+        "text": "Practice ⌄",
+        "class": "nav-item dropdown-toggle"
+      },
+      {
+        "id": "themeToggleBtn",
+        "type": "button",
+        "text": "Toggle Theme",
+        "class": "icon-btn theme-toggle"
+      },
+      {
+        "id": "logoutBtn",
+        "type": "button",
+        "text": "Logout",
+        "class": "menu-item logout"
+      },
+      {
+        "id": "btnRefresh",
+        "type": "button",
+        "text": "Refresh",
+        "class": "btn-refresh"
+      }
+    ],
+    "forms": [],
+    "standaloneInputs": [
+      {
+        "tag": "select",
+        "id": "filterRange",
+        "type": "select",
+        "class": "filter-select"
+      }
+    ],
+    "scripts": [
+      "/js/analytics.js"
+    ]
+  },
+  {
+    "file": "available-exams.html",
+    "linkCount": 1,
+    "buttonCount": 0,
+    "formCount": 0,
+    "standaloneInputCount": 0,
+    "links": [
+      {
+        "href": "/pages/stddash.html",
+        "text": "Home / Dashboard"
+      }
+    ],
+    "buttons": [],
+    "forms": [],
+    "standaloneInputs": [],
+    "scripts": [
+      "/js/available-exams.js"
+    ]
+  },
+  {
+    "file": "coding-result.html",
+    "linkCount": 1,
+    "buttonCount": 0,
+    "formCount": 0,
+    "standaloneInputCount": 0,
+    "links": [
+      {
+        "href": "/coding-rounds",
+        "text": "Coding Rounds"
+      }
+    ],
+    "buttons": [],
+    "forms": [],
+    "standaloneInputs": [],
+    "scripts": [
+      "/js/coding-result.js"
+    ]
+  },
+  {
+    "file": "coding-round.html",
+    "linkCount": 0,
+    "buttonCount": 4,
+    "formCount": 0,
+    "standaloneInputCount": 1,
+    "links": [],
+    "buttons": [
+      {
+        "id": "runBtn",
+        "type": "button",
+        "text": "Run Code"
+      },
+      {
+        "id": "submitQuestionBtn",
+        "type": "button",
+        "text": "Submit Problem"
+      },
+      {
+        "id": "finalSubmitBtn",
+        "type": "button",
+        "text": "Finish\r\n                    Round",
+        "class": "danger"
+      },
+      {
+        "id": "shareScreenBtn",
+        "type": "button",
+        "text": "Share screen with proctor"
+      }
+    ],
+    "forms": [],
+    "standaloneInputs": [
+      {
+        "tag": "select",
+        "id": "language",
+        "type": "select"
+      }
+    ],
+    "scripts": [
+      "/socket.io/socket.io.js",
+      "/js/coding-proctor.js",
+      "https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs/loader.js",
+      "/js/coding-round.js"
+    ]
+  },
+  {
+    "file": "coding-rounds.html",
+    "linkCount": 1,
+    "buttonCount": 0,
+    "formCount": 0,
+    "standaloneInputCount": 0,
+    "links": [
+      {
+        "href": "/dashboard",
+        "text": "Dashboard"
+      }
+    ],
+    "buttons": [],
+    "forms": [],
+    "standaloneInputs": [],
+    "scripts": [
+      "/js/coding-rounds.js"
+    ]
+  },
+  {
+    "file": "companies.html",
+    "linkCount": 22,
+    "buttonCount": 5,
+    "formCount": 0,
+    "standaloneInputCount": 0,
+    "links": [
+      {
+        "href": "/dashboard",
+        "text": "Home"
+      },
+      {
+        "href": "/available-exams",
+        "text": "Aptitude Tests\n                                      Quantitative, logical & verbal MCQs"
+      },
+      {
+        "href": "/coding-rounds",
+        "text": "Coding Rounds\n                                      Hands-on problems with online compiler"
+      },
+      {
+        "href": "/versant-test",
+        "text": "Versant Voice Test\n                                      Spoken English, fluency & pronunciation"
+      },
+      {
+        "href": "/interviews",
+        "text": "Mock Interview Round\n                                      Technical & HR voice interview round"
+      },
+      {
+        "href": "/exam-guidelines",
+        "text": "Assessment Guidelines\n                                      Proctoring rules & test environment"
+      },
+      {
+        "href": "/interviews",
+        "text": "AI Mock Interviews\n                                      Live audio interviews with AI feedback"
+      },
+      {
+        "href": "/versant-test",
+        "text": "Spoken English Practice\n                                      Fluency, sentence repeats & listening"
+      },
+      {
+        "href": "/resume-analyzer",
+        "text": "ATS Resume Analyzer\n                                      Keyword match, scoring & ATS optimizer"
+      },
+      {
+        "href": "/placement-workspace",
+        "text": "Placement Workspace\n                                      Interview roadmaps, tips & master prep"
+      },
+      {
+        "href": "/companies",
+        "text": "Company Directory\n                                      Browse hiring partners, CTC & roles"
+      },
+      {
+        "href": "/companies",
+        "text": "Hiring Criteria & Eligibility\n                                      Cutoffs, criteria & required skill sets"
+      },
+      {
+        "href": "/placement-workspace",
+        "text": "Company Roadmaps\n                                      Targeted preparation modules & strategies"
+      },
+      {
+        "href": "/analytics",
+        "text": "Preparation Analytics\n                                      Track scores, metrics & readiness index"
+      },
+      {
+        "href": "/placement-workspace",
+        "text": "Open Preparation Workspace"
+      },
+      {
+        "href": "/available-exams",
+        "text": "Aptitude Tests"
+      },
+      {
+        "href": "/coding-rounds",
+        "text": "Coding Rounds"
+      },
+      {
+        "href": "/companies",
+        "text": "Companies"
+      },
+      {
+        "href": "/analytics",
+        "text": "Analytics"
+      },
+      {
+        "href": "/profile",
+        "text": "Profile & Portfolio"
+      },
+      {
+        "href": "/profile",
+        "text": "Account Settings"
+      },
+      {
+        "href": "/login",
+        "text": "Log Out",
+        "id": "logoutBtn"
+      }
+    ],
+    "buttons": [
+      {
+        "id": "mobileNavToggle",
+        "type": "button",
+        "text": "mobileNavToggle",
+        "class": "mobile-nav-toggle"
+      },
+      {
+        "id": "placementPrepToggle",
+        "type": "button",
+        "text": "Placement Prep ⌄",
+        "class": "nav-item dropdown-toggle"
+      },
+      {
+        "type": "button",
+        "text": "Practice ⌄",
+        "class": "nav-item dropdown-toggle"
+      },
+      {
+        "type": "button",
+        "text": "unlabeled button",
+        "class": "icon-btn notification-btn"
+      },
+      {
+        "id": "themeToggleBtn",
+        "type": "button",
+        "text": "themeToggleBtn",
+        "class": "icon-btn theme-toggle"
+      }
+    ],
+    "forms": [],
+    "standaloneInputs": [],
+    "scripts": [
+      "/js/app.js",
+      "/js/stddash.js",
+      "/js/companies.js"
+    ]
+  },
+  {
+    "file": "company-prep.html",
+    "linkCount": 29,
+    "buttonCount": 10,
+    "formCount": 0,
+    "standaloneInputCount": 1,
+    "links": [
+      {
+        "href": "/dashboard",
+        "text": "Home"
+      },
+      {
+        "href": "/available-exams",
+        "text": "Aptitude Tests\n                                        Quantitative, logical & verbal MCQs"
+      },
+      {
+        "href": "/coding-rounds",
+        "text": "Coding Rounds\n                                        Hands-on problems with online compiler"
+      },
+      {
+        "href": "/versant-test",
+        "text": "Versant Voice Test\n                                        Spoken English, fluency & pronunciation"
+      },
+      {
+        "href": "/interviews",
+        "text": "Mock Interview Round\n                                        Technical & HR voice interview round"
+      },
+      {
+        "href": "/exam-guidelines",
+        "text": "Assessment Guidelines\n                                        Proctoring rules & test environment"
+      },
+      {
+        "href": "/interviews",
+        "text": "AI Mock Interviews\n                                        Live audio interviews with AI feedback"
+      },
+      {
+        "href": "/versant-test",
+        "text": "Spoken English Practice\n                                        Fluency, sentence repeats & listening"
+      },
+      {
+        "href": "/resume-analyzer",
+        "text": "ATS Resume Analyzer\n                                        Keyword match, scoring & ATS optimizer"
+      },
+      {
+        "href": "/placement-workspace",
+        "text": "Placement Workspace\n                                        Interview roadmaps, tips & master prep"
+      },
+      {
+        "href": "/companies",
+        "text": "Company Directory\n                                        Browse hiring partners, CTC & roles"
+      },
+      {
+        "href": "/companies",
+        "text": "Hiring Criteria & Eligibility\n                                        Cutoffs, criteria & required skill sets"
+      },
+      {
+        "href": "/placement-workspace",
+        "text": "Company Roadmaps\n                                        Targeted preparation modules & strategies"
+      },
+      {
+        "href": "/analytics",
+        "text": "Preparation Analytics\n                                        Track scores, metrics & readiness index"
+      },
+      {
+        "href": "/placement-workspace",
+        "text": "Open Preparation Workspace"
+      },
+      {
+        "href": "/available-exams",
+        "text": "Aptitude Tests"
+      },
+      {
+        "href": "/coding-rounds",
+        "text": "Coding Rounds"
+      },
+      {
+        "href": "/companies",
+        "text": "Companies"
+      },
+      {
+        "href": "/analytics",
+        "text": "Analytics"
+      },
+      {
+        "href": "/profile",
+        "text": "Profile & Portfolio"
+      },
+      {
+        "href": "/profile",
+        "text": "Account Settings"
+      },
+      {
+        "href": "/login",
+        "text": "Log Out",
+        "id": "logoutBtn"
+      },
+      {
+        "href": "/dashboard",
+        "text": "← Back to Dashboard"
+      },
+      {
+        "href": "/companies",
+        "text": "Company Directory"
+      },
+      {
+        "href": "/coding-rounds",
+        "text": "Practice Coding Round",
+        "id": "launchCodingBtn"
+      },
+      {
+        "href": "/interviews",
+        "text": "Mock Interview Round",
+        "id": "launchInterviewBtn"
+      },
+      {
+        "href": "/resume-analyzer",
+        "text": "ATS Resume Match"
+      },
+      {
+        "href": "${r.link}",
+        "text": "${escapeText(r.cta)}"
+      },
+      {
+        "href": "${q.actionUrl}",
+        "text": "${escapeText(q.actionLabel)} →"
+      }
+    ],
+    "buttons": [
+      {
+        "id": "mobileNavToggle",
+        "type": "button",
+        "text": "mobileNavToggle",
+        "class": "mobile-nav-toggle"
+      },
+      {
+        "id": "placementPrepToggle",
+        "type": "button",
+        "text": "Placement Prep ⌄",
+        "class": "nav-item dropdown-toggle active"
+      },
+      {
+        "type": "button",
+        "text": "Practice ⌄",
+        "class": "nav-item dropdown-toggle"
+      },
+      {
+        "type": "button",
+        "text": "unlabeled button",
+        "class": "icon-btn notification-btn"
+      },
+      {
+        "id": "themeToggleBtn",
+        "type": "button",
+        "text": "themeToggleBtn",
+        "class": "icon-btn theme-toggle"
+      },
+      {
+        "id": "resetProgressBtn",
+        "type": "button",
+        "text": "Reset Progress",
+        "class": "reset-progress-btn"
+      },
+      {
+        "type": "button",
+        "text": "All Questions",
+        "class": "filter-chip active"
+      },
+      {
+        "type": "button",
+        "text": "Coding & Algorithms",
+        "class": "filter-chip"
+      },
+      {
+        "type": "button",
+        "text": "System Design",
+        "class": "filter-chip"
+      },
+      {
+        "type": "button",
+        "text": "Behavioral / HR",
+        "class": "filter-chip"
+      }
+    ],
+    "forms": [],
+    "standaloneInputs": [
+      {
+        "tag": "input",
+        "id": "${q.id}",
+        "type": "checkbox",
+        "class": "q-check"
+      }
+    ],
+    "scripts": [
+      "/js/app.js",
+      "/js/stddash.js"
+    ]
+  },
+  {
+    "file": "compiler-practice.html",
+    "linkCount": 2,
+    "buttonCount": 47,
+    "formCount": 0,
+    "standaloneInputCount": 7,
+    "links": [
+      {
+        "href": "/study-reader?subject=compiler-design",
+        "text": "Back to Theory",
+        "id": "sidebar-back-to-theory"
+      },
+      {
+        "href": "/study-reader?subject=compiler-design",
+        "text": "Back to Theory",
+        "id": "btn-back-to-theory"
+      }
+    ],
+    "buttons": [
+      {
+        "id": "sidebar-toggle",
+        "type": "button",
+        "text": "‹",
+        "class": "icon-button sidebar-collapse"
+      },
+      {
+        "type": "button",
+        "text": "Compiler",
+        "class": "sidebar-nav-item active"
+      },
+      {
+        "id": "sidebar-projects",
+        "type": "button",
+        "text": "My Projects",
+        "class": "sidebar-nav-item"
+      },
+      {
+        "id": "sidebar-save-project",
+        "type": "button",
+        "text": "Save current project",
+        "class": "sidebar-nav-item sidebar-save"
+      },
+      {
+        "id": "sidebar-history",
+        "type": "button",
+        "text": "Compilation History—",
+        "class": "sidebar-nav-item"
+      },
+      {
+        "id": "sidebar-new-project",
+        "type": "button",
+        "text": "+",
+        "class": "icon-button"
+      },
+      {
+        "type": "button",
+        "text": "Cmain.c",
+        "class": "project-entry active"
+      },
+      {
+        "id": "sidebar-toggle-top",
+        "type": "button",
+        "text": "☰",
+        "class": "icon-button header-sidebar-toggle"
+      },
+      {
+        "id": "btn-new-project",
+        "type": "button",
+        "text": "New",
+        "class": "btn btn-secondary btn-sm"
+      },
+      {
+        "id": "btn-open-project",
+        "type": "button",
+        "text": "Open",
+        "class": "btn btn-secondary btn-sm"
+      },
+      {
+        "id": "btn-save-project",
+        "type": "button",
+        "text": "Save",
+        "class": "btn btn-secondary btn-sm"
+      },
+      {
+        "type": "button",
+        "text": "1. Code Editor",
+        "class": "mobile-nav-btn active"
+      },
+      {
+        "type": "button",
+        "text": "2. 6-Phase Visualizer",
+        "class": "mobile-nav-btn"
+      },
+      {
+        "type": "button",
+        "text": "3. Diagnostics &amp; Run",
+        "class": "mobile-nav-btn"
+      },
+      {
+        "id": "btn-font-dec",
+        "type": "button",
+        "text": "A-",
+        "class": "btn btn-secondary btn-sm"
+      },
+      {
+        "id": "btn-font-reset",
+        "type": "button",
+        "text": "13",
+        "class": "btn btn-secondary btn-sm"
+      },
+      {
+        "id": "btn-font-inc",
+        "type": "button",
+        "text": "A+",
+        "class": "btn btn-secondary btn-sm"
+      },
+      {
+        "id": "btn-compile-visualize",
+        "type": "button",
+        "text": "Compile &amp; Visualize",
+        "class": "btn btn-primary"
+      },
+      {
+        "id": "btn-run-program",
+        "type": "button",
+        "text": "Run Program",
+        "class": "btn btn-secondary run-action"
+      },
+      {
+        "type": "button",
+        "text": "1\n              Lexical",
+        "class": "phase-tab active"
+      },
+      {
+        "type": "button",
+        "text": "2\n              Syntax (AST)",
+        "class": "phase-tab"
+      },
+      {
+        "type": "button",
+        "text": "3\n              Semantic",
+        "class": "phase-tab"
+      },
+      {
+        "type": "button",
+        "text": "4\n              Intermediate (IR)",
+        "class": "phase-tab"
+      },
+      {
+        "type": "button",
+        "text": "5\n              Optimization",
+        "class": "phase-tab"
+      },
+      {
+        "type": "button",
+        "text": "6\n              Target Assembly",
+        "class": "phase-tab"
+      },
+      {
+        "type": "button",
+        "text": "Build\n              Preprocessing",
+        "class": "phase-tab"
+      },
+      {
+        "type": "button",
+        "text": "Build\n              Linking",
+        "class": "phase-tab"
+      },
+      {
+        "type": "button",
+        "text": "Next: Phase 2 (Syntax Analysis) &rarr;",
+        "class": "btn btn-primary btn-sm"
+      },
+      {
+        "type": "button",
+        "text": "&larr; Previous: Phase 1",
+        "class": "btn btn-secondary btn-sm"
+      },
+      {
+        "type": "button",
+        "text": "Next: Phase 3 (Semantic Analysis) &rarr;",
+        "class": "btn btn-primary btn-sm"
+      },
+      {
+        "type": "button",
+        "text": "&larr; Previous: Phase 2",
+        "class": "btn btn-secondary btn-sm"
+      },
+      {
+        "type": "button",
+        "text": "Next: Phase 4 (Intermediate Code) &rarr;",
+        "class": "btn btn-primary btn-sm"
+      },
+      {
+        "id": "btn-copy-ir",
+        "type": "button",
+        "text": "Copy GIMPLE",
+        "class": "btn btn-secondary btn-sm"
+      },
+      {
+        "type": "button",
+        "text": "&larr; Previous: Phase 3",
+        "class": "btn btn-secondary btn-sm"
+      },
+      {
+        "type": "button",
+        "text": "Next: Phase 5 (Optimization) &rarr;",
+        "class": "btn btn-primary btn-sm"
+      },
+      {
+        "type": "button",
+        "text": "&larr; Previous: Phase 4",
+        "class": "btn btn-secondary btn-sm"
+      },
+      {
+        "type": "button",
+        "text": "Next: Phase 6 (Target Assembly) &rarr;",
+        "class": "btn btn-primary btn-sm"
+      },
+      {
+        "id": "btn-copy-assembly",
+        "type": "button",
+        "text": "Copy Assembly",
+        "class": "btn btn-secondary btn-sm"
+      },
+      {
+        "type": "button",
+        "text": "&larr; Previous: Phase 5",
+        "class": "btn btn-secondary btn-sm"
+      },
+      {
+        "id": "btn-quick-run",
+        "type": "button",
+        "onclick": "document.getElementById(",
+        "text": "Run Compiled Binary &rarr;",
+        "class": "btn btn-success btn-sm"
+      },
+      {
+        "type": "button",
+        "text": "Output",
+        "class": "output-tab active"
+      },
+      {
+        "type": "button",
+        "text": "Diagnostics",
+        "class": "output-tab"
+      },
+      {
+        "type": "button",
+        "text": "Terminal / Input",
+        "class": "output-tab"
+      },
+      {
+        "type": "button",
+        "text": "Build Log",
+        "class": "output-tab"
+      },
+      {
+        "id": "btn-clear-console",
+        "type": "button",
+        "text": "Clear",
+        "class": "btn btn-secondary btn-sm"
+      },
+      {
+        "id": "output-collapse",
+        "type": "button",
+        "text": "⌄",
+        "class": "icon-button output-collapse"
+      },
+      {
+        "id": "project-modal-close",
+        "type": "button",
+        "text": "&times;",
+        "class": "btn btn-secondary btn-sm"
+      }
+    ],
+    "forms": [],
+    "standaloneInputs": [
+      {
+        "tag": "select",
+        "id": "select-sample-program",
+        "type": "select",
+        "class": "form-select sidebar-sample-select"
+      },
+      {
+        "tag": "select",
+        "id": "select-c-standard",
+        "type": "select",
+        "class": "form-select editor-select-sm"
+      },
+      {
+        "tag": "select",
+        "id": "select-opt-level",
+        "type": "select",
+        "class": "form-select editor-select-sm"
+      },
+      {
+        "tag": "select",
+        "id": "select-editor-theme",
+        "type": "select",
+        "class": "form-select editor-select-sm"
+      },
+      {
+        "tag": "textarea",
+        "id": "fallback-textarea",
+        "type": "textarea",
+        "class": "textarea-editor-fallback"
+      },
+      {
+        "tag": "input",
+        "id": "token-search-input",
+        "type": "text",
+        "class": "form-control form-control-sm token-search-input"
+      },
+      {
+        "tag": "textarea",
+        "id": "console-stdin",
+        "type": "textarea",
+        "class": "form-control"
+      }
+    ],
+    "scripts": [
+      "/js/compiler/app.js"
+    ]
+  },
+  {
+    "file": "exam-guidelines.html",
+    "linkCount": 1,
+    "buttonCount": 2,
+    "formCount": 0,
+    "standaloneInputCount": 0,
+    "links": [
+      {
+        "href": "/pages/available-exams.html",
+        "text": "Back to Assessments"
+      }
+    ],
+    "buttons": [
+      {
+        "id": "start",
+        "type": "button",
+        "text": "Start Proctored Test Now",
+        "class": "primary"
+      },
+      {
+        "id": "start",
+        "type": "button",
+        "text": "Start Proctored Test Now",
+        "class": "primary"
+      }
+    ],
+    "forms": [],
+    "standaloneInputs": [],
+    "scripts": [
+      "/js/exam-client.js",
+      "/js/exam-client.js"
+    ]
+  },
+  {
+    "file": "exam-result.html",
+    "linkCount": 2,
+    "buttonCount": 0,
+    "formCount": 0,
+    "standaloneInputCount": 0,
+    "links": [
+      {
+        "href": "/pages/available-exams.html",
+        "text": "Back to assessments"
+      },
+      {
+        "href": "/pages/available-exams.html",
+        "text": "Back to assessments"
+      }
+    ],
+    "buttons": [],
+    "forms": [],
+    "standaloneInputs": [],
+    "scripts": [
+      "/js/exam-result.js",
+      "/js/exam-result.js"
+    ]
+  },
+  {
+    "file": "interview-room.html",
+    "linkCount": 2,
+    "buttonCount": 12,
+    "formCount": 0,
+    "standaloneInputCount": 3,
+    "links": [
+      {
+        "href": "/pages/interviews.html",
+        "text": "Exit interview",
+        "id": "exitInterviewBtn"
+      },
+      {
+        "href": "/pages/interviews.html",
+        "text": "Back to Interview Studio"
+      }
+    ],
+    "buttons": [
+      {
+        "id": "startBtn",
+        "type": "button",
+        "text": "Start interview",
+        "class": "btn primary"
+      },
+      {
+        "id": "previewMediaBtn",
+        "type": "button",
+        "text": "Request required camera access",
+        "class": "btn"
+      },
+      {
+        "id": "repeatQuestionBtn",
+        "type": "button",
+        "text": "Repeat Question",
+        "class": "ai-btn-sm"
+      },
+      {
+        "id": "skipQuestionBtn",
+        "type": "button",
+        "text": "Skip Question",
+        "class": "ai-btn-sm"
+      },
+      {
+        "id": "voiceToggleBtn",
+        "type": "button",
+        "text": "AI Voice: On",
+        "class": "ai-btn-sm"
+      },
+      {
+        "id": "doneSpeakingBtn",
+        "type": "button",
+        "text": "Done Speaking (Process Answer)",
+        "class": "btn primary"
+      },
+      {
+        "id": "saveAnswerBtn",
+        "type": "button",
+        "text": "Save Answer Audio",
+        "class": "btn"
+      },
+      {
+        "id": "toggleTextInputBtn",
+        "type": "button",
+        "text": "Type Answer Instead",
+        "class": "btn"
+      },
+      {
+        "id": "submitBtn",
+        "type": "button",
+        "text": "End Interview &amp; Get Feedback",
+        "class": "btn danger"
+      },
+      {
+        "id": "prevBtn",
+        "type": "button",
+        "text": "Previous question",
+        "class": "btn"
+      },
+      {
+        "id": "nextBtn",
+        "type": "button",
+        "text": "Next question",
+        "class": "btn"
+      },
+      {
+        "id": "retakeInterviewBtn",
+        "type": "button",
+        "text": "Practice Again",
+        "class": "btn primary"
+      }
+    ],
+    "forms": [],
+    "standaloneInputs": [
+      {
+        "tag": "input",
+        "id": "rulesAcknowledged",
+        "type": "checkbox"
+      },
+      {
+        "tag": "input",
+        "id": "startConfirmation",
+        "type": "text"
+      },
+      {
+        "tag": "textarea",
+        "id": "answerText",
+        "type": "textarea",
+        "class": "hidden"
+      }
+    ],
+    "scripts": [
+      "/socket.io/socket.io.js",
+      "/js/interview-room.js?v=20261013-live-monitoring"
+    ]
+  },
+  {
+    "file": "interviews.html",
+    "linkCount": 3,
+    "buttonCount": 2,
+    "formCount": 0,
+    "standaloneInputCount": 0,
+    "links": [
+      {
+        "href": "/dashboard",
+        "text": "PlacementPro"
+      },
+      {
+        "href": "/dashboard",
+        "text": "Dashboard"
+      },
+      {
+        "href": "/pages/available-exams.html",
+        "text": "Aptitude tests"
+      }
+    ],
+    "buttons": [
+      {
+        "id": "startLiveAiBtn",
+        "type": "button",
+        "text": "Start AI HR Interview Now",
+        "class": "btn primary"
+      },
+      {
+        "id": "refreshBtn",
+        "type": "button",
+        "text": "Refresh",
+        "class": "btn"
+      }
+    ],
+    "forms": [],
+    "standaloneInputs": [],
+    "scripts": [
+      "/js/interviews.js"
+    ]
+  },
+  {
+    "file": "landing.html",
+    "linkCount": 34,
+    "buttonCount": 0,
+    "formCount": 0,
+    "standaloneInputCount": 0,
+    "links": [
+      {
+        "href": "/login",
+        "text": "Log in"
+      },
+      {
+        "href": "/signup",
+        "text": "Get started"
+      },
+      {
+        "href": "/login",
+        "text": "Start preparing &rarr;"
+      },
+      {
+        "href": "#how-it-works",
+        "text": "See how it works"
+      },
+      {
+        "href": "/login",
+        "text": "Learn more"
+      },
+      {
+        "href": "/login",
+        "text": "Learn more"
+      },
+      {
+        "href": "/login",
+        "text": "Learn more"
+      },
+      {
+        "href": "/login",
+        "text": "Create your free account &rarr;"
+      },
+      {
+        "href": "mailto:placementpro01@gmail.com",
+        "text": "College Support"
+      },
+      {
+        "href": "mailto:placementpro01@gmail.com",
+        "text": "placementpro01@gmail.com"
+      },
+      {
+        "href": "/login",
+        "text": "Support Portal"
+      },
+      {
+        "href": "/study-materials",
+        "text": "DSA Preparation"
+      },
+      {
+        "href": "/study-materials",
+        "text": "Aptitude &amp; Reasoning"
+      },
+      {
+        "href": "/coding-rounds",
+        "text": "Programming"
+      },
+      {
+        "href": "/study-materials",
+        "text": "Core CS Subjects"
+      },
+      {
+        "href": "/compiler-practice?subject=compiler-design",
+        "text": "Compiler Design (C-Visualize)"
+      },
+      {
+        "href": "/login",
+        "text": "Placement Preparation"
+      },
+      {
+        "href": "/interviews",
+        "text": "Interview Preparation"
+      },
+      {
+        "href": "/resume-analyzer",
+        "text": "Resume Building"
+      },
+      {
+        "href": "/interviews",
+        "text": "Mock Interviews"
+      },
+      {
+        "href": "/companies",
+        "text": "Company Preparation"
+      },
+      {
+        "href": "#how-it-works",
+        "text": "About Us"
+      },
+      {
+        "href": "/signup",
+        "text": "For Students"
+      },
+      {
+        "href": "/admin-login",
+        "text": "Admin Portal"
+      },
+      {
+        "href": "mailto:placementpro01@gmail.com",
+        "text": "Contact Us"
+      },
+      {
+        "href": "/login",
+        "text": "Terms &amp; Conditions"
+      },
+      {
+        "href": "/study-materials",
+        "text": "Curriculum Roadmaps"
+      },
+      {
+        "href": "/available-exams",
+        "text": "Practice Tests"
+      },
+      {
+        "href": "/coding-rounds",
+        "text": "Coding Rounds"
+      },
+      {
+        "href": "/interviews",
+        "text": "AI Interview Simulator"
+      },
+      {
+        "href": "/versant-tests",
+        "text": "Versant Voice Tests"
+      },
+      {
+        "href": "https://github.com",
+        "text": "GitHub"
+      },
+      {
+        "href": "https://linkedin.com",
+        "text": "LinkedIn"
+      },
+      {
+        "href": "mailto:placementpro01@gmail.com",
+        "text": "Direct Inquiry"
+      }
+    ],
+    "buttons": [],
+    "forms": [],
+    "standaloneInputs": [],
+    "scripts": []
+  },
+  {
+    "file": "live-exam.html",
+    "linkCount": 0,
+    "buttonCount": 7,
+    "formCount": 0,
+    "standaloneInputCount": 0,
+    "links": [],
+    "buttons": [
+      {
+        "id": "fullscreenBtn",
+        "type": "button",
+        "text": "Enter Fullscreen",
+        "class": "outline"
+      },
+      {
+        "id": "submit",
+        "type": "button",
+        "text": "Submit Test",
+        "class": "success"
+      },
+      {
+        "id": "previous",
+        "type": "button",
+        "text": "← Previous",
+        "class": "btn btn-outline"
+      },
+      {
+        "id": "mark",
+        "type": "button",
+        "text": "Mark for Review &amp; Next",
+        "class": "btn btn-warning"
+      },
+      {
+        "id": "next",
+        "type": "button",
+        "text": "Save &amp; Next →",
+        "class": "btn btn-primary"
+      },
+      {
+        "id": "finalize",
+        "type": "button",
+        "text": "Finalize Assessment",
+        "class": "outline"
+      },
+      {
+        "id": "retryCamera",
+        "type": "button",
+        "text": "Retry Camera",
+        "class": "camera-retry"
+      }
+    ],
+    "forms": [],
+    "standaloneInputs": [],
+    "scripts": [
+      "/socket.io/socket.io.js",
+      "/js/exam-client.js",
+      "/js/student-proctor.js"
+    ]
+  },
+  {
+    "file": "placement-workspace.html",
+    "linkCount": 36,
+    "buttonCount": 5,
+    "formCount": 0,
+    "standaloneInputCount": 0,
+    "links": [
+      {
+        "href": "/dashboard",
+        "text": "Home"
+      },
+      {
+        "href": "/available-exams",
+        "text": "Aptitude Tests\n                                        Quantitative, logical & verbal MCQs"
+      },
+      {
+        "href": "/coding-rounds",
+        "text": "Coding Rounds\n                                        Hands-on problems with online compiler"
+      },
+      {
+        "href": "/versant-test",
+        "text": "Versant Voice Test\n                                        Spoken English, fluency & pronunciation"
+      },
+      {
+        "href": "/interviews",
+        "text": "Mock Interview Round\n                                        Technical & HR voice interview round"
+      },
+      {
+        "href": "/exam-guidelines",
+        "text": "Assessment Guidelines\n                                        Proctoring rules & test environment"
+      },
+      {
+        "href": "/interviews",
+        "text": "AI Mock Interviews\n                                        Live audio interviews with AI feedback"
+      },
+      {
+        "href": "/versant-test",
+        "text": "Spoken English Practice\n                                        Fluency, sentence repeats & listening"
+      },
+      {
+        "href": "/resume-analyzer",
+        "text": "ATS Resume Analyzer\n                                        Keyword match, scoring & ATS optimizer"
+      },
+      {
+        "href": "/placement-workspace",
+        "text": "Placement Workspace\n                                        Interview roadmaps, tips & master prep"
+      },
+      {
+        "href": "/companies",
+        "text": "Company Directory\n                                        Browse hiring partners, CTC & roles"
+      },
+      {
+        "href": "/companies",
+        "text": "Hiring Criteria & Eligibility\n                                        Cutoffs, criteria & required skill sets"
+      },
+      {
+        "href": "/placement-workspace",
+        "text": "Company Roadmaps\n                                        Targeted preparation modules & strategies"
+      },
+      {
+        "href": "/analytics",
+        "text": "Preparation Analytics\n                                        Track scores, metrics & readiness index"
+      },
+      {
+        "href": "/placement-workspace",
+        "text": "Open Preparation Workspace"
+      },
+      {
+        "href": "/available-exams",
+        "text": "Aptitude Tests"
+      },
+      {
+        "href": "/coding-rounds",
+        "text": "Coding Rounds"
+      },
+      {
+        "href": "/companies",
+        "text": "Companies"
+      },
+      {
+        "href": "/analytics",
+        "text": "Analytics"
+      },
+      {
+        "href": "/profile",
+        "text": "Profile & Portfolio"
+      },
+      {
+        "href": "/profile",
+        "text": "Account Settings"
+      },
+      {
+        "href": "/login",
+        "text": "Log Out",
+        "id": "logoutBtn"
+      },
+      {
+        "href": "/available-exams",
+        "text": "📝 Aptitude Tests"
+      },
+      {
+        "href": "/coding-rounds",
+        "text": "💻 Coding Challenges"
+      },
+      {
+        "href": "/versant-test",
+        "text": "🎙️ Versant Voice Round"
+      },
+      {
+        "href": "/interviews",
+        "text": "🤖 AI Mock Interviews"
+      },
+      {
+        "href": "/resume-analyzer",
+        "text": "📄 ATS Resume Scan"
+      },
+      {
+        "href": "/companies",
+        "text": "🏢 Company Directory"
+      },
+      {
+        "href": "/available-exams",
+        "text": "Take Aptitude Tests"
+      },
+      {
+        "href": "/coding-rounds",
+        "text": "Solve Coding Rounds"
+      },
+      {
+        "href": "/versant-test",
+        "text": "Practice Versant Test"
+      },
+      {
+        "href": "/interviews",
+        "text": "Launch Interview Studio"
+      },
+      {
+        "href": "/resume-analyzer",
+        "text": "ATS Resume Analyzer\n                                Check keyword match & format compatibility\n                            \n                        \n                        →"
+      },
+      {
+        "href": "/companies",
+        "text": "Company Directory\n                                CTC packages, roles & recruiter profiles\n                            \n                        \n                        →"
+      },
+      {
+        "href": "/exam-guidelines",
+        "text": "Assessment Guidelines\n                                Proctoring instructions & compliance policy\n                            \n                        \n                        →"
+      },
+      {
+        "href": "/analytics",
+        "text": "Preparation Analytics\n                                Track progress scores & readiness gauge\n                            \n                        \n                        →"
+      }
+    ],
+    "buttons": [
+      {
+        "id": "mobileNavToggle",
+        "type": "button",
+        "text": "mobileNavToggle",
+        "class": "mobile-nav-toggle"
+      },
+      {
+        "id": "placementPrepToggle",
+        "type": "button",
+        "text": "Placement Prep ⌄",
+        "class": "nav-item dropdown-toggle active"
+      },
+      {
+        "type": "button",
+        "text": "Practice ⌄",
+        "class": "nav-item dropdown-toggle"
+      },
+      {
+        "type": "button",
+        "text": "unlabeled button",
+        "class": "icon-btn notification-btn"
+      },
+      {
+        "id": "themeToggleBtn",
+        "type": "button",
+        "text": "themeToggleBtn",
+        "class": "icon-btn theme-toggle"
+      }
+    ],
+    "forms": [],
+    "standaloneInputs": [],
+    "scripts": [
+      "/js/app.js",
+      "/js/stddash.js"
+    ]
+  },
+  {
+    "file": "proctoring.html",
+    "linkCount": 1,
+    "buttonCount": 0,
+    "formCount": 0,
+    "standaloneInputCount": 1,
+    "links": [
+      {
+        "href": "/pages/admindash.html",
+        "text": "Dashboard"
+      }
+    ],
+    "buttons": [],
+    "forms": [],
+    "standaloneInputs": [
+      {
+        "tag": "select",
+        "id": "examSelect",
+        "type": "select"
+      }
+    ],
+    "scripts": [
+      "/socket.io/socket.io.js",
+      "/js/proctoring-dashboard.js"
+    ]
+  },
+  {
+    "file": "resume-analyzer.html",
+    "linkCount": 2,
+    "buttonCount": 3,
+    "formCount": 1,
+    "standaloneInputCount": 0,
+    "links": [
+      {
+        "href": "/dashboard",
+        "text": "Home"
+      },
+      {
+        "href": "/resume-analyzer",
+        "text": "Resume AI"
+      }
+    ],
+    "buttons": [
+      {
+        "type": "button",
+        "onclick": "document.getElementById(",
+        "text": "Browse File",
+        "class": "btn btn-secondary-sm"
+      },
+      {
+        "id": "analyzeBtn",
+        "type": "submit",
+        "text": "Analyze Resume",
+        "class": "btn btn-primary w-full"
+      },
+      {
+        "id": "downloadOptimizedBtn",
+        "type": "button",
+        "text": "Get 100% Optimized Resume Text",
+        "class": "btn btn-light-blue w-full"
+      }
+    ],
+    "forms": [
+      {
+        "id": "resumeForm",
+        "method": "GET",
+        "inputs": [
+          {
+            "tag": "input",
+            "name": "resume",
+            "id": "resumeFile",
+            "type": "file",
+            "required": true
+          },
+          {
+            "tag": "textarea",
+            "id": "jobDescription",
+            "type": "text",
+            "required": false
+          }
+        ]
+      }
+    ],
+    "standaloneInputs": [],
+    "scripts": [
+      "/js/resume-analyzer.js"
+    ]
+  },
+  {
+    "file": "stddash.html",
+    "linkCount": 34,
+    "buttonCount": 8,
+    "formCount": 0,
+    "standaloneInputCount": 0,
+    "links": [
+      {
+        "href": "/dashboard",
+        "text": "Home"
+      },
+      {
+        "href": "/available-exams",
+        "text": "Aptitude Tests\r\n                                        Quantitative, logical & verbal MCQs"
+      },
+      {
+        "href": "/coding-rounds",
+        "text": "Coding Rounds\r\n                                        Hands-on problems with online compiler"
+      },
+      {
+        "href": "/versant-test",
+        "text": "Versant Voice Test\r\n                                        Spoken English, fluency & pronunciation"
+      },
+      {
+        "href": "/interviews",
+        "text": "Mock Interview Round\r\n                                        Technical & HR voice interview round"
+      },
+      {
+        "href": "/exam-guidelines",
+        "text": "Assessment Guidelines\r\n                                        Proctoring rules & test environment"
+      },
+      {
+        "href": "/interviews",
+        "text": "AI Mock Interviews\r\n                                        Live audio interviews with AI feedback"
+      },
+      {
+        "href": "/versant-test",
+        "text": "Spoken English Practice\r\n                                        Fluency, sentence repeats & listening"
+      },
+      {
+        "href": "/resume-analyzer",
+        "text": "ATS Resume Analyzer\r\n                                        Keyword match, scoring & ATS optimizer"
+      },
+      {
+        "href": "/placement-workspace",
+        "text": "Placement Workspace\r\n                                        Interview roadmaps, tips & master prep"
+      },
+      {
+        "href": "/companies",
+        "text": "Company Directory\r\n                                        Browse hiring partners, CTC & roles"
+      },
+      {
+        "href": "/companies",
+        "text": "Hiring Criteria & Eligibility\r\n                                        Cutoffs, criteria & required skill sets"
+      },
+      {
+        "href": "/placement-workspace",
+        "text": "Company Roadmaps\r\n                                        Targeted preparation modules & strategies"
+      },
+      {
+        "href": "/analytics",
+        "text": "Preparation Analytics\r\n                                        Track scores, metrics & readiness index"
+      },
+      {
+        "href": "/placement-workspace",
+        "text": "Open Preparation Workspace"
+      },
+      {
+        "href": "/available-exams",
+        "text": "Aptitude Tests"
+      },
+      {
+        "href": "/coding-rounds",
+        "text": "Coding Rounds"
+      },
+      {
+        "href": "/companies",
+        "text": "Companies"
+      },
+      {
+        "href": "/study-materials",
+        "text": "Study Materials"
+      },
+      {
+        "href": "/analytics",
+        "text": "Analytics"
+      },
+      {
+        "href": "/profile",
+        "text": "Profile & Portfolio"
+      },
+      {
+        "href": "/study-materials",
+        "text": "Study Materials"
+      },
+      {
+        "href": "/profile",
+        "text": "Account Settings"
+      },
+      {
+        "href": "/login",
+        "text": "Log Out",
+        "id": "logoutBtn"
+      },
+      {
+        "href": "/pages/interviews.html",
+        "text": "Launch Mock\r\n                        Interview"
+      },
+      {
+        "href": "/available-exams",
+        "text": "View Practice Tests &rsaquo;"
+      },
+      {
+        "href": "/company-prep",
+        "text": "Company-Wise Preparation\r\n                    Prepare for company-specific placement rounds and interviews\r\n                \r\n                &rsaquo;"
+      },
+      {
+        "href": "/study-materials",
+        "text": "Study Materials\r\n                    Theory tutorials, DBMS, DSA, OS &amp; notes\r\n                \r\n                &rsaquo;"
+      },
+      {
+        "href": "/coding-rounds",
+        "text": "&lt;/&gt;\r\n                \r\n                    Coding Rounds\r\n                    Open assigned programming assessments\r\n                &rsaquo;"
+      },
+      {
+        "href": "/available-exams",
+        "text": "🕮\r\n                \r\n                    Aptitude Practice\r\n                    Quantitative and logical speed tests\r\n                &rsaquo;"
+      },
+      {
+        "href": "/resume-analyzer",
+        "text": "Resume AI Analyzer\r\n                    ATS keyword & match score check\r\n                \r\n                &rsaquo;"
+      },
+      {
+        "href": "/pages/versant-test.html",
+        "text": "Versant Speech Test\r\n                    Fluency &amp; voice evaluation\r\n                \r\n                &rsaquo;"
+      },
+      {
+        "href": "/pages/interviews.html",
+        "text": "🗣\r\n                \r\n                    Mock Interviews\r\n                    HR, technical and company-specific practice\r\n                &rsaquo;"
+      },
+      {
+        "href": "/companies",
+        "text": "View Company Directory &rsaquo;"
+      }
+    ],
+    "buttons": [
+      {
+        "id": "mobileNavToggle",
+        "type": "button",
+        "text": "mobileNavToggle",
+        "class": "mobile-nav-toggle"
+      },
+      {
+        "id": "placementPrepToggle",
+        "type": "button",
+        "text": "Placement Prep ⌄",
+        "class": "nav-item dropdown-toggle"
+      },
+      {
+        "type": "button",
+        "text": "Practice ⌄",
+        "class": "nav-item dropdown-toggle"
+      },
+      {
+        "type": "button",
+        "text": "unlabeled button",
+        "class": "icon-btn notification-btn"
+      },
+      {
+        "id": "themeToggleBtn",
+        "type": "button",
+        "text": "themeToggleBtn",
+        "class": "icon-btn theme-toggle"
+      },
+      {
+        "type": "button",
+        "text": "Continue Learning Journey",
+        "class": "btn btn-primary"
+      },
+      {
+        "id": "startGooglePrepBtn",
+        "type": "button",
+        "onclick": "window.location.href=",
+        "text": "Start Google Prep Kit",
+        "class": "btn btn-secondary w-full"
+      },
+      {
+        "id": "startAmazonPrepBtn",
+        "type": "button",
+        "onclick": "window.location.href=",
+        "text": "Start Amazon Prep Kit",
+        "class": "btn btn-secondary w-full"
+      }
+    ],
+    "forms": [],
+    "standaloneInputs": [],
+    "scripts": [
+      "/js/app.js",
+      "/js/stddash.js",
+      "/socket.io/socket.io.js",
+      "/js/progress-dashboard.js"
+    ]
+  },
+  {
+    "file": "stdlogin.html",
+    "linkCount": 3,
+    "buttonCount": 2,
+    "formCount": 1,
+    "standaloneInputCount": 0,
+    "links": [
+      {
+        "href": "#",
+        "text": "Forgot Password?"
+      },
+      {
+        "href": "/api/auth/google",
+        "text": "Continue with Google"
+      },
+      {
+        "href": "/signup",
+        "text": "Register Now"
+      }
+    ],
+    "buttons": [
+      {
+        "type": "button",
+        "text": "unlabeled button",
+        "class": "eye-btn"
+      },
+      {
+        "type": "submit",
+        "text": "Log In to Dashboard &rarr;",
+        "class": "btn-submit"
+      }
+    ],
+    "forms": [
+      {
+        "id": "loginForm",
+        "method": "GET",
+        "inputs": [
+          {
+            "tag": "input",
+            "id": "loginEmail",
+            "type": "email",
+            "required": true
+          },
+          {
+            "tag": "input",
+            "id": "loginPassword",
+            "type": "password",
+            "required": true
+          },
+          {
+            "tag": "input",
+            "id": "remember",
+            "type": "checkbox",
+            "required": false
+          }
+        ]
+      }
+    ],
+    "standaloneInputs": [],
+    "scripts": [
+      "/js/app.js",
+      "/js/auth.js"
+    ]
+  },
+  {
+    "file": "stdprofile.html",
+    "linkCount": 1,
+    "buttonCount": 5,
+    "formCount": 1,
+    "standaloneInputCount": 1,
+    "links": [
+      {
+        "href": "/dashboard",
+        "text": "&larr; Back to Dashboard"
+      }
+    ],
+    "buttons": [
+      {
+        "id": "logoutBtn",
+        "type": "button",
+        "text": "Logout",
+        "class": "btn btn-secondary-sm logout-btn"
+      },
+      {
+        "id": "saveBtn",
+        "type": "submit",
+        "text": "Save Profile Changes",
+        "class": "btn btn-primary"
+      },
+      {
+        "id": "uploadResumeBtn",
+        "type": "button",
+        "text": "Upload & Set Active Resume",
+        "class": "btn btn-primary w-full"
+      },
+      {
+        "type": "button",
+        "text": "&larr; Prev",
+        "class": "cal-nav"
+      },
+      {
+        "type": "button",
+        "text": "Next &rarr;",
+        "class": "cal-nav"
+      }
+    ],
+    "forms": [
+      {
+        "id": "profileForm",
+        "method": "GET",
+        "inputs": [
+          {
+            "tag": "input",
+            "id": "profName",
+            "type": "text",
+            "required": true
+          },
+          {
+            "tag": "input",
+            "id": "profEmail",
+            "type": "email",
+            "required": false
+          },
+          {
+            "tag": "select",
+            "id": "profDept",
+            "type": "select",
+            "required": false
+          },
+          {
+            "tag": "input",
+            "id": "profDivision",
+            "type": "text",
+            "required": true
+          },
+          {
+            "tag": "input",
+            "id": "profBatch",
+            "type": "number",
+            "required": true
+          },
+          {
+            "tag": "input",
+            "id": "profCgpa",
+            "type": "text",
+            "required": true
+          },
+          {
+            "tag": "input",
+            "id": "profPhone",
+            "type": "text",
+            "required": true
+          }
+        ]
+      }
+    ],
+    "standaloneInputs": [
+      {
+        "tag": "input",
+        "id": "resumeFile",
+        "type": "file",
+        "class": "hidden-input"
+      }
+    ],
+    "scripts": [
+      "/js/stdprofile.js"
+    ]
+  },
+  {
+    "file": "stdsignup.html",
+    "linkCount": 4,
+    "buttonCount": 3,
+    "formCount": 1,
+    "standaloneInputCount": 0,
+    "links": [
+      {
+        "href": "/api/auth/google",
+        "text": "Continue with Google"
+      },
+      {
+        "href": "#",
+        "text": "Terms & Conditions"
+      },
+      {
+        "href": "#",
+        "text": "Privacy Policy"
+      },
+      {
+        "href": "/login",
+        "text": "Login"
+      }
+    ],
+    "buttons": [
+      {
+        "type": "button",
+        "text": "unlabeled button",
+        "class": "eye-btn"
+      },
+      {
+        "type": "button",
+        "text": "unlabeled button",
+        "class": "eye-btn"
+      },
+      {
+        "type": "submit",
+        "text": "Create Account &rarr;",
+        "class": "btn-submit"
+      }
+    ],
+    "forms": [
+      {
+        "id": "signupForm",
+        "method": "GET",
+        "inputs": [
+          {
+            "tag": "input",
+            "id": "fullName",
+            "type": "text",
+            "required": true
+          },
+          {
+            "tag": "input",
+            "id": "signupEmail",
+            "type": "email",
+            "required": true
+          },
+          {
+            "tag": "input",
+            "id": "signupPassword",
+            "type": "password",
+            "required": true
+          },
+          {
+            "tag": "input",
+            "id": "confirmPassword",
+            "type": "password",
+            "required": true
+          },
+          {
+            "tag": "input",
+            "id": "terms",
+            "type": "checkbox",
+            "required": true
+          }
+        ]
+      }
+    ],
+    "standaloneInputs": [],
+    "scripts": [
+      "/js/app.js",
+      "/js/auth.js"
+    ]
+  },
+  {
+    "file": "study-materials.html",
+    "linkCount": 10,
+    "buttonCount": 8,
+    "formCount": 0,
+    "standaloneInputCount": 1,
+    "links": [
+      {
+        "href": "/dashboard",
+        "text": "PlacementPro"
+      },
+      {
+        "href": "/dashboard",
+        "text": "Home"
+      },
+      {
+        "href": "/placement-workspace",
+        "text": "Placement Prep"
+      },
+      {
+        "href": "/available-exams",
+        "text": "Practice"
+      },
+      {
+        "href": "/companies",
+        "text": "Companies"
+      },
+      {
+        "href": "/study-materials",
+        "text": "Study Materials"
+      },
+      {
+        "href": "/analytics",
+        "text": "Analytics"
+      },
+      {
+        "href": "/profile",
+        "text": "Profile &amp; Portfolio"
+      },
+      {
+        "href": "/study-materials",
+        "text": "Study Materials"
+      },
+      {
+        "href": "/login",
+        "text": "Log Out",
+        "id": "logoutBtn"
+      }
+    ],
+    "buttons": [
+      {
+        "id": "themeToggleBtn",
+        "type": "button",
+        "text": "themeToggleBtn",
+        "class": "icon-btn theme-toggle"
+      },
+      {
+        "type": "button",
+        "text": "All Subjects",
+        "class": "category-chip active"
+      },
+      {
+        "type": "button",
+        "text": "Core CS",
+        "class": "category-chip"
+      },
+      {
+        "type": "button",
+        "text": "Programming",
+        "class": "category-chip"
+      },
+      {
+        "type": "button",
+        "text": "Database",
+        "class": "category-chip"
+      },
+      {
+        "type": "button",
+        "text": "Systems",
+        "class": "category-chip"
+      },
+      {
+        "type": "button",
+        "text": "Theory",
+        "class": "category-chip"
+      },
+      {
+        "type": "button",
+        "text": "Web Dev",
+        "class": "category-chip"
+      }
+    ],
+    "forms": [],
+    "standaloneInputs": [
+      {
+        "tag": "input",
+        "id": "subjectSearchInput",
+        "type": "text",
+        "class": "search-input"
+      }
+    ],
+    "scripts": [
+      "/js/study-materials.js"
+    ]
+  },
+  {
+    "file": "study-reader.html",
+    "linkCount": 7,
+    "buttonCount": 3,
+    "formCount": 0,
+    "standaloneInputCount": 1,
+    "links": [
+      {
+        "href": "/dashboard",
+        "text": "Home"
+      },
+      {
+        "href": "/study-materials",
+        "text": "Study Materials"
+      },
+      {
+        "href": "javascript:void(0)",
+        "text": "Theory",
+        "id": "btnModeTheory"
+      },
+      {
+        "href": "/compiler-practice?subject=compiler-design",
+        "text": "Practice (C-Visualize)",
+        "id": "btnModePractice"
+      },
+      {
+        "href": "/study-materials",
+        "text": "&larr; Subjects"
+      },
+      {
+        "href": "javascript:void(0)",
+        "text": "&larr; Previous Topic\n                        Previous",
+        "id": "prevTopicLink"
+      },
+      {
+        "href": "javascript:void(0)",
+        "text": "Next Topic &rarr;\n                        Next",
+        "id": "nextTopicLink"
+      }
+    ],
+    "buttons": [
+      {
+        "id": "sidebarToggleBtn",
+        "type": "button",
+        "text": "Syllabus",
+        "class": "btn-sidebar-toggle"
+      },
+      {
+        "id": "bookmarkBtn",
+        "type": "button",
+        "text": "Bookmark",
+        "class": "btn-reader-action"
+      },
+      {
+        "id": "markCompletedBtn",
+        "type": "button",
+        "text": "Mark as Read",
+        "class": "btn-reader-action"
+      }
+    ],
+    "forms": [],
+    "standaloneInputs": [
+      {
+        "tag": "input",
+        "id": "sidebarSearch",
+        "type": "text",
+        "class": "sidebar-search-input"
+      }
+    ],
+    "scripts": [
+      "/js/study-reader.js"
+    ]
+  },
+  {
+    "file": "take-exam.html",
+    "linkCount": 0,
+    "buttonCount": 3,
+    "formCount": 0,
+    "standaloneInputCount": 0,
+    "links": [],
+    "buttons": [
+      {
+        "id": "prevBtn",
+        "type": "button",
+        "onclick": "navigateQuestion(-1)",
+        "text": "Previous",
+        "class": "btn btn-secondary"
+      },
+      {
+        "id": "nextBtn",
+        "type": "button",
+        "onclick": "navigateQuestion(1)",
+        "text": "Next Question",
+        "class": "btn btn-primary"
+      },
+      {
+        "id": "submitBtn",
+        "type": "button",
+        "onclick": "submitExam()",
+        "text": "Submit Assessment",
+        "class": "btn btn-primary"
+      }
+    ],
+    "forms": [],
+    "standaloneInputs": [],
+    "scripts": [
+      "/js/take-exam.js"
+    ]
+  },
+  {
+    "file": "versant-admin.html",
+    "linkCount": 9,
+    "buttonCount": 9,
+    "formCount": 2,
+    "standaloneInputCount": 0,
+    "links": [
+      {
+        "href": "/pages/admindash.html#rag-market-ai",
+        "text": "Market Alerts\n                2"
+      },
+      {
+        "href": "/pages/admindash.html#command-center",
+        "text": "Command Center"
+      },
+      {
+        "href": "/admin-dashboard#practice-ai-studio",
+        "text": "Practice AI Studio"
+      },
+      {
+        "href": "/admin-coding-rounds",
+        "text": "Coding Practice"
+      },
+      {
+        "href": "/admin-exams",
+        "text": "Question Bank &amp; Tests"
+      },
+      {
+        "href": "/versant-admin",
+        "text": "Versant Rounds"
+      },
+      {
+        "href": "/admin-interviews",
+        "text": "Mock Interviews"
+      },
+      {
+        "href": "/pages/admindash.html#student-readiness",
+        "text": "Student Readiness"
+      },
+      {
+        "href": "/pages/admindash.html",
+        "text": "Dashboard"
+      }
+    ],
+    "buttons": [
+      {
+        "id": "themeToggle",
+        "type": "button",
+        "text": "Toggle Theme",
+        "class": "theme-toggle-btn"
+      },
+      {
+        "id": "logoutBtn",
+        "type": "button",
+        "text": "Logout",
+        "class": "logout-icon-btn"
+      },
+      {
+        "type": "submit",
+        "text": "Create Test",
+        "class": "btn btn-blue-primary btn-compact"
+      },
+      {
+        "type": "button",
+        "onclick": "closeEditor()",
+        "text": "Back to Tests",
+        "class": "btn btn-secondary btn-compact"
+      },
+      {
+        "id": "publishBtn",
+        "type": "button",
+        "text": "Publish Test for All Students",
+        "class": "btn btn-green-primary btn-compact"
+      },
+      {
+        "id": "refreshAttemptsBtn",
+        "type": "button",
+        "text": "Refresh Attempts",
+        "class": "btn btn-secondary btn-compact"
+      },
+      {
+        "type": "submit",
+        "text": "Add Question",
+        "class": "btn btn-blue-primary btn-compact"
+      },
+      {
+        "type": "button",
+        "onclick": "closeScorecardModal()",
+        "text": "&times;",
+        "class": "modal-close-btn"
+      },
+      {
+        "type": "button",
+        "onclick": "closeScorecardModal()",
+        "text": "Close",
+        "class": "btn btn-secondary btn-compact"
+      }
+    ],
+    "forms": [
+      {
+        "id": "createTestForm",
+        "method": "GET",
+        "inputs": [
+          {
+            "tag": "input",
+            "id": "title",
+            "type": "text",
+            "required": true
+          },
+          {
+            "tag": "textarea",
+            "id": "description",
+            "type": "text",
+            "required": false
+          },
+          {
+            "tag": "input",
+            "id": "duration",
+            "type": "number",
+            "required": true
+          },
+          {
+            "tag": "input",
+            "id": "passScore",
+            "type": "number",
+            "required": true
+          },
+          {
+            "tag": "select",
+            "id": "cefr",
+            "type": "select",
+            "required": false
+          }
+        ]
+      },
+      {
+        "id": "questionForm",
+        "method": "GET",
+        "inputs": [
+          {
+            "tag": "select",
+            "id": "sectionId",
+            "type": "select",
+            "required": true
+          },
+          {
+            "tag": "textarea",
+            "id": "questionText",
+            "type": "text",
+            "required": false
+          },
+          {
+            "tag": "input",
+            "id": "expectedText",
+            "type": "text",
+            "required": false
+          },
+          {
+            "tag": "input",
+            "id": "acceptedAnswers",
+            "type": "text",
+            "required": false
+          },
+          {
+            "tag": "input",
+            "id": "responseSeconds",
+            "type": "number",
+            "required": false
+          },
+          {
+            "tag": "input",
+            "id": "silenceSeconds",
+            "type": "number",
+            "required": false
+          },
+          {
+            "tag": "input",
+            "id": "questionOrder",
+            "type": "number",
+            "required": false
+          },
+          {
+            "tag": "input",
+            "id": "points",
+            "type": "number",
+            "required": false
+          },
+          {
+            "tag": "input",
+            "id": "promptAudio",
+            "type": "file",
+            "required": false
+          }
+        ]
+      }
+    ],
+    "standaloneInputs": [],
+    "scripts": [
+      "/js/versant-admin.js"
+    ]
+  },
+  {
+    "file": "versant-result.html",
+    "linkCount": 2,
+    "buttonCount": 0,
+    "formCount": 0,
+    "standaloneInputCount": 0,
+    "links": [
+      {
+        "href": "/pages/versant-test.html",
+        "text": "← Back to Versant Tests"
+      },
+      {
+        "href": "/pages/stddash.html",
+        "text": "Home"
+      }
+    ],
+    "buttons": [],
+    "forms": [],
+    "standaloneInputs": [],
+    "scripts": [
+      "/js/versant-result.js"
+    ]
+  },
+  {
+    "file": "versant-test.html",
+    "linkCount": 2,
+    "buttonCount": 2,
+    "formCount": 0,
+    "standaloneInputCount": 0,
+    "links": [
+      {
+        "href": "/pages/stddash.html",
+        "text": "← Back to Home"
+      },
+      {
+        "href": "/",
+        "text": "← Home"
+      }
+    ],
+    "buttons": [
+      {
+        "id": "startAnswer",
+        "type": "button",
+        "text": "Start Answer",
+        "class": "hidden"
+      },
+      {
+        "id": "next",
+        "type": "button",
+        "text": "Submit &amp; Next",
+        "class": "hidden"
+      }
+    ],
+    "forms": [],
+    "standaloneInputs": [],
+    "scripts": [
+      "/js/versant-test.js"
+    ]
+  }
+]

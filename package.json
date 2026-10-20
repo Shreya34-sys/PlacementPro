@@ -32,6 +32,10 @@
   },
   "scripts": {
     "dev": "nodemon server.js",
+    "start": "node server.js",
+    "start:both": "node server.js",
+    "start:student": "node server.js --student",
+    "start:admin": "node server.js --admin",
     "worker:up": "node scripts/manage-worker.js up",
     "worker:down": "node scripts/manage-worker.js down",
     "worker:status": "node scripts/manage-worker.js status",

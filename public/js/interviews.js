@@ -64,7 +64,7 @@ function renderAssignments(assignments) {
             <h3 style="margin-top:8px">${escapeHtml(item.title)}</h3>
             <p class="subtitle">${escapeHtml(item.description || 'Mock interview practice')}</p>
           </div>
-          <a class="btn primary ${canOpen ? '' : 'hidden'}" href="/pages/interview-room.html?assignment=${encodeURIComponent(item.assignment_id)}">Enter Room</a>
+          <a class="btn primary ${canOpen ? '' : 'hidden'}" href="/interview-room?assignment=${encodeURIComponent(item.assignment_id)}">Enter Room</a>
         </div>
         <div class="meta">
           <span>${escapeHtml(labelCategory(item.category))}</span>

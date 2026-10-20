@@ -75,9 +75,15 @@ async function canMonitorAttempt(userId, attemptId) {
   return null;
 }
 
-function setupSockets(httpServer, app) {
+function setupSockets(httpServer, app, existingIo = null) {
+  if (existingIo) {
+    if (httpServer) existingIo.attach(httpServer);
+    app.set('io', existingIo);
+    return existingIo;
+  }
+
   const io = new Server(httpServer, {
-    cors: { origin: false }
+    cors: { origin: true, credentials: true }
   });
 
   // Track online sockets per attemptId: attemptId -> Set<socket.id>

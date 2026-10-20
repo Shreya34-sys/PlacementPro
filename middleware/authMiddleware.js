@@ -1,15 +1,36 @@
 const jwt = require('jsonwebtoken'); //Importing JWT Library.Provides functions like jwt.verify() to validate whether a token presented by a client is genuine and hasn't expired.
 
-exports.verifyToken = (req, res, next) => {         //Makes this function available to attach to routes in routes/authRoutes.js
+function extractToken(req) {
     const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1];  //Uses short-circuit evaluation (&&) to check if authHeader exists, then splits the string "Bearer <TOKEN>" by space and grabs the second element (index 1), isolating the raw JWT token.
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+        return authHeader.split(' ')[1];
+    }
+    if (req.cookies) {
+        if (req.cookies.adminToken) return req.cookies.adminToken;
+        if (req.cookies.token) return req.cookies.token;
+    }
+    if (req.headers && req.headers.cookie) {
+        const adminMatch = req.headers.cookie.match(/(?:^|;\s*)adminToken=([^;]+)/);
+        if (adminMatch) return decodeURIComponent(adminMatch[1]);
+        const tokenMatch = req.headers.cookie.match(/(?:^|;\s*)token=([^;]+)/);
+        if (tokenMatch) return decodeURIComponent(tokenMatch[1]);
+    }
+    if (req.query && req.query.token) {
+        return req.query.token;
+    }
+    return null;
+}
+
+exports.verifyToken = (req, res, next) => {
+    const token = extractToken(req);
 
     if (!token) {
-        return res.status(401).json({ message: 'Access denied. Token missing.' }); //If no token was provided in the headers, it immediately halts execution and returns a 401 Unauthorized HTTP error
+        return res.status(401).json({ message: 'Access denied. Token missing.' });
     }
 
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);  //Validates the token against your secret key stored in .env. If valid, decoded becomes a plain JavaScript object containing the user's encoded payload data (e.g., { id: "123", role: "student" }). If invalid or expired, it throws an error and triggers the catch block.
+        const secret = process.env.JWT_SECRET || 'placementpro_secret_key_@987';
+        const decoded = jwt.verify(token, secret);
         req.user = decoded;
         next();
     } catch (err) {
@@ -18,7 +39,7 @@ exports.verifyToken = (req, res, next) => {         //Makes this function availa
 };
 
 exports.verifyAdmin = (req, res, next) => {             
-    if (req.user && req.user.role === 'admin') {
+    if (req.user && (req.user.role === 'admin' || req.user.role === 'ADMIN')) {
         next();
     } else {
         res.status(403).json({ message: 'Access denied. Admin rights required.' });

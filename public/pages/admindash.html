@@ -89,14 +89,15 @@
                 <span class="status-dot-active" aria-label="Active"></span>
             </div>
 
-            <a href="#rag-market-ai" class="ai-pill-btn" title="2 Pending AI Market Alerts">
+            <a href="/admin-exams" class="ai-pill-btn" title="Manage Practice Assessments">
                 <span class="icon">
                     <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="m13 2-9 12h7l-1 8 10-13h-7l1-7Z" />
+                        <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z" />
+                        <path d="M6 6h10M6 10h10" />
                     </svg>
                 </span>
-                <span>Market AI Alerts</span>
-                <span class="badge-num">2</span>
+                <span>Assessments</span>
+                <span class="badge-num" id="navAssessmentsBadge">Active</span>
             </a>
 
             <button class="theme-toggle-btn" id="themeToggle" title="Toggle Theme" aria-label="Toggle theme">
@@ -109,7 +110,7 @@
                 <div class="user-avatar" id="navAvatarInitials">AD</div>
                 <div class="user-meta">
                     <span class="user-name" id="navAdminName">Admin</span>
-                    <span class="user-role" id="navAdminRole">Placement Officer</span>
+                    <span class="user-role" id="navAdminRole">Placement Admin / Faculty</span>
                 </div>
             </div>
 
@@ -137,24 +138,24 @@
             <span>Command Center</span>
         </a>
 
-        <a href="#rag-market-ai" class="subnav-item">
+        <a href="#practice-ai-studio" class="subnav-item">
             <span class="icon">
                 <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="m12 3 1.9 5.8L20 11l-6.1 2.2L12 19l-1.9-5.8L4 11l6.1-2.2L12 3ZM19 14l1 2.5 2.5 1-2.5 1L19 21l-1-2.5-2.5-1 2.5-1L19 14Z" />
                 </svg>
             </span>
-            <span>RAG & Market AI</span>
-            <span class="nav-badge">2</span>
+            <span>Practice AI Studio</span>
         </a>
 
-        <a href="#campus-drives" class="subnav-item">
+        <a href="/admin-coding-rounds" class="subnav-item">
             <span class="icon">
                 <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="3" y="7" width="18" height="14" rx="2" />
-                    <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12h18M10 12v2h4v-2" />
+                    <polyline points="16 18 22 12 16 6" />
+                    <polyline points="8 6 2 12 8 18" />
                 </svg>
             </span>
-            <span>Campus Drives</span>
+            <span>Coding Practice</span>
+            <span class="blue-dot"></span>
         </a>
 
         <a href="/admin-exams" class="subnav-item">
@@ -164,7 +165,7 @@
                     <path d="M6 6h10M6 10h10" />
                 </svg>
             </span>
-            <span>Question Bank & Tests</span>
+            <span>Question Bank &amp; Tests</span>
             <span class="blue-dot"></span>
         </a>
 
@@ -211,6 +212,29 @@
             </span>
             <span>Student Readiness</span>
         </a>
+
+        <a href="/analytics" class="subnav-item">
+            <span class="icon">
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="20" x2="18" y2="10" />
+                    <line x1="12" y1="20" x2="12" y2="4" />
+                    <line x1="6" y1="20" x2="6" y2="14" />
+                </svg>
+            </span>
+            <span>Analytics Hub</span>
+            <span class="blue-dot"></span>
+        </a>
+
+        <a href="/company-placement-admin" class="subnav-item">
+            <span class="icon">
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+                    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+                </svg>
+            </span>
+            <span>Company Placement</span>
+            <span class="blue-dot"></span>
+        </a>
     </nav>
 
     <!-- Main Content Container -->
@@ -223,10 +247,10 @@
                     <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
                     </svg>
-                    <span>CAMPUS PLACEMENT SEASON 2026–2027</span>
+                    <span>PLACEMENT PRACTICE &amp; PREPARATION PLATFORM</span>
                 </div>
-                <h1 id="welcomeHeroHeading">Welcome back, Dr. S. Patil</h1>
-                <p>PlacementPro's AI Agents & RAG Knowledge Engine synchronize live recruiter benchmarks, orchestrate campus test drives, and analyze student placement readiness for KIT CSBS.</p>
+                <h1 id="welcomeHeroHeading">Welcome back, Administrator</h1>
+                <p>Manage practice question banks, coding challenges, study materials, and mock evaluations to help students prepare for upcoming placements.</p>
             </div>
             <div class="hero-right">
                 <div class="readiness-benchmark-pill" id="student-readiness" title="Batch Readiness Benchmark">
@@ -236,49 +260,51 @@
                             <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
                             <polyline points="16 7 22 7 22 13"></polyline>
                         </svg>
-                        <span>88.5% Benchmark</span>
+                        <span id="heroAvgReadinessText">88.5% Benchmark</span>
                     </span>
                 </div>
                 <div class="hero-action-buttons">
                     <a class="btn btn-secondary" id="manageDrivesBtn" href="/admin-exams">Manage Aptitude Tests</a>
+                    <a class="btn btn-secondary" href="/admin-coding-rounds">Manage Coding Practice</a>
                     <a class="btn btn-secondary" href="/admin-study-materials">Study Materials Studio</a>
-                    <a class="btn btn-primary" href="/admin-interviews">Manage Interviews</a>
+                    <a class="btn btn-primary" href="/admin-interviews">Mock Interviews</a>
                 </div>
             </div>
         </section>
 
         <!-- Equal-Height 4-Statistic Cards -->
-        <section class="stats-overview-grid" aria-label="Placement KPI Overview">
+        <section class="stats-overview-grid" aria-label="Placement Practice KPI Overview">
             <div class="stat-card">
                 <div class="stat-card-top">
-                    <span class="stat-card-label">Active Drives</span>
+                    <span class="stat-card-label">Practice Assessments</span>
                     <div class="stat-card-icon blue">
                         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="3" y="7" width="18" height="14" rx="2" />
-                            <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12h18M10 12v2h4v-2" />
+                            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z" />
+                            <path d="M6 6h10M6 10h10" />
                         </svg>
                     </div>
                 </div>
-                <div class="stat-card-value" id="adminStatActiveDrives">0</div>
-                <div class="stat-card-meta" id="adminStatDrivesMeta">0 Registrations Total</div>
+                <div class="stat-card-value" id="adminStatAssessments">0</div>
+                <div class="stat-card-meta" id="adminStatAssessmentsMeta">Active Tests &amp; Rounds</div>
             </div>
 
             <div class="stat-card">
                 <div class="stat-card-top">
-                    <span class="stat-card-label">Market Alerts</span>
+                    <span class="stat-card-label">Question Bank Items</span>
                     <div class="stat-card-icon orange">
                         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="m13 2-9 12h7l-1 8 10-13h-7l1-7Z" />
+                            <polyline points="16 18 22 12 16 6" />
+                            <polyline points="8 6 2 12 8 18" />
                         </svg>
                     </div>
                 </div>
-                <div class="stat-card-value text-orange" id="adminStatMarketAlerts">0</div>
-                <div class="stat-card-meta" id="adminStatAlertsMeta">Pending AI Approvals</div>
+                <div class="stat-card-value text-orange" id="adminStatQuestions">0</div>
+                <div class="stat-card-meta" id="adminStatQuestionsMeta">MCQs &amp; Coding Problems</div>
             </div>
 
             <div class="stat-card">
                 <div class="stat-card-top">
-                    <span class="stat-card-label">RAG Knowledge Chunks</span>
+                    <span class="stat-card-label">Study &amp; Reference Chunks</span>
                     <div class="stat-card-icon blue">
                         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
@@ -292,7 +318,7 @@
 
             <div class="stat-card">
                 <div class="stat-card-top">
-                    <span class="stat-card-label">Avg Readiness</span>
+                    <span class="stat-card-label">Avg Practice Score</span>
                     <div class="stat-card-icon green">
                         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
@@ -301,18 +327,18 @@
                     </div>
                 </div>
                 <div class="stat-card-value text-green" id="adminStatAvgReadiness">0%</div>
-                <div class="stat-card-meta" id="adminStatBatchMeta">CSBS Batch Average</div>
+                <div class="stat-card-meta" id="adminStatBatchMeta">Evaluated from Student Attempts</div>
             </div>
         </section>
 
         <!-- Balanced 2-Column Workspace Grid -->
         <div class="workspace-grid">
 
-            <!-- Left Column: Primary Actions & Drives -->
+            <!-- Left Column: AI Ingestion & Practice Modules -->
             <div class="workspace-col-left">
 
                 <!-- Faculty AI Ingestion Engine Card -->
-                <div class="card ai-ingestion-card" id="rag-market-ai">
+                <div class="card ai-ingestion-card" id="practice-ai-studio">
                     <div class="card-section-header ingestion-header">
                         <div class="sec-title-group">
                             <div class="sec-icon-circle blue">
@@ -322,30 +348,31 @@
                             </div>
                             <div>
                                 <div class="ingestion-title-row">
-                                    <h2>Faculty AI Ingestion Engine</h2>
+                                    <h2>Practice Content &amp; Topic Ingestion</h2>
                                     <span class="gemini-tag">GEMINI 2.0 FLASH</span>
                                 </div>
-                                <p class="sec-subtext">Paste job descriptions or syllabus notes — AI extracts questions and vector chunks.</p>
+                                <p class="sec-subtext">Paste practice syllabus topics, company test patterns, or study notes — AI extracts practice questions and study guides.</p>
                             </div>
                         </div>
-                        <select class="drive-select-dropdown" id="ingestionDriveSelect" aria-label="Select target company drive">
-                            <option value="tcs">TCS (Digital / Ninja)</option>
-                            <option value="persistent">Persistent Systems (SPE)</option>
-                            <option value="google">Google India (Software Engineer)</option>
+                        <select class="drive-select-dropdown" id="ingestionDriveSelect" aria-label="Select target company practice track">
+                            <option value="tcs">TCS Practice Track</option>
+                            <option value="persistent">Persistent Systems Prep</option>
+                            <option value="google">Google India Practice</option>
+                            <option value="infosys">Infosys Aptitude &amp; Logic</option>
                         </select>
                     </div>
 
                     <div class="prompt-box-wrapper">
                         <textarea id="aiPromptInput" class="ai-textarea" rows="4"
-                            placeholder="Paste Job Description, Hiring Syllabus, or Exam Topics here (e.g. 'TCS 2026 has added 15% more questions on Data Structures and memory optimization...')"></textarea>
+                            placeholder="Paste practice syllabus topics, company exam patterns, or preparation notes here (e.g. 'TCS NQT pattern: 24 Numerical Ability questions, 30 Verbal, and 2 hands-on coding problems on Arrays and Strings...')"></textarea>
                     </div>
 
                     <div class="preset-chips-row">
                         <span class="presets-label">QUICK PRESETS:</span>
                         <div class="chips-container">
-                            <button type="button" class="preset-chip" onclick="applyPreset('tcs')">TCS 2026 Hiring Shift</button>
+                            <button type="button" class="preset-chip" onclick="applyPreset('tcs')">TCS Practice Pattern</button>
                             <button type="button" class="preset-chip" onclick="applyPreset('persistent')">Persistent Core CS</button>
-                            <button type="button" class="preset-chip" onclick="applyPreset('infosys')">Infosys DSE Syllabus</button>
+                            <button type="button" class="preset-chip" onclick="applyPreset('infosys')">Infosys Aptitude &amp; Logic</button>
                         </div>
                     </div>
 
@@ -355,7 +382,7 @@
                                 <circle cx="12" cy="12" r="10"></circle>
                                 <polyline points="12 6 12 12 14 14"></polyline>
                             </svg>
-                            <span>Auto-populates: MCQs • Coding Specs • Eligibility Rules • RAG Store</span>
+                            <span>Auto-populates: Practice MCQs • Coding Specs • Topic Notes • RAG Store</span>
                         </span>
                         <button type="button" class="btn btn-primary" id="runIngestionBtn">
                             <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -366,8 +393,8 @@
                     </div>
                 </div>
 
-                <!-- Active Campus Placement Drives -->
-                <div class="card active-drives-card" id="campus-drives">
+                <!-- Company-Pattern Practice Modules -->
+                <div class="card active-drives-card" id="practice-modules">
                     <div class="card-section-header">
                         <div class="sec-title">
                             <span class="icon blue">
@@ -376,46 +403,111 @@
                                     <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12h18M10 12v2h4v-2" />
                                 </svg>
                             </span>
-                            <h3>Active Campus Placement Drives</h3>
+                            <h3>Company-Pattern Practice Modules</h3>
                         </div>
-                        <a href="/admin-exams" class="sec-link">View All &amp; Create &rarr;</a>
+                        <a href="/admin-exams" class="sec-link">Manage Question Banks &rarr;</a>
                     </div>
 
-                    <div class="drives-list" id="adminDrivesList">
+                    <div class="drives-list" id="adminTracksList">
                         <div class="drive-item-row" style="padding: 24px; text-align: center; color: var(--text-muted, #64748b);">
-                            Loading active placement drives...
+                            Loading company practice tracks...
                         </div>
                     </div>
                 </div>
 
             </div>
 
-            <!-- Right Column: AI Market Trend Alerts -->
+            <!-- Right Column: Practice Management & Quick Actions -->
             <div class="workspace-col-right">
 
                 <div class="card market-alerts-card">
                     <div class="card-section-header">
                         <div class="sec-title">
-                            <span class="icon orange">
+                            <span class="icon blue">
                                 <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="m12 3 1.9 5.8L20 11l-6.1 2.2L12 19l-1.9-5.8L4 11l6.1-2.2L12 3ZM19 14l1 2.5 2.5 1-2.5 1L19 21l-1-2.5-2.5-1 2.5-1L19 14Z" />
+                                    <rect x="3" y="3" width="7" height="7"></rect>
+                                    <rect x="14" y="3" width="7" height="7"></rect>
+                                    <rect x="14" y="14" width="7" height="7"></rect>
+                                    <rect x="3" y="14" width="7" height="7"></rect>
                                 </svg>
                             </span>
-                            <h3>AI Market Trend Alerts</h3>
+                            <h3>Practice Management Hub</h3>
                         </div>
-                        <span class="approval-badge">1-Click Approvals</span>
+                        <span class="approval-badge" style="background: rgba(59, 130, 246, 0.12); color: #3b82f6;">Quick Access</span>
                     </div>
-                    <p class="sec-subtext">AI agents monitor live recruiter hiring benchmarks and propose instant syllabus or test rubric updates.</p>
+                    <p class="sec-subtext">Direct administration controls for aptitude tests, coding rounds, mock interviews, and student evaluation.</p>
 
-                    <div class="alerts-wrapper" id="adminAlertsWrapper">
-                        <div style="padding: 24px; text-align: center; color: var(--text-muted, #64748b); font-size: 0.875rem;">
-                            No pending market alerts at this time.
-                        </div>
+                    <div class="practice-quick-grid" style="display: flex; flex-direction: column; gap: 12px; margin-top: 16px;">
+                        <a href="/admin-exam-builder" class="drive-item-row" style="text-decoration: none; padding: 14px 16px; border-radius: 8px; border: 1px solid var(--border-color, #e2e8f0); transition: background 0.2s;">
+                            <div class="drive-icon-box blue" style="width: 36px; height: 36px; border-radius: 8px;">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/></svg>
+                            </div>
+                            <div style="flex: 1; margin-left: 12px;">
+                                <div style="font-weight: 600; font-size: 0.92rem; color: var(--text-primary, #0f172a);">Create Aptitude Test</div>
+                                <div style="font-size: 0.8rem; color: var(--text-muted, #64748b);">Configure timed MCQs, sections, and passing thresholds</div>
+                            </div>
+                            <span style="color: var(--text-muted, #64748b);">&rarr;</span>
+                        </a>
+
+                        <a href="/admin-coding-builder" class="drive-item-row" style="text-decoration: none; padding: 14px 16px; border-radius: 8px; border: 1px solid var(--border-color, #e2e8f0); transition: background 0.2s;">
+                            <div class="drive-icon-box orange" style="width: 36px; height: 36px; border-radius: 8px;">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                            </div>
+                            <div style="flex: 1; margin-left: 12px;">
+                                <div style="font-weight: 600; font-size: 0.92rem; color: var(--text-primary, #0f172a);">Create Coding Round</div>
+                                <div style="font-size: 0.8rem; color: var(--text-muted, #64748b);">Add coding problems, test cases, and language templates</div>
+                            </div>
+                            <span style="color: var(--text-muted, #64748b);">&rarr;</span>
+                        </a>
+
+                        <a href="/admin-question-import" class="drive-item-row" style="text-decoration: none; padding: 14px 16px; border-radius: 8px; border: 1px solid var(--border-color, #e2e8f0); transition: background 0.2s;">
+                            <div class="drive-icon-box green" style="width: 36px; height: 36px; border-radius: 8px;">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                            </div>
+                            <div style="flex: 1; margin-left: 12px;">
+                                <div style="font-weight: 600; font-size: 0.92rem; color: var(--text-primary, #0f172a);">Excel Question Import</div>
+                                <div style="font-size: 0.8rem; color: var(--text-muted, #64748b);">Bulk upload questions via standard spreadsheet template</div>
+                            </div>
+                            <span style="color: var(--text-muted, #64748b);">&rarr;</span>
+                        </a>
+
+                        <a href="/admin-interviews" class="drive-item-row" style="text-decoration: none; padding: 14px 16px; border-radius: 8px; border: 1px solid var(--border-color, #e2e8f0); transition: background 0.2s;">
+                            <div class="drive-icon-box purple" style="width: 36px; height: 36px; border-radius: 8px;">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                            </div>
+                            <div style="flex: 1; margin-left: 12px;">
+                                <div style="font-weight: 600; font-size: 0.92rem; color: var(--text-primary, #0f172a);">Mock Interview Sets</div>
+                                <div style="font-size: 0.8rem; color: var(--text-muted, #64748b);">Configure AI interview questions and review student attempts</div>
+                            </div>
+                            <span style="color: var(--text-muted, #64748b);">&rarr;</span>
+                        </a>
+
+                        <a href="/admin-study-materials" class="drive-item-row" style="text-decoration: none; padding: 14px 16px; border-radius: 8px; border: 1px solid var(--border-color, #e2e8f0); transition: background 0.2s;">
+                            <div class="drive-icon-box indigo" style="width: 36px; height: 36px; border-radius: 8px;">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/></svg>
+                            </div>
+                            <div style="flex: 1; margin-left: 12px;">
+                                <div style="font-weight: 600; font-size: 0.92rem; color: var(--text-primary, #0f172a);">Study Materials Studio</div>
+                                <div style="font-size: 0.8rem; color: var(--text-muted, #64748b);">Publish subject notes, reference guides, and cheat-sheets</div>
+                            </div>
+                            <span style="color: var(--text-muted, #64748b);">&rarr;</span>
+                        </a>
+
+                        <a href="/proctoring" class="drive-item-row" style="text-decoration: none; padding: 14px 16px; border-radius: 8px; border: 1px solid var(--border-color, #e2e8f0); transition: background 0.2s;">
+                            <div class="drive-icon-box blue" style="width: 36px; height: 36px; border-radius: 8px;">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                            </div>
+                            <div style="flex: 1; margin-left: 12px;">
+                                <div style="font-weight: 600; font-size: 0.92rem; color: var(--text-primary, #0f172a);">Live Assessment Proctoring</div>
+                                <div style="font-size: 0.8rem; color: var(--text-muted, #64748b);">Real-time monitoring, integrity flags, and face-detection logs</div>
+                            </div>
+                            <span style="color: var(--text-muted, #64748b);">&rarr;</span>
+                        </a>
                     </div>
 
-                    <button type="button" class="btn btn-secondary-outline w-full mt-16" id="openMarketStoreBtn">
-                        Open Full Market Intelligence &amp; RAG Store &rarr;
-                    </button>
+                    <a href="/analytics" class="btn btn-secondary-outline w-full mt-16" style="text-decoration: none; text-align: center;">
+                        Open Student Practice Analytics &rarr;
+                    </a>
                 </div>
 
             </div>
@@ -425,10 +517,10 @@
     <!-- Footer Bar -->
     <footer class="admin-footer">
         <div class="footer-left">
-            <strong>PlacementPro</strong> • Department of Computer Science & Business Systems (CSBS)
+            <strong>PlacementPro</strong> • Department of Computer Science &amp; Business Systems (CSBS)
         </div>
         <div class="footer-right">
-            Powered by <strong class="brand-blue-text">Google Gemini AI Agents</strong> &amp; RAG Knowledge Engine
+            Placement Preparation &amp; Practice Intelligence Platform
         </div>
     </footer>
 

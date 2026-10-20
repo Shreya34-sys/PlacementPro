@@ -76,8 +76,14 @@ const state = {
   faceDetectorUnavailableLogged: false,
   faceMonitoringUnavailable: false,
   faceDetectorBackend: null,
-  faceDetectorReady: null,
+  faceDetectorReady: false,
   faceDetectionRunning: false,
+  consecutiveNoFace: 0,
+  consecutiveMultipleFaces: 0,
+  tabSwitchCooldownTimer: null,
+  tabSwitchLocked: false,
+  setupGracePeriodEnd: 0,
+  warningsCount: 0,
   mediaTrackListeners: new WeakMap(),
   offline: !navigator.onLine,
   pageHideRecorded: false,
@@ -98,6 +104,7 @@ document.getElementById('exitInterviewBtn').addEventListener('click', event => {
   }
   cleanupMedia();
 });
+window.addEventListener('beforeunload', () => cleanupMedia());
 document.getElementById('rulesAcknowledged').addEventListener('change', onAcknowledgementChange);
 document.getElementById('startConfirmation').addEventListener('input', updateStartAvailability);
 document.getElementById('startBtn').addEventListener('click', startInterview);
@@ -195,7 +202,17 @@ async function requestRequiredCameraAccess() {
       }
     }, 1000);
   } catch (error) {
-    statusEl.textContent = error.message || 'Camera access denied.';
+    let msg = 'Camera access denied.';
+    if (error.name === 'NotAllowedError' || error.name === 'SecurityError') {
+      msg = 'Camera permission blocked. Please allow Camera for localhost in your browser settings and try again.';
+    } else if (error.name === 'NotFoundError') {
+      msg = 'No camera found. Please connect your webcam and try again.';
+    } else if (error.name === 'NotReadableError' || error.name === 'TrackStartError') {
+      msg = 'The camera is already being used by another application. Please close other camera apps and retry.';
+    } else if (error.message) {
+      msg = error.message;
+    }
+    statusEl.textContent = msg;
     statusEl.classList.remove('camera-ready');
   } finally {
     state.cameraRequestPending = false;
@@ -236,8 +253,11 @@ async function startInterview() {
 
     document.getElementById('cameraPreview').srcObject = state.stream;
     document.getElementById('cameraStatus').textContent = 'Camera active';
+    state.setupGracePeriodEnd = Date.now() + 10000;
     startMonitoring();
     startLiveStreamSignaling();
+    initFaceDetector().then(() => startFaceMonitoring()).catch(err => console.warn('Face detection init:', err));
+    attachAnswerFieldMonitoring();
 
     document.getElementById('consentPanel').classList.add('hidden');
     document.getElementById('roomPanel').classList.remove('hidden');
@@ -961,7 +981,88 @@ function escapeHtml(text) {
   return div.innerHTML;
 }
 
-// Monitoring & WebRTC camera streaming
+// Monitoring, Face Detection & WebRTC camera streaming
+let faceDetectorInstance = null;
+
+async function initFaceDetector() {
+  if (state.faceDetectorReady || state.faceMonitoringUnavailable) return;
+  try {
+    const vision = await import('/vendor/mediapipe/vision_bundle.mjs');
+    const { FilesetResolver, FaceDetector } = vision;
+    const fileset = await FilesetResolver.forVisionTasks('/vendor/mediapipe/wasm');
+    faceDetectorInstance = await FaceDetector.createFromOptions(fileset, {
+      baseOptions: {
+        modelAssetPath: 'https://storage.googleapis.com/mediapipe-models/face_detector/blaze_face_short_range/float16/1/blaze_face_short_range.tflite'
+      },
+      runningMode: 'VIDEO',
+      minDetectionConfidence: 0.60
+    });
+    state.faceDetectorReady = true;
+    state.faceDetectorBackend = 'mediapipe';
+    console.log('[PROCTORING] MediaPipe FaceDetector loaded successfully.');
+  } catch (err) {
+    console.warn('[PROCTORING] MediaPipe face detector unavailable:', err.message);
+    state.faceMonitoringUnavailable = true;
+    recordEvent('manual', 'Camera-based checks are not supported in this browser.', 'info', { signal: 'face_detection_unavailable' });
+  }
+}
+
+function startFaceMonitoring() {
+  if (state.faceMonitor) clearInterval(state.faceMonitor);
+  const video = document.getElementById('cameraPreview');
+  let lastVideoTime = -1;
+
+  state.faceMonitor = setInterval(async () => {
+    if (!state.attemptId || state.completed || !state.faceDetectorReady || !faceDetectorInstance || state.faceDetectionRunning) return;
+    if (Date.now() < state.setupGracePeriodEnd) return; // 10s initial grace period
+    if (!isCameraReady() || !video || video.readyState < 2 || video.paused) return;
+
+    state.faceDetectionRunning = true;
+    try {
+      const now = performance.now();
+      if (video.currentTime !== lastVideoTime) {
+        lastVideoTime = video.currentTime;
+        const detections = faceDetectorInstance.detectForVideo(video, now);
+        const count = detections.detections?.length || 0;
+
+        if (count === 0) {
+          state.consecutiveNoFace = (state.consecutiveNoFace || 0) + 1;
+          state.consecutiveMultipleFaces = 0;
+          if (state.consecutiveNoFace === 4) { // 4 consecutive seconds without face
+            recordEvent('face_absent', 'No face was detected in camera view.', 'low');
+          }
+        } else if (count > 1) {
+          state.consecutiveMultipleFaces = (state.consecutiveMultipleFaces || 0) + 1;
+          state.consecutiveNoFace = 0;
+          if (state.consecutiveMultipleFaces === 2) { // 2 consecutive seconds with multiple faces
+            recordEvent('multiple_faces', 'Multiple faces detected in camera view.', 'medium');
+          }
+        } else {
+          // Exactly 1 face detected: normal recovery
+          state.consecutiveNoFace = 0;
+          state.consecutiveMultipleFaces = 0;
+        }
+      }
+    } catch (e) {
+      console.warn('[PROCTORING] Face detection error:', e.message);
+    } finally {
+      state.faceDetectionRunning = false;
+    }
+  }, 1000);
+}
+
+function attachAnswerFieldMonitoring() {
+  const answerEl = document.getElementById('answerText');
+  if (!answerEl || answerEl.dataset.monitored) return;
+  answerEl.dataset.monitored = 'true';
+  ['paste', 'copy', 'cut'].forEach(action => {
+    answerEl.addEventListener(action, () => {
+      if (!state.attemptId || state.completed) return;
+      recordEvent('manual', `Answer-field ${action} action noted for faculty review.`, 'info', { signal: 'clipboard', action });
+    });
+  });
+}
+
 function startMonitoring() {
   if (state.monitoringStarted) return;
   state.monitoringStarted = true;
@@ -977,8 +1078,10 @@ function startMonitoring() {
 function stopMonitoring() {
   if (state.faceMonitor) clearInterval(state.faceMonitor);
   if (state.mediaHealthMonitor) clearInterval(state.mediaHealthMonitor);
+  if (state.tabSwitchCooldownTimer) clearTimeout(state.tabSwitchCooldownTimer);
   state.faceMonitor = null;
   state.mediaHealthMonitor = null;
+  state.tabSwitchCooldownTimer = null;
   if (!state.monitoringStarted) return;
   document.removeEventListener('visibilitychange', handleVisibilityChange);
   window.removeEventListener('blur', handleWindowBlur);
@@ -996,8 +1099,10 @@ function bindMediaTracks(stream) {
       if (track.kind === 'video') {
         document.getElementById('cameraStatus').textContent = 'Camera unavailable';
         document.getElementById('cameraFallback').classList.remove('hidden');
+        recordEvent('manual', 'Camera access ended during the interview.', 'info', { signal: 'media_track_ended' });
       } else {
         document.getElementById('micStatus').textContent = 'Mic unavailable';
+        recordEvent('manual', 'Microphone access ended during the interview.', 'info', { signal: 'media_track_ended' });
       }
     };
     state.mediaTrackListeners.set(track, { onEnded });
@@ -1023,6 +1128,7 @@ function checkCameraHealth() {
 }
 
 function cleanupMedia() {
+  stopMonitoring();
   stopListening(true);
   if (state.audioLevelTimer) clearInterval(state.audioLevelTimer);
   state.audioLevelTimer = null;
@@ -1043,6 +1149,26 @@ function startLiveStreamSignaling() {
   state.socket = io({ auth: { token } });
   state.socket.on('connect', () => {
     state.socket.emit('join-attempt', state.attemptId);
+  });
+  state.socket.on('interview:warning-update', (data) => {
+    if (!data || data.attemptId !== state.attemptId) return;
+    if (typeof data.warningsCount === 'number') {
+      state.warningsCount = data.warningsCount;
+      if (data.warningsCount > 0) {
+        displayWarningBanner(data.warningsCount, data.message, data.action);
+        updateEventLogUI(data.eventType, data.severity, data.message);
+      }
+    }
+    if (data.action === 'fullscreen') {
+      requestInterviewFullscreen();
+    }
+    if (data.terminated) {
+      handleInterviewTermination(data.message);
+    }
+  });
+  state.socket.on('interview:terminated', (data) => {
+    if (!data || data.attemptId !== state.attemptId) return;
+    handleInterviewTermination(data.message);
   });
   state.socket.on('proctor:request-stream', ({ attemptId, viewerId } = {}) => {
     if (attemptId !== state.attemptId || !viewerId || !isCameraReady()) return;
@@ -1109,21 +1235,30 @@ function handlePageHide() {
   if (!state.attemptId || state.completed || state.pageHideRecorded) return;
   state.pageHideRecorded = true;
   recordEvent('manual', 'Interview page was left or refreshed while the attempt was active.', 'info', { signal: 'pagehide' }, true);
+  cleanupMedia();
 }
 
 function handleVisibilityChange() {
   if (document.hidden && state.attemptId && !state.completed) {
+    if (state.tabSwitchLocked) return;
+    state.tabSwitchLocked = true;
+    clearTimeout(state.tabSwitchCooldownTimer);
+    state.tabSwitchCooldownTimer = setTimeout(() => { state.tabSwitchLocked = false; }, 5000);
     recordEvent('visibility_hidden', 'Browser tab became hidden during the interview.', 'medium');
   }
 }
 
 function handleWindowBlur() {
-  if (!state.attemptId || state.completed || state.focusLost) return;
+  if (!state.attemptId || state.completed || state.focusLost || state.tabSwitchLocked) return;
   state.focusLost = true;
+  state.tabSwitchLocked = true;
+  clearTimeout(state.tabSwitchCooldownTimer);
+  state.tabSwitchCooldownTimer = setTimeout(() => { state.tabSwitchLocked = false; }, 5000);
   recordEvent('window_blur', 'Interview window lost focus during the interview.', 'medium');
 }
 
 function handleWindowFocus() { state.focusLost = false; }
+
 function handleFullscreenChange() {
   if (state.fullscreenStarted && !document.fullscreenElement && state.attemptId && !state.completed) {
     state.fullscreenStarted = false;
@@ -1131,15 +1266,146 @@ function handleFullscreenChange() {
   }
 }
 
+function requestInterviewFullscreen() {
+  if (document.fullscreenElement) return;
+  if (document.documentElement.requestFullscreen) {
+    document.documentElement.requestFullscreen().then(() => {
+      state.fullscreenStarted = true;
+    }).catch(e => console.warn('Fullscreen request:', e));
+  }
+}
+
+function displayWarningBanner(count, message, action) {
+  let banner = document.getElementById('interviewWarningBanner');
+  if (!banner) {
+    banner = document.createElement('div');
+    banner.id = 'interviewWarningBanner';
+    banner.setAttribute('role', 'alert');
+    banner.setAttribute('aria-live', 'assertive');
+    document.body.appendChild(banner);
+  }
+  const isTerminal = count >= 3 || action === 'terminate';
+  Object.assign(banner.style, {
+    position: 'fixed',
+    top: '16px',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    width: 'min(580px, calc(100vw - 32px))',
+    zIndex: '99999',
+    padding: '12px 20px',
+    borderRadius: '10px',
+    background: isTerminal ? '#fee2e2' : '#fef3c7',
+    color: isTerminal ? '#991b1b' : '#92400e',
+    border: isTerminal ? '1px solid #f87171' : '1px solid #fcd34d',
+    boxShadow: '0 8px 24px rgba(0,0,0,0.18)',
+    textAlign: 'center',
+    fontSize: '14px',
+    lineHeight: '1.4',
+    display: 'block'
+  });
+  const actionText = action === 'fullscreen' ? ' Fullscreen is required to continue.' : action === 'terminate' ? ' Session has been terminated.' : '';
+  banner.innerHTML = `<strong>Integrity warning ${count}/3:</strong> ${escapeHtml(message)}${actionText}<br><span style="font-weight:400; font-size:12px; opacity:0.9;">Please remain visible on camera and active within this tab.</span>`;
+  clearTimeout(state.warningBannerTimeout);
+  if (!isTerminal) {
+    state.warningBannerTimeout = setTimeout(() => {
+      if (banner) banner.style.display = 'none';
+    }, 7000);
+  }
+}
+
+function updateEventLogUI(eventType, severity, message) {
+  const eventLog = document.getElementById('eventLog');
+  if (eventLog) {
+    const emptyNotice = eventLog.querySelector('.monitoring-empty');
+    if (emptyNotice) emptyNotice.remove();
+    const item = document.createElement('div');
+    item.className = 'item';
+    const pillClass = severity === 'high' || severity === 'medium' ? 'orange' : '';
+    item.innerHTML = `<span class="pill ${pillClass}">${escapeHtml(severity)}</span><strong>${escapeHtml(eventType)}</strong><span class="subtitle">${escapeHtml(message)} - ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}</span>`;
+    eventLog.prepend(item);
+  }
+  const statusPill = document.getElementById('monitoringStatus');
+  if (statusPill && state.warningsCount > 0) {
+    statusPill.textContent = `${state.warningsCount} integrity warning${state.warningsCount > 1 ? 's' : ''}`;
+    statusPill.className = state.warningsCount >= 3 ? 'pill red' : 'pill orange';
+  }
+}
+
+function handleInterviewTermination(reason) {
+  if (state.completed) return;
+  state.completed = true;
+  stopMonitoring();
+  cleanupMedia();
+  if (state.sessionClockTimer) clearInterval(state.sessionClockTimer);
+  if (state.turnTimer) clearInterval(state.turnTimer);
+
+  document.getElementById('submitBtn').disabled = true;
+  document.getElementById('roomPanel').classList.add('hidden');
+  const completionPanel = document.getElementById('completionPanel');
+  completionPanel.classList.remove('hidden');
+
+  const statusPill = document.getElementById('monitoringStatus');
+  if (statusPill) {
+    statusPill.textContent = 'Session terminated';
+    statusPill.className = 'pill red';
+  }
+
+  const msgEl = document.getElementById('completionMessage');
+  if (msgEl) {
+    msgEl.textContent = reason || 'The interview session ended after reaching the configured integrity warning limit. All previously recorded answers and audio responses have been securely preserved for faculty review.';
+  }
+
+  const container = document.getElementById('feedbackReportContainer');
+  if (container) {
+    container.innerHTML = `
+      <div style="text-align:center; padding:32px 20px; background:#fff1f2; border:1px solid #fecdd3; border-radius:12px; margin-top:16px;">
+        <h3 style="color:#9f1239; margin-top:0;">Practice Session Ended Early</h3>
+        <p style="color:#4c0519; font-size:14px; max-width:560px; margin:0 auto 16px;">
+          This practice session reached the configured monitoring threshold (3 warnings). PlacementPro is a practice and learning platform: your answers prior to termination were preserved and are available for review.
+        </p>
+        <span class="pill red" style="font-size:13px;">Terminated: 3 of 3 Warnings Reached</span>
+      </div>
+    `;
+  }
+}
+
 async function recordEvent(eventType, message, severity, metadata, beacon = false) {
-  if (!state.attemptId) return;
+  if (!state.attemptId || state.completed) return;
+  const isWarning = ['face_absent', 'multiple_faces', 'looking_away', 'visibility_hidden', 'window_blur', 'fullscreen_exit'].includes(eventType) ||
+    (eventType === 'manual' && metadata?.signal === 'clipboard');
+  const now = Date.now();
+  if (isWarning && (now - (state.lastEventAt[eventType] || 0)) < 5000) {
+    return; // Enforce 5s debouncing cooldown per warning type
+  }
+  state.lastEventAt[eventType] = now;
+
   const payload = { eventType, message, severity, metadata };
   if (beacon && navigator.sendBeacon) {
     navigator.sendBeacon(`/api/interviews/attempts/${state.attemptId}/events`, JSON.stringify(payload));
     return;
   }
-  api(`/api/interviews/attempts/${state.attemptId}/events`, {
-    method: 'POST',
-    body: JSON.stringify(payload)
-  }).catch(() => {});
+  try {
+    const res = await api(`/api/interviews/attempts/${state.attemptId}/events`, {
+      method: 'POST',
+      body: JSON.stringify(payload)
+    });
+    if (res.ok) {
+      const data = await res.json().catch(() => ({}));
+      if (typeof data.warningsCount === 'number') {
+        state.warningsCount = data.warningsCount;
+        if (data.warningsCount > 0) {
+          displayWarningBanner(data.warningsCount, message, data.action);
+          updateEventLogUI(eventType, severity, message);
+        }
+      }
+      if (data.action === 'fullscreen') {
+        requestInterviewFullscreen();
+      }
+      if (data.terminated || data.action === 'terminate') {
+        handleInterviewTermination('The interview ended after reaching the configured integrity warning limit.');
+      }
+    }
+  } catch (e) {
+    console.warn('Record event error:', e);
+  }
 }

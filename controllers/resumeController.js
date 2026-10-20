@@ -142,6 +142,20 @@ Respond strictly using this JSON structure:
 
         await ResumeModel.createAnalysis(recordData);
 
+        if (req.body?.simulationRoundAttemptId) {
+            try {
+                const { recordVerifiedRoundResultForSimulationAttempt } = require('../services/placementSimulationService');
+                await recordVerifiedRoundResultForSimulationAttempt({
+                    simulationRoundAttemptId: req.body.simulationRoundAttemptId,
+                    studentId,
+                    score: recordData.ats_score,
+                    sourceModuleAttemptId: recordData.id
+                });
+            } catch (simErr) {
+                console.warn('[Resume Simulation Result]', simErr.message);
+            }
+        }
+
         return res.status(200).json({
             success: true,
             data: recordData

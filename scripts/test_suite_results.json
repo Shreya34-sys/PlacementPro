@@ -1,0 +1,902 @@
+[
+  {
+    "role": "Student",
+    "page": "/",
+    "control": "Page Access (Landing Page)",
+    "expected": "HTTP 200 OK",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Loaded HTML page (10786 bytes)",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/login",
+    "control": "Page Access (Login Page)",
+    "expected": "HTTP 200 OK",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Loaded HTML page (4679 bytes)",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/signup",
+    "control": "Page Access (Signup Page)",
+    "expected": "HTTP 200 OK",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Loaded HTML page (6019 bytes)",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/dashboard",
+    "control": "Page Access (Student Dashboard)",
+    "expected": "HTTP 200 OK",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Loaded HTML page (46014 bytes)",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/profile",
+    "control": "Page Access (Student Profile)",
+    "expected": "HTTP 200 OK",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Loaded HTML page (9868 bytes)",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/resume-analyzer",
+    "control": "Page Access (Resume Analyzer)",
+    "expected": "HTTP 200 OK",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Loaded HTML page (6588 bytes)",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/available-exams",
+    "control": "Page Access (Available Exams)",
+    "expected": "HTTP 200 OK",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Loaded HTML page (1743 bytes)",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/exam-guidelines",
+    "control": "Page Access (Exam Guidelines)",
+    "expected": "HTTP 200 OK",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Loaded HTML page (5144 bytes)",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/take-exam",
+    "control": "Page Access (Take Exam)",
+    "expected": "HTTP 200 OK",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Loaded HTML page (2426 bytes)",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/live-exam",
+    "control": "Page Access (Live Exam)",
+    "expected": "HTTP 200 OK",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Loaded HTML page (2830 bytes)",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/exam-result",
+    "control": "Page Access (Exam Result)",
+    "expected": "HTTP 200 OK",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Loaded HTML page (1920 bytes)",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/versant-test",
+    "control": "Page Access (Versant Test)",
+    "expected": "HTTP 200 OK",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Loaded HTML page (3072 bytes)",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/versant-result",
+    "control": "Page Access (Versant Result)",
+    "expected": "HTTP 200 OK",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Loaded HTML page (816 bytes)",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/interviews",
+    "control": "Page Access (Mock Interviews Studio)",
+    "expected": "HTTP 200 OK",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Loaded HTML page (6932 bytes)",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/interview-room",
+    "control": "Page Access (Interview Room)",
+    "expected": "HTTP 200 OK",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Loaded HTML page (14819 bytes)",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/placement-workspace",
+    "control": "Page Access (Placement Workspace)",
+    "expected": "HTTP 200 OK",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Loaded HTML page (40874 bytes)",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/companies",
+    "control": "Page Access (Company Directory)",
+    "expected": "HTTP 200 OK",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Loaded HTML page (20918 bytes)",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/company-prep",
+    "control": "Page Access (Company Preparation Kit)",
+    "expected": "HTTP 200 OK",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Loaded HTML page (60308 bytes)",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/study-materials",
+    "control": "Page Access (Study Materials Hub)",
+    "expected": "HTTP 200 OK",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Loaded HTML page (11829 bytes)",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/study-reader",
+    "control": "Page Access (Study Reader)",
+    "expected": "HTTP 200 OK",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Loaded HTML page (11267 bytes)",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/compiler-practice",
+    "control": "Page Access (Compiler Practice (C-Visualize))",
+    "expected": "HTTP 200 OK",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Loaded HTML page (33076 bytes)",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/coding-rounds",
+    "control": "Page Access (Coding Rounds Practice Hub)",
+    "expected": "HTTP 200 OK",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Loaded HTML page (796 bytes)",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/coding-round",
+    "control": "Page Access (Coding Environment Workspace)",
+    "expected": "HTTP 200 OK",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Loaded HTML page (2123 bytes)",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/coding-result",
+    "control": "Page Access (Coding Result)",
+    "expected": "HTTP 200 OK",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Loaded HTML page (794 bytes)",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/analytics",
+    "control": "Page Access (Preparation Analytics)",
+    "expected": "HTTP 200 OK",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Loaded HTML page (23547 bytes)",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/admin-login",
+    "control": "Route Guard: Admin Login on Port 5000",
+    "expected": "HTTP 403 Forbidden",
+    "actual": "HTTP 403",
+    "status": "PASS",
+    "evidence": "Access strictly denied on Port 5000",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/admindash",
+    "control": "Route Guard: Admin Dashboard on Port 5000",
+    "expected": "HTTP 403 Forbidden",
+    "actual": "HTTP 403",
+    "status": "PASS",
+    "evidence": "Access strictly denied on Port 5000",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/admin-dashboard",
+    "control": "Route Guard: Admin Dashboard Alias on Port 5000",
+    "expected": "HTTP 403 Forbidden",
+    "actual": "HTTP 403",
+    "status": "PASS",
+    "evidence": "Access strictly denied on Port 5000",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/admin-exams",
+    "control": "Route Guard: Admin Exams on Port 5000",
+    "expected": "HTTP 403 Forbidden",
+    "actual": "HTTP 403",
+    "status": "PASS",
+    "evidence": "Access strictly denied on Port 5000",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/admin-exam-builder",
+    "control": "Route Guard: Admin Exam Builder on Port 5000",
+    "expected": "HTTP 403 Forbidden",
+    "actual": "HTTP 403",
+    "status": "PASS",
+    "evidence": "Access strictly denied on Port 5000",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/admin-coding-rounds",
+    "control": "Route Guard: Admin Coding Rounds on Port 5000",
+    "expected": "HTTP 403 Forbidden",
+    "actual": "HTTP 403",
+    "status": "PASS",
+    "evidence": "Access strictly denied on Port 5000",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/admin-coding-builder",
+    "control": "Route Guard: Admin Coding Builder on Port 5000",
+    "expected": "HTTP 403 Forbidden",
+    "actual": "HTTP 403",
+    "status": "PASS",
+    "evidence": "Access strictly denied on Port 5000",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/admin-coding-monitor",
+    "control": "Route Guard: Admin Coding Monitor on Port 5000",
+    "expected": "HTTP 403 Forbidden",
+    "actual": "HTTP 403",
+    "status": "PASS",
+    "evidence": "Access strictly denied on Port 5000",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/admin-coding-results",
+    "control": "Route Guard: Admin Coding Results on Port 5000",
+    "expected": "HTTP 403 Forbidden",
+    "actual": "HTTP 403",
+    "status": "PASS",
+    "evidence": "Access strictly denied on Port 5000",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/admin-interviews",
+    "control": "Route Guard: Admin Interviews on Port 5000",
+    "expected": "HTTP 403 Forbidden",
+    "actual": "HTTP 403",
+    "status": "PASS",
+    "evidence": "Access strictly denied on Port 5000",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/admin-question-import",
+    "control": "Route Guard: Admin Question Import on Port 5000",
+    "expected": "HTTP 403 Forbidden",
+    "actual": "HTTP 403",
+    "status": "PASS",
+    "evidence": "Access strictly denied on Port 5000",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/admin-study-materials",
+    "control": "Route Guard: Admin Study Materials on Port 5000",
+    "expected": "HTTP 403 Forbidden",
+    "actual": "HTTP 403",
+    "status": "PASS",
+    "evidence": "Access strictly denied on Port 5000",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/versant-admin",
+    "control": "Route Guard: Versant Admin on Port 5000",
+    "expected": "HTTP 403 Forbidden",
+    "actual": "HTTP 403",
+    "status": "PASS",
+    "evidence": "Access strictly denied on Port 5000",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/proctoring",
+    "control": "Route Guard: Proctoring Dashboard on Port 5000",
+    "expected": "HTTP 403 Forbidden",
+    "actual": "HTTP 403",
+    "status": "PASS",
+    "evidence": "Access strictly denied on Port 5000",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/pages/admindash.html",
+    "control": "Route Guard: Raw static admindash.html on Port 5000",
+    "expected": "HTTP 403 Forbidden",
+    "actual": "HTTP 403",
+    "status": "PASS",
+    "evidence": "Access strictly denied on Port 5000",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/pages/admin-exams.html",
+    "control": "Route Guard: Raw static admin-exams.html on Port 5000",
+    "expected": "HTTP 403 Forbidden",
+    "actual": "HTTP 403",
+    "status": "PASS",
+    "evidence": "Access strictly denied on Port 5000",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/pages/proctoring.html",
+    "control": "Route Guard: Raw static proctoring.html on Port 5000",
+    "expected": "HTTP 403 Forbidden",
+    "actual": "HTTP 403",
+    "status": "PASS",
+    "evidence": "Access strictly denied on Port 5000",
+    "fix": ""
+  },
+  {
+    "role": "Admin",
+    "page": "/",
+    "control": "Root Redirect",
+    "expected": "HTTP 302 -> /admin-login",
+    "actual": "HTTP 302 -> /admin-login",
+    "status": "PASS",
+    "evidence": "Redirects to admin login",
+    "fix": ""
+  },
+  {
+    "role": "Admin",
+    "page": "/admin-login",
+    "control": "Page Access (Admin Login Page)",
+    "expected": "HTTP 200 OK",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Loaded HTML page (2625 bytes)",
+    "fix": ""
+  },
+  {
+    "role": "Admin",
+    "page": "/admindash",
+    "control": "Page Access (Admin Dashboard)",
+    "expected": "HTTP 200 OK",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Loaded HTML page (31387 bytes)",
+    "fix": ""
+  },
+  {
+    "role": "Admin",
+    "page": "/admin-dashboard",
+    "control": "Page Access (Admin Dashboard Alias)",
+    "expected": "HTTP 200 OK",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Loaded HTML page (31387 bytes)",
+    "fix": ""
+  },
+  {
+    "role": "Admin",
+    "page": "/admin-exams",
+    "control": "Page Access (Admin Exams)",
+    "expected": "HTTP 200 OK",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Loaded HTML page (3316 bytes)",
+    "fix": ""
+  },
+  {
+    "role": "Admin",
+    "page": "/admin-exam-builder",
+    "control": "Page Access (Admin Exam Builder)",
+    "expected": "HTTP 200 OK",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Loaded HTML page (6658 bytes)",
+    "fix": ""
+  },
+  {
+    "role": "Admin",
+    "page": "/admin-coding-rounds",
+    "control": "Page Access (Admin Coding Rounds)",
+    "expected": "HTTP 200 OK",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Loaded HTML page (852 bytes)",
+    "fix": ""
+  },
+  {
+    "role": "Admin",
+    "page": "/admin-coding-builder",
+    "control": "Page Access (Admin Coding Builder)",
+    "expected": "HTTP 200 OK",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Loaded HTML page (4496 bytes)",
+    "fix": ""
+  },
+  {
+    "role": "Admin",
+    "page": "/admin-coding-monitor",
+    "control": "Page Access (Admin Coding Monitor)",
+    "expected": "HTTP 200 OK",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Loaded HTML page (855 bytes)",
+    "fix": ""
+  },
+  {
+    "role": "Admin",
+    "page": "/admin-coding-results",
+    "control": "Page Access (Admin Coding Results)",
+    "expected": "HTTP 200 OK",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Loaded HTML page (747 bytes)",
+    "fix": ""
+  },
+  {
+    "role": "Admin",
+    "page": "/admin-interviews",
+    "control": "Page Access (Admin Mock Interviews)",
+    "expected": "HTTP 200 OK",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Loaded HTML page (7671 bytes)",
+    "fix": ""
+  },
+  {
+    "role": "Admin",
+    "page": "/admin-question-import",
+    "control": "Page Access (Admin Question Import)",
+    "expected": "HTTP 200 OK",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Loaded HTML page (6066 bytes)",
+    "fix": ""
+  },
+  {
+    "role": "Admin",
+    "page": "/admin-study-materials",
+    "control": "Page Access (Admin Study Materials Hub)",
+    "expected": "HTTP 200 OK",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Loaded HTML page (39704 bytes)",
+    "fix": ""
+  },
+  {
+    "role": "Admin",
+    "page": "/versant-admin",
+    "control": "Page Access (Versant Admin Console)",
+    "expected": "HTTP 200 OK",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Loaded HTML page (23997 bytes)",
+    "fix": ""
+  },
+  {
+    "role": "Admin",
+    "page": "/proctoring",
+    "control": "Page Access (Live Proctoring Console)",
+    "expected": "HTTP 200 OK",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Loaded HTML page (4822 bytes)",
+    "fix": ""
+  },
+  {
+    "role": "Admin",
+    "page": "/dashboard",
+    "control": "Student Route Redirect: Student Dashboard on Port 5001",
+    "expected": "HTTP 302 -> http://localhost:5000...",
+    "actual": "HTTP 302 -> http://localhost:5000/dashboard",
+    "status": "PASS",
+    "evidence": "Properly redirected to Student Port",
+    "fix": ""
+  },
+  {
+    "role": "Admin",
+    "page": "/companies",
+    "control": "Student Route Redirect: Company Directory on Port 5001",
+    "expected": "HTTP 302 -> http://localhost:5000...",
+    "actual": "HTTP 302 -> http://localhost:5000/companies",
+    "status": "PASS",
+    "evidence": "Properly redirected to Student Port",
+    "fix": ""
+  },
+  {
+    "role": "Admin",
+    "page": "/coding-rounds",
+    "control": "Student Route Redirect: Coding Rounds on Port 5001",
+    "expected": "HTTP 302 -> http://localhost:5000...",
+    "actual": "HTTP 302 -> http://localhost:5000/coding-rounds",
+    "status": "PASS",
+    "evidence": "Properly redirected to Student Port",
+    "fix": ""
+  },
+  {
+    "role": "Admin",
+    "page": "/study-materials",
+    "control": "Student Route Redirect: Study Materials on Port 5001",
+    "expected": "HTTP 302 -> http://localhost:5000...",
+    "actual": "HTTP 302 -> http://localhost:5000/study-materials",
+    "status": "PASS",
+    "evidence": "Properly redirected to Student Port",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/login",
+    "control": "Form Submit: Valid Student Credentials",
+    "expected": "HTTP 200 with JWT",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Received student JWT token",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/login",
+    "control": "Form Submit: Invalid Password",
+    "expected": "HTTP 401/403 Error",
+    "actual": "HTTP 400",
+    "status": "PASS",
+    "evidence": "Correctly rejected invalid login",
+    "fix": ""
+  },
+  {
+    "role": "Admin",
+    "page": "/admin-login",
+    "control": "Form Submit: Valid Admin Credentials",
+    "expected": "HTTP 200 with JWT",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Received admin JWT token",
+    "fix": ""
+  },
+  {
+    "role": "Admin",
+    "page": "/admin-login",
+    "control": "Form Submit: Invalid Admin Password",
+    "expected": "HTTP 403 Forbidden",
+    "actual": "HTTP 403",
+    "status": "PASS",
+    "evidence": "Rejected invalid admin password",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/profile",
+    "control": "API: GET /api/student/profile",
+    "expected": "HTTP 200 Student Profile",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Fetched profile for student_test_abc@gmail.com",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/profile",
+    "control": "Form Submit: Update Profile Form",
+    "expected": "HTTP 200 Success",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Saved student profile fields to database",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/companies",
+    "control": "API: GET /api/companies",
+    "expected": "HTTP 200 Companies Array",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Fetched 8 company preparation tracks",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/company-prep",
+    "control": "API: GET /api/companies/Google",
+    "expected": "HTTP 200 Google Track",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Loaded Google preparation syllabus & track",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/coding-rounds",
+    "control": "API: GET /api/coding/student/rounds",
+    "expected": "HTTP 200 Rounds Array",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Loaded 1 coding rounds",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/available-exams",
+    "control": "API: GET /api/exams/available",
+    "expected": "HTTP 200 Exams Array",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Loaded 5 available exams",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/study-materials",
+    "control": "API: GET /api/study/stats",
+    "expected": "HTTP 200 Stats",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Loaded study material stats (27 topics available, 0 completed)",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/study-materials",
+    "control": "API: GET /api/study/subjects",
+    "expected": "HTTP 200 Subjects",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Loaded 15 study subjects",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/analytics",
+    "control": "API: GET /api/analytics/overview",
+    "expected": "HTTP 200 Overview",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Loaded student analytics and readiness gauge",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/dashboard",
+    "control": "API: GET /api/progress/summary",
+    "expected": "HTTP 200 Progress",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Fetched personal progress metrics",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/admindash",
+    "control": "Security: Student Token on Admin Intelligence API",
+    "expected": "HTTP 403 Forbidden",
+    "actual": "HTTP 403",
+    "status": "PASS",
+    "evidence": "Student token rejected by admin authorization",
+    "fix": ""
+  },
+  {
+    "role": "Admin",
+    "page": "/admindash",
+    "control": "API: GET /api/admin/intelligence-stats",
+    "expected": "HTTP 200 Practice Stats",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Stats: Assessments=13, QBank=16, Chunks=3",
+    "fix": ""
+  },
+  {
+    "role": "Admin",
+    "page": "/admin-coding-rounds",
+    "control": "API: GET /api/coding/admin/rounds",
+    "expected": "HTTP 200 Rounds",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Fetched 1 admin coding rounds",
+    "fix": ""
+  },
+  {
+    "role": "Admin",
+    "page": "/admin-interviews",
+    "control": "API: GET /api/interviews/admin/sets",
+    "expected": "HTTP 200 Sets",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Fetched 2 mock interview sets",
+    "fix": ""
+  },
+  {
+    "role": "Admin",
+    "page": "/admin-exams",
+    "control": "API: GET /api/exams/admin",
+    "expected": "HTTP 200 Exams",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Fetched 6 admin aptitude exams",
+    "fix": ""
+  },
+  {
+    "role": "Admin",
+    "page": "/versant-admin",
+    "control": "API: GET /api/versant/admin/tests",
+    "expected": "HTTP 200 Tests",
+    "actual": "HTTP 200",
+    "status": "PASS",
+    "evidence": "Fetched 1 versant test sets",
+    "fix": ""
+  },
+  {
+    "role": "Admin",
+    "page": "/admindash",
+    "control": "Form/API: Ingest Practice Document",
+    "expected": "HTTP 200/201 Success",
+    "actual": "HTTP 201",
+    "status": "PASS",
+    "evidence": "Saved practice study chunk to MySQL",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/pages/stddash.html",
+    "control": "Canonical Redirect -> /dashboard",
+    "expected": "HTTP 302 -> /dashboard",
+    "actual": "HTTP 302 -> /dashboard",
+    "status": "PASS",
+    "evidence": "Clean routing redirection",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/pages/available-exams.html",
+    "control": "Canonical Redirect -> /available-exams",
+    "expected": "HTTP 302 -> /available-exams",
+    "actual": "HTTP 302 -> /available-exams",
+    "status": "PASS",
+    "evidence": "Clean routing redirection",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/pages/interviews.html",
+    "control": "Canonical Redirect -> /interviews",
+    "expected": "HTTP 302 -> /interviews",
+    "actual": "HTTP 302 -> /interviews",
+    "status": "PASS",
+    "evidence": "Clean routing redirection",
+    "fix": ""
+  },
+  {
+    "role": "Student",
+    "page": "/pages/versant-test.html",
+    "control": "Canonical Redirect -> /versant-test",
+    "expected": "HTTP 302 -> /versant-test",
+    "actual": "HTTP 302 -> /versant-test",
+    "status": "PASS",
+    "evidence": "Clean routing redirection",
+    "fix": ""
+  },
+  {
+    "role": "Admin",
+    "page": "/pages/admindash.html",
+    "control": "Canonical Redirect -> /admindash",
+    "expected": "HTTP 302 -> /admindash",
+    "actual": "HTTP 302 -> /admindash",
+    "status": "PASS",
+    "evidence": "Clean admin routing redirection",
+    "fix": ""
+  },
+  {
+    "role": "Admin",
+    "page": "/pages/admin-exams.html",
+    "control": "Canonical Redirect -> /admin-exams",
+    "expected": "HTTP 302 -> /admin-exams",
+    "actual": "HTTP 302 -> /admin-exams",
+    "status": "PASS",
+    "evidence": "Clean admin routing redirection",
+    "fix": ""
+  },
+  {
+    "role": "Admin",
+    "page": "/pages/proctoring.html",
+    "control": "Canonical Redirect -> /proctoring",
+    "expected": "HTTP 302 -> /proctoring",
+    "actual": "HTTP 302 -> /proctoring",
+    "status": "PASS",
+    "evidence": "Clean admin routing redirection",
+    "fix": ""
+  },
+  {
+    "role": "Admin",
+    "page": "/pages/versant-admin.html",
+    "control": "Canonical Redirect -> /versant-admin",
+    "expected": "HTTP 302 -> /versant-admin",
+    "actual": "HTTP 302 -> /versant-admin",
+    "status": "PASS",
+    "evidence": "Clean admin routing redirection",
+    "fix": ""
+  }
+]
