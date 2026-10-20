@@ -5,6 +5,7 @@ const multer = require('multer');
 const { verifyToken, verifyAdmin } = require('../middleware/authMiddleware');
 const c = require('../controllers/versantController');
 
+const router = express.Router();
 const os = require('os');
 const uploadDir = process.env.VERCEL
   ? path.join(os.tmpdir(), 'versant')
