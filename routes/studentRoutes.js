@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 const path = require('path');
-const studentController = require('../controllers/studentController');
+const studentController = require('../controllers/studentcontroller');
 const resumeController = require('../controllers/resumeController');
 const { verifyToken } = require('../middleware/authMiddleware');
 

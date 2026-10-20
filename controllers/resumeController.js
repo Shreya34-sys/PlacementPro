@@ -4,7 +4,7 @@ const Groq = require('groq-sdk');
 const { v4: uuidv4 } = require('uuid');
 const PDFParser = require('pdf2json');
 const mammoth = require('mammoth');
-const ResumeModel = require('../models/resumemodel');
+const ResumeModel = require('../models/resumeModel');
 
 // Initialize Official Groq Client
 const groq = new Groq({
