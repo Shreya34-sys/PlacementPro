@@ -3,9 +3,9 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 
-// Initialize Groq client
+// Initialize Groq client safely
 const groq = new Groq({
-  apiKey: process.env.GROQ_API_KEY
+  apiKey: process.env.GROQ_API_KEY || 'missing_groq_api_key'
 });
 
 // Standard HR Interview Stage Definitions

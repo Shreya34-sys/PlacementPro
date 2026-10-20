@@ -1,14 +1,14 @@
 
 
 const Groq = require('groq-sdk');
-const { v4: uuidv4 } = require('uuid');
+const { randomUUID: uuidv4 } = require('crypto');
 const PDFParser = require('pdf2json');
 const mammoth = require('mammoth');
 const ResumeModel = require('../models/resumeModel');
 
-// Initialize Official Groq Client
+// Initialize Official Groq Client safely
 const groq = new Groq({
-    apiKey: process.env.GROQ_API_KEY
+    apiKey: process.env.GROQ_API_KEY || 'missing_groq_api_key'
 });
 
 function extractPdfText(buffer) {

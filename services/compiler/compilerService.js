@@ -1,7 +1,7 @@
 'use strict';
 
 const crypto = require('crypto');
-const { v4: uuidv4 } = require('uuid');
+const { randomUUID: uuidv4 } = require('crypto');
 const pool = require('../../config/db');
 const worker = require('./worker.client');
 const tokenAnalyzer = require('./token-analyzer');
