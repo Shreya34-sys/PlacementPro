@@ -76,6 +76,7 @@ const authLimiter = rateLimit({
 function setupHealthRoute(app) {
   app.get(['/api/health', '/health'], async (req, res) => {
     let dbStatus = 'untested';
+    let simDbStatus = 'untested';
     try {
       const pool = require('./config/db');
       await Promise.race([
@@ -87,6 +88,17 @@ function setupHealthRoute(app) {
       dbStatus = 'disconnected';
     }
 
+    try {
+      const simPool = require('./config/placementSimulationDb');
+      await Promise.race([
+        simPool.query('SELECT 1'),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 2500))
+      ]);
+      simDbStatus = 'connected';
+    } catch (_) {
+      simDbStatus = 'disconnected';
+    }
+
     res.status(200).json({
       status: 'ok',
       timestamp: new Date().toISOString(),
@@ -94,6 +106,7 @@ function setupHealthRoute(app) {
       environment: process.env.NODE_ENV || 'production',
       serverless: Boolean(process.env.VERCEL),
       database: dbStatus,
+      simulationDatabase: simDbStatus,
       auth: {
         googleConfigured: Boolean(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET)
       }

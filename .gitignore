@@ -1,3 +1,9 @@
 node_modules/ 
 .env 
 .vercel
+db-backup/
+*.cnf
+.cloud-env
+certs/
+*.pem
+
