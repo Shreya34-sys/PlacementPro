@@ -7,6 +7,7 @@
     <title>PlacementPro - Faculty Intelligence Hub</title>
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/admindash.css">
+    <link rel="stylesheet" href="/css/notifications.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
@@ -105,6 +106,18 @@
                     <path d="M20.5 15.5A8.5 8.5 0 0 1 8.5 3.5 8.5 8.5 0 1 0 20.5 15.5Z" />
                 </svg>
             </button>
+
+            <div class="notification-container" id="notificationDropdownContainer">
+                <button class="icon-btn notification-btn" id="notificationBtn" aria-label="Notifications" aria-expanded="false" title="Notifications">
+                    <span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+                            focusable="false">
+                            <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" />
+                        </svg></span>
+                    <span class="dot" id="notificationBadge" style="display: none;"></span>
+                </button>
+                <div class="notification-dropdown" id="notificationDropdown" role="region" aria-label="Notifications dropdown"></div>
+            </div>
 
             <div class="admin-user-profile">
                 <div class="user-avatar" id="navAvatarInitials">AD</div>
@@ -525,6 +538,7 @@
     </footer>
 
     <script src="/js/admindash.js"></script>
+    <script src="/js/notifications.js"></script>
 </body>
 
 </html>

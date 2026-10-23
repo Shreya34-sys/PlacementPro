@@ -330,10 +330,10 @@ class Interview {
       a.created_at AS assigned_at, s.id set_id, s.title, s.description,
       s.category, s.company_name, s.default_preparation_seconds, s.default_answer_seconds,
       s.created_at AS set_created_at,
-      COUNT(q.question_id) question_count, COUNT(at.id) attempts_used,
+      COUNT(DISTINCT q.question_id) question_count, COUNT(DISTINCT at.id) attempts_used,
       MAX(at.submitted_at) last_submitted_at,
       CASE WHEN COALESCE(a.deadline, s.deadline) IS NOT NULL AND NOW() > COALESCE(a.deadline, s.deadline) THEN 'expired'
-           WHEN COUNT(at.id) >= a.max_attempts THEN 'completed' ELSE 'available' END availability
+           WHEN COUNT(DISTINCT at.id) >= a.max_attempts THEN 'completed' ELSE 'available' END availability
       FROM interview_assignments a JOIN interview_sets s ON s.id=a.set_id
       JOIN students st ON st.std_id=?
       LEFT JOIN interview_set_questions q ON q.set_id=s.id
@@ -342,7 +342,10 @@ class Interview {
         AND (a.target_type='all' OR (a.target_type='student' AND a.target_student_id=st.std_id)
           OR (a.target_type='class' AND (a.department IS NULL OR a.department=st.department)
             AND (a.division IS NULL OR a.division=st.division) AND (a.batch_year IS NULL OR a.batch_year=st.batch_year)))
-      GROUP BY a.id ORDER BY COALESCE(a.deadline, s.deadline), s.created_at DESC`, [studentId]);
+      GROUP BY a.id, a.deadline, a.max_attempts, a.created_at, s.id, s.title, s.description,
+        s.category, s.company_name, s.default_preparation_seconds, s.default_answer_seconds,
+        s.created_at, s.deadline
+      ORDER BY COALESCE(a.deadline, s.deadline), s.created_at DESC`, [studentId]);
     const [history] = await db.execute(`SELECT at.id attempt_id, at.state, at.started_at, at.submitted_at, r.total_score, r.max_score,
       s.title, s.category FROM interview_attempts at JOIN interview_sets s ON s.id=at.set_id
       LEFT JOIN interview_results r ON r.attempt_id=at.id WHERE at.student_id=? ORDER BY at.started_at DESC LIMIT 20`, [studentId]);
@@ -592,7 +595,10 @@ class Interview {
         OR (ev.event_type='manual' AND JSON_UNQUOTE(JSON_EXTRACT(ev.metadata_json, '$.signal'))='clipboard') THEN 1 ELSE 0 END) warning_count
       FROM interview_attempts at JOIN interview_sets s ON s.id=at.set_id JOIN users u ON u.id=at.student_id
       LEFT JOIN interview_monitoring_events ev ON ev.attempt_id=at.id
-      WHERE s.created_by=? GROUP BY at.id ORDER BY at.started_at DESC`, [adminId]);
+      WHERE s.created_by=?
+      GROUP BY at.id, at.state, at.started_at, at.submitted_at, at.total_score, at.max_score,
+        s.title, s.category, u.fullName, u.email
+      ORDER BY at.started_at DESC`, [adminId]);
     return rows;
   }
 

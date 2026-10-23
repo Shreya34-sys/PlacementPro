@@ -1,0 +1,726 @@
+{
+  "ppro": {
+    "dbName": "ppro",
+    "totalTables": 74,
+    "countMatches": 74,
+    "countMismatches": 0,
+    "checksumMatches": 52,
+    "checksumMismatches": 22,
+    "differences": [],
+    "tableRows": [
+      {
+        "table": "activity_log",
+        "localRows": 1,
+        "cloudRows": 1,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 2650035792,
+        "cloudChecksum": 2734144936,
+        "csMatch": "✗"
+      },
+      {
+        "table": "admins",
+        "localRows": 1,
+        "cloudRows": 1,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 862381453,
+        "cloudChecksum": 862381453,
+        "csMatch": "✓"
+      },
+      {
+        "table": "answers",
+        "localRows": 0,
+        "cloudRows": 0,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 0,
+        "cloudChecksum": 0,
+        "csMatch": "✓"
+      },
+      {
+        "table": "attempt_answers",
+        "localRows": 41,
+        "cloudRows": 41,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 549092521,
+        "cloudChecksum": 549092521,
+        "csMatch": "✓"
+      },
+      {
+        "table": "chat_messages",
+        "localRows": 0,
+        "cloudRows": 0,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 0,
+        "cloudChecksum": 0,
+        "csMatch": "✓"
+      },
+      {
+        "table": "coding_attempts",
+        "localRows": 6,
+        "cloudRows": 6,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 2053828903,
+        "cloudChecksum": 2053828903,
+        "csMatch": "✓"
+      },
+      {
+        "table": "coding_code_snapshots",
+        "localRows": 6,
+        "cloudRows": 6,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 3638764753,
+        "cloudChecksum": 3638764753,
+        "csMatch": "✓"
+      },
+      {
+        "table": "coding_proctor_flags",
+        "localRows": 21,
+        "cloudRows": 21,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 3660299089,
+        "cloudChecksum": 3660299089,
+        "csMatch": "✓"
+      },
+      {
+        "table": "coding_questions",
+        "localRows": 3,
+        "cloudRows": 3,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 3114552192,
+        "cloudChecksum": 4048089430,
+        "csMatch": "✗"
+      },
+      {
+        "table": "coding_round_assignments",
+        "localRows": 0,
+        "cloudRows": 0,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 0,
+        "cloudChecksum": 0,
+        "csMatch": "✓"
+      },
+      {
+        "table": "coding_rounds",
+        "localRows": 4,
+        "cloudRows": 4,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 2961944972,
+        "cloudChecksum": 2961944972,
+        "csMatch": "✓"
+      },
+      {
+        "table": "coding_submissions",
+        "localRows": 0,
+        "cloudRows": 0,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 0,
+        "cloudChecksum": 0,
+        "csMatch": "✓"
+      },
+      {
+        "table": "coding_test_cases",
+        "localRows": 3,
+        "cloudRows": 3,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 2941429240,
+        "cloudChecksum": 3063072302,
+        "csMatch": "✗"
+      },
+      {
+        "table": "companies",
+        "localRows": 8,
+        "cloudRows": 8,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 2630293685,
+        "cloudChecksum": 1589219125,
+        "csMatch": "✗"
+      },
+      {
+        "table": "company_documents",
+        "localRows": 0,
+        "cloudRows": 0,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 0,
+        "cloudChecksum": 0,
+        "csMatch": "✓"
+      },
+      {
+        "table": "company_resources",
+        "localRows": 7,
+        "cloudRows": 7,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 3459002279,
+        "cloudChecksum": 114085959,
+        "csMatch": "✗"
+      },
+      {
+        "table": "compilation_artifacts",
+        "localRows": 144,
+        "cloudRows": 144,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 2123593184,
+        "cloudChecksum": 2123593184,
+        "csMatch": "✓"
+      },
+      {
+        "table": "compilation_jobs",
+        "localRows": 36,
+        "cloudRows": 36,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 3446240397,
+        "cloudChecksum": 2726640531,
+        "csMatch": "✗"
+      },
+      {
+        "table": "compiler_artifacts",
+        "localRows": 144,
+        "cloudRows": 144,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 2123593184,
+        "cloudChecksum": 2123593184,
+        "csMatch": "✓"
+      },
+      {
+        "table": "compiler_execution_results",
+        "localRows": 9,
+        "cloudRows": 9,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 234246476,
+        "cloudChecksum": 430044792,
+        "csMatch": "✗"
+      },
+      {
+        "table": "compiler_exercise_attempts",
+        "localRows": 0,
+        "cloudRows": 0,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 0,
+        "cloudChecksum": 0,
+        "csMatch": "✓"
+      },
+      {
+        "table": "compiler_jobs",
+        "localRows": 42,
+        "cloudRows": 42,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 861186818,
+        "cloudChecksum": 4147910495,
+        "csMatch": "✗"
+      },
+      {
+        "table": "documents",
+        "localRows": 4,
+        "cloudRows": 4,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 2279888144,
+        "cloudChecksum": 3204542877,
+        "csMatch": "✗"
+      },
+      {
+        "table": "drive_rounds",
+        "localRows": 0,
+        "cloudRows": 0,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 0,
+        "cloudChecksum": 0,
+        "csMatch": "✓"
+      },
+      {
+        "table": "drives",
+        "localRows": 0,
+        "cloudRows": 0,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 0,
+        "cloudChecksum": 0,
+        "csMatch": "✓"
+      },
+      {
+        "table": "exam_attempts",
+        "localRows": 10,
+        "cloudRows": 10,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 2575085842,
+        "cloudChecksum": 2575085842,
+        "csMatch": "✓"
+      },
+      {
+        "table": "exam_question_imports",
+        "localRows": 1,
+        "cloudRows": 1,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 3907395744,
+        "cloudChecksum": 3907395744,
+        "csMatch": "✓"
+      },
+      {
+        "table": "exam_questions",
+        "localRows": 101,
+        "cloudRows": 101,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 4162735157,
+        "cloudChecksum": 4162735157,
+        "csMatch": "✓"
+      },
+      {
+        "table": "exam_topics",
+        "localRows": 92,
+        "cloudRows": 92,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 1558948545,
+        "cloudChecksum": 1558948545,
+        "csMatch": "✓"
+      },
+      {
+        "table": "exams",
+        "localRows": 13,
+        "cloudRows": 13,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 1951122854,
+        "cloudChecksum": 1951122854,
+        "csMatch": "✓"
+      },
+      {
+        "table": "execution_results",
+        "localRows": 9,
+        "cloudRows": 9,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 1437064502,
+        "cloudChecksum": 1106278914,
+        "csMatch": "✗"
+      },
+      {
+        "table": "interview_answers",
+        "localRows": 13,
+        "cloudRows": 13,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 4219830478,
+        "cloudChecksum": 4219830478,
+        "csMatch": "✓"
+      },
+      {
+        "table": "interview_assignments",
+        "localRows": 21,
+        "cloudRows": 21,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 428991414,
+        "cloudChecksum": 428991414,
+        "csMatch": "✓"
+      },
+      {
+        "table": "interview_attempts",
+        "localRows": 15,
+        "cloudRows": 15,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 523866063,
+        "cloudChecksum": 523866063,
+        "csMatch": "✓"
+      },
+      {
+        "table": "interview_monitoring_events",
+        "localRows": 28,
+        "cloudRows": 28,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 68150084,
+        "cloudChecksum": 68150084,
+        "csMatch": "✓"
+      },
+      {
+        "table": "interview_questions",
+        "localRows": 27,
+        "cloudRows": 27,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 902961469,
+        "cloudChecksum": 902961469,
+        "csMatch": "✓"
+      },
+      {
+        "table": "interview_results",
+        "localRows": 11,
+        "cloudRows": 11,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 2160437289,
+        "cloudChecksum": 1971192134,
+        "csMatch": "✗"
+      },
+      {
+        "table": "interview_sessions",
+        "localRows": 0,
+        "cloudRows": 0,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 0,
+        "cloudChecksum": 0,
+        "csMatch": "✓"
+      },
+      {
+        "table": "interview_set_questions",
+        "localRows": 27,
+        "cloudRows": 27,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 3927737639,
+        "cloudChecksum": 3927737639,
+        "csMatch": "✓"
+      },
+      {
+        "table": "interview_sets",
+        "localRows": 9,
+        "cloudRows": 9,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 2018334558,
+        "cloudChecksum": 2018334558,
+        "csMatch": "✓"
+      },
+      {
+        "table": "interview_turns",
+        "localRows": 0,
+        "cloudRows": 0,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 0,
+        "cloudChecksum": 0,
+        "csMatch": "✓"
+      },
+      {
+        "table": "modules",
+        "localRows": 6,
+        "cloudRows": 6,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 3648520816,
+        "cloudChecksum": 3648520816,
+        "csMatch": "✓"
+      },
+      {
+        "table": "password_resets",
+        "localRows": 0,
+        "cloudRows": 0,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 0,
+        "cloudChecksum": 0,
+        "csMatch": "✓"
+      },
+      {
+        "table": "preparation_question_activity",
+        "localRows": 41,
+        "cloudRows": 41,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 3554705345,
+        "cloudChecksum": 152734865,
+        "csMatch": "✗"
+      },
+      {
+        "table": "proctoring_flags",
+        "localRows": 25,
+        "cloudRows": 25,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 2600129852,
+        "cloudChecksum": 2600129852,
+        "csMatch": "✓"
+      },
+      {
+        "table": "proctoring_logs",
+        "localRows": 0,
+        "cloudRows": 0,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 0,
+        "cloudChecksum": 0,
+        "csMatch": "✓"
+      },
+      {
+        "table": "profiles",
+        "localRows": 0,
+        "cloudRows": 0,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 0,
+        "cloudChecksum": 0,
+        "csMatch": "✓"
+      },
+      {
+        "table": "projects",
+        "localRows": 18,
+        "cloudRows": 18,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 2873950111,
+        "cloudChecksum": 1068273262,
+        "csMatch": "✗"
+      },
+      {
+        "table": "question_attempts",
+        "localRows": 1,
+        "cloudRows": 1,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 4257086298,
+        "cloudChecksum": 78978599,
+        "csMatch": "✗"
+      },
+      {
+        "table": "question_options",
+        "localRows": 404,
+        "cloudRows": 404,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 552007645,
+        "cloudChecksum": 552007645,
+        "csMatch": "✓"
+      },
+      {
+        "table": "questions",
+        "localRows": 14,
+        "cloudRows": 14,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 2636623775,
+        "cloudChecksum": 2636623775,
+        "csMatch": "✓"
+      },
+      {
+        "table": "resume_analyses",
+        "localRows": 0,
+        "cloudRows": 0,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 0,
+        "cloudChecksum": 0,
+        "csMatch": "✓"
+      },
+      {
+        "table": "resumes",
+        "localRows": 3,
+        "cloudRows": 3,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 2932500747,
+        "cloudChecksum": 4262768983,
+        "csMatch": "✗"
+      },
+      {
+        "table": "scores",
+        "localRows": 0,
+        "cloudRows": 0,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 0,
+        "cloudChecksum": 0,
+        "csMatch": "✓"
+      },
+      {
+        "table": "source_versions",
+        "localRows": 36,
+        "cloudRows": 36,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 3283168257,
+        "cloudChecksum": 3283168257,
+        "csMatch": "✓"
+      },
+      {
+        "table": "students",
+        "localRows": 26,
+        "cloudRows": 26,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 2519760259,
+        "cloudChecksum": 2519760259,
+        "csMatch": "✓"
+      },
+      {
+        "table": "study_attachments",
+        "localRows": 7,
+        "cloudRows": 7,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 179476972,
+        "cloudChecksum": 179476972,
+        "csMatch": "✓"
+      },
+      {
+        "table": "study_bookmarks",
+        "localRows": 0,
+        "cloudRows": 0,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 0,
+        "cloudChecksum": 0,
+        "csMatch": "✓"
+      },
+      {
+        "table": "study_chapters",
+        "localRows": 30,
+        "cloudRows": 30,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 2191569201,
+        "cloudChecksum": 2191569201,
+        "csMatch": "✓"
+      },
+      {
+        "table": "study_plans",
+        "localRows": 0,
+        "cloudRows": 0,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 0,
+        "cloudChecksum": 0,
+        "csMatch": "✓"
+      },
+      {
+        "table": "study_reading_progress",
+        "localRows": 18,
+        "cloudRows": 18,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 4139483762,
+        "cloudChecksum": 4139483762,
+        "csMatch": "✓"
+      },
+      {
+        "table": "study_subjects",
+        "localRows": 16,
+        "cloudRows": 16,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 2645812806,
+        "cloudChecksum": 2645812806,
+        "csMatch": "✓"
+      },
+      {
+        "table": "study_tasks",
+        "localRows": 0,
+        "cloudRows": 0,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 0,
+        "cloudChecksum": 0,
+        "csMatch": "✓"
+      },
+      {
+        "table": "study_topics",
+        "localRows": 32,
+        "cloudRows": 32,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 3886603518,
+        "cloudChecksum": 3886603518,
+        "csMatch": "✓"
+      },
+      {
+        "table": "user_module_progress",
+        "localRows": 18,
+        "cloudRows": 18,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 996441714,
+        "cloudChecksum": 996441714,
+        "csMatch": "✓"
+      },
+      {
+        "table": "user_stats",
+        "localRows": 3,
+        "cloudRows": 3,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 1703843194,
+        "cloudChecksum": 2906471929,
+        "csMatch": "✗"
+      },
+      {
+        "table": "users",
+        "localRows": 27,
+        "cloudRows": 27,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 2115644360,
+        "cloudChecksum": 935655672,
+        "csMatch": "✗"
+      },
+      {
+        "table": "versant_assignments",
+        "localRows": 3,
+        "cloudRows": 3,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 2030717924,
+        "cloudChecksum": 3408586596,
+        "csMatch": "✗"
+      },
+      {
+        "table": "versant_events",
+        "localRows": 0,
+        "cloudRows": 0,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 0,
+        "cloudChecksum": 0,
+        "csMatch": "✓"
+      },
+      {
+        "table": "versant_questions",
+        "localRows": 2,
+        "cloudRows": 2,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 4280856633,
+        "cloudChecksum": 2246632281,
+        "csMatch": "✗"
+      },
+      {
+        "table": "versant_responses",
+        "localRows": 5,
+        "cloudRows": 5,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 2704125932,
+        "cloudChecksum": 3777642701,
+        "csMatch": "✗"
+      },
+      {
+        "table": "versant_results",
+        "localRows": 3,
+        "cloudRows": 3,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 1001046390,
+        "cloudChecksum": 4081729174,
+        "csMatch": "✗"
+      },
+      {
+        "table": "versant_sections",
+        "localRows": 6,
+        "cloudRows": 6,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 1595745875,
+        "cloudChecksum": 1595745875,
+        "csMatch": "✓"
+      },
+      {
+        "table": "versant_tests",
+        "localRows": 1,
+        "cloudRows": 1,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 2133500647,
+        "cloudChecksum": 3506977194,
+        "csMatch": "✗"
+      }
+    ]
+  },
+  "simulation": {
+    "dbName": "placementpro_simulation",
+    "totalTables": 4,
+    "countMatches": 4,
+    "countMismatches": 0,
+    "checksumMatches": 4,
+    "checksumMismatches": 0,
+    "differences": [],
+    "tableRows": [
+      {
+        "table": "companies",
+        "localRows": 0,
+        "cloudRows": 0,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 0,
+        "cloudChecksum": 0,
+        "csMatch": "✓"
+      },
+      {
+        "table": "company_rounds",
+        "localRows": 0,
+        "cloudRows": 0,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 0,
+        "cloudChecksum": 0,
+        "csMatch": "✓"
+      },
+      {
+        "table": "simulation_round_attempts",
+        "localRows": 0,
+        "cloudRows": 0,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 0,
+        "cloudChecksum": 0,
+        "csMatch": "✓"
+      },
+      {
+        "table": "simulations",
+        "localRows": 0,
+        "cloudRows": 0,
+        "rowMatch": "✓ MATCH",
+        "localChecksum": 0,
+        "cloudChecksum": 0,
+        "csMatch": "✓"
+      }
+    ]
+  }
+}

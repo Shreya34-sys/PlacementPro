@@ -336,12 +336,13 @@ exports.result = async (req, res, next) => {
     const [summary] = await db.execute(`SELECT a.score,a.state,e.title, COUNT(q.id) question_count,
       SUM(CASE WHEN o.is_correct=1 THEN 1 ELSE 0 END) correct_count FROM exam_attempts a JOIN exams e ON e.id=a.exam_id
       JOIN exam_questions q ON q.exam_id=e.id LEFT JOIN attempt_answers aa ON aa.attempt_id=a.id AND aa.question_id=q.id
-      LEFT JOIN question_options o ON o.id=aa.option_id WHERE a.id=? GROUP BY a.id`, [req.params.attemptId]);
+      LEFT JOIN question_options o ON o.id=aa.option_id WHERE a.id=?
+      GROUP BY a.id, a.score, a.state, e.title`, [req.params.attemptId]);
     const [topics] = await db.execute(`SELECT t.name, SUM(q.marks) available_marks,
       COALESCE(SUM(CASE WHEN o.is_correct=1 THEN q.marks ELSE 0 END),0) earned_marks FROM exam_attempts a
       JOIN exam_questions q ON q.exam_id=a.exam_id JOIN exam_topics t ON t.id=q.topic_id
       LEFT JOIN attempt_answers aa ON aa.attempt_id=a.id AND aa.question_id=q.id LEFT JOIN question_options o ON o.id=aa.option_id
-      WHERE a.id=? GROUP BY t.id ORDER BY t.display_order`, [req.params.attemptId]);
+      WHERE a.id=? GROUP BY t.id, t.name, t.display_order ORDER BY t.display_order`, [req.params.attemptId]);
     res.json({ summary: summary[0], topics });
   } catch (error) { next(error); }
 };

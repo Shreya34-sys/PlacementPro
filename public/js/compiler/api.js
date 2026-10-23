@@ -12,7 +12,7 @@ const API_BASE = (() => {
 
 class ApiClient {
   constructor() {
-    this.token = localStorage.getItem('c_visualize_token') || null;
+    this.token = localStorage.getItem('token') || localStorage.getItem('adminToken') || localStorage.getItem('c_visualize_token') || null;
   }
 
   setToken(token) {
@@ -28,8 +28,9 @@ class ApiClient {
     const headers = {
       'Content-Type': 'application/json',
     };
-    if (this.token) {
-      headers['Authorization'] = `Bearer ${this.token}`;
+    const activeToken = this.token || localStorage.getItem('token') || localStorage.getItem('adminToken') || localStorage.getItem('c_visualize_token');
+    if (activeToken) {
+      headers['Authorization'] = `Bearer ${activeToken}`;
     }
     return headers;
   }

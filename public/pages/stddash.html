@@ -7,6 +7,7 @@
     <title>PlacementPro - Student Dashboard</title>
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/stddash.css">
+    <link rel="stylesheet" href="/css/notifications.css">
 
     <!-- Auth Validation Guard & Back-Button BF-Cache Guard -->
     <script>
@@ -327,14 +328,17 @@
         </nav>
 
         <div class="nav-right">
-            <button class="icon-btn notification-btn">
-                <span><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor"
-                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
-                        focusable="false">
-                        <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" />
-                    </svg></span>
-                <span class="dot"></span>
-            </button>
+            <div class="notification-container" id="notificationDropdownContainer">
+                <button class="icon-btn notification-btn" id="notificationBtn" aria-label="Notifications" aria-expanded="false" title="Notifications">
+                    <span><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+                            focusable="false">
+                            <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" />
+                        </svg></span>
+                    <span class="dot" id="notificationBadge" style="display: none;"></span>
+                </button>
+                <div class="notification-dropdown" id="notificationDropdown" role="region" aria-label="Notifications dropdown"></div>
+            </div>
             <button class="icon-btn theme-toggle" id="themeToggleBtn"><svg viewBox="0 0 24 24" width="1em" height="1em"
                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                     aria-hidden="true" focusable="false">
@@ -433,11 +437,11 @@
                 </div>
 
                 <div class="welcome-actions">
-                    <button class="btn btn-primary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    <a class="btn btn-primary" href="/study-materials" style="text-decoration:none;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
                             focusable="false">
                             <path d="m8 5 12 7-12 7V5Z" />
-                        </svg>Continue Learning Journey</button>
+                        </svg>Continue Learning Journey</a>
                     <a class="btn btn-secondary" href="/interviews" style="text-decoration:none;">Launch Mock
                         Interview</a>
                 </div>
@@ -725,7 +729,7 @@
                         <div class="progress-fill" id="overviewProgressFill" style="width: 0%;"></div>
                     </div>
                     <div class="next-up-box" id="overviewNextUpBox" style="cursor: pointer;"
-                        onclick="window.location.href='/pages/available-exams.html'">
+                        onclick="window.location.href='/available-exams'">
                         <div>
                             <span class="label-tiny">NEXT UP</span>
                             <p><strong id="overviewNextUpTitle">Practice Assessments</strong></p>
@@ -741,6 +745,7 @@
 
     <script src="/js/app.js"></script>
     <script src="/js/stddash.js"></script>
+    <script src="/js/notifications.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/js/progress-dashboard.js"></script>
 </body>

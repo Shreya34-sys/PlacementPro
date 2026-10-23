@@ -25,6 +25,7 @@ const studyRoutes = require('./routes/studyRoutes');
 const compilerRoutes = require('./routes/compilerRoutes');
 const analyticsRoutes = require('./routes/analyticsRoutes');
 const companyPlacementRoutes = require('./routes/companyPlacementRoutes');
+const notificationRoutes = require('./routes/notificationRoutes');
 
 // Parse CLI flags and port configuration
 const args = process.argv.slice(2);
@@ -257,9 +258,11 @@ function createStudentApp() {
   v1Router.use('/study', studyRoutes);
   v1Router.use('/analytics', analyticsRoutes);
   v1Router.use('/compiler', compilerRoutes);
+  v1Router.use('/notifications', notificationRoutes);
   v1Router.use('/', compilerRoutes);
 
   app.use('/api/v1', v1Router);
+  app.use('/api/notifications', notificationRoutes);
   app.use('/api/exams', examRoutes);
   app.use('/api/auth', authLimiter, authRoutes);
   app.use('/api/student', studentRoutes);
@@ -355,8 +358,10 @@ function createAdminApp() {
   v1Router.use('/companies', companyRoutes);
   v1Router.use('/placement-simulation', companyPlacementRoutes);
   v1Router.use('/compiler', compilerRoutes);
+  v1Router.use('/notifications', notificationRoutes);
 
   app.use('/api/v1', v1Router);
+  app.use('/api/notifications', notificationRoutes);
   app.use('/api/auth', authLimiter, authRoutes);
   app.use('/api/admin', adminRoutes);
   app.use('/api/coding', codingRoutes);

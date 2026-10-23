@@ -376,7 +376,7 @@ async function loadUpcomingInterviews() {
       const estMinutes = Math.max(15, Math.round(((item.default_preparation_seconds || 30) + (item.default_answer_seconds || 180)) * (item.question_count || 3) / 60));
       const initial = getCompanyInitial(item.company_name, item.category);
       const isAi = item.category === 'hr' || (item.title && item.title.toLowerCase().includes('ai'));
-      const roomUrl = `/pages/interview-room.html?assignment=${encodeURIComponent(item.assignment_id)}${isAi ? '&ai=true' : ''}`;
+      const roomUrl = `/interview-room?assignment=${encodeURIComponent(item.assignment_id)}${isAi ? '&ai=true' : ''}`;
       const subtitle = (item.company_name ? `${escapeHtml(item.company_name)} • ` : '') +
         `${escapeHtml(item.category ? item.category.toUpperCase() : 'GENERAL')} (${item.question_count || 0} questions)`;
 

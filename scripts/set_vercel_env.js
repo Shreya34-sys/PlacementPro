@@ -25,6 +25,9 @@ fs.readFileSync(cloudEnvPath, 'utf8').split('\n').forEach(line => {
   }
 });
 
+// Also load .env for JWT_SECRET
+require('dotenv').config();
+
 const requiredVars = {
   DB_HOST: envVars.CLOUD_DB_HOST,
   DB_PORT: envVars.CLOUD_DB_PORT || '4000',
@@ -33,7 +36,8 @@ const requiredVars = {
   DB_NAME: 'ppro',
   DB_SSL: 'true',
   DB_SSL_REJECT_UNAUTHORIZED: 'true',
-  SIM_DB_NAME: 'placementpro_simulation'
+  SIM_DB_NAME: 'placementpro_simulation',
+  JWT_SECRET: process.env.JWT_SECRET || 'placementpro_secret_key_@987#'
 };
 
 const environments = ['preview', 'production', 'development'];

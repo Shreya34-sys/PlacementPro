@@ -4,7 +4,12 @@ document.addEventListener('DOMContentLoaded', () => {
 const urlParams = new URLSearchParams(window.location.search);
 
 const authToken = urlParams.get('token');
-const authType = urlParams.get('type');
+const authError = urlParams.get('error') || (urlParams.get('googleError') ? 'Google authentication was cancelled or failed. Please sign in with your email and password.' : null);
+
+if (authError) {
+    alert(decodeURIComponent(authError));
+    window.history.replaceState({}, document.title, window.location.pathname);
+}
 
 if (authToken) {
 

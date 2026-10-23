@@ -81,7 +81,8 @@ const adminPages = {
   '/live-proctoring': 'proctoring.html',
   '/coding-result': 'coding-result.html', // supports ?admin=1
   '/company-placement-admin': 'company-placement-admin.html',
-  '/company-placement-manager': 'company-placement-admin.html'
+  '/company-placement-manager': 'company-placement-admin.html',
+  '/analytics': 'analytics.html'
 };
 
 for (const [route, filename] of Object.entries(adminPages)) {
@@ -132,7 +133,6 @@ const studentRedirectRoutes = [
   '/compiler',
   '/profile',
   '/resume-analyzer',
-  '/analytics',
   '/placement-workspace',
   '/pages/stddash.html',
   '/pages/available-exams.html',
@@ -154,7 +154,6 @@ const studentRedirectRoutes = [
   '/pages/coding-rounds.html',
   '/pages/coding-round.html',
   '/pages/coding-result.html',
-  '/pages/analytics.html',
   '/pages/placement-workspace.html'
 ];
 

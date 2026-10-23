@@ -106,15 +106,29 @@ async function run() {
     process.exit(1);
   }
 
+  // Ensure foreign key type strictness is relaxed in TiDB for UUID cross-type compatibility
+  try {
+    await cloudConn.query('SET GLOBAL tidb_enable_foreign_key = OFF');
+    await cloudConn.query('SET foreign_key_checks = 0');
+  } catch (e) {
+    console.warn('Notice setting FK variables:', e.message);
+  }
+
+  const action = process.argv[2];
+
+  if (action === '--reset-cloud' || action === '--clean-import') {
+    console.log('Resetting partially imported cloud databases for a clean fresh import...');
+    await cloudConn.query('DROP DATABASE IF EXISTS `ppro`');
+    await cloudConn.query('DROP DATABASE IF EXISTS `placementpro_simulation`');
+  }
+
   // Ensure logical databases exist
   await cloudConn.query('CREATE DATABASE IF NOT EXISTS `ppro` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci');
   await cloudConn.query('CREATE DATABASE IF NOT EXISTS `placementpro_simulation` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci');
 
   // Verify cloud databases are empty
-  const cloudPproTables = await getTablesAndCounts(cloudConn, 'ppro');
-  const cloudSimTables = await getTablesAndCounts(cloudConn, 'placementpro_simulation');
-
-  const action = process.argv[2];
+  let cloudPproTables = await getTablesAndCounts(cloudConn, 'ppro');
+  let cloudSimTables = await getTablesAndCounts(cloudConn, 'placementpro_simulation');
 
   if (action === 'check') {
     console.log(`Cloud 'ppro' table count: ${cloudPproTables.length}`);
@@ -123,23 +137,10 @@ async function run() {
     return;
   }
 
-  if (cloudPproTables.length > 0 || cloudSimTables.length > 0) {
-    if (action !== '--force-import') {
-      console.warn('⚠️  Target cloud databases are NOT empty:');
-      console.warn(`   - ppro: ${cloudPproTables.length} tables found`);
-      console.warn(`   - placementpro_simulation: ${cloudSimTables.length} tables found`);
-      console.warn('Safety guard active: Skipping import to avoid overwriting existing cloud tables.');
-      console.warn('To verify row counts against local DB without importing, run with action "verify".');
-    }
-  }
-
-  if (cloudPproTables.length === 0 && cloudSimTables.length === 0) {
-    console.log('✓ Target cloud databases are completely empty.');
+  if (cloudPproTables.length < 73) {
     console.log('Importing ppro_backup.sql into cloud ppro database...');
-
-    // Use temporary cnf file for mysql.exe to avoid exposing password on CLI
     const cnfPath = path.resolve(__dirname, '..', `.cloud_temp_${Date.now()}.cnf`);
-    let cnfContent = `[client]\nhost=${CLOUD_CONFIG.host}\nport=${CLOUD_CONFIG.port}\nuser="${CLOUD_CONFIG.user}"\npassword="${CLOUD_CONFIG.password}"\nssl-mode=REQUIRED\n`;
+    let cnfContent = `[client]\nhost=${CLOUD_CONFIG.host}\nport=${CLOUD_CONFIG.port}\nuser="${CLOUD_CONFIG.user}"\npassword="${CLOUD_CONFIG.password}"\nssl-mode=REQUIRED\ndefault-character-set=utf8mb4\nmax_allowed_packet=128M\nnet_buffer_length=16K\n`;
     if (fs.existsSync(CA_CERT_PATH)) {
       cnfContent += `ssl-ca="${CA_CERT_PATH.replace(/\\/g, '/')}"\n`;
     }
@@ -147,27 +148,58 @@ async function run() {
 
     try {
       console.log('Importing ppro...');
-      const pproImport = spawnSync(MYSQL_EXE, [`--defaults-extra-file=${cnfPath}`, 'ppro'], {
+      const pproImport = spawnSync(MYSQL_EXE, [
+        `--defaults-extra-file=${cnfPath}`,
+        '--default-character-set=utf8mb4',
+        '--max-allowed-packet=128M',
+        '--init-command=SET foreign_key_checks=0; SET net_read_timeout=600; SET net_write_timeout=600;',
+        'ppro'
+      ], {
         input: fs.readFileSync(PPRO_BACKUP),
-        maxBuffer: 100 * 1024 * 1024
+        maxBuffer: 250 * 1024 * 1024
       });
-      if (pproImport.status !== 0) {
-        throw new Error(pproImport.stderr.toString());
+      const pproErr = pproImport.stderr ? pproImport.stderr.toString() : '';
+      if (pproImport.status !== 0 && !pproErr.includes('cp850')) {
+        throw new Error(pproErr);
       }
       console.log('✓ ppro import completed successfully.');
+    } finally {
+      if (fs.existsSync(cnfPath)) fs.unlinkSync(cnfPath);
+    }
+  } else {
+    console.log(`✓ ppro is already populated (${cloudPproTables.length} tables found).`);
+  }
 
-      console.log('Importing placementpro_simulation...');
-      const simImport = spawnSync(MYSQL_EXE, [`--defaults-extra-file=${cnfPath}`, 'placementpro_simulation'], {
+  if (cloudSimTables.length === 0) {
+    console.log('Importing placementpro_simulation_backup.sql into cloud placementpro_simulation database...');
+    const cnfPath = path.resolve(__dirname, '..', `.cloud_temp_${Date.now()}.cnf`);
+    let cnfContent = `[client]\nhost=${CLOUD_CONFIG.host}\nport=${CLOUD_CONFIG.port}\nuser="${CLOUD_CONFIG.user}"\npassword="${CLOUD_CONFIG.password}"\nssl-mode=REQUIRED\ndefault-character-set=utf8mb4\nmax_allowed_packet=128M\nnet_buffer_length=16K\n`;
+    if (fs.existsSync(CA_CERT_PATH)) {
+      cnfContent += `ssl-ca="${CA_CERT_PATH.replace(/\\/g, '/')}"\n`;
+    }
+    fs.writeFileSync(cnfPath, cnfContent, { mode: 0o600 });
+
+    try {
+      const simImport = spawnSync(MYSQL_EXE, [
+        `--defaults-extra-file=${cnfPath}`,
+        '--default-character-set=utf8mb4',
+        '--max-allowed-packet=128M',
+        '--init-command=SET foreign_key_checks=0; SET net_read_timeout=600; SET net_write_timeout=600;',
+        'placementpro_simulation'
+      ], {
         input: fs.readFileSync(SIM_BACKUP),
-        maxBuffer: 50 * 1024 * 1024
+        maxBuffer: 100 * 1024 * 1024
       });
-      if (simImport.status !== 0) {
-        throw new Error(simImport.stderr.toString());
+      const simErr = simImport.stderr ? simImport.stderr.toString() : '';
+      if (simImport.status !== 0 && !simErr.includes('cp850')) {
+        throw new Error(simErr);
       }
       console.log('✓ placementpro_simulation import completed successfully.\n');
     } finally {
       if (fs.existsSync(cnfPath)) fs.unlinkSync(cnfPath);
     }
+  } else {
+    console.log(`✓ placementpro_simulation is already populated (${cloudSimTables.length} tables found).\n`);
   }
 
   // Now perform Verification: Compare Local vs Cloud

@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>C-Visualize — Interactive C Compiler & Six-Phase Visualizer</title>
-  <meta name="description" content="Full-Stack Interactive C Compiler and Six-Phase Visualizer powered by GCC, Node.js, and MySQL." />
-  
+  <meta name="description"
+    content="Full-Stack Interactive C Compiler and Six-Phase Visualizer powered by GCC, Node.js, and MySQL." />
+
   <link rel="stylesheet" href="/css/compiler/theme.css" />
   <link rel="stylesheet" href="/css/compiler/base.css" />
   <link rel="stylesheet" href="/css/compiler/layout.css" />
@@ -17,519 +19,627 @@
   <!-- Google Fonts: Inter & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
 </head>
+
 <body>
   <div class="app-container">
     <aside class="ide-sidebar" id="ide-sidebar">
       <div class="sidebar-brand">
         <span class="brand-mark" aria-hidden="true">C</span>
         <span class="sidebar-brand-name">C-Visualize</span>
-        <button class="icon-button sidebar-collapse" id="sidebar-toggle" aria-label="Collapse sidebar" title="Collapse sidebar">‹</button>
+        <button class="icon-button sidebar-collapse" id="sidebar-toggle" aria-label="Collapse sidebar"
+          title="Collapse sidebar">‹</button>
       </div>
       <nav class="sidebar-nav" aria-label="Main navigation">
-        
+
         <div class="sidebar-section-label">WORKSPACE</div>
-        <a href="/study-reader?subject=compiler-design" class="sidebar-nav-item" style="text-decoration:none; color: #2563EB; font-weight: 600;" id="sidebar-back-to-theory" title="Return to Compiler Design Theory"><span class="nav-glyph" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg></span><span class="nav-label">Back to Theory</span></a>
-        <button class="sidebar-nav-item active" data-sidebar-action="compiler"><span class="nav-glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m8 8-4 4 4 4M16 8l4 4-4 4M14 5l-4 14"/></svg></span><span class="nav-label">Compiler</span></button>
-        <button class="sidebar-nav-item" id="sidebar-projects"><span class="nav-glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 7h7l2 2h9v10H3zM3 7V5h7l2 2"/></svg></span><span class="nav-label">My Projects</span></button>
-        <button class="sidebar-nav-item sidebar-save" id="sidebar-save-project"><span class="nav-glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 4h12l3 3v13H4V4zM8 4v6h8V4M8 20v-6h8v6"/></svg></span><span class="nav-label">Save current project</span></button>
-        <button class="sidebar-nav-item" id="sidebar-history" title="Compilation history is not available in this version"><span class="nav-glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><span class="nav-label">Compilation History</span><span class="nav-soon">—</span></button>
-        <div class="sidebar-section-heading"><span class="sidebar-section-label">PROJECT FILES</span><button class="icon-button" id="sidebar-new-project" aria-label="Create project" title="Create project">+</button></div>
-        <button class="project-entry active" data-sidebar-action="compiler"><span class="file-glyph">C</span><span class="project-entry-label" id="sidebar-current-project">main.c</span></button>
-        <div class="sidebar-project-list" id="sidebar-project-list" aria-live="polite"><span class="sidebar-empty-projects">Saved projects are unavailable in guest mode</span></div>
+        <a href="/study-reader?subject=compiler-design" class="sidebar-nav-item"
+          style="text-decoration:none; color: #2563EB; font-weight: 600;" id="sidebar-back-to-theory"
+          title="Return to Compiler Design Theory"><span class="nav-glyph" aria-hidden="true"><svg viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="19" y1="12" x2="5" y2="12"></line>
+              <polyline points="12 19 5 12 12 5"></polyline>
+            </svg></span><span class="nav-label">Back to Theory</span></a>
+        <button class="sidebar-nav-item active" data-sidebar-action="compiler"><span class="nav-glyph"
+            aria-hidden="true"><svg viewBox="0 0 24 24">
+              <path d="m8 8-4 4 4 4M16 8l4 4-4 4M14 5l-4 14" />
+            </svg></span><span class="nav-label">Compiler</span></button>
+        <button class="sidebar-nav-item" id="sidebar-projects"><span class="nav-glyph" aria-hidden="true"><svg
+              viewBox="0 0 24 24">
+              <path d="M3 7h7l2 2h9v10H3zM3 7V5h7l2 2" />
+            </svg></span><span class="nav-label">My Projects</span></button>
+        <button class="sidebar-nav-item sidebar-save" id="sidebar-save-project"><span class="nav-glyph"
+            aria-hidden="true"><svg viewBox="0 0 24 24">
+              <path d="M5 4h12l3 3v13H4V4zM8 4v6h8V4M8 20v-6h8v6" />
+            </svg></span><span class="nav-label">Save current project</span></button>
+        <button class="sidebar-nav-item" id="sidebar-history"
+          title="Compilation history is not available in this version"><span class="nav-glyph" aria-hidden="true"><svg
+              viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="9" />
+              <path d="M12 7v5l3 2" />
+            </svg></span><span class="nav-label">Compilation History</span><span class="nav-soon">—</span></button>
+        <div class="sidebar-section-heading"><span class="sidebar-section-label">PROJECT FILES</span><button
+            class="icon-button" id="sidebar-new-project" aria-label="Create project" title="Create project">+</button>
+        </div>
+        <button class="project-entry active" data-sidebar-action="compiler"><span class="file-glyph">C</span><span
+            class="project-entry-label" id="sidebar-current-project">main.c</span></button>
+        <div class="sidebar-project-list" id="sidebar-project-list" aria-live="polite"><span
+            class="sidebar-empty-projects">Sign in to view saved projects</span></div>
         <div class="sidebar-section-heading examples-heading"><span class="sidebar-section-label">EXAMPLES</span></div>
         <label class="sidebar-example-label" for="select-sample-program">Choose a program</label>
-        <select id="select-sample-program" class="form-select sidebar-sample-select" aria-label="Choose code example"><option value="">Choose an example…</option></select>
+        <select id="select-sample-program" class="form-select sidebar-sample-select" aria-label="Choose code example">
+          <option value="">Choose an example…</option>
+        </select>
       </nav>
       <div class="sidebar-footer">
-        <div class="sidebar-footer-row"><span class="sidebar-footer-label">Environment</span><span id="gcc-version-short">GCC</span></div>
-        <div class="sidebar-account" id="sidebar-account"><span class="account-avatar">C</span><span class="account-copy"><strong>Guest mode</strong><small>Ready to compile</small></span></div>
+        <div class="sidebar-footer-row"><span class="sidebar-footer-label">Environment</span><span
+            id="gcc-version-short">GCC</span></div>
       </div>
     </aside>
     <div class="ide-main">
-    <!-- Top Header Navigation -->
-    <header class="app-header">
-      <div class="brand-section">
-        <button class="icon-button header-sidebar-toggle" id="sidebar-toggle-top" aria-label="Toggle sidebar">☰</button>
-        <div class="breadcrumbs"><span>C-Visualize</span><span class="breadcrumb-divider">/</span><strong id="current-project-name">Untitled Program</strong><span class="breadcrumb-divider">/</span><span>main.c</span></div>
-      </div>
-
-      <div class="header-controls">
-        <!-- Project Controls -->
-        <div class="d-flex gap-2">
-          <button class="btn btn-secondary btn-sm" id="btn-new-project">New</button>
-          <button class="btn btn-secondary btn-sm" id="btn-open-project">Open</button>
-          <button class="btn btn-secondary btn-sm" id="btn-save-project">Save</button>
+      <!-- Top Header Navigation -->
+      <header class="app-header">
+        <div class="brand-section">
+          <button class="icon-button header-sidebar-toggle" id="sidebar-toggle-top"
+            aria-label="Toggle sidebar">☰</button>
+          <div class="breadcrumbs"><span>C-Visualize</span><span class="breadcrumb-divider">/</span><strong
+              id="current-project-name">Untitled Program</strong><span
+              class="breadcrumb-divider">/</span><span>main.c</span></div>
         </div>
 
-        <!-- C Language Standard -->
-        <select id="select-c-standard" class="form-select editor-select-sm" style="width: 85px;" title="C Language Standard">
-          <option value="c17" selected>C17</option>
-          <option value="c23">C23</option>
-          <option value="c11">C11</option>
-          <option value="c99">C99</option>
-          <option value="c90">C90</option>
-        </select>
-
-        <!-- Optimization Level -->
-        <select id="select-opt-level" class="form-select editor-select-sm" style="width: 75px;" title="GCC Optimization Level">
-          <option value="-O0" selected>-O0</option>
-          <option value="-O1">-O1</option>
-          <option value="-O2">-O2</option>
-          <option value="-O3">-O3</option>
-        </select>
-      </div>
-
-      
-      <div class="header-actions">
-        <a href="/study-reader?subject=compiler-design" class="btn btn-secondary btn-sm" id="btn-back-to-theory" style="display:inline-flex; align-items:center; gap:6px; text-decoration:none; color:#2563EB; font-weight:600; padding: 4px 10px; border-radius: 6px; border: 1px solid #BFDBFE; background: #EFF6FF;" title="Back to Compiler Design Theory in PlacementPro">
-          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-          Back to Theory
-        </a>
-      </div>
-    </header>
-
-    <!-- Mobile Navigation Switcher -->
-    <nav class="mobile-nav-tabs">
-      <button class="mobile-nav-btn active" data-target-panel="editor">1. Code Editor</button>
-      <button class="mobile-nav-btn" data-target-panel="visualizer">2. 6-Phase Visualizer</button>
-      <button class="mobile-nav-btn" data-target-panel="output">3. Diagnostics &amp; Run</button>
-    </nav>
-
-    <!-- 3-Column Main Workspace -->
-    <main class="workspace-main">
-      <!-- LEFT PANEL: C Code Editor -->
-      <section class="panel panel-editor mobile-active">
-        <div class="editor-wrapper">
-          <div class="editor-toolbar">
-            <div class="editor-toolbar-left">
-              <span class="panel-title" style="font-size: 12px;">C Source Editor</span>
-            </div>
-            <div class="editor-toolbar-right">
-              <select id="select-editor-theme" class="form-select editor-select-sm" style="width: 90px;" title="Editor Color Theme">
-                <option value="c-visualize-light" selected>Light Theme</option>
-                <option value="vs-dark">Dark Theme</option>
-              </select>
-              <div class="d-flex gap-2">
-                <button class="btn btn-secondary btn-sm" id="btn-font-dec" title="Decrease Font Size">A-</button>
-                <button class="btn btn-secondary btn-sm" id="btn-font-reset" title="Reset Font Size">13</button>
-                <button class="btn btn-secondary btn-sm" id="btn-font-inc" title="Increase Font Size">A+</button>
-              </div>
-            </div>
+        <div class="header-controls">
+          <!-- Project Controls -->
+          <div class="d-flex gap-2">
+            <button class="btn btn-secondary btn-sm" id="btn-new-project">New</button>
+            <button class="btn btn-secondary btn-sm" id="btn-open-project">Open</button>
+            <button class="btn btn-secondary btn-sm" id="btn-save-project">Save</button>
           </div>
 
-          <!-- Sample Learning Objective Banner -->
-          <div id="sample-description-banner" style="display:none; padding:8px 12px; background:var(--light-blue); border-bottom:1px solid #BFDBFE; font-size:12px; color:var(--dark-blue);"></div>
+          <!-- C Language Standard -->
+          <select id="select-c-standard" class="form-select editor-select-sm" style="width: 85px;"
+            title="C Language Standard">
+            <option value="c17" selected>C17</option>
+            <option value="c23">C23</option>
+            <option value="c11">C11</option>
+            <option value="c99">C99</option>
+            <option value="c90">C90</option>
+          </select>
 
-          <!-- Editor Body -->
-          <div class="monaco-container" id="monaco-editor-container">
-            <textarea id="fallback-textarea" class="textarea-editor-fallback" spellcheck="false" placeholder="Write or paste your C source code here..."></textarea>
-          </div>
-
-          <!-- Action Buttons Bar -->
-          <div class="editor-action-bar">
-            <span class="badge badge-secondary" id="compilation-status-badge">Ready</span>
-            <div class="action-buttons">
-              <button class="btn btn-primary" id="btn-compile-visualize">
-                <svg style="width:14px; height:14px; fill:currentColor;" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd" />
-                </svg>
-                Compile &amp; Visualize
-              </button>
-              <button class="btn btn-secondary run-action" id="btn-run-program" disabled>
-                <svg style="width:14px; height:14px; fill:currentColor;" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
-                </svg>
-                Run Program
-              </button>
-            </div>
-          </div>
+          <!-- Optimization Level -->
+          <select id="select-opt-level" class="form-select editor-select-sm" style="width: 75px;"
+            title="GCC Optimization Level">
+            <option value="-O0" selected>-O0</option>
+            <option value="-O1">-O1</option>
+            <option value="-O2">-O2</option>
+            <option value="-O3">-O3</option>
+          </select>
         </div>
-      </section>
 
-      <!-- CENTER PANEL: Six-Phase Visualizer -->
-      <section class="panel panel-visualizer">
-        <div class="visualizer-wrapper">
-          <!-- Six-Phase Stepper Tabs Navigation -->
-          <div class="phase-pipeline">
-            <button class="phase-tab active" data-phase="lexical">
-              <span class="phase-number">1</span>
-              <span>Lexical</span>
-              <span class="phase-status-dot"></span>
-            </button>
-            <button class="phase-tab" data-phase="syntax">
-              <span class="phase-number">2</span>
-              <span>Syntax (AST)</span>
-              <span class="phase-status-dot"></span>
-            </button>
-            <button class="phase-tab" data-phase="semantic">
-              <span class="phase-number">3</span>
-              <span>Semantic</span>
-              <span class="phase-status-dot"></span>
-            </button>
-            <button class="phase-tab" data-phase="intermediate">
-              <span class="phase-number">4</span>
-              <span>Intermediate (IR)</span>
-              <span class="phase-status-dot"></span>
-            </button>
-            <button class="phase-tab" data-phase="optimization">
-              <span class="phase-number">5</span>
-              <span>Optimization</span>
-              <span class="phase-status-dot"></span>
-            </button>
-            <button class="phase-tab" data-phase="target_code">
-              <span class="phase-number">6</span>
-              <span>Target Assembly</span>
-              <span class="phase-status-dot"></span>
-            </button>
-            <button class="phase-tab" data-phase="preprocessing" style="border-left: 1px solid var(--border-color); margin-left: 8px;">
-              <span class="supporting-badge">Build</span>
-              <span>Preprocessing</span>
-            </button>
-            <button class="phase-tab" data-phase="linking">
-              <span class="supporting-badge">Build</span>
-              <span>Linking</span>
-            </button>
-          </div>
 
-          <!-- PHASE 1: LEXICAL ANALYSIS -->
-          <div class="phase-container active" id="phase-lexical">
-            <div class="phase-intro-card">
-              <div class="phase-intro-header">
-                <h3 class="phase-intro-title">Phase 1: Lexical Analysis (Scanning &amp; Tokenization)</h3>
-                <span class="badge badge-primary">Phase 1 of 6</span>
-              </div>
-              <p class="phase-intro-desc">
-                The lexical analyzer scans the stream of C source characters and groups them into meaningful language units called <strong>Tokens</strong>.
-                Tokens include keywords, identifiers, constants, string literals, operators, and punctuation. Comments and whitespaces are stripped.
-              </p>
-              <div class="phase-provenance">
-                <strong>Producing Tool:</strong> c-visualize-lexer (ISO C23 Tokenizer) • Click any token below to highlight its exact source position in Monaco.
-              </div>
-            </div>
-
-            <!-- Token Filter & Search -->
-            <div class="token-filter-bar">
-              <input type="text" id="token-search-input" class="form-control form-control-sm token-search-input" placeholder="Search tokens or types..." />
-              <div class="token-category-pills" id="token-categories">
-                <span class="category-pill active" data-category="ALL">All</span>
-                <span class="category-pill" data-category="KEYWORD">Keywords</span>
-                <span class="category-pill" data-category="IDENTIFIER">Identifiers</span>
-                <span class="category-pill" data-category="OPERATOR">Operators</span>
-                <span class="category-pill" data-category="NUMERIC_CONSTANT">Constants</span>
-                <span class="category-pill" data-category="STRING_LITERAL">Strings</span>
-                <span class="category-pill" data-category="PUNCTUATION">Punctuation</span>
-                <span class="category-pill" data-category="PREPROCESSOR">Directives</span>
-              </div>
-            </div>
-
-            <!-- Tokens Table -->
-            <div class="table-responsive">
-              <table class="c-table">
-                <thead>
-                  <tr>
-                    <th style="width: 80px;">Pos</th>
-                    <th style="width: 140px;">Token Class</th>
-                    <th style="width: 180px;">Lexeme / Value</th>
-                    <th>Educational Semantic Meaning</th>
-                    <th style="width: 70px;">Action</th>
-                  </tr>
-                </thead>
-                <tbody id="tokens-table-body">
-                  <tr><td colspan="5" style="text-align:center; padding: 20px; color: var(--secondary-text);">Tokens will be displayed here upon compilation.</td></tr>
-                </tbody>
-              </table>
-            </div>
-
-            <div style="display: flex; justify-content: flex-end; margin-top: 16px;">
-              <button class="btn btn-primary btn-sm" data-nav-phase="syntax">Next: Phase 2 (Syntax Analysis) &rarr;</button>
-            </div>
-          </div>
-
-          <!-- PHASE 2: SYNTAX ANALYSIS -->
-          <div class="phase-container" id="phase-syntax">
-            <div class="phase-intro-card">
-              <div class="phase-intro-header">
-                <h3 class="phase-intro-title">Phase 2: Syntax Analysis (Parsing &amp; AST Generation)</h3>
-                <span class="badge badge-primary">Phase 2 of 6</span>
-              </div>
-              <p class="phase-intro-desc">
-                The syntax analyzer checks whether the tokens satisfy the formal grammar of the C language, generating a hierarchical
-                <strong>Abstract Syntax Tree (AST)</strong>. The AST establishes operator precedence, nested scopes, and statement structure.
-              </p>
-              <div class="phase-provenance">
-                <strong>Producing Tool:</strong> c-visualize-ast-engine (ISO C Frontend) • Click any tree node to highlight its source code range in Monaco.
-              </div>
-            </div>
-
-            <!-- Interactive AST Tree Container -->
-            <div class="ast-canvas-container" id="ast-svg-container">
-              <p style="text-align: center; color: var(--secondary-text); padding: 40px;">Abstract Syntax Tree will be generated upon compilation.</p>
-            </div>
-
-            <div style="display: flex; justify-content: space-between; margin-top: 16px;">
-              <button class="btn btn-secondary btn-sm" data-nav-phase="lexical">&larr; Previous: Phase 1</button>
-              <button class="btn btn-primary btn-sm" data-nav-phase="semantic">Next: Phase 3 (Semantic Analysis) &rarr;</button>
-            </div>
-          </div>
-
-          <!-- PHASE 3: SEMANTIC ANALYSIS -->
-          <div class="phase-container" id="phase-semantic">
-            <div class="phase-intro-card">
-              <div class="phase-intro-header">
-                <h3 class="phase-intro-title">Phase 3: Semantic Analysis &amp; Symbol Table</h3>
-                <span class="badge badge-primary">Phase 3 of 6</span>
-              </div>
-              <p class="phase-intro-desc">
-                The semantic analyzer verifies type compatibility, identifier scoping, function argument counts, and variable declarations.
-                It constructs <strong>Symbol Tables</strong> that record type, scope lifetime, and memory characteristics of all identifiers.
-              </p>
-              <div class="phase-provenance">
-                <strong>Producing Tool:</strong> c-visualize-symbol-engine &amp; GCC Semantic Diagnostic Checker
-              </div>
-            </div>
-
-            <!-- Symbol Table -->
-            <div class="table-responsive">
-              <table class="c-table">
-                <thead>
-                  <tr>
-                    <th>Identifier</th>
-                    <th>Category</th>
-                    <th>Data Type</th>
-                    <th>Scope Lifetime</th>
-                    <th>Declaration</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody id="symbol-table-body">
-                  <tr><td colspan="6" style="text-align:center; padding: 20px; color: var(--secondary-text);">Symbol table will populate upon compilation.</td></tr>
-                </tbody>
-              </table>
-            </div>
-
-            <!-- GCC Semantic Diagnostics Container -->
-            <div id="semantic-diagnostics-container"></div>
-
-            <div style="display: flex; justify-content: space-between; margin-top: 16px;">
-              <button class="btn btn-secondary btn-sm" data-nav-phase="syntax">&larr; Previous: Phase 2</button>
-              <button class="btn btn-primary btn-sm" data-nav-phase="intermediate">Next: Phase 4 (Intermediate Code) &rarr;</button>
-            </div>
-          </div>
-
-          <!-- PHASE 4: INTERMEDIATE CODE GENERATION -->
-          <div class="phase-container" id="phase-intermediate">
-            <div class="phase-intro-card">
-              <div class="phase-intro-header">
-                <h3 class="phase-intro-title">Phase 4: Intermediate Code Generation (GCC GIMPLE IR)</h3>
-                <span class="badge badge-primary">Phase 4 of 6</span>
-              </div>
-              <p class="phase-intro-desc">
-                The compiler lowers the high-level C AST into an intermediate representation called <strong>GIMPLE</strong>.
-                In GIMPLE, complex nested expressions are decomposed into <strong>3-Address Code</strong> instructions using temporary variables (<code>D.xxxx</code>).
-              </p>
-              <div class="phase-provenance">
-                <strong>Producing Tool:</strong> Authoritative GCC <code>-fdump-tree-gimple</code> Dump Facility
-              </div>
-            </div>
-
-            <div class="code-viewer-card">
-              <div class="code-viewer-header">
-                <div id="ir-metadata" style="font-size: 11px; color: var(--secondary-text);">GCC -fdump-tree-gimple</div>
-                <button class="btn btn-secondary btn-sm" id="btn-copy-ir">Copy GIMPLE</button>
-              </div>
-              <pre class="code-pre" id="ir-code-content">Compile a C program to inspect genuine GCC GIMPLE IR.</pre>
-            </div>
-
-            <div style="display: flex; justify-content: space-between; margin-top: 16px;">
-              <button class="btn btn-secondary btn-sm" data-nav-phase="semantic">&larr; Previous: Phase 3</button>
-              <button class="btn btn-primary btn-sm" data-nav-phase="optimization">Next: Phase 5 (Optimization) &rarr;</button>
-            </div>
-          </div>
-
-          <!-- PHASE 5: CODE OPTIMIZATION -->
-          <div class="phase-container" id="phase-optimization">
-            <div class="phase-intro-card">
-              <div class="phase-intro-header">
-                <h3 class="phase-intro-title">Phase 5: Code Optimization (GCC Optimization Passes)</h3>
-                <span class="badge badge-primary">Phase 5 of 6</span>
-              </div>
-              <p class="phase-intro-desc">
-                Optimization passes transform intermediate code into a more efficient form without altering program semantics.
-                Techniques include <strong>Constant Folding</strong>, <strong>Dead-Code Elimination</strong>, <strong>Static Single Assignment (SSA)</strong>, and <strong>Basic Block Restructuring</strong>.
-              </p>
-              <div class="phase-provenance">
-                <strong>Producing Tool:</strong> GCC Optimization Pipeline (<code>-O0</code> vs selected <code>-O1/-O2/-O3 -fdump-tree-optimized</code>)
-              </div>
-            </div>
-
-            <div id="optimization-diff-container">
-              <p style="text-align: center; color: var(--secondary-text); padding: 40px;">Compile code to compare unoptimized vs optimized GIMPLE artifacts.</p>
-            </div>
-
-            <div style="display: flex; justify-content: space-between; margin-top: 16px;">
-              <button class="btn btn-secondary btn-sm" data-nav-phase="intermediate">&larr; Previous: Phase 4</button>
-              <button class="btn btn-primary btn-sm" data-nav-phase="target_code">Next: Phase 6 (Target Assembly) &rarr;</button>
-            </div>
-          </div>
-
-          <!-- PHASE 6: TARGET CODE GENERATION -->
-          <div class="phase-container" id="phase-target_code">
-            <div class="phase-intro-card">
-              <div class="phase-intro-header">
-                <h3 class="phase-intro-title">Phase 6: Target Code Generation (x86_64 Assembly)</h3>
-                <span class="badge badge-primary">Phase 6 of 6</span>
-              </div>
-              <p class="phase-intro-desc">
-                The code generator maps intermediate representations into machine-level assembly instructions for the target CPU architecture.
-                It assigns CPU registers (<code>%rax</code>, <code>%rbp</code>, <code>%rsp</code>), manages stack frames, and emits machine instructions (<code>movl</code>, <code>pushq</code>, <code>call</code>).
-              </p>
-              <div class="phase-provenance">
-                <strong>Producing Tool:</strong> GCC <code>-S -fverbose-asm</code> (GNU Assembler)
-              </div>
-            </div>
-
-            <div class="code-viewer-card">
-              <div class="code-viewer-header">
-                <div id="assembly-metadata" style="font-size: 11px; color: var(--secondary-text);">Actual GCC target and compiler version appear after compilation.</div>
-                <button class="btn btn-secondary btn-sm" id="btn-copy-assembly">Copy Assembly</button>
-              </div>
-              <div class="code-pre" id="assembly-code-content" style="max-height: 480px; overflow-y: auto;">Compile code to generate target assembly from GCC.</div>
-            </div>
-
-            <div style="display: flex; justify-content: space-between; margin-top: 16px;">
-              <button class="btn btn-secondary btn-sm" data-nav-phase="optimization">&larr; Previous: Phase 5</button>
-              <button class="btn btn-success btn-sm" id="btn-quick-run" onclick="document.getElementById('btn-run-program').click()">Run Compiled Binary &rarr;</button>
-            </div>
-          </div>
-
-          <!-- SUPPORTING STAGE: PREPROCESSING -->
-          <div class="phase-container" id="phase-preprocessing">
-            <div class="phase-intro-card">
-              <div class="phase-intro-header">
-                <h3 class="phase-intro-title">Supporting Stage: Preprocessing</h3>
-                <span class="supporting-badge">Build Stage</span>
-              </div>
-              <p class="phase-intro-desc">
-                Before lexical analysis begins, the C preprocessor handles all directives beginning with <code>#</code>.
-                It recursively inserts header files (<code>#include</code>), replaces symbolic constants (<code>#define</code>), and evaluates conditional directives (<code>#ifdef</code>).
-              </p>
-              <div class="phase-provenance">
-                <strong>Producing Tool:</strong> GCC Preprocessor (<code>gcc -E -dD</code>)
-              </div>
-            </div>
-
-            <div class="code-viewer-card">
-              <div class="code-viewer-header">
-                <span style="font-size: 11px; color: var(--secondary-text);">Preprocessed Translation Unit</span>
-              </div>
-              <pre class="code-pre" id="preproc-code" style="max-height: 480px; overflow-y: auto;">Compile program to inspect preprocessed output.</pre>
-            </div>
-          </div>
-
-          <!-- SUPPORTING STAGE: LINKING -->
-          <div class="phase-container" id="phase-linking">
-            <div class="phase-intro-card">
-              <div class="phase-intro-header">
-                <h3 class="phase-intro-title">Supporting Stage: Linking</h3>
-                <span class="supporting-badge">Build Stage</span>
-              </div>
-              <p class="phase-intro-desc">
-                After target code generation produces machine object files, the Linker resolves external symbol references (such as <code>printf</code> or <code>malloc</code>)
-                against C runtime libraries and bundles everything into the final standalone executable binary.
-              </p>
-              <div class="phase-provenance">
-                <strong>Producing Tool:</strong> GNU ld (Invoked via GCC Toolchain)
-              </div>
-            </div>
-
-            <div class="code-viewer-card" style="padding: 16px;">
-              <div id="linking-status-content">
-                Compile code to inspect linker status and library resolution.
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- RIGHT PANEL: Results, Console & Error Analyzer -->
-      <section class="panel panel-output">
-        <div class="output-resize-handle" id="output-resize-handle" role="separator" aria-label="Resize output panel" title="Drag to resize output panel"></div>
-        <div class="panel-header">
-          <span class="panel-title">
-            <svg style="width: 14px; height: 14px; fill: currentColor;" viewBox="0 0 20 20">
-              <path fill-rule="evenodd" d="M3 5a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2h-2.22l.123.489.804.804A1 1 0 0113 18H7a1 1 0 01-.707-1.707l.804-.804L7.22 15H5a2 2 0 01-2-2V5zm5.771 7H5V5h10v7H8.771z" clip-rule="evenodd" />
+        <div class="header-actions">
+          <a href="/study-reader?subject=compiler-design" class="btn btn-secondary btn-sm" id="btn-back-to-theory"
+            style="display:inline-flex; align-items:center; gap:6px; text-decoration:none; color:#2563EB; font-weight:600; padding: 4px 10px; border-radius: 6px; border: 1px solid #BFDBFE; background: #EFF6FF;"
+            title="Back to Compiler Design Theory in PlacementPro">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5">
+              <line x1="19" y1="12" x2="5" y2="12"></line>
+              <polyline points="12 19 5 12 12 5"></polyline>
             </svg>
-            Diagnostics &amp; Console
-          </span>
-          <div class="panel-actions">
-            <div class="output-tabs" role="tablist" aria-label="Output panel views">
-              <button class="output-tab active" data-output-tab="output-pane" role="tab" aria-selected="true">Output</button>
-              <button class="output-tab" data-output-tab="diagnostics-pane" role="tab" aria-selected="false">Diagnostics</button>
-              <button class="output-tab" data-output-tab="terminal-pane" role="tab" aria-selected="false">Terminal / Input</button>
-              <button class="output-tab" data-output-tab="build-log-pane" role="tab" aria-selected="false">Build Log</button>
-            </div>
-            <button class="btn btn-secondary btn-sm" id="btn-clear-console">Clear</button>
-            <button class="icon-button output-collapse" id="output-collapse" aria-label="Collapse output panel" title="Collapse output panel">⌄</button>
-          </div>
+            Back to Theory
+          </a>
         </div>
+      </header>
 
-        <div class="panel-content" style="padding: 12px; display: flex; flex-direction: column; gap: 12px;">
-          <!-- Compiler Error Analyzer -->
-          <div id="diagnostics-pane" class="output-pane">
-            <h4 style="font-size: 12px; font-weight: 600; color: var(--secondary-text); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">
-              Compiler Error Analyzer
-            </h4>
-            <div id="diagnostics-list-container">
-              <div style="text-align: center; color: var(--secondary-text); padding: 16px; font-size: 12px;">
-                Ready. Click "Compile &amp; Visualize" to run GCC analysis.
+      <!-- Mobile Navigation Switcher -->
+      <nav class="mobile-nav-tabs">
+        <button class="mobile-nav-btn active" data-target-panel="editor">1. Code Editor</button>
+        <button class="mobile-nav-btn" data-target-panel="visualizer">2. 6-Phase Visualizer</button>
+        <button class="mobile-nav-btn" data-target-panel="output">3. Diagnostics &amp; Run</button>
+      </nav>
+
+      <!-- 3-Column Main Workspace -->
+      <main class="workspace-main">
+        <!-- LEFT PANEL: C Code Editor -->
+        <section class="panel panel-editor mobile-active">
+          <div class="editor-wrapper">
+            <div class="editor-toolbar">
+              <div class="editor-toolbar-left">
+                <span class="panel-title" style="font-size: 12px;">C Source Editor</span>
+              </div>
+              <div class="editor-toolbar-right">
+                <select id="select-editor-theme" class="form-select editor-select-sm" style="width: 90px;"
+                  title="Editor Color Theme">
+                  <option value="c-visualize-light" selected>Light Theme</option>
+                  <option value="vs-dark">Dark Theme</option>
+                </select>
+                <div class="d-flex gap-2">
+                  <button class="btn btn-secondary btn-sm" id="btn-font-dec" title="Decrease Font Size">A-</button>
+                  <button class="btn btn-secondary btn-sm" id="btn-font-reset" title="Reset Font Size">13</button>
+                  <button class="btn btn-secondary btn-sm" id="btn-font-inc" title="Increase Font Size">A+</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Sample Learning Objective Banner -->
+            <div id="sample-description-banner"
+              style="display:none; padding:8px 12px; background:var(--light-blue); border-bottom:1px solid #BFDBFE; font-size:12px; color:var(--dark-blue);">
+            </div>
+
+            <!-- Editor Body -->
+            <div class="monaco-container" id="monaco-editor-container">
+              <textarea id="fallback-textarea" class="textarea-editor-fallback" spellcheck="false"
+                placeholder="Write or paste your C source code here..."></textarea>
+            </div>
+
+            <!-- Action Buttons Bar -->
+            <div class="editor-action-bar">
+              <span class="badge badge-secondary" id="compilation-status-badge">Ready</span>
+              <div class="action-buttons">
+                <button class="btn btn-primary" id="btn-compile-visualize">
+                  <svg style="width:14px; height:14px; fill:currentColor;" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd"
+                      d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z"
+                      clip-rule="evenodd" />
+                  </svg>
+                  Compile &amp; Visualize
+                </button>
+                <button class="btn btn-secondary run-action" id="btn-run-program" disabled>
+                  <svg style="width:14px; height:14px; fill:currentColor;" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
+                      clip-rule="evenodd" />
+                  </svg>
+                  Run Program
+                </button>
               </div>
             </div>
           </div>
+        </section>
 
-          <!-- Interactive Stdin Input for scanf() -->
-          <div id="terminal-pane" class="output-pane">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-              <label for="console-stdin" style="font-size: 11px; font-weight: 600; color: var(--secondary-text); text-transform: uppercase;">Standard Input (stdin for scanf):</label>
-              <span style="font-size: 10px; color: var(--muted-text);">Enter every value scanf reads, in order; spaces or newlines work.</span>
+        <!-- CENTER PANEL: Six-Phase Visualizer -->
+        <section class="panel panel-visualizer">
+          <div class="visualizer-wrapper">
+            <!-- Six-Phase Stepper Tabs Navigation -->
+            <div class="phase-pipeline">
+              <button class="phase-tab active" data-phase="lexical">
+                <span class="phase-number">1</span>
+                <span>Lexical</span>
+                <span class="phase-status-dot"></span>
+              </button>
+              <button class="phase-tab" data-phase="syntax">
+                <span class="phase-number">2</span>
+                <span>Syntax (AST)</span>
+                <span class="phase-status-dot"></span>
+              </button>
+              <button class="phase-tab" data-phase="semantic">
+                <span class="phase-number">3</span>
+                <span>Semantic</span>
+                <span class="phase-status-dot"></span>
+              </button>
+              <button class="phase-tab" data-phase="intermediate">
+                <span class="phase-number">4</span>
+                <span>Intermediate (IR)</span>
+                <span class="phase-status-dot"></span>
+              </button>
+              <button class="phase-tab" data-phase="optimization">
+                <span class="phase-number">5</span>
+                <span>Optimization</span>
+                <span class="phase-status-dot"></span>
+              </button>
+              <button class="phase-tab" data-phase="target_code">
+                <span class="phase-number">6</span>
+                <span>Target Assembly</span>
+                <span class="phase-status-dot"></span>
+              </button>
+              <button class="phase-tab" data-phase="preprocessing"
+                style="border-left: 1px solid var(--border-color); margin-left: 8px;">
+                <span class="supporting-badge">Build</span>
+                <span>Preprocessing</span>
+              </button>
+              <button class="phase-tab" data-phase="linking">
+                <span class="supporting-badge">Build</span>
+                <span>Linking</span>
+              </button>
             </div>
-            <textarea id="console-stdin" class="form-control" rows="2" style="font-family: var(--font-mono); font-size: 12px;" placeholder="Example: for n followed by n array values, enter 5\n64 34 25 12 22"></textarea>
-          </div>
 
-          <div id="build-log-pane" class="output-pane">
-            <h4 style="font-size: 12px; font-weight: 600; color: var(--secondary-text); margin-bottom: 6px; text-transform: uppercase;">Build Log</h4>
-            <pre id="console-build-log" class="code-pre" style="min-height: 90px; max-height: 180px; overflow: auto; white-space: pre-wrap;">Compile the current source to see build details.</pre>
-          </div>
+            <!-- PHASE 1: LEXICAL ANALYSIS -->
+            <div class="phase-container active" id="phase-lexical">
+              <div class="phase-intro-card">
+                <div class="phase-intro-header">
+                  <h3 class="phase-intro-title">Phase 1: Lexical Analysis (Scanning &amp; Tokenization)</h3>
+                  <span class="badge badge-primary">Phase 1 of 6</span>
+                </div>
+                <p class="phase-intro-desc">
+                  The lexical analyzer scans the stream of C source characters and groups them into meaningful language
+                  units called <strong>Tokens</strong>.
+                  Tokens include keywords, identifiers, constants, string literals, operators, and punctuation. Comments
+                  and whitespaces are stripped.
+                </p>
+                <div class="phase-provenance">
+                  <strong>Producing Tool:</strong> c-visualize-lexer (ISO C23 Tokenizer) • Click any token below to
+                  highlight its exact source position in Monaco.
+                </div>
+              </div>
 
-          <!-- Program Runtime Output (stdout) -->
-          <div id="output-pane" class="output-pane active" style="flex: 1; display: flex; flex-direction: column;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-              <span style="font-size: 11px; font-weight: 600; color: var(--secondary-text); text-transform: uppercase;">Standard Output (stdout):</span>
-              <div id="console-meta" style="font-size: 10px; display: flex; gap: 6px; align-items: center;"></div>
+              <!-- Token Filter & Search -->
+              <div class="token-filter-bar">
+                <input type="text" id="token-search-input" class="form-control form-control-sm token-search-input"
+                  placeholder="Search tokens or types..." />
+                <div class="token-category-pills" id="token-categories">
+                  <span class="category-pill active" data-category="ALL">All</span>
+                  <span class="category-pill" data-category="KEYWORD">Keywords</span>
+                  <span class="category-pill" data-category="IDENTIFIER">Identifiers</span>
+                  <span class="category-pill" data-category="OPERATOR">Operators</span>
+                  <span class="category-pill" data-category="NUMERIC_CONSTANT">Constants</span>
+                  <span class="category-pill" data-category="STRING_LITERAL">Strings</span>
+                  <span class="category-pill" data-category="PUNCTUATION">Punctuation</span>
+                  <span class="category-pill" data-category="PREPROCESSOR">Directives</span>
+                </div>
+              </div>
+
+              <!-- Tokens Table -->
+              <div class="table-responsive">
+                <table class="c-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 80px;">Pos</th>
+                      <th style="width: 140px;">Token Class</th>
+                      <th style="width: 180px;">Lexeme / Value</th>
+                      <th>Educational Semantic Meaning</th>
+                      <th style="width: 70px;">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tokens-table-body">
+                    <tr>
+                      <td colspan="5" style="text-align:center; padding: 20px; color: var(--secondary-text);">Tokens
+                        will be displayed here upon compilation.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div style="display: flex; justify-content: flex-end; margin-top: 16px;">
+                <button class="btn btn-primary btn-sm" data-nav-phase="syntax">Next: Phase 2 (Syntax Analysis)
+                  &rarr;</button>
+              </div>
             </div>
-          <pre id="console-stdout" style="flex: 1; min-height: 90px; max-height: 180px; background: #F8FAFC; color: #0F172A; padding: 10px; border-radius: var(--radius-md); font-family: var(--font-mono); font-size: 12px; line-height: 1.5; overflow-y: auto; white-space: pre-wrap;">Compile the current source, then click Run Program to execute its GCC binary.</pre>
+
+            <!-- PHASE 2: SYNTAX ANALYSIS -->
+            <div class="phase-container" id="phase-syntax">
+              <div class="phase-intro-card">
+                <div class="phase-intro-header">
+                  <h3 class="phase-intro-title">Phase 2: Syntax Analysis (Parsing &amp; AST Generation)</h3>
+                  <span class="badge badge-primary">Phase 2 of 6</span>
+                </div>
+                <p class="phase-intro-desc">
+                  The syntax analyzer checks whether the tokens satisfy the formal grammar of the C language, generating
+                  a hierarchical
+                  <strong>Abstract Syntax Tree (AST)</strong>. The AST establishes operator precedence, nested scopes,
+                  and statement structure.
+                </p>
+                <div class="phase-provenance">
+                  <strong>Producing Tool:</strong> c-visualize-ast-engine (ISO C Frontend) • Click any tree node to
+                  highlight its source code range in Monaco.
+                </div>
+              </div>
+
+              <!-- Interactive AST Tree Container -->
+              <div class="ast-canvas-container" id="ast-svg-container">
+                <p style="text-align: center; color: var(--secondary-text); padding: 40px;">Abstract Syntax Tree will be
+                  generated upon compilation.</p>
+              </div>
+
+              <div style="display: flex; justify-content: space-between; margin-top: 16px;">
+                <button class="btn btn-secondary btn-sm" data-nav-phase="lexical">&larr; Previous: Phase 1</button>
+                <button class="btn btn-primary btn-sm" data-nav-phase="semantic">Next: Phase 3 (Semantic Analysis)
+                  &rarr;</button>
+              </div>
+            </div>
+
+            <!-- PHASE 3: SEMANTIC ANALYSIS -->
+            <div class="phase-container" id="phase-semantic">
+              <div class="phase-intro-card">
+                <div class="phase-intro-header">
+                  <h3 class="phase-intro-title">Phase 3: Semantic Analysis &amp; Symbol Table</h3>
+                  <span class="badge badge-primary">Phase 3 of 6</span>
+                </div>
+                <p class="phase-intro-desc">
+                  The semantic analyzer verifies type compatibility, identifier scoping, function argument counts, and
+                  variable declarations.
+                  It constructs <strong>Symbol Tables</strong> that record type, scope lifetime, and memory
+                  characteristics of all identifiers.
+                </p>
+                <div class="phase-provenance">
+                  <strong>Producing Tool:</strong> c-visualize-symbol-engine &amp; GCC Semantic Diagnostic Checker
+                </div>
+              </div>
+
+              <!-- Symbol Table -->
+              <div class="table-responsive">
+                <table class="c-table">
+                  <thead>
+                    <tr>
+                      <th>Identifier</th>
+                      <th>Category</th>
+                      <th>Data Type</th>
+                      <th>Scope Lifetime</th>
+                      <th>Declaration</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="symbol-table-body">
+                    <tr>
+                      <td colspan="6" style="text-align:center; padding: 20px; color: var(--secondary-text);">Symbol
+                        table will populate upon compilation.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- GCC Semantic Diagnostics Container -->
+              <div id="semantic-diagnostics-container"></div>
+
+              <div style="display: flex; justify-content: space-between; margin-top: 16px;">
+                <button class="btn btn-secondary btn-sm" data-nav-phase="syntax">&larr; Previous: Phase 2</button>
+                <button class="btn btn-primary btn-sm" data-nav-phase="intermediate">Next: Phase 4 (Intermediate Code)
+                  &rarr;</button>
+              </div>
+            </div>
+
+            <!-- PHASE 4: INTERMEDIATE CODE GENERATION -->
+            <div class="phase-container" id="phase-intermediate">
+              <div class="phase-intro-card">
+                <div class="phase-intro-header">
+                  <h3 class="phase-intro-title">Phase 4: Intermediate Code Generation (GCC GIMPLE IR)</h3>
+                  <span class="badge badge-primary">Phase 4 of 6</span>
+                </div>
+                <p class="phase-intro-desc">
+                  The compiler lowers the high-level C AST into an intermediate representation called
+                  <strong>GIMPLE</strong>.
+                  In GIMPLE, complex nested expressions are decomposed into <strong>3-Address Code</strong> instructions
+                  using temporary variables (<code>D.xxxx</code>).
+                </p>
+                <div class="phase-provenance">
+                  <strong>Producing Tool:</strong> Authoritative GCC <code>-fdump-tree-gimple</code> Dump Facility
+                </div>
+              </div>
+
+              <div class="code-viewer-card">
+                <div class="code-viewer-header">
+                  <div id="ir-metadata" style="font-size: 11px; color: var(--secondary-text);">GCC -fdump-tree-gimple
+                  </div>
+                  <button class="btn btn-secondary btn-sm" id="btn-copy-ir">Copy GIMPLE</button>
+                </div>
+                <pre class="code-pre" id="ir-code-content">Compile a C program to inspect genuine GCC GIMPLE IR.</pre>
+              </div>
+
+              <div style="display: flex; justify-content: space-between; margin-top: 16px;">
+                <button class="btn btn-secondary btn-sm" data-nav-phase="semantic">&larr; Previous: Phase 3</button>
+                <button class="btn btn-primary btn-sm" data-nav-phase="optimization">Next: Phase 5 (Optimization)
+                  &rarr;</button>
+              </div>
+            </div>
+
+            <!-- PHASE 5: CODE OPTIMIZATION -->
+            <div class="phase-container" id="phase-optimization">
+              <div class="phase-intro-card">
+                <div class="phase-intro-header">
+                  <h3 class="phase-intro-title">Phase 5: Code Optimization (GCC Optimization Passes)</h3>
+                  <span class="badge badge-primary">Phase 5 of 6</span>
+                </div>
+                <p class="phase-intro-desc">
+                  Optimization passes transform intermediate code into a more efficient form without altering program
+                  semantics.
+                  Techniques include <strong>Constant Folding</strong>, <strong>Dead-Code Elimination</strong>,
+                  <strong>Static Single Assignment (SSA)</strong>, and <strong>Basic Block Restructuring</strong>.
+                </p>
+                <div class="phase-provenance">
+                  <strong>Producing Tool:</strong> GCC Optimization Pipeline (<code>-O0</code> vs selected
+                  <code>-O1/-O2/-O3 -fdump-tree-optimized</code>)
+                </div>
+              </div>
+
+              <div id="optimization-diff-container">
+                <p style="text-align: center; color: var(--secondary-text); padding: 40px;">Compile code to compare
+                  unoptimized vs optimized GIMPLE artifacts.</p>
+              </div>
+
+              <div style="display: flex; justify-content: space-between; margin-top: 16px;">
+                <button class="btn btn-secondary btn-sm" data-nav-phase="intermediate">&larr; Previous: Phase 4</button>
+                <button class="btn btn-primary btn-sm" data-nav-phase="target_code">Next: Phase 6 (Target Assembly)
+                  &rarr;</button>
+              </div>
+            </div>
+
+            <!-- PHASE 6: TARGET CODE GENERATION -->
+            <div class="phase-container" id="phase-target_code">
+              <div class="phase-intro-card">
+                <div class="phase-intro-header">
+                  <h3 class="phase-intro-title">Phase 6: Target Code Generation (x86_64 Assembly)</h3>
+                  <span class="badge badge-primary">Phase 6 of 6</span>
+                </div>
+                <p class="phase-intro-desc">
+                  The code generator maps intermediate representations into machine-level assembly instructions for the
+                  target CPU architecture.
+                  It assigns CPU registers (<code>%rax</code>, <code>%rbp</code>, <code>%rsp</code>), manages stack
+                  frames, and emits machine instructions (<code>movl</code>, <code>pushq</code>, <code>call</code>).
+                </p>
+                <div class="phase-provenance">
+                  <strong>Producing Tool:</strong> GCC <code>-S -fverbose-asm</code> (GNU Assembler)
+                </div>
+              </div>
+
+              <div class="code-viewer-card">
+                <div class="code-viewer-header">
+                  <div id="assembly-metadata" style="font-size: 11px; color: var(--secondary-text);">Actual GCC target
+                    and compiler version appear after compilation.</div>
+                  <button class="btn btn-secondary btn-sm" id="btn-copy-assembly">Copy Assembly</button>
+                </div>
+                <div class="code-pre" id="assembly-code-content" style="max-height: 480px; overflow-y: auto;">Compile
+                  code to generate target assembly from GCC.</div>
+              </div>
+
+              <div style="display: flex; justify-content: space-between; margin-top: 16px;">
+                <button class="btn btn-secondary btn-sm" data-nav-phase="optimization">&larr; Previous: Phase 5</button>
+                <button class="btn btn-success btn-sm" id="btn-quick-run"
+                  onclick="document.getElementById('btn-run-program').click()">Run Compiled Binary &rarr;</button>
+              </div>
+            </div>
+
+            <!-- SUPPORTING STAGE: PREPROCESSING -->
+            <div class="phase-container" id="phase-preprocessing">
+              <div class="phase-intro-card">
+                <div class="phase-intro-header">
+                  <h3 class="phase-intro-title">Supporting Stage: Preprocessing</h3>
+                  <span class="supporting-badge">Build Stage</span>
+                </div>
+                <p class="phase-intro-desc">
+                  Before lexical analysis begins, the C preprocessor handles all directives beginning with
+                  <code>#</code>.
+                  It recursively inserts header files (<code>#include</code>), replaces symbolic constants
+                  (<code>#define</code>), and evaluates conditional directives (<code>#ifdef</code>).
+                </p>
+                <div class="phase-provenance">
+                  <strong>Producing Tool:</strong> GCC Preprocessor (<code>gcc -E -dD</code>)
+                </div>
+              </div>
+
+              <div class="code-viewer-card">
+                <div class="code-viewer-header">
+                  <span style="font-size: 11px; color: var(--secondary-text);">Preprocessed Translation Unit</span>
+                </div>
+                <pre class="code-pre" id="preproc-code"
+                  style="max-height: 480px; overflow-y: auto;">Compile program to inspect preprocessed output.</pre>
+              </div>
+            </div>
+
+            <!-- SUPPORTING STAGE: LINKING -->
+            <div class="phase-container" id="phase-linking">
+              <div class="phase-intro-card">
+                <div class="phase-intro-header">
+                  <h3 class="phase-intro-title">Supporting Stage: Linking</h3>
+                  <span class="supporting-badge">Build Stage</span>
+                </div>
+                <p class="phase-intro-desc">
+                  After target code generation produces machine object files, the Linker resolves external symbol
+                  references (such as <code>printf</code> or <code>malloc</code>)
+                  against C runtime libraries and bundles everything into the final standalone executable binary.
+                </p>
+                <div class="phase-provenance">
+                  <strong>Producing Tool:</strong> GNU ld (Invoked via GCC Toolchain)
+                </div>
+              </div>
+
+              <div class="code-viewer-card" style="padding: 16px;">
+                <div id="linking-status-content">
+                  Compile code to inspect linker status and library resolution.
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- RIGHT PANEL: Results, Console & Error Analyzer -->
+        <section class="panel panel-output">
+          <div class="output-resize-handle" id="output-resize-handle" role="separator" aria-label="Resize output panel"
+            title="Drag to resize output panel"></div>
+          <div class="panel-header">
+            <span class="panel-title">
+              <svg style="width: 14px; height: 14px; fill: currentColor;" viewBox="0 0 20 20">
+                <path fill-rule="evenodd"
+                  d="M3 5a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2h-2.22l.123.489.804.804A1 1 0 0113 18H7a1 1 0 01-.707-1.707l.804-.804L7.22 15H5a2 2 0 01-2-2V5zm5.771 7H5V5h10v7H8.771z"
+                  clip-rule="evenodd" />
+              </svg>
+              Diagnostics &amp; Console
+            </span>
+            <div class="panel-actions">
+              <div class="output-tabs" role="tablist" aria-label="Output panel views">
+                <button class="output-tab active" data-output-tab="output-pane" role="tab"
+                  aria-selected="true">Output</button>
+                <button class="output-tab" data-output-tab="diagnostics-pane" role="tab"
+                  aria-selected="false">Diagnostics</button>
+                <button class="output-tab" data-output-tab="terminal-pane" role="tab" aria-selected="false">Terminal /
+                  Input</button>
+                <button class="output-tab" data-output-tab="build-log-pane" role="tab" aria-selected="false">Build
+                  Log</button>
+              </div>
+              <button class="btn btn-secondary btn-sm" id="btn-clear-console">Clear</button>
+              <button class="icon-button output-collapse" id="output-collapse" aria-label="Collapse output panel"
+                title="Collapse output panel">⌄</button>
+            </div>
           </div>
 
-          <!-- Standard Error (stderr) -->
-          <div id="console-stderr" style="display: none; background: var(--error-bg); border: 1px solid var(--error-border); color: var(--error); padding: 8px 10px; border-radius: var(--radius-md); font-family: var(--font-mono); font-size: 11px; max-height: 100px; overflow-y: auto; white-space: pre-wrap;"></div>
-        </div>
-      </section>
-    </main>
+          <div class="panel-content" style="padding: 12px; display: flex; flex-direction: column; gap: 12px;">
+            <!-- Compiler Error Analyzer -->
+            <div id="diagnostics-pane" class="output-pane">
+              <h4
+                style="font-size: 12px; font-weight: 600; color: var(--secondary-text); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">
+                Compiler Error Analyzer
+              </h4>
+              <div id="diagnostics-list-container">
+                <div style="text-align: center; color: var(--secondary-text); padding: 16px; font-size: 12px;">
+                  Ready. Click "Compile &amp; Visualize" to run GCC analysis.
+                </div>
+              </div>
+            </div>
 
-    <!-- Bottom Status Bar -->
-    <footer class="app-statusbar">
-      <div class="statusbar-left">
-        <div class="statusbar-item">
-          <span>Target:</span>
-          <strong id="target-status">Unavailable</strong>
+            <!-- Interactive Stdin Input for scanf() -->
+            <div id="terminal-pane" class="output-pane">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                <label for="console-stdin"
+                  style="font-size: 11px; font-weight: 600; color: var(--secondary-text); text-transform: uppercase;">Standard
+                  Input (stdin for scanf):</label>
+                <span style="font-size: 10px; color: var(--muted-text);">Enter every value scanf reads, in order; spaces
+                  or newlines work.</span>
+              </div>
+              <textarea id="console-stdin" class="form-control" rows="2"
+                style="font-family: var(--font-mono); font-size: 12px;"
+                placeholder="Example: for n followed by n array values, enter 5\n64 34 25 12 22"></textarea>
+            </div>
+
+            <div id="build-log-pane" class="output-pane">
+              <h4
+                style="font-size: 12px; font-weight: 600; color: var(--secondary-text); margin-bottom: 6px; text-transform: uppercase;">
+                Build Log</h4>
+              <pre id="console-build-log" class="code-pre"
+                style="min-height: 90px; max-height: 180px; overflow: auto; white-space: pre-wrap;">Compile the current source to see build details.</pre>
+            </div>
+
+            <!-- Program Runtime Output (stdout) -->
+            <div id="output-pane" class="output-pane active" style="flex: 1; display: flex; flex-direction: column;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                <span
+                  style="font-size: 11px; font-weight: 600; color: var(--secondary-text); text-transform: uppercase;">Standard
+                  Output (stdout):</span>
+                <div id="console-meta" style="font-size: 10px; display: flex; gap: 6px; align-items: center;"></div>
+              </div>
+              <pre id="console-stdout"
+                style="flex: 1; min-height: 90px; max-height: 180px; background: #F8FAFC; color: #0F172A; padding: 10px; border-radius: var(--radius-md); font-family: var(--font-mono); font-size: 12px; line-height: 1.5; overflow-y: auto; white-space: pre-wrap;">Compile the current source, then click Run Program to execute its GCC binary.</pre>
+            </div>
+
+            <!-- Standard Error (stderr) -->
+            <div id="console-stderr"
+              style="display: none; background: var(--error-bg); border: 1px solid var(--error-border); color: var(--error); padding: 8px 10px; border-radius: var(--radius-md); font-family: var(--font-mono); font-size: 11px; max-height: 100px; overflow-y: auto; white-space: pre-wrap;">
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <!-- Bottom Status Bar -->
+      <footer class="app-statusbar">
+        <div class="statusbar-left">
+          <div class="statusbar-item">
+            <span>Target:</span>
+            <strong id="target-status">Unavailable</strong>
+          </div>
+          <div class="statusbar-item">
+            <span>Engine:</span>
+            <span>Isolated GCC worker</span>
+          </div>
         </div>
-        <div class="statusbar-item">
-          <span>Engine:</span>
-          <span>Isolated GCC worker</span>
-        </div>
-      </div>
-    </footer>
+      </footer>
     </div>
   </div>
 
@@ -549,4 +659,5 @@
   <!-- Main ES Module Script Entry Point -->
   <script type="module" src="/js/compiler/app.js"></script>
 </body>
+
 </html>

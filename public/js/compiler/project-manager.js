@@ -34,7 +34,7 @@ export class ProjectManager {
   async promptNewProject() {
     const user = await api.getMe();
     if (!user) {
-      alert('Project saving is unavailable in guest mode. You can still compile and run code.');
+      alert('Please sign in to save projects.');
       return;
     }
 

@@ -80,13 +80,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const authManager = new AuthManager('auth-user-section');
   await authManager.init();
-  const account = document.getElementById('sidebar-account');
-  if (account && authManager.currentUser) {
-    const username = authManager.currentUser.username;
-    account.innerHTML = '<span class="account-avatar" aria-hidden="true"></span><span class="account-copy"><strong></strong><small>Signed in</small></span>';
-    account.querySelector('.account-avatar').textContent = username.slice(0, 1).toUpperCase();
-    account.querySelector('strong').textContent = username;
-  }
+
   refreshSidebarProjects = async () => {
     const list = document.getElementById('sidebar-project-list');
     if (!list) return;
@@ -94,7 +88,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!authManager.currentUser) {
       const empty = document.createElement('a');
       empty.className = 'sidebar-empty-projects';
-      empty.textContent = 'Saved projects are unavailable in guest mode';
+      empty.textContent = 'Sign in to view saved projects';
       list.appendChild(empty);
       return;
     }

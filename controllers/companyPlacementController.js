@@ -40,7 +40,8 @@ exports.adminSimulationHistory = asyncHandler(async (_req, res) => {
     FROM simulations s JOIN companies c ON c.id=s.company_id
     LEFT JOIN simulation_round_attempts a ON a.simulation_id=s.id
     LEFT JOIN company_rounds r ON r.id=a.round_id
-    GROUP BY s.id ORDER BY s.started_at DESC LIMIT 1000`);
+    GROUP BY s.id, s.student_id, s.company_id, c.name, s.status, s.started_at, s.completed_at
+    ORDER BY s.started_at DESC LIMIT 1000`);
 
   // Simulation records live in the simulation database, while student profiles
   // live in the main PlacementPro database. Resolve names without changing IDs
@@ -279,7 +280,9 @@ exports.studentHistory = asyncHandler(async (req, res) => {
     FROM simulations s JOIN companies c ON c.id=s.company_id
     LEFT JOIN simulation_round_attempts a ON a.simulation_id=s.id
     LEFT JOIN company_rounds r ON r.id=a.round_id
-    WHERE s.student_id=? GROUP BY s.id ORDER BY s.started_at DESC`, [studentId]);
+    WHERE s.student_id=?
+    GROUP BY s.id, s.student_id, s.company_id, c.name, s.status, s.started_at, s.completed_at
+    ORDER BY s.started_at DESC`, [studentId]);
   res.json(rows);
 });
 

@@ -252,7 +252,9 @@ class Exam {
            WHEN NOW() < e.starts_at THEN 'upcoming' ELSE 'available' END AS availability
       FROM exams e LEFT JOIN exam_questions q ON q.exam_id=e.id
       LEFT JOIN exam_attempts a ON a.exam_id=e.id AND a.student_id=?
-      WHERE e.status='published' AND e.deleted_at IS NULL GROUP BY e.id, a.id ORDER BY e.created_at DESC`, [studentId]);
+      WHERE e.status='published' AND e.deleted_at IS NULL
+      GROUP BY e.id, a.id, e.title, e.duration_minutes, e.starts_at, e.ends_at, e.status, a.state, e.created_at
+      ORDER BY e.created_at DESC`, [studentId]);
     return rows;
   }
 

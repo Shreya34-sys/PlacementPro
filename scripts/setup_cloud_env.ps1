@@ -24,6 +24,7 @@ CLOUD_DB_PASSWORD=$plainPass
 
 Set-Content -Path ".cloud-env" -Value $envContent -Encoding utf8
 Write-Host "`n✓ .cloud-env created securely (file is git-ignored)." -ForegroundColor Green
-Write-Host "Running TiDB verification and import script...`n" -ForegroundColor Cyan
+ Write-Host "Running TiDB verification and import script..."
+Write-Host ""
 
 node scripts/verify_and_import_tidb.js

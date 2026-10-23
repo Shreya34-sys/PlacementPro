@@ -186,7 +186,9 @@ class CodingAttempt {
       JOIN users u ON u.id=a.student_id
       LEFT JOIN coding_submissions s ON s.attempt_id=a.id
       WHERE a.round_id=?
-      GROUP BY a.id ORDER BY a.warnings_count DESC, a.started_at DESC
+      GROUP BY a.id, a.student_id, u.fullName, u.email, a.state,
+               a.started_at, a.submitted_at, a.warnings_count, a.integrity_index, a.final_score
+      ORDER BY a.warnings_count DESC, a.started_at DESC
     `, [adminId, roundId]);
     return rows;
   }

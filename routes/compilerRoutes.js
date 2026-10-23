@@ -84,14 +84,14 @@ router.get('/compilations/:id/results', optionalAuth, async (req, res) => {
 });
 
 // Projects & Versions
-router.get('/projects', optionalAuth, (req, res, next) => projectController.listProjects(req, res, next));
-router.post('/projects', optionalAuth, (req, res, next) => projectController.createProject(req, res, next));
-router.get('/projects/:id', optionalAuth, (req, res, next) => projectController.getProject(req, res, next));
-router.put('/projects/:id', optionalAuth, (req, res, next) => projectController.updateProject(req, res, next));
-router.delete('/projects/:id', optionalAuth, (req, res, next) => projectController.deleteProject(req, res, next));
-router.get('/projects/:id/versions', optionalAuth, (req, res, next) => projectController.listVersions(req, res, next));
-router.post('/projects/:id/versions', optionalAuth, (req, res, next) => projectController.saveVersion(req, res, next));
-router.get('/versions/:id', optionalAuth, (req, res, next) => projectController.getVersion(req, res, next));
+router.get('/projects', verifyToken, (req, res, next) => projectController.listProjects(req, res, next));
+router.post('/projects', verifyToken, (req, res, next) => projectController.createProject(req, res, next));
+router.get('/projects/:id', verifyToken, (req, res, next) => projectController.getProject(req, res, next));
+router.put('/projects/:id', verifyToken, (req, res, next) => projectController.updateProject(req, res, next));
+router.delete('/projects/:id', verifyToken, (req, res, next) => projectController.deleteProject(req, res, next));
+router.get('/projects/:id/versions', verifyToken, (req, res, next) => projectController.listVersions(req, res, next));
+router.post('/projects/:id/versions', verifyToken, (req, res, next) => projectController.saveVersion(req, res, next));
+router.get('/versions/:id', verifyToken, (req, res, next) => projectController.getVersion(req, res, next));
 
 // Auth Endpoints (C-Visualize & PlacementPro compatible)
 router.post('/auth/register', (req, res) => cvisualizeAuth.register(req, res));

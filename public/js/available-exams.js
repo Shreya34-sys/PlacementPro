@@ -10,7 +10,9 @@
     if (!response.ok) {
       root.innerHTML = `
         <div class="empty-state">
-          <p>Please sign in to view assessments.</p>
+          <h3>Sign in required</h3>
+          <p>Please sign in to view available assessments.</p>
+          <a class="primary" href="/login" style="margin-top:12px;display:inline-block;text-decoration:none;">Sign in to Account</a>
         </div>
       `;
       return;

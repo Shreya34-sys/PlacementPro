@@ -56,7 +56,7 @@ const uploadImportFile=(req,res,next)=>upload.single('file')(req,res,error=>{
   if(error) error.status=400;
   next(error);
 });
-router.post('/',auth,adminOnly,exam.create); router.get('/admin',auth,adminOnly,exam.listForAdmin); router.get('/available',auth,exam.listAvailable);
+router.post('/',auth,adminOnly,exam.create); router.get('/admin',auth,adminOnly,exam.listForAdmin); router.get('/admin/list',auth,adminOnly,exam.listForAdmin); router.get('/available',auth,exam.listAvailable);
 router.get('/import/template',auth,adminOnly,exam.template);
 router.post('/import/preview',auth,adminOnly,uploadImportFile,exam.previewImport);
 router.post('/import/save',auth,adminOnly,exam.saveImport);

@@ -70,6 +70,7 @@ const studentPages = {
   '/live-exam': 'live-exam.html',
   '/exam-result': 'exam-result.html',
   '/versant-test': 'versant-test.html',
+  '/versant-tests': 'versant-test.html',
   '/versant-result': 'versant-result.html',
   '/interviews': 'interviews.html',
   '/interview-room': 'interview-room.html',
