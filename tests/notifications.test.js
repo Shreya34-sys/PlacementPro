@@ -163,17 +163,9 @@ test('Notifications: Empty state returns 0 notifications when user has none', as
     { expiresIn: '1h' }
   );
 
-  // Ensure table ready and clear any records for this specific ID
-  await NotificationModel.ensureTable();
-  await pool.execute('DELETE FROM notifications WHERE user_id = ?', [emptyUserId]);
-
-  // Insert a dummy record and delete it, so ensureContextualNotifications is bypassed
-  const dummy = await NotificationModel.create({
-    userId: emptyUserId,
-    title: 'temp',
-    message: 'temp'
-  });
-  await pool.execute('DELETE FROM notifications WHERE id = ?', [dummy.id]);
+  // Mark as seeded, then clear all notifications for this user
+  await NotificationModel.ensureContextualNotifications(emptyUserId, 'student');
+  await NotificationModel.clearAll(emptyUserId);
 
   const res = await fetch(`${BASE_URL}/api/notifications`, {
     headers: { Authorization: `Bearer ${emptyToken}` }
@@ -194,8 +186,11 @@ test('Notifications: Page Shells include notification bell and dropdown componen
   assert.ok(studentHtml.includes('/css/notifications.css'), 'stddash loads notifications.css');
   assert.ok(studentHtml.includes('/js/notifications.js'), 'stddash loads notifications.js');
 
-  // Test admin dashboard served properly
-  const adminRes = await fetch(`${BASE_URL}/admin-dashboard`);
+  // Test admin dashboard served properly on admin port 5001
+  const adminToken = jwt.sign({ id: 'adm-shell-test', email: 'admin@example.com', role: 'admin' }, JWT_SECRET);
+  const adminRes = await fetch('http://127.0.0.1:5001/admin-dashboard', {
+    headers: { Cookie: `adminToken=${adminToken}` }
+  });
   const adminHtml = await adminRes.text();
   assert.ok(adminHtml.includes('notificationBtn'), 'admindash has notificationBtn');
   assert.ok(adminHtml.includes('notificationDropdownContainer'), 'admindash has notification container');

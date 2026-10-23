@@ -21,9 +21,21 @@ class NotificationModel {
             INDEX idx_created (created_at)
           ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
         `);
+        await db.execute(`
+          CREATE TABLE IF NOT EXISTS user_notification_state (
+            user_id VARCHAR(36) PRIMARY KEY,
+            seeded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+          ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+        `);
       })();
     }
     return this._tableReady;
+  }
+
+  static async clearAll(userId) {
+    await this.ensureTable();
+    await db.execute(`DELETE FROM notifications WHERE user_id = ?`, [userId]);
+    return true;
   }
 
   static async getByUserId(userId, limit = 50) {
@@ -84,19 +96,23 @@ class NotificationModel {
   }
 
   /**
-   * Generates contextual starting notifications if user has zero notifications.
-   * This ensures newly active students or admins see genuine system notifications
-   * reflecting active exams, company drives, and interview modules.
+   * Generates contextual starting notifications once per user.
+   * If a user clears their notifications, they remain in a clean empty state.
    */
   static async ensureContextualNotifications(userId, role = 'student') {
     await this.ensureTable();
-    const [countRows] = await db.query(
-      `SELECT COUNT(*) AS total FROM notifications WHERE user_id = ?`,
+    const [stateRows] = await db.query(
+      `SELECT 1 FROM user_notification_state WHERE user_id = ?`,
       [userId]
     );
-    if (countRows[0]?.total > 0) {
+    if (stateRows.length > 0) {
       return;
     }
+
+    await db.execute(
+      `INSERT IGNORE INTO user_notification_state (user_id) VALUES (?)`,
+      [userId]
+    );
 
     if (role === 'admin') {
       await this.create({

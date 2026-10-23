@@ -42,6 +42,8 @@
     "db:seed": "node database/seed.js",
     "test:excel-import": "node --test services/excelQuestionImportService.test.js models/examModel.test.js",
     "test:compiler": "node --test tests/compilerIntegration.test.js",
-    "test": "node --test services/excelQuestionImportService.test.js models/examModel.test.js tests/compilerIntegration.test.js"
+    "test:notifications": "node --test tests/notifications.test.js",
+    "test:breadcrumbs": "node --test tests/breadcrumbNavigation.test.js",
+    "test": "node --test services/excelQuestionImportService.test.js models/examModel.test.js tests/compilerIntegration.test.js tests/notifications.test.js tests/breadcrumbNavigation.test.js"
   }
 }

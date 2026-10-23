@@ -59,6 +59,13 @@
             color: var(--border-color);
         }
 
+        .breadcrumb-row .current {
+            color: var(--text-primary);
+            font-weight: 600;
+            pointer-events: none;
+            user-select: text;
+        }
+
         /* Company Kit Hero Header */
         .company-hero-card {
             background: var(--card-bg);
@@ -699,12 +706,12 @@
     <!-- Main Container -->
     <main class="prep-page-container">
         <!-- Breadcrumb Navigation -->
-        <nav class="breadcrumb-row" aria-label="Breadcrumb">
-            <a href="/dashboard">← Back to Dashboard</a>
+        <nav class="breadcrumb-row" aria-label="Breadcrumb" id="breadcrumbNav">
+            <a href="/dashboard" id="breadcrumbDashboard">← Back to Dashboard</a>
             <span class="sep">/</span>
-            <a href="/companies">Company Directory</a>
+            <a href="/companies" id="breadcrumbCompanies">Company Directory</a>
             <span class="sep">/</span>
-            <span class="current" id="breadcrumbLabel">Google Prep Kit</span>
+            <span class="current" id="breadcrumbLabel" aria-current="page">Google Prep Kit</span>
         </nav>
 
         <!-- Company Hero Card -->
@@ -1103,7 +1110,11 @@
 
         function renderCompanyKit(kit, key) {
             document.title = `${kit.name} Preparation Kit · PlacementPro`;
-            document.getElementById('breadcrumbLabel').textContent = `${kit.name} Prep Kit`;
+            const breadcrumbEl = document.getElementById('breadcrumbLabel');
+            if (breadcrumbEl) {
+                breadcrumbEl.textContent = `${kit.name} Prep Kit`;
+                breadcrumbEl.removeAttribute('href');
+            }
             document.getElementById('companyName').textContent = kit.title;
             document.getElementById('companyRole').textContent = kit.role;
             document.getElementById('companyOverview').textContent = kit.overview;
